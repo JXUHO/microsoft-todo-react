@@ -1,25 +1,71 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from "react-router-dom";
+import MydayPage from "./pages/MydayPage";
+import RootPage from "./pages/RootPage";
+import ImportantPage from "./pages/ImportantPage";
+import PlannedPage from "./pages/PlannedPage";
+import AssignedToMe from "./pages/AssignedToMePage";
+import FlaggedPage from "./pages/FlaggedPage";
+import Inbox from "./pages/InboxPage";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootPage/>,
+    children: [
+      {
+        index: true,
+        loader: () => redirect("/today")
+      },
+      {
+        path: "today",
+        element: <MydayPage />,
+      },
+      {
+        path: "myday",
+        element: <MydayPage />,
+      },
+      {
+        path: "important",
+        element: <ImportantPage/>
+      },
+      {
+        path: "planned",
+        element: <PlannedPage/>
+      },
+      {
+        path: "assigned_to_me",
+        element: <AssignedToMe/>
+      },
+      {
+        path: "flagged",
+        element: <FlaggedPage/>
+      },
+      {
+        path: "inbox",
+        element: <Inbox/>
+      }
+    ],
+  },
+]);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
+
+
+
+/**
+ * TODO
+ * (fixed) ms todo app redirect https://to-do.office.com/ -> https://to-do.office.com/tasks/today 
+ * 
+ * 
+ * 
+ * 
+ */
+
