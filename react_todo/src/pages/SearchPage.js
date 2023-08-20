@@ -1,16 +1,15 @@
 import { useOutletContext } from "react-router-dom";
 
-const AssignedToMe = () => {
+const SearchPage = () => {
   const [collapseSidebar, setCollapseSidebar] = useOutletContext();
 
 
   return(
     <>
       {!collapseSidebar && <button onClick={() => {setCollapseSidebar(prevState => !prevState)}}>open/close</button>}
-      <p>AssignedToMePage</p>
-
+      <p>Searchpage</p>
     </>
   )
 }
 
-export default AssignedToMe;
+export default SearchPage;

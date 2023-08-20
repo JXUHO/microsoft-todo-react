@@ -1,10 +1,6 @@
+import Myday from "../components/Myday";
 const MydayPage = () => {
-  return(
-    <>
-      <p>today</p>
-      <p>today</p>
-    </>
-  )
-}
+  return <Myday />;
+};
 
 export default MydayPage;

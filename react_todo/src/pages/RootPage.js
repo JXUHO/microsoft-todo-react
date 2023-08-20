@@ -1,15 +1,20 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Header from "../components/header/Header";
+import Sidebar from "../components/sidebar/Sidebar";
 
 const RootPage = () => {
-  
-  
+  const [collapseSidebar, setCollapseSidebar] = useState(false);
+
+  const collapseSidebarHandler = () => {
+    setCollapseSidebar(prevState => !prevState)
+  }
+
   return(
     <>
     <Header />
-    <Sidebar/>
-    <Outlet/>
+    {collapseSidebar && <Sidebar onCollapse={collapseSidebarHandler}/>}
+    <Outlet context={[collapseSidebar, setCollapseSidebar]} />
     </>
   )
 }
@@ -17,6 +22,4 @@ const RootPage = () => {
 export default RootPage;
 
 
-// export const loader = () => {
-//   return redirect("today")
-// }
+// <Outlet/> -> useOutletContext참조

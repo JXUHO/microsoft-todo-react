@@ -9,7 +9,8 @@ import ImportantPage from "./pages/ImportantPage";
 import PlannedPage from "./pages/PlannedPage";
 import AssignedToMe from "./pages/AssignedToMePage";
 import FlaggedPage from "./pages/FlaggedPage";
-import Inbox from "./pages/InboxPage";
+import TasksPage from "./pages/TasksPage";
+import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,11 @@ const router = createBrowserRouter([
       },
       {
         path: "inbox",
-        element: <Inbox/>
+        element: <TasksPage/>
+      },
+      {
+        path: "search",
+        element: <SearchPage/>
       }
     ],
   },
@@ -62,8 +67,13 @@ export default App;
 
 /**
  * TODO
- * (fixed) ms todo app redirect https://to-do.office.com/ -> https://to-do.office.com/tasks/today 
+ * (complete) ms todo app redirect https://to-do.office.com/ -> https://to-do.office.com/tasks/today 
+ * (complete) sidebar retraction
+ * Header search bar
+ * layout simple styling
  * 
+ * AddTask.js fix payload (considering delete item using id)
+ * work with Todos.js
  * 
  * 
  * 
