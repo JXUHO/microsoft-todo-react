@@ -1,17 +1,27 @@
 import { useOutletContext } from "react-router-dom";
-import AddTask from "../components/addtask/AddTask"
+import AddTask from "../components/addtask/AddTask";
 
 const Planned = () => {
-  const [collapseSidebar, setCollapseSidebar] = useOutletContext();
+  const [collapse, setCollapse] = useOutletContext();
 
-
-  return(
+  return (
     <>
-      {!collapseSidebar && <button onClick={() => {setCollapseSidebar(prevState => !prevState)}}>open/close</button>}
+       {!collapse.sidebar && (
+        <button
+          onClick={() => {
+            setCollapse((prevState) => ({
+              ...prevState,
+              sidebar: !prevState.sidebar,
+            }));
+          }}
+        >
+          open/close
+        </button>
+      )}
       <p>Planned</p>
-      <AddTask/>
+      <AddTask />
     </>
-  )
-}
+  );
+};
 
 export default Planned;

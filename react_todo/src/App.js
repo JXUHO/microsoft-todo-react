@@ -7,9 +7,8 @@ import MydayPage from "./pages/MydayPage";
 import RootPage from "./pages/RootPage";
 import ImportantPage from "./pages/ImportantPage";
 import PlannedPage from "./pages/PlannedPage";
-import AssignedToMe from "./pages/AssignedToMePage";
-import FlaggedPage from "./pages/FlaggedPage";
-import TasksPage from "./pages/TasksPage";
+import CompletedPage from "./pages/CompletedPage";
+import AllTasksPage from "./pages/AllTasksPage";
 import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
@@ -38,16 +37,12 @@ const router = createBrowserRouter([
         element: <PlannedPage/>
       },
       {
-        path: "assigned_to_me",
-        element: <AssignedToMe/>
-      },
-      {
-        path: "flagged",
-        element: <FlaggedPage/>
+        path: "completed",
+        element: <CompletedPage/>
       },
       {
         path: "inbox",
-        element: <TasksPage/>
+        element: <AllTasksPage/>
       },
       {
         path: "search",

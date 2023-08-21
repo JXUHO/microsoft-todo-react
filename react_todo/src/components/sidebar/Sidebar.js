@@ -26,10 +26,7 @@ const Sidebar = (props) => {
               <NavLink to="/planned">Planned</NavLink>
             </li>
             <li>
-              <NavLink to="/assigned_to_me">Assinged to me</NavLink>
-            </li>
-            <li>
-              <NavLink to="/flagged">Flagged email</NavLink>
+              <NavLink to="/completed">Completed</NavLink>
             </li>
             <li>
               <NavLink to="/inbox">Tasks</NavLink>

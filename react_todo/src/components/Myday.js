@@ -1,28 +1,30 @@
 // import { useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import AddTask from "./addtask/AddTask";
-import Todos from "./Todos";
+import TaskList from "./tasks/TaskList";
+import CompletedTaskList from "./tasks/CompletedTaskList";
 
 const MydayPage = () => {
-  const [collapseSidebar, setCollapseSidebar] = useOutletContext();
+  const [collapse, setCollapse] = useOutletContext();
 
 
   return (
     <>
       <div>
-        {!collapseSidebar && (
+        {!collapse.sidebar && (
           <button
             onClick={() => {
-              setCollapseSidebar((prevState) => !prevState);
+              setCollapse((prevState) => ({...prevState, sidebar: !prevState.sidebar}));
             }}
           >
             open/close
           </button>
         )}
-        <p>Myday</p>
+        <h1>Myday</h1>
       </div>
-      <AddTask/>
-      <Todos/>
+      <AddTask myday={true}/>
+      <TaskList/>
+      <CompletedTaskList/>
     </>
   );
 };

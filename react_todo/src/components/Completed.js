@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import AddTask from "../components/addtask/AddTask"
 
-const Important = () => {
+const Completed = () => {
   const [collapse, setCollapse] = useOutletContext();
 
 
@@ -19,10 +19,10 @@ const Important = () => {
           open/close
         </button>
       )}
-      <p>Important</p>
+      <p>Completed</p>
       <AddTask/>
     </>
   )
 }
 
-export default Important;
+export default Completed;

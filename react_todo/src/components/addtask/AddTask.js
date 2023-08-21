@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
+import uuid from "react-uuid";
 
-const AddTask = () => {
+const initialTask = {id: "", task: "", myday: false, date:{}, repeat:"", remind:"", category:"", file: null, note:"", importance: false, created: {}, completed: false}
+
+const AddTask = (props) => {
   const dispatch = useDispatch()
-  // const todos = useSelector((state) => state.todo.todos)
-  const [taskInput, setTaskInput] = useState("");
+  const [taskInput, setTaskInput] = useState(initialTask);
+
 
   const taskInputHandler = (event) => {
-    setTaskInput(event.target.value);
+    const createdTime = new Date().getDate()
+
+    setTaskInput({...taskInput, task: event.target.value, created: createdTime, id: uuid(), myday: props.myday})
   };
 
+
   const addTaskHandler = () => {
-    // add task to database
-    dispatch(addTodo(taskInput))  // Add {date, repeat, remind, id} into addtodo payload
-    setTaskInput("");
+    dispatch(addTodo(taskInput))
+    setTaskInput(initialTask);
   };
 
 
@@ -24,14 +29,14 @@ const AddTask = () => {
         <input
           placeholder="Add a task"
           onChange={taskInputHandler}
-          value={taskInput}
+          value={taskInput.task}
         />
       </div>
       <div>
         <button>Add due date</button>
         <button>Remind me</button>
         <button>Repeat</button>
-        <button disabled={!taskInput} onClick={addTaskHandler}>
+        <button disabled={!taskInput.task} onClick={addTaskHandler}>
           add
         </button>
       </div>
@@ -40,3 +45,10 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
+
+/**
+ * TODO
+ * from taskInputHandler, only getting user input and add other data from addTaskHandler -> dispatch & setState have async & sync matter 
+ * 
+ */
