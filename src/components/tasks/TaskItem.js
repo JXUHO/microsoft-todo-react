@@ -7,7 +7,7 @@ import {
 } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 
-const TaskItem = ({ todo }) => {
+const TaskItem = ({ todo }) => {  
   // const [collapse, setCollapse] = useOutletContext();
   const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();

@@ -15,7 +15,7 @@ const todoSlice = createSlice({
     },
     removeTodo: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-    },
+    },  
     importanceTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload

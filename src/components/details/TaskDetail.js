@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeTodo } from "../../store/todoSlice";
 import { closeDetail } from "../../store/uiSlice";
+import DetailBody from "./DetailBody";
 
 const TaskDetail = () => {
   const detailId = useSelector(state => state.ui.id)
@@ -20,14 +21,14 @@ const TaskDetail = () => {
   return (
     <div>
       <div>
-        detail body
+        <DetailBody id={detailId}/>
       </div>
       <div>
         detail footer
-        <button onClick={closeDetailHandler}>close</button>
+        <button onClick={closeDetailHandler}>hide detail view</button>
         <br/>
-        created
-        <button onClick={() => removeTaskHandler(detailId)}>delete</button>
+        created time
+        <button onClick={() => removeTaskHandler(detailId)}>delete task</button>
       </div>
     </div>
   );

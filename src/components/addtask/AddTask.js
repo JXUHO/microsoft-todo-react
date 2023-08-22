@@ -49,6 +49,7 @@ export default AddTask;
 
 /**
  * TODO
- * from taskInputHandler, only getting user input and add other data from addTaskHandler -> dispatch & setState have async & sync matter 
+ * from taskInputHandler, handle only task(efficiency) 
+ * handle other data at addTaskHandler BUT dispatch & setState together have async & sync matter 
  * 
  */
