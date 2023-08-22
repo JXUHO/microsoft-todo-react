@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 
-const initialTask = {id: "", task: "", myday: false, date:{}, repeat:"", remind:"", category:"", file: null, note:"", importance: false, created: {}, completed: false}
+const initialTask = {id: "", task: "", steps: {}, myday: false, date:{}, repeat:"", remind:"", category:"", file: null, note:"", importance: false, created: {}, completed: false}
 
 const AddTask = (props) => {
   const dispatch = useDispatch()

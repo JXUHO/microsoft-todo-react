@@ -1,16 +1,27 @@
-.header {
-  max-width: 60rem;
-  margin: auto;
-  padding: 2rem;
+.header nav {
+  background-color: #2564cf;
+  margin-top: 0px;
   display: flex;
   justify-content: space-between;
-
-  /* list-style: none;
-  padding: 0;
-  margin: 0; */
+  align-items: center;
+  color: white;
 }
 
-.header li {
-  display: inline-block;
-  margin-right: 20px;
+.header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.leftGroup {
+  margin-right: auto;
+}
+.searchBar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.rightGroup {
+  margin-left: auto;
 }

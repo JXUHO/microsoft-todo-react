@@ -68,7 +68,7 @@ export default App;
  * Header search bar
  * layout simple styling
  * AddTask.js fix payload (considering delete item using id)
- * 
+ * implement steps
  * 
  * 
  */

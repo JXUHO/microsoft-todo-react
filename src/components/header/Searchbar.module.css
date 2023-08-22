@@ -1,7 +1,4 @@
-/* .searchbar div{
-  display: inline-block;
+.searchbar div{
+  display: flex;
 }
 
-.searchbar input{
-  display: inline-block;
-} */

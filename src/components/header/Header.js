@@ -4,23 +4,27 @@ import classes from "./Header.module.css";
 
 const Header = () => {
   return (
-    <div className={classes.header}>
+    <header className={classes.header}>
       <nav>
-        <ul>
+        <ul className={classes.leftGroup}>
           <li>app launcher</li>
           <li>
             <Link to="/">To do</Link>
           </li>
-          <li>
+        </ul>
+
+          <div className={classes.searchBar}>
             <Searchbar />
-          </li>
+          </div>
+
+        <ul className={classes.rightGroup}>
           <li>Settings</li>
           <li>Help</li>
           <li>What's new</li>
           <li>Account Manager</li>
         </ul>
       </nav>
-    </div>
+    </header>
   );
 };
 

@@ -9,7 +9,7 @@ const Searchbar = () => {
   };
 
   return (
-    <div>
+    <div className={classes.Searchbar}>
       <div>search</div>
       <input onChange={searchHandler} />
     </div>

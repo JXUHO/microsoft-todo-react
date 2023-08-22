@@ -9,9 +9,7 @@ import { closeSidebar } from "../store/uiSlice";
 const RootPage = () => {
   const isSidebarOpen = useSelector(state => state.ui.sidebar)
   const isDetailOpen = useSelector(state => state.ui.detail)
-  const dispatch = useDispatch();
-
-
+  
 
   return (
     <>
