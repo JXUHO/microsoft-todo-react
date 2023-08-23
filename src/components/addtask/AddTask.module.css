@@ -1,0 +1,18 @@
+button {
+  height: 1.5rem;
+}
+
+.taskButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+.addTaskBar {
+  height: 44px;
+}
+
+
+.taskBar {
+  display: flex;
+  justify-content: space-between;
+}
