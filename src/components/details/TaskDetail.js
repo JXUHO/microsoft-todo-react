@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeTodo } from "../../store/todoSlice";
 import { closeDetail } from "../../store/uiSlice";
 import DetailBody from "./DetailBody";
+import classes from "./TaskDetail.module.css"
 
 const TaskDetail = () => {
   const detailId = useSelector(state => state.ui.id)
@@ -19,7 +20,7 @@ const TaskDetail = () => {
 
 
   return (
-    <div>
+    <div className={classes.taskDetail}>
       <div>
         <DetailBody id={detailId}/>
       </div>

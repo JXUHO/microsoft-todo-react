@@ -1,27 +1,11 @@
-.header nav {
+.header {
   background-color: #2564cf;
-  margin-top: 0px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   color: white;
 }
 
-.header nav ul {
-  list-style: none;
+.header ul {
   display: flex;
-  gap: 1rem;
-}
-
-.leftGroup {
-  margin-right: auto;
-}
-.searchBar {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.rightGroup {
-  margin-left: auto;
 }

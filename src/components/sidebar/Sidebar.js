@@ -16,7 +16,7 @@ const Sidebar = () => {
         <button onClick={closeSidebarHandler}>open/close</button>
       </div>
       <div>
-        <nav className={classes}>
+        <nav>
           <ul>
             <li>
               <NavLink to="/myday">My Day</NavLink>
