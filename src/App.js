@@ -67,10 +67,9 @@ export default App;
  * (complete) TaskDetail에서 redux저장소에서 데이터 가지고와서 detail body 구현하기
  * (complete) basic layout
  * Header search bar
- * layout simple styling
  * AddTask.js fix payload (considering delete item using id)
  * implement steps
- * implement date/remind/repeat popover
+ * (ongoing) implement date/remind/repeat popover
  * 
  * 
  * 
