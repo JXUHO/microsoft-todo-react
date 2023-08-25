@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
 const Popover =({ onClose, children }) => {
-  console.log("Popover")
   const popoverRef = useRef(null);
 
   useEffect(() => {
     
     const pageClickEvent = (event) => { 
-      console.log("eventlistener triggerd")
       if (popoverRef.current !== event.target) { 
         onClose();
       }
@@ -15,7 +13,6 @@ const Popover =({ onClose, children }) => {
 
     document.addEventListener("click", pageClickEvent); 
     
-
     return () => {
       document.removeEventListener("click", pageClickEvent);
     };
@@ -30,7 +27,7 @@ export default Popover;
 /**
  * 재사용 고려된 component이므로 UI 디렉토리로 이동할것.
  * 
- * addEventListener capture option true 공부하기. 왜 필요한지
- * 
+ * addEventListener capture option "true" 공부하기. 왜 필요한지 -> propagation과 관련있음
+ * event listener의 click event는 mousedown + mouseup event이기 때문에 event가 두번 발생함? ㄴㄴ
  * 
  */

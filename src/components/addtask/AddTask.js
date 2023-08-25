@@ -54,8 +54,8 @@ const AddTask = (props) => {
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
           <TaskButton event={"dueDate"} />
-          {/* <TaskButton event={"remind"} />
-          <TaskButton event={"repeat"} /> */}
+          <TaskButton event={"remind"} />
+          <TaskButton event={"repeat"} />
         </div>
         <button disabled={!taskInput.task} onClick={addTaskHandler}>
           add

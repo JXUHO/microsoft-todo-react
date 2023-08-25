@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react";
-import Popover from "./Popover"
+import { useState } from "react";
+import Popover from "./Popover";
 
 const TaskButton = (props) => {
-  console.log("taskbutton")
+
   const [isFocused, setIsFocused] = useState(false);
-  const [isPopoverShown, setIsPopoverShown] = useState(false)
+  const [isPopoverShown, setIsPopoverShown] = useState(false);
 
   const mouseOverHandler = () => {
     setIsFocused(true);
@@ -23,14 +23,14 @@ const TaskButton = (props) => {
     event = "Repeat";
   }
 
-  const popoverOpenHandler = () => {
-    setIsPopoverShown(true)
-  } 
+  const popoverOpenHandler = (event) => {
+    event.stopPropagation()
+    setIsPopoverShown(true);
+  };
 
   const popoverCloseHandler = () => {
-    setIsPopoverShown(false)
-  }
-
+    setIsPopoverShown(false);
+  };
 
   return (
     <div>
@@ -42,7 +42,11 @@ const TaskButton = (props) => {
         {event}
       </button>
       {isFocused && <p>{event}</p>}
-      {isPopoverShown && <Popover onClose={popoverCloseHandler}>hello</Popover>}
+      {isPopoverShown && (
+        <Popover isOpen={isPopoverShown} onClose={popoverCloseHandler}>
+          hello
+        </Popover>
+      )}
     </div>
   );
 };
@@ -50,6 +54,7 @@ const TaskButton = (props) => {
 export default TaskButton;
 
 /**
- * 1. button 누르면 isPopoverShown true -> Popover render
- * 
+
+ *
+ *
  */
