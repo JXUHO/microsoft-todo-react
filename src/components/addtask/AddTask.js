@@ -1,8 +1,8 @@
-import { useState, useId } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import TaskButton from "./TaskButton";
+import TaskButtons from "./TaskButtons";
 import classes from "./AddTask.module.css";
 
 const initialTask = {
@@ -53,9 +53,7 @@ const AddTask = (props) => {
       </div>
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          <TaskButton event={"dueDate"} />
-          <TaskButton event={"remind"} />
-          <TaskButton event={"repeat"} />
+          <TaskButtons />
         </div>
         <button disabled={!taskInput.task} onClick={addTaskHandler}>
           add
@@ -73,16 +71,3 @@ export default AddTask;
  * handle other data at addTaskHandler BUT dispatch & setState together have async & sync matter
  *
  */
-
-// const mouseOverHandler = (event) => {
-//   setIsFocused((prevState) => ({ ...prevState, [event]: true }));
-// };
-// const mouseLeaveHandler = (event) => {
-//   setIsFocused((prevState) => ({ ...prevState, [event]: false }));
-// };
-/* <button onMouseOver={() => mouseOverHandler("dueDate")} onMouseLeave={() => mouseLeaveHandler("dueDate")} onClick={null}>Add due date</button>
-        {isFocused.dueDate && <p>Add due date</p>}
-        <button onMouseOver={() => mouseOverHandler("remind")} onMouseLeave={() => mouseLeaveHandler("remind")} onClick={null}>Remind me</button>
-        {isFocused.remind && <p>Remind me</p>}
-        <button onMouseOver={() => mouseOverHandler("repeat")} onMouseLeave={() => mouseLeaveHandler("repeat")} onClick={null}>Repeat</button>
-        {isFocused.repeat && <p>Repeat</p>} */

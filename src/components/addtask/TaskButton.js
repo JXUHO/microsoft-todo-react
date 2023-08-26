@@ -13,7 +13,7 @@ const TaskButton = (props) => {
     setIsFocused(false);
   };
 
-  // props.event에 따라 Popover child component도 분기처리할것
+  
   let event = "";
   if (props.event === "dueDate") {
     event = "Add due date";
@@ -24,7 +24,7 @@ const TaskButton = (props) => {
   }
 
   const popoverOpenHandler = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setIsPopoverShown(true);
   };
 
@@ -37,7 +37,7 @@ const TaskButton = (props) => {
       <button
         onMouseOver={mouseOverHandler}
         onMouseLeave={mouseLeaveHandler}
-        onClick={popoverOpenHandler}
+        onClick={(popoverOpenHandler)}
       >
         {event}
       </button>
@@ -52,9 +52,3 @@ const TaskButton = (props) => {
 };
 
 export default TaskButton;
-
-/**
-
- *
- *
- */

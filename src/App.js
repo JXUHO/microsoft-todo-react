@@ -69,7 +69,9 @@ export default App;
  * Header search bar
  * AddTask.js fix payload (considering delete item using id)
  * implement steps
- * (ongoing) implement date/remind/repeat popover
+ * (ongoing) implement date/remind/repeat compoenent popover
+ * 
+ * testfield code 해석하기
  * 
  * 
  * 
