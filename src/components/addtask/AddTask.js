@@ -28,13 +28,13 @@ const AddTask = (props) => {
   const taskInputHandler = (event) => {
     const createdTime = new Date().getDate();
 
-    setTaskInput({
-      ...taskInput,
+    setTaskInput(prevState => ({
+      ...prevState,
       task: event.target.value,
       created: createdTime,
       id: uuid(),
       myday: props.myday,
-    });
+    }));
   };
 
   const addTaskHandler = () => {
@@ -48,6 +48,11 @@ const AddTask = (props) => {
     }
   }
 
+  const addDetailHandler = (input) => {
+    setTaskInput(prevState => ({...prevState, ...input}))
+  }
+
+
   return (
     <div className={classes.addTaskBar}>
       <div>
@@ -60,8 +65,10 @@ const AddTask = (props) => {
       </div>
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          <TaskButtons />
+
+          <TaskButtons onAddDetail={addDetailHandler}/>
         </div>
+
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler} >
           add
         </button>
