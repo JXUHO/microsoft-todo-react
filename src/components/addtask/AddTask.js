@@ -42,6 +42,12 @@ const AddTask = (props) => {
     setTaskInput(initialTask);
   };
 
+  const handleEnterKeyPress = (event) => {
+    if (event.key === "Enter" && taskInput.task.trim()) {
+      addTaskHandler();
+    }
+  }
+
   return (
     <div className={classes.addTaskBar}>
       <div>
@@ -49,13 +55,14 @@ const AddTask = (props) => {
           placeholder="Add a task"
           onChange={taskInputHandler}
           value={taskInput.task}
+          onKeyDown={handleEnterKeyPress}
         />
       </div>
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
           <TaskButtons />
         </div>
-        <button disabled={!taskInput.task} onClick={addTaskHandler}>
+        <button disabled={!taskInput.task.trim()} onClick={addTaskHandler} >
           add
         </button>
       </div>

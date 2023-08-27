@@ -66,12 +66,12 @@ export default App;
  * (complete) sidebar retraction
  * (complete) TaskDetail에서 redux저장소에서 데이터 가지고와서 detail body 구현하기
  * (complete) basic layout
+ * (complete)testfield code 해석하기
  * Header search bar
  * AddTask.js fix payload (considering delete item using id)
  * implement steps
  * (ongoing) implement date/remind/repeat compoenent popover
  * 
- * testfield code 해석하기
  * 
  * 
  * 

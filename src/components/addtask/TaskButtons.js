@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Popover from "./Popover";
+import Popover from "./Popover"; 
 
 
 const buttonsData = [
@@ -42,7 +42,7 @@ const TaskButtons = () => {
           </button>
           {activeHoverMessage === button.id && <p>message</p>}
           {activePopover === button.id && (
-            <Popover onClose={closePopoverHandler}>
+            <Popover onClick={closePopoverHandler}>
               {button.content}
             </Popover>
           )}

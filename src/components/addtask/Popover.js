@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 
-const Popover = ({ onClose, children }) => {
+const Popover = ({ onClick, children }) => {
   const popoverRef = useRef(null);
 
   useEffect(() => {
     const pageClickEvent = (event) => {
       if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-        onClose();
+        onClick();
       }
     };
 
@@ -15,7 +15,7 @@ const Popover = ({ onClose, children }) => {
     return () => {
       document.removeEventListener("click", pageClickEvent);
     };
-  }, [onClose]);
+  }, [onClick]);
 
   return <div ref={popoverRef}>{children}</div>;
 };
