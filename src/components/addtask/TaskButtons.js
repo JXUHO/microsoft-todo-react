@@ -26,7 +26,7 @@ const TaskButtons = (props) => {
 
 
   const buttonsData = [
-    { id: "dueDate", tooltipLabel: "Add due date", content: <DueDate onAddDetail={props.onAddDetail}/> }, // DueDate에서 지정되면 해당하는 버튼으로 Label 변경
+    { id: "dueDate", tooltipLabel: "Add due date", content: <DueDate onAddDetail={props.onAddDetail} onRemove={closePopoverHandler}/> }, // DueDate에서 날짜 지정되면 해당하는 버튼으로 Label 변경
     { id: "remind", tooltipLabel: "Remind me", content: "Popover2" },
     { id: "repeat", tooltipLabel: "Repeat", content: "Popover3" },
   ];

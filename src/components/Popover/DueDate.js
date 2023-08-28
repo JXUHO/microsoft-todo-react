@@ -1,16 +1,23 @@
 import getDateString from "../date/getDate";
-
+import Calendar from 'rc-calendar';
 
 const DueDate = (props) => {
+
+  const dayToday = getDateString().slice(0,3);
+  const dayTomorrow = getDateString(1).slice(0,3);
+  const dayNextweek = getDateString(7).slice(0,3);
+
 
   const addDateHandler = (offset) => {
     console.log(getDateString(offset))
     props.onAddDetail({date: getDateString(offset)})
+    props.onRemove()
   }
 
-  const dayToday = getDateString().toString().slice(0,3);
-  const dayTomorrow = getDateString(1).toString().slice(0,3);
-  const dayNextweek = getDateString(7).toString().slice(0,3);
+
+  const calendarClickHandler = () => {  // canlender render하고, duedate close
+    props.onRemove()
+  }
 
 
   return (
@@ -37,7 +44,7 @@ const DueDate = (props) => {
         </li>
         <li>----------------</li>
         <li>
-          <button>Pick a date</button>
+          <button onClick={calendarClickHandler}>Pick a date</button>
         </li>
       </ul>
     </div>

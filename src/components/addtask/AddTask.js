@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import TaskButtons from "./TaskButtons";
+import TaskButton from "./TaskButton";
+import DueDate from "../Popover/DueDate";
 import getDateString from "../date/getDate";
 import classes from "./AddTask.module.css";
 
@@ -27,14 +28,16 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
 
-  const taskInputHandler = (event) => {
+  const [isPopoverShown, setIsPopoverShown] = useState(false);
 
-    const createdTime = getDateString();
+
+  const taskInputHandler = (event) => {
+    const createdTime = getDateString(); // date
 
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
-      created: createdTime,
+      created: "temp", // 수정 (redux 저장할때 객체 vs string 뭐가 더 나은지 생각)
       id: uuid(),
       myday: props.myday,
     }));
@@ -55,6 +58,15 @@ const AddTask = (props) => {
     setTaskInput((prevState) => ({ ...prevState, ...input }));
   };
 
+  const popoverOpenHandler = (event) => {
+    event.stopPropagation();
+    setIsPopoverShown(true);
+  };
+
+  const popoverCloseHandler = () => {
+    setIsPopoverShown(false);
+  };
+
   return (
     <div className={classes.addTaskBar}>
       <div>
@@ -67,7 +79,17 @@ const AddTask = (props) => {
       </div>
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          <TaskButtons onAddDetail={addDetailHandler} />
+          {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
+
+          <TaskButton buttonDetail={{ image: "Due", hover: "Add due date"}}>
+            <DueDate />
+          </TaskButton>
+          <TaskButton buttonDetail={{ image: "Remind", hover: "Remind me"}} >
+            remind
+          </TaskButton>
+          <TaskButton buttonDetail={{ image: "Repeat", hover: "Repeat"}}>
+            repeat
+          </TaskButton>
         </div>
 
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
@@ -82,10 +104,11 @@ export default AddTask;
 
 /**
  * TODO
- * from taskInputHandler, handle only task(efficiency)
- * handle other data at addTaskHandler BUT dispatch & setState together have async & sync matter
- *
  * taskInputHandler에서 user input 다른 정보 분리하기, user input이외의 정보들은 addTaskHandler에서 추가하기
- * 
- * 
+ * 근데 dispatch & setState 같이 넣으면 async & sync 문제 발생
+ *
+ *
+ * TaskButton의 한 인스턴스에서 state가 true이면 다른 인스턴스의 state를 false로 만들어야함
+ *
+ *
  */

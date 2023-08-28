@@ -1,11 +1,10 @@
 // old version
+import { Children, useState } from "react";
+import DueDate from "../Popover/DueDate";
+import ClickOutsideHandler from "../Popover/ClickOutsideHandler";
 
-
-import { useState } from "react";
-import Popover from "./Popover";
 
 const TaskButton = (props) => {
-
   const [isFocused, setIsFocused] = useState(false);
   const [isPopoverShown, setIsPopoverShown] = useState(false);
 
@@ -16,15 +15,6 @@ const TaskButton = (props) => {
     setIsFocused(false);
   };
 
-  
-  let event = "";
-  if (props.event === "dueDate") {
-    event = "Add due date";
-  } else if (props.event === "remind") {
-    event = "Remind me";
-  } else if (props.event === "repeat") {
-    event = "Repeat";
-  }
 
   const popoverOpenHandler = (event) => {
     event.stopPropagation();
@@ -40,18 +30,28 @@ const TaskButton = (props) => {
       <button
         onMouseOver={mouseOverHandler}
         onMouseLeave={mouseLeaveHandler}
-        onClick={(popoverOpenHandler)}
+        onClick={popoverOpenHandler}
       >
-        {event}
+        {props.buttonDetail.image}
       </button>
-      {isFocused && <p>{event}</p>}
+      {isFocused && <p style={{position: "absolute"}}>{props.buttonDetail.hover}</p>}
       {isPopoverShown && (
-        <Popover isOpen={isPopoverShown} onClose={popoverCloseHandler}>
-          hello
-        </Popover>
+        <ClickOutsideHandler onClick={popoverCloseHandler}>
+          {props.children}
+        </ClickOutsideHandler>
       )}
     </div>
   );
 };
 
 export default TaskButton;
+
+
+/**
+ * 버튼을 누르면 popover를 연다 -> props.children
+ * hover하면 tooltip을 연다
+ * 
+ * 버튼이름(이미지) / hover 이름 만 props로 받아옴
+ * 
+ * 
+ */
