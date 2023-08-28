@@ -1,41 +1,16 @@
-import { useDispatch } from "react-redux";
-
-import Popover from "./Popover";
-import PopoverItem from "./PopoverItem";
-
-// const initialTask = {
-//   id: "",
-//   task: "",
-//   steps: {},
-//   myday: false,
-//   date: {},
-//   repeat: "",
-//   remind: "",
-//   category: "",
-//   file: null,
-//   note: "",
-//   importance: false,
-//   created: {},
-//   completed: false,
-// };
+import getDateString from "../date/getDate";
 
 
 const DueDate = (props) => {
-  const dispatch = useDispatch();  
-  
 
-  const daysOfWeek  = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const currentDate = new Date()
-  
-  const todayIndex = currentDate.getDay()  // 0 - 6
-  const todayDate = currentDate.toISOString();
-  console.log(todayDate)
-  
-  const addDateHandler = () => {
-    props.onAddDetail({date: ""})
+  const addDateHandler = (offset) => {
+    console.log(getDateString(offset))
+    props.onAddDetail({date: getDateString(offset)})
   }
 
-
+  const dayToday = getDateString().toString().slice(0,3);
+  const dayTomorrow = getDateString(1).toString().slice(0,3);
+  const dayNextweek = getDateString(7).toString().slice(0,3);
 
 
   return (
@@ -43,21 +18,21 @@ const DueDate = (props) => {
       <div>Due</div>
       <ul>
         <li>
-          <button onClick={() => addDateHandler(todayDate)}>
+          <button onClick={() => addDateHandler(0)}>
             <span>Today </span>
-            <span>{daysOfWeek[todayIndex]}</span>
+            <span>{dayToday}</span>
           </button>
         </li>
         <li>
-        <button>
+        <button onClick={() => addDateHandler(1)}>
             <span>Tomorrow </span>
-            <span>{daysOfWeek[(todayIndex + 1) % 7]}</span>
+            <span>{dayTomorrow}</span>
           </button>
         </li>
         <li>
-        <button>
+        <button onClick={() => addDateHandler(7)}>
             <span>Next week </span>
-            <span>{daysOfWeek[todayIndex]}</span>
+            <span>{dayNextweek}</span>
           </button>
         </li>
         <li>----------------</li>
@@ -73,15 +48,8 @@ export default DueDate;
 
 
 /**
- * today, tomorrow, next week 설정하기
- * 
- * 
- * date를 redux로 빼서 함께 관리??? 생각해보기
- * 
- * 
- * 
  * TODO
- * todayDate를 연월일로 잘라서 가공하기
+ * (complete)todayDate를 연월일로 잘라서 가공하기
  * addDateHandler를 tomorrow, next week에도 붙이기
  * 
  * 

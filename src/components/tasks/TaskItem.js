@@ -1,14 +1,10 @@
-import { useOutletContext } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  removeTodo,
-  completeTodo,
-  importanceTodo,
-} from "../../store/todoSlice";
+import { completeTodo, importanceTodo } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 
+import classes from "./TaskItem.module.css";
+
 const TaskItem = ({ todo }) => {
-  // const [collapse, setCollapse] = useOutletContext();
   const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();
 
@@ -25,19 +21,17 @@ const TaskItem = ({ todo }) => {
   };
 
   return (
-    <>
-      <button onClick={completedHandler}>completed</button>
-      <div>
-        <span onClick={() => detailOpenHandler(todo.id)}>{todo.task}</span>
+    <div className={classes.taskItem}>
+      <span onClick={completedHandler} style={{color: todo.completed && "red"}}>completed</span>
+
+      <button onClick={() => detailOpenHandler(todo.id)}>
+        <span>{todo.task}</span>
         <div>
           metaDataInfo
-          {todo.completed && <p>completed</p>}
-          {todo.importance && <p>importance</p>}
         </div>
-      </div>
-
-      <button onClick={importanceHandler}>star</button>
-    </>
+      </button>
+      <div onClick={importanceHandler} style={{color: todo.importance && "red"}}>star</div>
+    </div>
   );
 };
 
