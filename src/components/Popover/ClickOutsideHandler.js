@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 
-const ClickOutsideHandler  = ({ onClick, children }) => {
+const ClickOutsideHandler  = ({ onOutsideClick, children }) => {
   const elementRef = useRef(null);
 
   useEffect(() => {
     const pageClickEvent = (event) => {
       if (elementRef.current && !elementRef.current.contains(event.target)) {
-        onClick();
+        onOutsideClick();
       }
     };
 
@@ -15,7 +15,7 @@ const ClickOutsideHandler  = ({ onClick, children }) => {
     return () => {
       document.removeEventListener("click", pageClickEvent);
     };
-  }, [onClick]);
+  }, [onOutsideClick]);
 
   return <div ref={elementRef}>{children}</div>;
 };

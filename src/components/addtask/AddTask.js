@@ -28,9 +28,6 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
 
-  const [isPopoverShown, setIsPopoverShown] = useState(false);
-
-
   const taskInputHandler = (event) => {
     const createdTime = getDateString(); // date
 
@@ -54,18 +51,10 @@ const AddTask = (props) => {
     }
   };
 
-  const addDetailHandler = (input) => {
-    setTaskInput((prevState) => ({ ...prevState, ...input }));
-  };
+  const dueDateHandler = () => {  // DueDate에서 날짜 받아옴, redux에 날짜 저장
+    
+  }
 
-  const popoverOpenHandler = (event) => {
-    event.stopPropagation();
-    setIsPopoverShown(true);
-  };
-
-  const popoverCloseHandler = () => {
-    setIsPopoverShown(false);
-  };
 
   return (
     <div className={classes.addTaskBar}>
@@ -81,13 +70,13 @@ const AddTask = (props) => {
         <div className={classes.taskButtons}>
           {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
 
-          <TaskButton buttonDetail={{ image: "Due", hover: "Add due date"}}>
+          <TaskButton buttonDetail={{ buttonIcon: "Due", hover: "Add due date"}}>  
             <DueDate />
           </TaskButton>
-          <TaskButton buttonDetail={{ image: "Remind", hover: "Remind me"}} >
+          <TaskButton buttonDetail={{ buttonIcon: "Remind", hover: "Remind me"}} >
             remind
           </TaskButton>
-          <TaskButton buttonDetail={{ image: "Repeat", hover: "Repeat"}}>
+          <TaskButton buttonDetail={{ buttonIcon: "Repeat", hover: "Repeat"}}>
             repeat
           </TaskButton>
         </div>

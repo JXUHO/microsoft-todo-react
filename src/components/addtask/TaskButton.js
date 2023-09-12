@@ -30,11 +30,11 @@ const TaskButton = (props) => {
         onMouseLeave={mouseLeaveHandler}
         onClick={popoverOpenHandler}
       >
-        {props.buttonDetail.image}
+        {props.buttonDetail.buttonIcon}
       </button>
       {isFocused && <p style={{position: "absolute"}}>{props.buttonDetail.hover}</p>}
       {isPopoverShown && (
-        <ClickOutsideHandler onClick={popoverCloseHandler}>
+        <ClickOutsideHandler onOutsideClick={popoverCloseHandler}>
           {props.children}
         </ClickOutsideHandler>
       )}

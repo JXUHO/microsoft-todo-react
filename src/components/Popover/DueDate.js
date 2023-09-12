@@ -1,14 +1,14 @@
-import getDateString from "../date/getDate";
+import getDate from "../date/getDate";
 
 const DueDate = (props) => {
 
-  const dayToday = getDateString().slice(0,3);
-  const dayTomorrow = getDateString(1).slice(0,3);
-  const dayNextweek = getDateString(7).slice(0,3);
+  const dayToday = getDate().toString().slice(0,3);
+  const dayTomorrow = getDate(1).toString().slice(0,3);
+  const dayNextweek = getDate(7).toString().slice(0,3);
 
 
-  const addDateHandler = (offset) => {
-    console.log(getDateString(offset))
+  const addDateHandler = (offset) => {  // date를 redux에 저장  
+    console.log(getDate(offset))
   }
 
 
