@@ -13,7 +13,6 @@ const ClickOutsideHandler  = ({ onClick, children }) => {
     document.addEventListener("click", pageClickEvent);
 
     return () => {
-      // onClick()
       document.removeEventListener("click", pageClickEvent);
     };
   }, [onClick]);

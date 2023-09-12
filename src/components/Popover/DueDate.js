@@ -1,5 +1,4 @@
 import getDateString from "../date/getDate";
-import Calendar from 'rc-calendar';
 
 const DueDate = (props) => {
 
@@ -10,13 +9,11 @@ const DueDate = (props) => {
 
   const addDateHandler = (offset) => {
     console.log(getDateString(offset))
-    props.onAddDetail({date: getDateString(offset)})
-    props.onRemove()
   }
 
 
   const calendarClickHandler = () => {  // canlender render하고, duedate close
-    props.onRemove()
+    console.log("open calendar")
   }
 
 

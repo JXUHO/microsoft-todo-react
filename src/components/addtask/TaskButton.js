@@ -1,6 +1,5 @@
 // old version
-import { Children, useState } from "react";
-import DueDate from "../Popover/DueDate";
+import { useState } from "react";
 import ClickOutsideHandler from "../Popover/ClickOutsideHandler";
 
 
@@ -14,7 +13,6 @@ const TaskButton = (props) => {
   const mouseLeaveHandler = () => {
     setIsFocused(false);
   };
-
 
   const popoverOpenHandler = (event) => {
     event.stopPropagation();
@@ -53,5 +51,7 @@ export default TaskButton;
  * 
  * 버튼이름(이미지) / hover 이름 만 props로 받아옴
  * 
+ * TODO
+ * react-popover git에서 까서 분해해보기
  * 
  */
