@@ -7,8 +7,9 @@ const DueDate = (props) => {
   const dayNextweek = getDate(7).toString().slice(0,3);
 
 
-  const addDateHandler = (offset) => {  // date를 redux에 저장  
-    console.log(getDate(offset))
+  const addDateHandler = (offset) => {  // date를 addtask로 넘김  
+    // console.log(getDate(offset))
+    props.onAddDueDate(getDate(offset))
   }
 
 

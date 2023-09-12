@@ -4,7 +4,7 @@ import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import TaskButton from "./TaskButton";
 import DueDate from "../Popover/DueDate";
-import getDateString from "../date/getDate";
+import getDate from "../date/getDate";
 import classes from "./AddTask.module.css";
 
 const initialTask = {
@@ -13,7 +13,7 @@ const initialTask = {
   steps: {},
   myday: false,
   tasks: false,
-  date: {},
+  dueDate: {},
   repeat: "",
   remind: "",
   category: "",
@@ -29,7 +29,7 @@ const AddTask = (props) => {
   const [taskInput, setTaskInput] = useState(initialTask);
 
   const taskInputHandler = (event) => {
-    const createdTime = getDateString(); // date
+    const createdTime = getDate(); // date
 
     setTaskInput((prevState) => ({
       ...prevState,
@@ -41,18 +41,21 @@ const AddTask = (props) => {
   };
 
   const addTaskHandler = () => {
-    dispatch(addTodo(taskInput));
-    setTaskInput(initialTask);
+    dispatch(addTodo(taskInput));  // redux에 todo 등록
+    setTaskInput(initialTask);  // input state 초기화
   };
 
-  const handleEnterKeyPress = (event) => {
+  const handleEnterKeyPress = (event) => {  // enter키 todo add
     if (event.key === "Enter" && taskInput.task.trim()) {
       addTaskHandler();
     }
   };
 
-  const dueDateHandler = () => {  // DueDate에서 날짜 받아옴, redux에 날짜 저장
-    
+  const dueDateHandler = (dueDate) => {  // DueDate에서 날짜 받아옴, setTaskInput(date추가)
+    setTaskInput(prevState => ({
+      ...prevState, 
+      dueDate: dueDate
+    }))
   }
 
 
@@ -71,7 +74,7 @@ const AddTask = (props) => {
           {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
 
           <TaskButton buttonDetail={{ buttonIcon: "Due", hover: "Add due date"}}>  
-            <DueDate />
+            <DueDate onAddDueDate={dueDateHandler}/>
           </TaskButton>
           <TaskButton buttonDetail={{ buttonIcon: "Remind", hover: "Remind me"}} >
             remind
