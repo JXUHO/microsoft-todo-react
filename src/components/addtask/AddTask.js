@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
@@ -6,6 +6,10 @@ import TaskButton from "./TaskButton";
 import DueDate from "../Popover/DueDate";
 import getDate from "../date/getDate";
 import classes from "./AddTask.module.css";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Popper from "../ui/Popper";
 
 const initialTask = {
   id: "", // uuid
@@ -27,6 +31,9 @@ const initialTask = {
 const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
+  const [closePopover, setClosePopover] = useState(false);
+
+  const popperRef = useRef(null);
 
   const taskInputHandler = (event) => {
     const createdTime = getDate(); // date
@@ -41,23 +48,32 @@ const AddTask = (props) => {
   };
 
   const addTaskHandler = () => {
-    dispatch(addTodo(taskInput));  // redux에 todo 등록
-    setTaskInput(initialTask);  // input state 초기화
+    dispatch(addTodo(taskInput)); // redux에 todo 등록
+    setTaskInput(initialTask); // input state 초기화
   };
 
-  const handleEnterKeyPress = (event) => {  // enter키 todo add
+  const handleEnterKeyPress = (event) => {
+    // enter키 todo add
     if (event.key === "Enter" && taskInput.task.trim()) {
       addTaskHandler();
     }
   };
 
-  const dueDateHandler = (dueDate) => {  // DueDate에서 날짜 받아옴, setTaskInput(date추가)
-    setTaskInput(prevState => ({
-      ...prevState, 
-      dueDate: dueDate
-    }))
-  }
+  const dueDateHandler = (dueDate) => {
+    // DueDate에서 날짜 받아옴, setTaskInput(date추가)
+    setTaskInput((prevState) => ({
+      ...prevState,
+      dueDate: dueDate,
+    }));
+  };
 
+  const closePopoverHanlder = () => {
+    setClosePopover(true);
+  };
+
+  const openPopoverHanlder = () => {
+    setClosePopover(false);
+  };
 
   return (
     <div className={classes.addTaskBar}>
@@ -73,17 +89,42 @@ const AddTask = (props) => {
         <div className={classes.taskButtons}>
           {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
 
-          <TaskButton buttonDetail={{ buttonIcon: "Due", hover: "Add due date"}}>  
-            <DueDate onAddDueDate={dueDateHandler}/>
+          <div>
+            <button onClick={(e) => popperRef.current.setVisibility(true)}>
+              button
+            </button>
+            <button id="due">test1</button>
+            <Popper
+              initOpen={true}
+              ref={popperRef}
+              placement="bottom"
+              target="due"
+              toggle="legacy"
+            >
+              <span> contents</span>
+            </Popper>
+          </div>
+
+          <TaskButton
+            buttonDetail={{ buttonIcon: "Due", hover: "Add due date" }}
+            onClosePopover={closePopover}
+            openPopoverHandler={openPopoverHanlder}
+          >
+            <DueDate
+              onAddDueDate={dueDateHandler}
+              onClosePopover={closePopoverHanlder}
+            />
           </TaskButton>
-          <TaskButton buttonDetail={{ buttonIcon: "Remind", hover: "Remind me"}} >
+
+          <TaskButton
+            buttonDetail={{ buttonIcon: "Remind", hover: "Remind me" }}
+          >
             remind
           </TaskButton>
-          <TaskButton buttonDetail={{ buttonIcon: "Repeat", hover: "Repeat"}}>
+          <TaskButton buttonDetail={{ buttonIcon: "Repeat", hover: "Repeat" }}>
             repeat
           </TaskButton>
         </div>
-
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
           add
         </button>

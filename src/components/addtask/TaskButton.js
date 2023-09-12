@@ -17,11 +17,19 @@ const TaskButton = (props) => {
   const popoverOpenHandler = (event) => {
     event.stopPropagation();
     setIsPopoverShown(true);
+
+    if (props.onClosePopover ) {
+      props.openPopoverHandler()
+    }
+
   };
 
   const popoverCloseHandler = () => {
     setIsPopoverShown(false);
   };
+
+  
+
 
   return (
     <div>
@@ -33,11 +41,12 @@ const TaskButton = (props) => {
         {props.buttonDetail.buttonIcon}
       </button>
       {isFocused && <p style={{position: "absolute"}}>{props.buttonDetail.hover}</p>}
-      {isPopoverShown && (
+      {isPopoverShown && !props.onClosePopover && (
         <ClickOutsideHandler onOutsideClick={popoverCloseHandler}>
           {props.children}
         </ClickOutsideHandler>
       )}
+      
     </div>
   );
 };
