@@ -1,8 +1,7 @@
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import TaskButton from "./TaskButton";
 import DueDate from "../Popover/DueDate";
 import getDate from "../date/getDate";
 import classes from "./AddTask.module.css";
@@ -17,7 +16,7 @@ const initialTask = {
   steps: {},
   myday: false,
   tasks: false,
-  dueDate: {},
+  dueDate: "",
   repeat: "",
   remind: "",
   category: "",
@@ -31,9 +30,15 @@ const initialTask = {
 const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
-  const [closePopover, setClosePopover] = useState(false);
+  const [dueButtonText, setDueButtonText] = useState("Due")
+  const [removeDue, setRemoveDue] = useState(false)
 
-  const popperRef = useRef(null);
+  const duePopoverRef = useRef(null);
+  const dueTooltipRef = useRef(null);
+  const remindPopoverRef = useRef(null);
+  const remindTooltipRef = useRef(null);
+
+
 
   const taskInputHandler = (event) => {
     const createdTime = getDate(); // date
@@ -61,22 +66,36 @@ const AddTask = (props) => {
 
   const dueDateHandler = (dueDate) => {
     // DueDate에서 날짜 받아옴, setTaskInput(date추가)
+    console.log(dueDate)
+
+
+
+    setDueButtonText(dueDate.text)
+
     setTaskInput((prevState) => ({
       ...prevState,
-      dueDate: dueDate,
+      dueDate: dueDate.date,
     }));
   };
 
-  const closePopoverHanlder = () => {
-    setClosePopover(true);
+  const closePopoverHandler = () => {
+    duePopoverRef.current.setVisibility(false);
+    // remindPopoverRef.current.setVisibility(false);
   };
 
-  const openPopoverHanlder = () => {
-    setClosePopover(false);
-  };
+  const openPopoverHandler = () => {};
+
+  useEffect(() => {  // due 설정됐을때 delete버튼 만들기 위함
+    if (taskInput.dueDate) {
+      // console.log("object not empty");
+      setRemoveDue(true);
+    }
+  }, [taskInput]);
+
 
   return (
     <div className={classes.addTaskBar}>
+    {removeDue && <h1>hello</h1>}
       <div>
         <input
           placeholder="Add a task"
@@ -90,40 +109,53 @@ const AddTask = (props) => {
           {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
 
           <div>
-            <button onClick={(e) => popperRef.current.setVisibility(true)}>
-              button
-            </button>
-            <button id="due">test1</button>
+            <button id="due">{dueButtonText}</button>
             <Popper
-              initOpen={true}
-              ref={popperRef}
+              initOpen={false}
+              ref={duePopoverRef}
               placement="bottom"
               target="due"
               toggle="legacy"
             >
-              <span> contents</span>
+              <DueDate
+                onAddDueDate={dueDateHandler}
+                onClosePopover={closePopoverHandler}
+
+              />
+            </Popper>
+            <Popper
+              initOpen={false}
+              ref={dueTooltipRef}
+              placement="bottom"
+              target="due"
+              toggle="hover"
+            >
+              Add due date
             </Popper>
           </div>
 
-          <TaskButton
-            buttonDetail={{ buttonIcon: "Due", hover: "Add due date" }}
-            onClosePopover={closePopover}
-            openPopoverHandler={openPopoverHanlder}
-          >
-            <DueDate
-              onAddDueDate={dueDateHandler}
-              onClosePopover={closePopoverHanlder}
-            />
-          </TaskButton>
+          {/* <div>
+            <button id="remind">remind</button>
+            <Popper
+              initOpen={false}
+              ref={remindPopoverRef}
+              placement="bottom"
+              target="remind"
+              toggle="legacy"
+            >
+              remind
+            </Popper>
+            <Popper
+              initOpen={false}
+              ref={remindTooltipRef}
+              placement="bottom"
+              target="remind"
+              toggle="hover"
+            >
+              Remind me
+            </Popper>
+          </div> */}
 
-          <TaskButton
-            buttonDetail={{ buttonIcon: "Remind", hover: "Remind me" }}
-          >
-            remind
-          </TaskButton>
-          <TaskButton buttonDetail={{ buttonIcon: "Repeat", hover: "Repeat" }}>
-            repeat
-          </TaskButton>
         </div>
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
           add

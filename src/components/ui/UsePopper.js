@@ -1,12 +1,6 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  forwardRef
-} from "react";
+import React, { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react";
 import { createPortal } from "react-dom";
-import { Popper } from "react-popper";
+import { usePopper } from 'react-popper';
 
 function isInDOMSubtree(element, subtreeRoot) {
   return (
@@ -22,7 +16,7 @@ const PopperWrapper = forwardRef(
     const toggleVisibility = () =>
       setVisibility(prevVisibility => !prevVisibility);
 
-    const elRef = useRef(document.getElementById(target));
+    const elRef = useRef(null);
     const popperRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
@@ -75,27 +69,15 @@ const PopperWrapper = forwardRef(
       }
     }, [elRef.current]);
 
+    const { styles, attributes } = usePopper(elRef.current, popperRef.current, {
+      ...props,
+    });
+
     return createPortal(
       targetElementIsVisible && isVisible ? (
-        <Popper
-          innerRef={popper => (popperRef.current = popper)}
-          referenceElement={elRef.current}
-          {...props}
-        >
-          {({ ref, style, placement, arrowProps }) => {
-            return (
-              <div
-                className="popover"
-                ref={ref}
-                style={style}
-                data-placement={placement}
-              >
-                {children}
-                <div ref={arrowProps.ref} style={arrowProps.style} />
-              </div>
-            );
-          }}
-        </Popper>
+        <div className="popover" ref={popperRef} style={styles.popper} {...attributes.popper}>
+          {children}
+        </div>
       ) : null,
       document.body
     );
@@ -103,12 +85,3 @@ const PopperWrapper = forwardRef(
 );
 
 export default PopperWrapper;
-
-
-
-/**
- * TODO
- * 코드 이해하기
- *  
- * 
- */

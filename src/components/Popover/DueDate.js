@@ -1,23 +1,57 @@
-// import { forwardRef, useState } from "react";
-import getDate from "../date/getDate";
+import { useEffect, useState } from "react";
+import getDate, { getCustomFormatDateString } from "../date/getDate";
 
 const DueDate = (props) => {
+  const [offset, setOffset] = useState();
   const dayToday = getDate().toString().slice(0, 3);
   const dayTomorrow = getDate(1).toString().slice(0, 3);
-  const dayNextweek = getDate(7).toString().slice(0, 3);
+
+  const date = new Date();
+  const daysUntilNextMonday = (8 - date.getDay()) % 7;
+  const nextMonday = new Date(date);
+  nextMonday.setDate(date.getDate() + daysUntilNextMonday);
+  const dayNextMon = nextMonday.toString().slice(0, 3);
 
   const addDateHandler = (offset) => {
-    // date를 addtask로 넘김
-    console.log(getDate(offset));
-    props.onAddDueDate(getDate(offset));
+    const date = new Date();
+    const dueDate = getDate(offset);
+    if (
+      dueDate.toISOString().slice(0, 10) === date.toISOString().slice(0, 10)
+    ) {
+      props.onAddDueDate({ date: dueDate, text: "Today" });
+    }
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    if (
+      dueDate.toISOString().slice(0, 10) === tomorrow.toISOString().slice(0, 10)
+    ) {
+      props.onAddDueDate({ date: dueDate, text: "Tomorrow" });
+    }
+
+    if (
+      dueDate.toISOString().slice(0, 10) ===
+      nextMonday.toISOString().slice(0, 10)
+    ) {
+      props.onAddDueDate({
+        date: dueDate,
+        text: getCustomFormatDateString(dueDate),
+      });
+    }
+
     props.onClosePopover();
   };
 
-  const calendarClickHandler = () => {
+  const calendarOpenHandler = () => {
     // duedate close. canlender render.
     console.log("open calendar");
     props.onClosePopover();
   };
+
+  useEffect(() => {
+    const date = new Date();
+    setOffset((8 - date.getDay()) % 7);
+  }, []);
 
   return (
     <div>
@@ -36,14 +70,14 @@ const DueDate = (props) => {
           </button>
         </li>
         <li>
-          <button onClick={() => addDateHandler(7)}>
+          <button onClick={() => addDateHandler(offset)}>
             <span>Next week </span>
-            <span>{dayNextweek}</span>
+            <span>{dayNextMon}</span>
           </button>
         </li>
         <li>----------------</li>
         <li>
-          <button onClick={calendarClickHandler}>Pick a date</button>
+          <button onClick={calendarOpenHandler}>Pick a date</button>
         </li>
       </ul>
     </div>
