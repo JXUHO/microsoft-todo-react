@@ -31,13 +31,12 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
   const [dueButtonText, setDueButtonText] = useState("Due")
-  const [removeDue, setRemoveDue] = useState(false)
+  const [showDueRemoveButton, setShowDueRemoveButton] = useState(false)
 
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
   const remindPopoverRef = useRef(null);
   const remindTooltipRef = useRef(null);
-
 
 
   const taskInputHandler = (event) => {
@@ -46,7 +45,7 @@ const AddTask = (props) => {
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
-      created: "temp", // 수정 (redux 저장할때 객체 vs string 뭐가 더 나은지 생각)
+      created: createdTime,
       id: uuid(),
       myday: props.myday,
     }));
@@ -65,37 +64,38 @@ const AddTask = (props) => {
   };
 
   const dueDateHandler = (dueDate) => {
-    // DueDate에서 날짜 받아옴, setTaskInput(date추가)
-    console.log(dueDate)
-
-
-
     setDueButtonText(dueDate.text)
-
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
     }));
   };
 
+  const resetDueHandler = () => {
+    setTaskInput((prevState) => ({
+      ...prevState,
+      dueDate: "",
+    }));
+    setDueButtonText("Due")
+    setShowDueRemoveButton(false);
+  }
+
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
     // remindPopoverRef.current.setVisibility(false);
   };
 
-  const openPopoverHandler = () => {};
 
   useEffect(() => {  // due 설정됐을때 delete버튼 만들기 위함
     if (taskInput.dueDate) {
       // console.log("object not empty");
-      setRemoveDue(true);
+      setShowDueRemoveButton(true);
     }
   }, [taskInput]);
 
 
   return (
     <div className={classes.addTaskBar}>
-    {removeDue && <h1>hello</h1>}
       <div>
         <input
           placeholder="Add a task"
@@ -120,7 +120,8 @@ const AddTask = (props) => {
               <DueDate
                 onAddDueDate={dueDateHandler}
                 onClosePopover={closePopoverHandler}
-
+                showRemoveButton={showDueRemoveButton}
+                resetDue={resetDueHandler}
               />
             </Popper>
             <Popper
@@ -173,7 +174,6 @@ export default AddTask;
  * 근데 dispatch & setState 같이 넣으면 async & sync 문제 발생
  *
  *
- * TaskButton의 한 인스턴스에서 state가 true이면 다른 인스턴스의 state를 false로 만들어야함
  *
  *
  */

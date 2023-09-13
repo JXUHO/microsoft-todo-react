@@ -3,6 +3,7 @@ import getDate, { getCustomFormatDateString } from "../date/getDate";
 
 const DueDate = (props) => {
   const [offset, setOffset] = useState();
+
   const dayToday = getDate().toString().slice(0, 3);
   const dayTomorrow = getDate(1).toString().slice(0, 3);
 
@@ -53,6 +54,10 @@ const DueDate = (props) => {
     setOffset((8 - date.getDay()) % 7);
   }, []);
 
+  const removeDueHandler = () => {
+    props.resetDue()
+  };
+
   return (
     <div>
       <div>Due</div>
@@ -79,6 +84,11 @@ const DueDate = (props) => {
         <li>
           <button onClick={calendarOpenHandler}>Pick a date</button>
         </li>
+        {props.showRemoveButton && (
+          <li>
+            <button onClick={removeDueHandler}>Remove due date</button>
+          </li>
+        )}
       </ul>
     </div>
   );

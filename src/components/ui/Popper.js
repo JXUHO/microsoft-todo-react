@@ -107,8 +107,37 @@ export default PopperWrapper;
 
 
 /**
- * TODO
- * 코드 이해하기
- *  
- * 
+import React, { useRef } from "react";
+import ReactDOM from "react-dom";
+import Popper from "./Popper";
+import "./styles.css";
+
+function App() {
+  const popperRef = useRef(null);
+
+  const closePopper = () => {
+    popperRef.current.setVisibility(true);
+  };
+
+  return (
+    <div className="App">
+      <h1 onClick={closePopper}>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2>
+      <button id="teste">TESTE 1!!!</button>
+      <Popper
+        initOpen={false}
+        ref={popperRef}
+        placement="bottom"
+        target="teste"
+        toggle="click"
+      >
+        <span id="teste2">TESTE 2!!!</span>
+      </Popper>
+    </div>
+  );
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
+
  */
