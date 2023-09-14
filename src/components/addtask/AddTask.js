@@ -3,9 +3,8 @@ import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DueDate from "../Popover/DueDate";
-import getDate from "../date/getDate";
+import getDate, { getCustomFormatDateString } from "../date/getDate";
 import classes from "./AddTask.module.css";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";
@@ -32,16 +31,14 @@ const AddTask = (props) => {
   const [taskInput, setTaskInput] = useState(initialTask);
   const [dueButtonText, setDueButtonText] = useState("Due");
   const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
-
-  const [startDate, setStartDate] = useState(new Date());
-  const [showDueCalendar, setShowDueCalendar] = useState(false);
+  const [dueCalendarDate, setDueCalendarDate] = useState(new Date());
 
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
   const dueCalendarRef = useRef(null);
-  const remindPopoverRef = useRef(null);
-  const remindTooltipRef = useRef(null);
-
+  const dueCalendarPopoverRef = useRef(null);
+  // const remindPopoverRef = useRef(null);
+  // const remindTooltipRef = useRef(null);
 
   const taskInputHandler = (event) => {
     const createdTime = getDate(); // date
@@ -67,8 +64,19 @@ const AddTask = (props) => {
     }
   };
 
+  const dueDateCalendarHandler = () => {
+    setDueButtonText(getCustomFormatDateString(dueCalendarDate));
+    setTaskInput((prevState) => ({
+      ...prevState,
+      dueDate: dueCalendarDate,
+    }));
+  }
+
   const dueDateHandler = (dueDate) => {
     setDueButtonText(dueDate.text);
+
+    console.log(dueDate.date);
+
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
@@ -84,14 +92,8 @@ const AddTask = (props) => {
     setShowDueRemoveButton(false);
   };
 
-  const closePopoverHandler = () => {
-    duePopoverRef.current.setVisibility(false);
-    // reminder, repeat
-    // remindPopoverRef.current.setVisibility(false);
-  };
-
   useEffect(() => {
-    // due 설정됐을때 delete버튼 만들기 위함
+    // due 설정됐을때 remove due date버튼 생성
     if (taskInput.dueDate) {
       // console.log("object not empty");
       setShowDueRemoveButton(true);
@@ -99,9 +101,18 @@ const AddTask = (props) => {
   }, [taskInput]);
 
   const showCalendarHandler = () => {
-    setShowDueCalendar(true)
-  }
+    // console.log("showCalendar");
+    const datepicker = document.getElementById("datepicker");
+    if (datepicker) {
+      datepicker.click();
+    }
+  };
 
+  const closePopoverHandler = () => {
+    duePopoverRef.current.setVisibility(false);
+    // reminder, repeat
+    // remindPopoverRef.current.setVisibility(false);
+  };
 
   return (
     <div className={classes.addTaskBar}>
@@ -118,6 +129,7 @@ const AddTask = (props) => {
         <div className={classes.taskButtons}>
           <div>
             <button id="due">{dueButtonText}</button>
+            <span id="dueCalendar" onClick={showCalendarHandler}></span>
             <Popper
               initOpen={false}
               ref={duePopoverRef}
@@ -142,40 +154,28 @@ const AddTask = (props) => {
             >
               Add due date
             </Popper>
-            {showDueCalendar && <DatePicker
+
+            {/* calendar  */}
+            <DatePicker
+              id="datepicker"
               ref={dueCalendarRef}
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              selected={dueCalendarDate}
+              onChange={(date) => setDueCalendarDate(date)}
               shouldCloseOnSelect={false}
-              inline
+              customInput={<span></span>}
             >
               <div>
                 <button
                   onClick={() => {
-                    setStartDate(new Date());
                     dueCalendarRef.current.setOpen(false);
+                    dueDateCalendarHandler()
                   }}
                 >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    dueCalendarRef.current.setOpen(false);
-                  }}
-                >
-                  Apply
+                  Save
                 </button>
               </div>
-            </DatePicker>}
-
-
-
-
-
-
-            
+            </DatePicker>
           </div>
-
 
           {/* <div>
             <button id="remind">remind</button>

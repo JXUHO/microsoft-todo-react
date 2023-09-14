@@ -26,14 +26,14 @@ const PopperWrapper = forwardRef(
     const popperRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
-      setVisibility: (bool) => setVisibility(bool),
+      setVisibility: (input) => setVisibility(input),
     }));
 
     const legacyClick = e => {
-      if (e.target === elRef.current) {
+      if (e.target === elRef.current) {  // 클릭이 발생한 곳과 target의 element가 같으면 보이거나/사라짐
         return toggleVisibility();
       }
-      if (isVisible && !isInDOMSubtree(e.target, popperRef.current)) {
+      if (isVisible && !isInDOMSubtree(e.target, popperRef.current)) {  // 보여지고있고 클릭한곳이 popper내부가 아니면 사라짐
         setVisibility(false);
       }
     };
