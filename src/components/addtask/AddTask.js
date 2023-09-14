@@ -30,8 +30,11 @@ const initialTask = {
 const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
-  const [dueButtonText, setDueButtonText] = useState("Due")
-  const [showDueRemoveButton, setShowDueRemoveButton] = useState(false)
+  const [dueButtonText, setDueButtonText] = useState("Due");
+  const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [showDueCalendar, setShowDueCalendar] = useState(false);
 
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
@@ -65,7 +68,7 @@ const AddTask = (props) => {
   };
 
   const dueDateHandler = (dueDate) => {
-    setDueButtonText(dueDate.text)
+    setDueButtonText(dueDate.text);
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
@@ -77,9 +80,9 @@ const AddTask = (props) => {
       ...prevState,
       dueDate: "",
     }));
-    setDueButtonText("Due")
+    setDueButtonText("Due");
     setShowDueRemoveButton(false);
-  }
+  };
 
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
@@ -87,13 +90,17 @@ const AddTask = (props) => {
     // remindPopoverRef.current.setVisibility(false);
   };
 
-
-  useEffect(() => {  // due 설정됐을때 delete버튼 만들기 위함
+  useEffect(() => {
+    // due 설정됐을때 delete버튼 만들기 위함
     if (taskInput.dueDate) {
       // console.log("object not empty");
       setShowDueRemoveButton(true);
     }
   }, [taskInput]);
+
+  const showCalendarHandler = () => {
+    setShowDueCalendar(true)
+  }
 
 
   return (
@@ -106,10 +113,9 @@ const AddTask = (props) => {
           onKeyDown={handleEnterKeyPress}
         />
       </div>
+
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          {/* <TaskButtons onAddDetail={addDetailHandler} /> */}
-
           <div>
             <button id="due">{dueButtonText}</button>
             <Popper
@@ -124,6 +130,7 @@ const AddTask = (props) => {
                 onClosePopover={closePopoverHandler}
                 showRemoveButton={showDueRemoveButton}
                 resetDue={resetDueHandler}
+                showCalendar={showCalendarHandler}
               />
             </Popper>
             <Popper
@@ -135,17 +142,40 @@ const AddTask = (props) => {
             >
               Add due date
             </Popper>
-            {/* <Popper
-              initOpen={false}
+            {showDueCalendar && <DatePicker
               ref={dueCalendarRef}
-              placement="bottom"
-              target="due"
-              toggle="legacy"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              shouldCloseOnSelect={false}
+              inline
             >
-              Calendar
-            </Popper> */}
+              <div>
+                <button
+                  onClick={() => {
+                    setStartDate(new Date());
+                    dueCalendarRef.current.setOpen(false);
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    dueCalendarRef.current.setOpen(false);
+                  }}
+                >
+                  Apply
+                </button>
+              </div>
+            </DatePicker>}
 
+
+
+
+
+
+            
           </div>
+
 
           {/* <div>
             <button id="remind">remind</button>
@@ -168,7 +198,6 @@ const AddTask = (props) => {
               Remind me
             </Popper>
           </div> */}
-
         </div>
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
           add
@@ -187,8 +216,8 @@ export default AddTask;
  *
  *
  * duedate에 calendar 붙이기
- * 
- * 
+ *
+ *
  *
  *
  */

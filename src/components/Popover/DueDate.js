@@ -46,6 +46,7 @@ const DueDate = (props) => {
   const calendarOpenHandler = () => {
     // duedate close. canlender render.
     console.log("open calendar");
+    props.showCalendar()
     props.onClosePopover();
   };
 
