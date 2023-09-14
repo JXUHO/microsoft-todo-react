@@ -35,6 +35,7 @@ const AddTask = (props) => {
 
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
+  const dueCalendarRef = useRef(null);
   const remindPopoverRef = useRef(null);
   const remindTooltipRef = useRef(null);
 
@@ -82,6 +83,7 @@ const AddTask = (props) => {
 
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
+    // reminder, repeat
     // remindPopoverRef.current.setVisibility(false);
   };
 
@@ -133,6 +135,16 @@ const AddTask = (props) => {
             >
               Add due date
             </Popper>
+            {/* <Popper
+              initOpen={false}
+              ref={dueCalendarRef}
+              placement="bottom"
+              target="due"
+              toggle="legacy"
+            >
+              Calendar
+            </Popper> */}
+
           </div>
 
           {/* <div>
@@ -174,6 +186,9 @@ export default AddTask;
  * 근데 dispatch & setState 같이 넣으면 async & sync 문제 발생
  *
  *
+ * duedate에 calendar 붙이기
+ * 
+ * 
  *
  *
  */
