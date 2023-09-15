@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import getDate, { getCustomFormatDateString } from "../date/getDate";
+import getDateWithOffset, { getCustomFormatDateString, getNextMonday } from "../date/getDate";
 
 const DueDate = (props) => {
   const [offset, setOffset] = useState();
 
-  const dayToday = getDate().toString().slice(0, 3);
-  const dayTomorrow = getDate(1).toString().slice(0, 3);
+  const dayToday = getDateWithOffset().toString().slice(0, 3);
+  const dayTomorrow = getDateWithOffset(1).toString().slice(0, 3);
 
-  const date = new Date();
-  const daysUntilNextMonday = (8 - date.getDay()) % 7;
-  const nextMonday = new Date(date);
-  nextMonday.setDate(date.getDate() + daysUntilNextMonday);
+
+  const nextMonday = getNextMonday()
   const dayNextMon = nextMonday.toString().slice(0, 3);
 
-  const addDateHandler = (offset) => {
+  const addDueDateHandler = (offset) => {
     const date = new Date();
-    const dueDate = getDate(offset);
+    const dueDate = getDateWithOffset(offset);
     if (
       dueDate.toISOString().slice(0, 10) === date.toISOString().slice(0, 10)
     ) {
@@ -44,7 +42,7 @@ const DueDate = (props) => {
   };
 
   const calendarOpenHandler = () => {
-    props.showCalendar()
+    props.showCalendar("due")
     props.onClosePopover();
   };
 
@@ -62,19 +60,19 @@ const DueDate = (props) => {
       <div>Due</div>
       <ul>
         <li>
-          <button onClick={() => addDateHandler(0)}>
+          <button onClick={() => addDueDateHandler(0)}>
             <span>Today </span>
             <span>{dayToday}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDateHandler(1)}>
+          <button onClick={() => addDueDateHandler(1)}>
             <span>Tomorrow </span>
             <span>{dayTomorrow}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDateHandler(offset)}>
+          <button onClick={() => addDueDateHandler(offset)}>
             <span>Next week </span>
             <span>{dayNextMon}</span>
           </button>
@@ -98,7 +96,7 @@ export default DueDate;
 /**
  * TODO
  * (complete)todayDate를 연월일로 잘라서 가공하기
- * addDateHandler를 tomorrow, next week에도 붙이기
+ * addDueDateHandler를 tomorrow, next week에도 붙이기
  *
  *
  *

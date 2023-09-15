@@ -2,8 +2,9 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import DueDate from "../Popover/DueDate";
-import getDate, { getCustomFormatDateString } from "../date/getDate";
+import DueDate from "./DueDate";
+import Reminder from "./Reminder";
+import getDateWithOffset, { getCustomFormatDateString } from "../date/getDate";
 import classes from "./AddTask.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -32,17 +33,22 @@ const AddTask = (props) => {
 
   const [dueButtonText, setDueButtonText] = useState("Due");
   const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
-  const [dueCalendarDate, setDueCalendarDate] = useState(new Date());
+  const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
+
+  const [remindButtonText, setRemindButtonText] = useState("Remind");
+  const [showRemindRemoveButton, setShowRemindRemoveButton] = useState(false);
+  const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
 
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
   const dueCalendarRef = useRef(null);
-  // const remindPopoverRef = useRef(null);
-  // const remindTooltipRef = useRef(null);
+  const remindPopoverRef = useRef(null);
+  const remindTooltipRef = useRef(null);
+  const remindCalendarRef = useRef(null)
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
-    const createdTime = getDate(); // date
+    const createdTime = getDateWithOffset(); // date
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
@@ -65,18 +71,36 @@ const AddTask = (props) => {
   };
 
   const dueDateCalendarHandler = () => {
-    setDueButtonText(getCustomFormatDateString(dueCalendarDate));
+    setDueButtonText(getCustomFormatDateString(dueSelectedDate));
     setTaskInput((prevState) => ({
       ...prevState,
-      dueDate: dueCalendarDate,
+      dueDate: dueSelectedDate,
     }));
-  }
+  };
+
+  const remindCalendarHandler = () => {
+    console.log(remindSelectedTime)
+    setRemindButtonText(getCustomFormatDateString(remindSelectedTime));
+    setTaskInput((prevState) => ({
+      ...prevState,
+      remind: remindSelectedTime,
+    }));
+  };
 
   const dueDateHandler = (dueDate) => {
     setDueButtonText(dueDate.text);
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
+    }));
+  };
+
+  const remindHandler = (remind) => {
+    // remind는 date object
+    setRemindButtonText(remind.text);
+    setTaskInput((prevState) => ({
+      ...prevState,
+      remind: remind.time,
     }));
   };
 
@@ -89,22 +113,46 @@ const AddTask = (props) => {
     setShowDueRemoveButton(false);
   };
 
+  const resetRemindHandler = () => {
+    setTaskInput((prevState) => ({
+      ...prevState,
+      remind: "",
+    }));
+    setRemindButtonText("Remind");
+    setShowRemindRemoveButton(false);
+  };
+
   useEffect(() => {
-    // due 설정됐을때 remove due date버튼 생성
+    // remove button 생성
     if (taskInput.dueDate) {
       setShowDueRemoveButton(true);
     }
+
+    if (taskInput.remind) {
+      setShowRemindRemoveButton(true);
+    }
   }, [taskInput]);
 
-  const showCalendarHandler = () => {
-    const datepicker = document.getElementById("datepicker");
-    if (datepicker) {
-      datepicker.click();
+  const showCalendarHandler = (type) => {
+    if (type === "due") {
+      const calendar = document.getElementById("dueCalendar");
+      if (calendar) {
+        calendar.click();
+      }
+    }
+
+    if (type === "remind") {
+      const calendar = document.getElementById("remindCalendar");
+      if (calendar) {
+        calendar.click();
+      }
+      console.log("remind calendar open");
     }
   };
 
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
+    remindPopoverRef.current.setVisibility(false);
     // reminder, repeat
   };
 
@@ -123,7 +171,6 @@ const AddTask = (props) => {
         <div className={classes.taskButtons}>
           <div>
             <button id="due">{dueButtonText}</button>
-            <span id="dueCalendar" onClick={showCalendarHandler}></span>
             <Popper
               initOpen={false}
               ref={duePopoverRef}
@@ -151,18 +198,19 @@ const AddTask = (props) => {
 
             {/* calendar  */}
             <DatePicker
-              id="datepicker"
+              id="dueCalendar"
               ref={dueCalendarRef}
-              selected={dueCalendarDate}
-              onChange={(date) => setDueCalendarDate(date)}
+              selected={dueSelectedDate}
+              onChange={(date) => setDueSelectedDate(date)}
               shouldCloseOnSelect={false}
               customInput={<span></span>}
+              showPopperArrow={false}
             >
               <div>
                 <button
                   onClick={() => {
                     dueCalendarRef.current.setOpen(false);
-                    dueDateCalendarHandler()
+                    dueDateCalendarHandler();
                   }}
                 >
                   Save
@@ -171,8 +219,8 @@ const AddTask = (props) => {
             </DatePicker>
           </div>
 
-          {/* <div>
-            <button id="remind">remind</button>
+          <div>
+            <button id="remind">{remindButtonText}</button>
             <Popper
               initOpen={false}
               ref={remindPopoverRef}
@@ -180,7 +228,13 @@ const AddTask = (props) => {
               target="remind"
               toggle="legacy"
             >
-              remind
+              <Reminder
+                onAddRemind={remindHandler} // 완료
+                onClosePopover={closePopoverHandler} // 완료
+                showRemoveButton={showRemindRemoveButton}
+                resetRemind={resetRemindHandler}
+                showCalendar={showCalendarHandler}
+              />
             </Popper>
             <Popper
               initOpen={false}
@@ -191,8 +245,34 @@ const AddTask = (props) => {
             >
               Remind me
             </Popper>
-          </div> */}
+            <DatePicker
+              id="remindCalendar"
+              ref={remindCalendarRef}
+              selected={dueSelectedDate}
+              onChange={(date) => setRemindSelectedTime(date)}
+              // showTimeSelect
+              // timeIntervals={15}
+              shouldCloseOnSelect={false}
+              customInput={<span></span>}
+              showPopperArrow={false}
+            >
+              <div>
+                
+                <button
+                  onClick={() => {
+                    remindCalendarRef.current.setOpen(false);
+                    remindCalendarHandler();
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </DatePicker>
+          </div>
         </div>
+
+
+
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
           add
         </button>
@@ -209,7 +289,9 @@ export default AddTask;
  * 근데 addTaskHandler 내부에 dispatch & setState 같이 넣으면 async & sync 문제 발생
  *
  * Due date 버튼을 별도 component로 분리하기
- * 
+ *
+ *
+ * 지난날짜 선택했을 때, overdue 표시
  *
  *
  *
