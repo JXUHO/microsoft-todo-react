@@ -4,7 +4,10 @@ import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DueDate from "./DueDate";
 import Reminder from "./Reminder";
-import getDateWithOffset, { getCustomFormatDateString } from "../date/getDate";
+import getDateWithOffset, {
+  formatTimeToAMPM,
+  getCustomFormatDateString,
+} from "../date/getDate";
 import classes from "./AddTask.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,7 +47,7 @@ const AddTask = (props) => {
   const dueCalendarRef = useRef(null);
   const remindPopoverRef = useRef(null);
   const remindTooltipRef = useRef(null);
-  const remindCalendarRef = useRef(null)
+  const remindCalendarRef = useRef(null);
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
@@ -79,8 +82,12 @@ const AddTask = (props) => {
   };
 
   const remindCalendarHandler = () => {
-    console.log(remindSelectedTime)
-    setRemindButtonText(getCustomFormatDateString(remindSelectedTime));
+    console.log(remindSelectedTime);
+    setRemindButtonText(
+      formatTimeToAMPM(remindSelectedTime) +
+        ", " +
+        getCustomFormatDateString(remindSelectedTime)
+    ); // 수정
     setTaskInput((prevState) => ({
       ...prevState,
       remind: remindSelectedTime,
@@ -89,6 +96,7 @@ const AddTask = (props) => {
 
   const dueDateHandler = (dueDate) => {
     setDueButtonText(dueDate.text);
+    setDueSelectedDate(dueDate.date);
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
@@ -96,8 +104,10 @@ const AddTask = (props) => {
   };
 
   const remindHandler = (remind) => {
+    // remind.time을 calendar time과 연동
     // remind는 date object
     setRemindButtonText(remind.text);
+    setRemindSelectedTime(remind.time);
     setTaskInput((prevState) => ({
       ...prevState,
       remind: remind.time,
@@ -109,6 +119,7 @@ const AddTask = (props) => {
       ...prevState,
       dueDate: "",
     }));
+    setDueSelectedDate(new Date());
     setDueButtonText("Due");
     setShowDueRemoveButton(false);
   };
@@ -118,6 +129,7 @@ const AddTask = (props) => {
       ...prevState,
       remind: "",
     }));
+    setRemindSelectedTime(new Date());
     setRemindButtonText("Remind");
     setShowRemindRemoveButton(false);
   };
@@ -205,16 +217,22 @@ const AddTask = (props) => {
               shouldCloseOnSelect={false}
               customInput={<span></span>}
               showPopperArrow={false}
+              todayButton="Reset"
             >
               <div>
-                <button
+                <div
+                  style={{
+                    textAlign: "center",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
                   onClick={() => {
                     dueCalendarRef.current.setOpen(false);
                     dueDateCalendarHandler();
                   }}
                 >
                   Save
-                </button>
+                </div>
               </div>
             </DatePicker>
           </div>
@@ -248,30 +266,33 @@ const AddTask = (props) => {
             <DatePicker
               id="remindCalendar"
               ref={remindCalendarRef}
-              selected={dueSelectedDate}
+              selected={remindSelectedTime}
               onChange={(date) => setRemindSelectedTime(date)}
-              // showTimeSelect
-              // timeIntervals={15}
+              showTimeSelect
+              timeIntervals={15}
+              todayButton="Reset"
               shouldCloseOnSelect={false}
               customInput={<span></span>}
               showPopperArrow={false}
             >
               <div>
-                
-                <button
+                <div
+                  style={{
+                    textAlign: "center",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
                   onClick={() => {
                     remindCalendarRef.current.setOpen(false);
                     remindCalendarHandler();
                   }}
                 >
                   Save
-                </button>
+                </div>
               </div>
             </DatePicker>
           </div>
         </div>
-
-
 
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
           add
@@ -288,11 +309,11 @@ export default AddTask;
  * taskInputHandler에서 todo text이외의 정보 분리하기(uuid...) 분리하기 OR debounce - typing 몇초 이상 끊길때에만 추가
  * 근데 addTaskHandler 내부에 dispatch & setState 같이 넣으면 async & sync 문제 발생
  *
- * Due date 버튼을 별도 component로 분리하기
- *
- *
+ * 
+ * ****
+ * Popover버튼을 별도 component로 분리하기
  * 지난날짜 선택했을 때, overdue 표시
- *
+ * calendar에서 저장없이 나갔을때 오늘로 초기화
  *
  *
  *
