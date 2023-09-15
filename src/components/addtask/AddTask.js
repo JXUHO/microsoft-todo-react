@@ -29,6 +29,7 @@ const initialTask = {
 const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
+
   const [dueButtonText, setDueButtonText] = useState("Due");
   const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
   const [dueCalendarDate, setDueCalendarDate] = useState(new Date());
@@ -36,13 +37,12 @@ const AddTask = (props) => {
   const duePopoverRef = useRef(null);
   const dueTooltipRef = useRef(null);
   const dueCalendarRef = useRef(null);
-  const dueCalendarPopoverRef = useRef(null);
   // const remindPopoverRef = useRef(null);
   // const remindTooltipRef = useRef(null);
 
   const taskInputHandler = (event) => {
+    // TODO: task만 다루고, 나머지는 등록할때 추가하기
     const createdTime = getDate(); // date
-
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
@@ -74,9 +74,6 @@ const AddTask = (props) => {
 
   const dueDateHandler = (dueDate) => {
     setDueButtonText(dueDate.text);
-
-    console.log(dueDate.date);
-
     setTaskInput((prevState) => ({
       ...prevState,
       dueDate: dueDate.date,
@@ -95,13 +92,11 @@ const AddTask = (props) => {
   useEffect(() => {
     // due 설정됐을때 remove due date버튼 생성
     if (taskInput.dueDate) {
-      // console.log("object not empty");
       setShowDueRemoveButton(true);
     }
   }, [taskInput]);
 
   const showCalendarHandler = () => {
-    // console.log("showCalendar");
     const datepicker = document.getElementById("datepicker");
     if (datepicker) {
       datepicker.click();
@@ -111,7 +106,6 @@ const AddTask = (props) => {
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
     // reminder, repeat
-    // remindPopoverRef.current.setVisibility(false);
   };
 
   return (
@@ -211,11 +205,11 @@ export default AddTask;
 
 /**
  * TODO
- * taskInputHandler에서 user input 다른 정보 분리하기, user input이외의 정보들은 addTaskHandler에서 추가하기
- * 근데 dispatch & setState 같이 넣으면 async & sync 문제 발생
+ * taskInputHandler에서 todo text이외의 정보 분리하기(uuid...) 분리하기 OR debounce - typing 몇초 이상 끊길때에만 추가
+ * 근데 addTaskHandler 내부에 dispatch & setState 같이 넣으면 async & sync 문제 발생
  *
- *
- * duedate에 calendar 붙이기
+ * Due date 버튼을 별도 component로 분리하기
+ * 
  *
  *
  *
