@@ -1,8 +1,8 @@
 // return date object with offset
-export default function getDateWithOffset(offset = 0) {
+export default function getLastTimeOfDay(offset = 0) {
   let currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + offset);
-
+  currentDate.setHours(23, 59, 59)
   return currentDate;
 }
 

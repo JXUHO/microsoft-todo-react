@@ -4,7 +4,7 @@ import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DueDate from "./DueDate";
 import Reminder from "./Reminder";
-import getDateWithOffset, {
+import {
   formatTimeToAMPM,
   getCustomFormatDateString,
 } from "../date/getDate";
@@ -51,7 +51,7 @@ const AddTask = (props) => {
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
-    const createdTime = getDateWithOffset(); // date
+    const createdTime = new Date(); // date
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
@@ -67,7 +67,6 @@ const AddTask = (props) => {
   };
 
   const handleEnterKeyPress = (event) => {
-    // enter키 todo add
     if (event.key === "Enter" && taskInput.task.trim()) {
       addTaskHandler();
     }
@@ -143,22 +142,14 @@ const AddTask = (props) => {
     if (taskInput.remind) {
       setShowRemindRemoveButton(true);
     }
+
+
   }, [taskInput]);
 
-  const showCalendarHandler = (type) => {
-    if (type === "due") {
-      const calendar = document.getElementById("dueCalendar");
-      if (calendar) {
-        calendar.click();
-      }
-    }
-
-    if (type === "remind") {
-      const calendar = document.getElementById("remindCalendar");
-      if (calendar) {
-        calendar.click();
-      }
-      console.log("remind calendar open");
+  const showCalendarHandler = (calendarId) => {
+    const calendar = document.getElementById(calendarId);
+    if (calendar) {
+      calendar.click();
     }
   };
 
@@ -313,7 +304,7 @@ export default AddTask;
  * ****
  * Popover버튼을 별도 component로 분리하기 - sidebar에서 똑같은 기능 사용함
  * 지난날짜 선택했을 때, overdue 표시
- * calendar에서 저장없이 나갔을때 오늘로 초기화
+ * calendar에서 저장없이 나갔을때 오늘로 초기화(실패)
  *
  *
  *

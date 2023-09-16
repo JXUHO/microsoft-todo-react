@@ -1,87 +1,83 @@
-import { useEffect, useState } from "react";
-import getDateWithOffset, { getCustomFormatDateString, getNextMonday } from "../date/getDate";
+import getLastTimeOfDay, {
+  getCustomFormatDateString,
+  getNextMonday,
+} from "../date/getDate";
 
-const DueDate = (props) => {
-  const [offset, setOffset] = useState();
+const DueDate = ({
+  onAddDueDate,
+  onClosePopover,
+  showRemoveButton,
+  resetDue,
+  showCalendar,
+  ...props
+}) => {
 
-  const dayToday = getDateWithOffset().toString().slice(0, 3);
-  const dayTomorrow = getDateWithOffset(1).toString().slice(0, 3);
+  const today = getLastTimeOfDay();
+  const todayText = today.toString().slice(0, 3);
+
+  const tomorrow = getLastTimeOfDay(1);
+  const tomorrowText = tomorrow.toString().slice(0, 3);
+
+  const nextMonday = new Date(getNextMonday().setHours(23,59,59));
+  const nextMondayText = nextMonday.toString().slice(0, 3);
 
 
-  const nextMonday = getNextMonday()
-  const dayNextMon = nextMonday.toString().slice(0, 3);
 
-  const addDueDateHandler = (offset) => {
-    const date = new Date();
-    const dueDate = getDateWithOffset(offset);
-    if (
-      dueDate.toISOString().slice(0, 10) === date.toISOString().slice(0, 10)
-    ) {
-      props.onAddDueDate({ date: dueDate, text: "Today" });
+  const addDueDateHandler = (input) => {
+    if (input === "today") {
+      onAddDueDate({ date: today, text: "Today" });
     }
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    if (
-      dueDate.toISOString().slice(0, 10) === tomorrow.toISOString().slice(0, 10)
-    ) {
-      props.onAddDueDate({ date: dueDate, text: "Tomorrow" });
+    if (input === "tomorrow") {
+      onAddDueDate({ date: tomorrow, text: "Tomorrow" });
     }
-
-    if (
-      dueDate.toISOString().slice(0, 10) ===
-      nextMonday.toISOString().slice(0, 10)
-    ) {
-      props.onAddDueDate({
-        date: dueDate,
-        text: getCustomFormatDateString(dueDate),
+    if (input === "nextWeek") {
+      onAddDueDate({
+        date: nextMonday,
+        text: getCustomFormatDateString(nextMonday),
       });
     }
-
-    props.onClosePopover();
+    onClosePopover();
   };
+
 
   const calendarOpenHandler = () => {
-    props.showCalendar("due")
-    props.onClosePopover();
+    showCalendar("dueCalendar");
+    onClosePopover();
   };
 
-  useEffect(() => {
-    const date = new Date();
-    setOffset((8 - date.getDay()) % 7);
-  }, []);
 
   const removeDueHandler = () => {
-    props.resetDue()
+    resetDue();
   };
+
 
   return (
     <div>
       <div>Due</div>
       <ul>
         <li>
-          <button onClick={() => addDueDateHandler(0)}>
+          <button onClick={() => addDueDateHandler("today")}>
             <span>Today </span>
-            <span>{dayToday}</span>
+            <span>{todayText}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDueDateHandler(1)}>
+          <button onClick={() => addDueDateHandler("tomorrow")}>
             <span>Tomorrow </span>
-            <span>{dayTomorrow}</span>
+            <span>{tomorrowText}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDueDateHandler(offset)}>
+          <button onClick={() => addDueDateHandler("nextWeek")}>
             <span>Next week </span>
-            <span>{dayNextMon}</span>
+            <span>{nextMondayText}</span>
           </button>
         </li>
         <li>----------------</li>
         <li>
           <button onClick={calendarOpenHandler}>Pick a date</button>
         </li>
-        {props.showRemoveButton && (
+        {showRemoveButton && (
           <li>
             <button onClick={removeDueHandler}>Remove due date</button>
           </li>
