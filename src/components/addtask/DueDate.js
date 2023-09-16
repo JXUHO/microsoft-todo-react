@@ -21,8 +21,6 @@ const DueDate = ({
   const nextMonday = new Date(getNextMonday().setHours(23,59,59));
   const nextMondayText = nextMonday.toString().slice(0, 3);
 
-
-
   const addDueDateHandler = (input) => {
     if (input === "today") {
       onAddDueDate({ date: today, text: "Today" });

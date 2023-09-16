@@ -1,17 +1,11 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import DueDate from "./DueDate";
-import Reminder from "./Reminder";
-import {
-  formatTimeToAMPM,
-  getCustomFormatDateString,
-} from "../date/getDate";
 import classes from "./AddTask.module.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Popper from "../ui/Popper";
+import DuePopover from "./DuePopover";
+import RemindPopover from "./RemindPopover";
+
 
 const initialTask = {
   id: "", // uuid
@@ -34,24 +28,10 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
 
-  const [dueButtonText, setDueButtonText] = useState("Due");
-  const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
-  const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
-
-  const [remindButtonText, setRemindButtonText] = useState("Remind");
-  const [showRemindRemoveButton, setShowRemindRemoveButton] = useState(false);
-  const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
-
-  const duePopoverRef = useRef(null);
-  const dueTooltipRef = useRef(null);
-  const dueCalendarRef = useRef(null);
-  const remindPopoverRef = useRef(null);
-  const remindTooltipRef = useRef(null);
-  const remindCalendarRef = useRef(null);
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
-    const createdTime = new Date(); // date
+    const createdTime = new Date().toISOString(); // date
     setTaskInput((prevState) => ({
       ...prevState,
       task: event.target.value,
@@ -72,92 +52,17 @@ const AddTask = (props) => {
     }
   };
 
-  const dueDateCalendarHandler = () => {
-    setDueButtonText(getCustomFormatDateString(dueSelectedDate));
-    setTaskInput((prevState) => ({
-      ...prevState,
-      dueDate: dueSelectedDate,
-    }));
-  };
-
-  const remindCalendarHandler = () => {
-    console.log(remindSelectedTime);
-    setRemindButtonText(
-      formatTimeToAMPM(remindSelectedTime) +
-        ", " +
-        getCustomFormatDateString(remindSelectedTime)
-    ); // 수정
-    setTaskInput((prevState) => ({
-      ...prevState,
-      remind: remindSelectedTime,
-    }));
-  };
-
-  const dueDateHandler = (dueDate) => {
-    setDueButtonText(dueDate.text);
-    setDueSelectedDate(dueDate.date);
-    setTaskInput((prevState) => ({
-      ...prevState,
-      dueDate: dueDate.date,
-    }));
-  };
-
-  const remindHandler = (remind) => {
-    // remind.time을 calendar time과 연동
-    // remind는 date object
-    setRemindButtonText(remind.text);
-    setRemindSelectedTime(remind.time);
-    setTaskInput((prevState) => ({
-      ...prevState,
-      remind: remind.time,
-    }));
-  };
-
-  const resetDueHandler = () => {
-    setTaskInput((prevState) => ({
-      ...prevState,
-      dueDate: "",
-    }));
-    setDueSelectedDate(new Date());
-    setDueButtonText("Due");
-    setShowDueRemoveButton(false);
-  };
-
-  const resetRemindHandler = () => {
-    setTaskInput((prevState) => ({
-      ...prevState,
-      remind: "",
-    }));
-    setRemindSelectedTime(new Date());
-    setRemindButtonText("Remind");
-    setShowRemindRemoveButton(false);
-  };
-
-  useEffect(() => {
-    // remove button 생성
-    if (taskInput.dueDate) {
-      setShowDueRemoveButton(true);
+  const taskCreateValueHandler = (input, type) => {
+    if (input instanceof Date){
+      input = input.toISOString()
     }
+    setTaskInput((prevState) => ({
+      ...prevState,
+      [type]: input
+    }))
+  }
 
-    if (taskInput.remind) {
-      setShowRemindRemoveButton(true);
-    }
 
-
-  }, [taskInput]);
-
-  const showCalendarHandler = (calendarId) => {
-    const calendar = document.getElementById(calendarId);
-    if (calendar) {
-      calendar.click();
-    }
-  };
-
-  const closePopoverHandler = () => {
-    duePopoverRef.current.setVisibility(false);
-    remindPopoverRef.current.setVisibility(false);
-    // reminder, repeat
-  };
 
   return (
     <div className={classes.addTaskBar}>
@@ -172,117 +77,8 @@ const AddTask = (props) => {
 
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          <div>
-            <button id="due">{dueButtonText}</button>
-            <Popper
-              initOpen={false}
-              ref={duePopoverRef}
-              placement="bottom"
-              target="due"
-              toggle="legacy"
-            >
-              <DueDate
-                onAddDueDate={dueDateHandler}
-                onClosePopover={closePopoverHandler}
-                showRemoveButton={showDueRemoveButton}
-                resetDue={resetDueHandler}
-                showCalendar={showCalendarHandler}
-              />
-            </Popper>
-            <Popper
-              initOpen={false}
-              ref={dueTooltipRef}
-              placement="bottom"
-              target="due"
-              toggle="hover"
-            >
-              Add due date
-            </Popper>
-
-            {/* calendar  */}
-            <DatePicker
-              id="dueCalendar"
-              ref={dueCalendarRef}
-              selected={dueSelectedDate}
-              onChange={(date) => setDueSelectedDate(date)}
-              shouldCloseOnSelect={false}
-              customInput={<span></span>}
-              showPopperArrow={false}
-              todayButton="Reset"
-            >
-              <div>
-                <div
-                  style={{
-                    textAlign: "center",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                  }}
-                  onClick={() => {
-                    dueCalendarRef.current.setOpen(false);
-                    dueDateCalendarHandler();
-                  }}
-                >
-                  Save
-                </div>
-              </div>
-            </DatePicker>
-          </div>
-
-          <div>
-            <button id="remind">{remindButtonText}</button>
-            <Popper
-              initOpen={false}
-              ref={remindPopoverRef}
-              placement="bottom"
-              target="remind"
-              toggle="legacy"
-            >
-              <Reminder
-                onAddRemind={remindHandler} // 완료
-                onClosePopover={closePopoverHandler} // 완료
-                showRemoveButton={showRemindRemoveButton}
-                resetRemind={resetRemindHandler}
-                showCalendar={showCalendarHandler}
-              />
-            </Popper>
-            <Popper
-              initOpen={false}
-              ref={remindTooltipRef}
-              placement="bottom"
-              target="remind"
-              toggle="hover"
-            >
-              Remind me
-            </Popper>
-            <DatePicker
-              id="remindCalendar"
-              ref={remindCalendarRef}
-              selected={remindSelectedTime}
-              onChange={(date) => setRemindSelectedTime(date)}
-              showTimeSelect
-              timeIntervals={15}
-              todayButton="Reset"
-              shouldCloseOnSelect={false}
-              customInput={<span></span>}
-              showPopperArrow={false}
-            >
-              <div>
-                <div
-                  style={{
-                    textAlign: "center",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                  }}
-                  onClick={() => {
-                    remindCalendarRef.current.setOpen(false);
-                    remindCalendarHandler();
-                  }}
-                >
-                  Save
-                </div>
-              </div>
-            </DatePicker>
-          </div>
+          <DuePopover setDueDateValue={taskCreateValueHandler} dueDateValue={taskInput.dueDate}/>
+          <RemindPopover setRemindValue={taskCreateValueHandler} remindValue={taskInput.remind} />
         </div>
 
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
