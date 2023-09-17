@@ -1,28 +1,61 @@
 // return date object with offset
 export default function getLastTimeOfDay(offset = 0) {
-  let currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + offset);
-  currentDate.setHours(23, 59, 59)
-  return currentDate;
+  let date = new Date();
+  date.setDate(date.getDate() + offset);
+  date.setHours(23, 59, 59)
+  return date;
 }
 
 
 // return "Mon, September 18" format string
-export function getCustomFormatDateString(date) {
+export function getCustomFormatDateString(input, overdue=true) {
+  const today = new Date()
+  const tomorrow = new Date()
+  const yesterday = new Date()
+  tomorrow.setDate(today.getDate() + 1);
+  yesterday.setDate(today.getDate() - 1);
+
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const tomorrowDate = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+  const yesterdayDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+  const inputDate = new Date(input.getFullYear(), input.getMonth(), input.getDate());
+
+  if (inputDate.toISOString() === todayDate.toISOString()) {
+    return "Today"
+  } else if (inputDate.toISOString() === tomorrowDate.toISOString()) {
+    return "Tomorrow"
+  } else if (inputDate.toISOString() === yesterdayDate.toISOString()) {
+    return "Yesterday"
+  }
+
+
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'
   ];
 
-  const dayOfWeek = daysOfWeek[date.getDay()];
-  const month = months[date.getMonth()];
-  const dayOfMonth = date.getDate();
+  const dayOfWeek = daysOfWeek[input.getDay()];
+  const month = months[input.getMonth()];
+  const dayOfMonth = input.getDate();
+
+
+  if (overdue && ((todayDate - inputDate) / (1000 * 60 * 60 * 24) > 2)) {
+    return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}`
+  }
+
 
   return `${dayOfWeek}, ${month} ${dayOfMonth}`;
 }
 
 
+
+export function getTomorrow() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(9, 0, 0, 0);
+  return tomorrow
+}
 
 export function getNextMonday() {
   const today = new Date();
@@ -51,14 +84,6 @@ export function getThreeHoursLater() {
 }
 
 
-export function getTomorrow() {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(9, 0, 0, 0);
-  return tomorrow
-}
-
-
 export function formatTimeToAMPM(date, minute=true) {
   let timeString;
   if (minute) {  // 9:00 AM, 11:00 PM
@@ -71,6 +96,8 @@ export function formatTimeToAMPM(date, minute=true) {
 
   return timeString;
 }
+
+
 
 
 /**

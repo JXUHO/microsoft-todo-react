@@ -98,8 +98,8 @@ export default AddTask;
  *
  * 
  * ****
- * 지난날짜 선택했을 때, overdue 표시
- * 어제, 내일 선택했을때 yesterday, tomorrow
+ * 지난날짜 선택했을 때, overdue 표시 (해결)
+ * 어제, 내일 선택했을때 yesterday, tomorrow (해결)
  * 
  * calendar에서 저장없이 나갔을때 오늘로 초기화(보류)
  * 

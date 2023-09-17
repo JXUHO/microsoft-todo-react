@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Reminder from "./Reminder";
-import { formatTimeToAMPM, getCustomFormatDateString } from "../date/getDate";
+import { formatTimeToAMPM, getCustomFormatDateString } from "../date/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";

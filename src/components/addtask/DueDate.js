@@ -1,7 +1,7 @@
 import getLastTimeOfDay, {
   getCustomFormatDateString,
   getNextMonday,
-} from "../date/getDate";
+} from "../date/getDates";
 
 const DueDate = ({
   onAddDueDate,
@@ -13,41 +13,35 @@ const DueDate = ({
 }) => {
 
   const today = getLastTimeOfDay();
-  const todayText = today.toString().slice(0, 3);
+  const todayDayString = today.toString().slice(0, 3);
 
   const tomorrow = getLastTimeOfDay(1);
-  const tomorrowText = tomorrow.toString().slice(0, 3);
+  const tomorrowDayString = tomorrow.toString().slice(0, 3);
 
   const nextMonday = new Date(getNextMonday().setHours(23,59,59));
-  const nextMondayText = nextMonday.toString().slice(0, 3);
+  const nextMondayDayString = nextMonday.toString().slice(0, 3);
 
   const addDueDateHandler = (input) => {
     if (input === "today") {
-      onAddDueDate({ date: today, text: "Today" });
+      onAddDueDate(today);
     }
     if (input === "tomorrow") {
-      onAddDueDate({ date: tomorrow, text: "Tomorrow" });
+      onAddDueDate(tomorrow);
     }
     if (input === "nextWeek") {
-      onAddDueDate({
-        date: nextMonday,
-        text: getCustomFormatDateString(nextMonday),
-      });
+      onAddDueDate(nextMonday);
     }
     onClosePopover();
   };
-
 
   const calendarOpenHandler = () => {
     showCalendar("dueCalendar");
     onClosePopover();
   };
 
-
   const removeDueHandler = () => {
     resetDue();
   };
-
 
   return (
     <div>
@@ -56,19 +50,19 @@ const DueDate = ({
         <li>
           <button onClick={() => addDueDateHandler("today")}>
             <span>Today </span>
-            <span>{todayText}</span>
+            <span>{todayDayString}</span>
           </button>
         </li>
         <li>
           <button onClick={() => addDueDateHandler("tomorrow")}>
             <span>Tomorrow </span>
-            <span>{tomorrowText}</span>
+            <span>{tomorrowDayString}</span>
           </button>
         </li>
         <li>
           <button onClick={() => addDueDateHandler("nextWeek")}>
             <span>Next week </span>
-            <span>{nextMondayText}</span>
+            <span>{nextMondayDayString}</span>
           </button>
         </li>
         <li>----------------</li>

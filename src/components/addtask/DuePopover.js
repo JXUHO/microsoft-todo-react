@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import DueDate from "./DueDate";
-import { getCustomFormatDateString } from "../date/getDate";
+import { getCustomFormatDateString } from "../date/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";
@@ -16,16 +16,16 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
   const dueCalendarRef = useRef(null);
 
   const dueDateCalendarHandler = () => {
-    // overdue 조건
     setDueButtonText(getCustomFormatDateString(dueSelectedDate));
     setDueDateValue(dueSelectedDate, "dueDate")
   };
 
   const dueDateHandler = (dueDate) => {
-    setDueButtonText(dueDate.text);
-    setDueSelectedDate(dueDate.date);
-    setDueDateValue(dueDate.date, "dueDate")
+    setDueButtonText(getCustomFormatDateString(dueDate));
+    setDueSelectedDate(dueDate);
+    setDueDateValue(dueDate, "dueDate")
   };
+
 
   const resetDueHandler = () => {
     setDueDateValue("", "dueDate")
@@ -35,7 +35,6 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
   };
 
   useEffect(() => {
-    // remove button 생성
     if (dueDateValue) {
       setShowDueRemoveButton(true);
     }
@@ -50,7 +49,6 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
 
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
-    // reminder, repeat
   };
 
   return (
@@ -86,7 +84,7 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
         selected={dueSelectedDate}
         onChange={(date) => setDueSelectedDate(date)}
         shouldCloseOnSelect={false}
-        customInput={<span></span>}
+        customInput={<span />}
         showPopperArrow={false}
         todayButton="Reset"
       >
