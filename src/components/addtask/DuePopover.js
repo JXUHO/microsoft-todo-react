@@ -1,12 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import DueDate from "./DueDate";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import DueItems from "./DueItems";
 import { getCustomFormatDateString } from "../date/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";
 
-
-const DuePopover = ({setDueDateValue, dueDateValue}) => {
+const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   const [dueButtonText, setDueButtonText] = useState("Due");
   const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
   const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
@@ -17,18 +22,21 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
 
   const dueDateCalendarHandler = () => {
     setDueButtonText(getCustomFormatDateString(dueSelectedDate));
-    setDueDateValue(dueSelectedDate, "dueDate")
+    setDueDateValue(dueSelectedDate, "dueDate");
   };
 
   const dueDateHandler = (dueDate) => {
     setDueButtonText(getCustomFormatDateString(dueDate));
     setDueSelectedDate(dueDate);
-    setDueDateValue(dueDate, "dueDate")
+    setDueDateValue(dueDate, "dueDate");
   };
 
+  useImperativeHandle(ref, () => ({
+    resetDue: resetDueHandler
+  }));
 
   const resetDueHandler = () => {
-    setDueDateValue("", "dueDate")
+    setDueDateValue("", "dueDate");
     setDueSelectedDate(new Date());
     setDueButtonText("Due");
     setShowDueRemoveButton(false);
@@ -61,7 +69,7 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
         target="due"
         toggle="legacy"
       >
-        <DueDate
+        <DueItems
           onAddDueDate={dueDateHandler}
           onClosePopover={closePopoverHandler}
           showRemoveButton={showDueRemoveButton}
@@ -106,7 +114,6 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
       </DatePicker>
     </div>
   );
-};
+});
 
 export default DuePopover;
-

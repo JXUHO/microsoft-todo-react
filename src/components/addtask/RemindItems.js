@@ -6,7 +6,7 @@ import {
   formatTimeToAMPM,
 } from "../date/getDates";
 
-const Reminder = ({
+const RemindItems = ({
   onAddRemind,
   onClosePopover,
   showRemoveButton,
@@ -106,7 +106,7 @@ const Reminder = ({
   );
 };
 
-export default Reminder;
+export default RemindItems;
 
 /**
  * TODO

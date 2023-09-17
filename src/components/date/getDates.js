@@ -2,7 +2,7 @@
 export default function getLastTimeOfDay(offset = 0) {
   let date = new Date();
   date.setDate(date.getDate() + offset);
-  date.setHours(23, 59, 59)
+  date.setHours(23, 59, 59, 0)
   return date;
 }
 

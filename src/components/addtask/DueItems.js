@@ -1,9 +1,8 @@
 import getLastTimeOfDay, {
-  getCustomFormatDateString,
   getNextMonday,
 } from "../date/getDates";
 
-const DueDate = ({
+const DueItems = ({
   onAddDueDate,
   onClosePopover,
   showRemoveButton,
@@ -79,7 +78,7 @@ const DueDate = ({
   );
 };
 
-export default DueDate;
+export default DueItems;
 
 /**
  * TODO

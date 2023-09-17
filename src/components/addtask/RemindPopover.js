@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import Reminder from "./Reminder";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import RemindItems from "./RemindItems";
 import { formatTimeToAMPM, getCustomFormatDateString } from "../date/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";
 
 
-const RemindPopover = ({setRemindValue, remindValue}) => {
+const RemindPopover = forwardRef(({setRemindValue, remindValue}, ref) => {
   const [remindButtonText, setRemindButtonText] = useState("Remind");
   const [showRemindRemoveButton, setShowRemindRemoveButton] = useState(false);
   const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
@@ -19,7 +19,7 @@ const RemindPopover = ({setRemindValue, remindValue}) => {
     setRemindButtonText(
       formatTimeToAMPM(remindSelectedTime) +
         ", " +
-        getCustomFormatDateString(remindSelectedTime)
+        getCustomFormatDateString(remindSelectedTime, false)
     );
     setRemindValue(remindSelectedTime, "remind")
   };
@@ -29,6 +29,10 @@ const RemindPopover = ({setRemindValue, remindValue}) => {
     setRemindSelectedTime(remind.time);
     setRemindValue(remind.time, "remind")
   };
+
+  useImperativeHandle(ref, () => ({
+    resetRemind: resetRemindHandler
+  }))
 
   const resetRemindHandler = () => {
     setRemindValue("", "remind")
@@ -64,7 +68,7 @@ const RemindPopover = ({setRemindValue, remindValue}) => {
         target="remind"
         toggle="legacy"
       >
-        <Reminder
+        <RemindItems
           onAddRemind={remindHandler} // 완료
           onClosePopover={closePopoverHandler} // 완료
           showRemoveButton={showRemindRemoveButton}
@@ -111,6 +115,6 @@ const RemindPopover = ({setRemindValue, remindValue}) => {
       </DatePicker>
     </div>
   );
-};
+});
 
 export default RemindPopover;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../../store/todoSlice";
+import { addTodo } from "../../../store/todoSlice";
 import uuid from "react-uuid";
 import DueDate from "./DueDate";
 import Reminder from "./Reminder";
@@ -11,7 +11,7 @@ import {
 import classes from "./AddTask.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Popper from "../ui/Popper";
+import Popper from "../../ui/Popper";
 
 const initialTask = {
   id: "", // uuid

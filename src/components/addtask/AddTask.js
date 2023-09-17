@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import classes from "./AddTask.module.css";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
+import RepeatPopover from "./RepeatPopover";
 
 
 const initialTask = {
@@ -20,14 +21,15 @@ const initialTask = {
   file: null,
   note: "",
   importance: false,
-  created: {},
+  created: "",
   completed: false,
 };
 
 const AddTask = (props) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
-
+  const dueRef = useRef()
+  const remindRef = useRef()
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
@@ -41,9 +43,15 @@ const AddTask = (props) => {
     }));
   };
 
+  const initializeButtons = () => {
+    dueRef.current.resetDue()
+    remindRef.current.resetRemind()
+  }
+
   const addTaskHandler = () => {
     dispatch(addTodo(taskInput)); // redux에 todo 등록
     setTaskInput(initialTask); // input state 초기화
+    initializeButtons()
   };
 
   const handleEnterKeyPress = (event) => {
@@ -77,8 +85,9 @@ const AddTask = (props) => {
 
       <div className={classes.taskBar}>
         <div className={classes.taskButtons}>
-          <DuePopover setDueDateValue={taskCreateValueHandler} dueDateValue={taskInput.dueDate}/>
-          <RemindPopover setRemindValue={taskCreateValueHandler} remindValue={taskInput.remind} />
+          <DuePopover setDueDateValue={taskCreateValueHandler} dueDateValue={taskInput.dueDate} ref={dueRef}/>
+          <RemindPopover setRemindValue={taskCreateValueHandler} remindValue={taskInput.remind} ref={remindRef}/>
+          {/* <RepeatPopover /> */}
         </div>
 
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
@@ -98,13 +107,17 @@ export default AddTask;
  *
  * 
  * ****
+ * 
+ * Repeat popover 만들기 -> repeat 설정하고 완료됐을 때, 해당 반복 시간에 imperative하게 task 생성해야함
+ *
+ * task등록 후 due, remind, repeat 버튼 & selectedtime, selected date text초기화 (해결)
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
  * 지난날짜 선택했을 때, overdue 표시 (해결)
  * 어제, 내일 선택했을때 yesterday, tomorrow (해결)
- * 
  * calendar에서 저장없이 나갔을때 오늘로 초기화(보류)
- * 
- * Repeat popover 만들기
- *
- *
- *
  */
