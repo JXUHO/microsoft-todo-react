@@ -16,6 +16,7 @@ const DuePopover = ({setDueDateValue, dueDateValue}) => {
   const dueCalendarRef = useRef(null);
 
   const dueDateCalendarHandler = () => {
+    // overdue 조건
     setDueButtonText(getCustomFormatDateString(dueSelectedDate));
     setDueDateValue(dueSelectedDate, "dueDate")
   };
