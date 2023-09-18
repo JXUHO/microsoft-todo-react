@@ -87,7 +87,7 @@ const AddTask = (props) => {
         <div className={classes.taskButtons}>
           <DuePopover setDueDateValue={taskCreateValueHandler} dueDateValue={taskInput.dueDate} ref={dueRef}/>
           <RemindPopover setRemindValue={taskCreateValueHandler} remindValue={taskInput.remind} ref={remindRef}/>
-          {/* <RepeatPopover /> */}
+          <RepeatPopover />
         </div>
 
         <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
