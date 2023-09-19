@@ -8,6 +8,16 @@ import "tippy.js/themes/light.css";
 const RepeatPopover = () => {
 
 
+  const instance = tippy(document.querySelector('button'));
+  
+  
+
+
+  const customOpenHandler = () => {
+    console.log(document.getElementById("repeatButton"));
+    console.log(instance);
+ 
+  };
 
   return (
     <>
@@ -72,9 +82,36 @@ const RepeatPopover = () => {
       </Tippy>
 
 
+
+      <Tippy
+        theme="light"
+        interactive={true}
+        placement="bottom"
+        zIndex={30}
+        trigger="manual"
+        // triggerTarget={customButton}
+        content={<h1>custom</h1>}
+      >
+        <button>test</button>
+      </Tippy>
+
         
     </>
   );
 };
 
 export default RepeatPopover;
+
+
+
+/**
+ * TODO
+ * 
+ * Tippy custom버튼 누르면 기존 tippy 닫히고 custom tippy 열려야함.
+ * trigger manual - method로 해결해야할 것 같은데 아직 모르겠음.
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
