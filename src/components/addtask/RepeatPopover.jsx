@@ -21,7 +21,7 @@ function RepeatPopover() {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(15)]
+    middleware: [offset(15)],
   });
 
   const {
@@ -31,7 +31,7 @@ function RepeatPopover() {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(15)]
+    middleware: [offset(15)],
   });
 
   const {
@@ -41,12 +41,8 @@ function RepeatPopover() {
   } = useFloating({
     open: customOpen,
     onOpenChange: setCustomOpen,
-    middleware: [offset(15)]
+    middleware: [offset(15)],
   });
-
-  const log = () => {
-    console.log(customRefs);
-  }
 
   const {
     getReferenceProps: getTooltipReferenceProps,
@@ -56,9 +52,12 @@ function RepeatPopover() {
   const {
     getReferenceProps: getPopoverReferenceProps,
     getFloatingProps: getPopoverFloatingProps,
-  } = useInteractions([useClick(popoverContext), useDismiss(popoverContext,{
-    referencePress: true,
-  })]);
+  } = useInteractions([
+    useClick(popoverContext),
+    useDismiss(popoverContext, {
+      referencePress: true,
+    }),
+  ]);
 
   const {
     getReferenceProps: getCustomReferenceProps,
@@ -71,15 +70,20 @@ function RepeatPopover() {
     customRefs.setReference,
   ]);
 
-  const props = getTooltipReferenceProps(getPopoverReferenceProps());
+  const repeatButtonProps = getTooltipReferenceProps(
+    getPopoverReferenceProps({
+      onClick() {
+        setCustomOpen(false);
+      },
+    })
+  );
 
   return (
     <>
-      <button ref={ref} {...props}>
+      <button ref={ref} {...repeatButtonProps}>
         Repeat
       </button>
-      <button onClick={log}>log</button>
-      
+
       {tooltipOpen && (
         <div
           ref={tooltipRefs.setFloating}
@@ -149,7 +153,7 @@ function RepeatPopover() {
                 <button
                   {...getCustomReferenceProps({
                     onClick() {
-                      // setPopoverOpen(false);
+                      setPopoverOpen(false);
                     },
                   })}
                 >
@@ -178,8 +182,8 @@ export default RepeatPopover;
  *
  *
  *
- * 
- * 
+ *
+ *
  * useListNavigation 사용해서 키보드로 옵션 선택 가능하도록 만들기
  *
  *
