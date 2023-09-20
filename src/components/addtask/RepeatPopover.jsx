@@ -44,6 +44,10 @@ function RepeatPopover() {
     middleware: [offset(15)]
   });
 
+  const log = () => {
+    console.log(customRefs);
+  }
+
   const {
     getReferenceProps: getTooltipReferenceProps,
     getFloatingProps: getTooltipFloatingProps,
@@ -52,7 +56,9 @@ function RepeatPopover() {
   const {
     getReferenceProps: getPopoverReferenceProps,
     getFloatingProps: getPopoverFloatingProps,
-  } = useInteractions([useClick(popoverContext), useDismiss(popoverContext)]);
+  } = useInteractions([useClick(popoverContext), useDismiss(popoverContext,{
+    referencePress: true,
+  })]);
 
   const {
     getReferenceProps: getCustomReferenceProps,
@@ -72,6 +78,8 @@ function RepeatPopover() {
       <button ref={ref} {...props}>
         Repeat
       </button>
+      <button onClick={log}>log</button>
+      
       {tooltipOpen && (
         <div
           ref={tooltipRefs.setFloating}
@@ -86,6 +94,7 @@ function RepeatPopover() {
           Tooltip
         </div>
       )}
+
       {customOpen && (
         <div
           ref={customRefs.setFloating}
@@ -140,7 +149,7 @@ function RepeatPopover() {
                 <button
                   {...getCustomReferenceProps({
                     onClick() {
-                      setPopoverOpen(false);
+                      // setPopoverOpen(false);
                     },
                   })}
                 >
@@ -169,6 +178,9 @@ export default RepeatPopover;
  *
  *
  *
+ * 
+ * 
+ * useListNavigation 사용해서 키보드로 옵션 선택 가능하도록 만들기
  *
  *
  */
