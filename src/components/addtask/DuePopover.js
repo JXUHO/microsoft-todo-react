@@ -9,6 +9,7 @@ import DueItems from "./DueItems";
 import { getCustomFormatDateString } from "../date/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import './custom-datepicker.css';
 import Popper from "../ui/Popper";
 
 const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
@@ -59,9 +60,12 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
     duePopoverRef.current.setVisibility(false);
   };
 
+  const dueButton = document.getElementById("dueSpan")
+  console.log(dueButton)
+
   return (
     <div>
-      <button id="due">{dueButtonText}</button>
+      <button id="due"><span id="dueSpan"/>{dueButtonText}</button>
       <Popper
         initOpen={false}
         ref={duePopoverRef}
