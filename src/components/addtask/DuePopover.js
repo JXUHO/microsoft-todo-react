@@ -33,7 +33,8 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
-    resetDue: resetDueHandler
+    resetDue: resetDueHandler,
+    setDue: dueDateHandler
   }));
 
   const resetDueHandler = () => {
@@ -59,9 +60,6 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   const closePopoverHandler = () => {
     duePopoverRef.current.setVisibility(false);
   };
-
-  const dueButton = document.getElementById("dueSpan")
-  console.log(dueButton)
 
   return (
     <div>

@@ -7,9 +7,9 @@ import {
   useInteractions,
   useMergeRefs,
 } from "@floating-ui/react";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
-function RepeatPopover() {
+const RepeatPopover = forwardRef(({ setRepeatRule }, ref) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
@@ -47,7 +47,12 @@ function RepeatPopover() {
   const {
     getReferenceProps: getTooltipReferenceProps,
     getFloatingProps: getTooltipFloatingProps,
-  } = useInteractions([useHover(tooltipContext), useDismiss(tooltipContext)]);
+  } = useInteractions([
+    useHover(tooltipContext),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
 
   const {
     getReferenceProps: getPopoverReferenceProps,
@@ -64,7 +69,7 @@ function RepeatPopover() {
     getFloatingProps: getCustomFloatingProps,
   } = useInteractions([useClick(customContext), useDismiss(customContext)]);
 
-  const ref = useMergeRefs([
+  const floatingRef = useMergeRefs([
     tooltipRefs.setReference,
     popoverRefs.setReference,
     customRefs.setReference,
@@ -78,10 +83,60 @@ function RepeatPopover() {
     })
   );
 
+
+  
+  const [repeatButtonText, setRepeatButtonText] = useState("Repeat")
+  const [showRepeatRemoveButton, setShowRepeatRemoveButton] = useState(false);
+
+
+  // redux repeat정보를 가지고 온 후, useEffect dependency에 넣고, repeat이 업데이트되면 새로운 task를 imperative하게 만들기
+  // 생성된 날짜가 오늘이거나 or due가 오늘이면 myday true;
+  // repeat은 duedate를 기준으로 작동함.
+
+
+
+  const addRepeatHandler = (input) => {
+    switch (input) {
+      case "daily":
+        setRepeatRule("1-day", "repeatRule")
+        break;
+      case "weekdays":
+        setRepeatRule("1-week-mon-tue-wed-thu-fri", "repeatRule")
+        break;
+      case "weekly":
+        setRepeatRule("1-week", "repeatRule")
+        break;
+      case "monthly":
+        setRepeatRule("1-month", "repeatRule")
+        break;
+      case "yearly":
+        setRepeatRule("1-year", "repeatRule")
+        break;
+      default:
+        break;
+    }
+    setRepeatButtonText(input.charAt(0).toUpperCase() + input.slice(1));
+    setPopoverOpen(false)
+    setShowRepeatRemoveButton(true)
+  };
+    
+
+  const resetRepeatHandler = () => {
+    setRepeatButtonText("Repeat")
+    setRepeatRule("", "repeatRule")
+    setShowRepeatRemoveButton(false)
+    setPopoverOpen(false)
+  }
+
+  useImperativeHandle(ref, () => ({
+    resetRepeat: resetRepeatHandler
+  }));
+
+
   return (
     <>
-      <button ref={ref} {...repeatButtonProps}>
-        Repeat
+      <button ref={floatingRef} {...repeatButtonProps}>
+        {repeatButtonText}
       </button>
 
       {tooltipOpen && (
@@ -89,9 +144,11 @@ function RepeatPopover() {
           ref={tooltipRefs.setFloating}
           style={{
             ...tooltipFloatingStyles,
-            background: "black",
-            color: "white",
+            background: "white",
+            color: "black",
             padding: 10,
+            zIndex: 30,
+            border: "solid",
           }}
           {...getTooltipFloatingProps()}
         >
@@ -124,27 +181,27 @@ function RepeatPopover() {
             <div>Repeat</div>
             <ul>
               <li>
-                <button onClick={null}>
+                <button onClick={() => addRepeatHandler("daily")}>
                   <span>Daily</span>
                 </button>
               </li>
               <li>
-                <button onClick={null}>
+                <button onClick={() => addRepeatHandler("weekdays")}>
                   <span>Weekdays</span>
                 </button>
               </li>
               <li>
-                <button onClick={null}>
+                <button onClick={() => addRepeatHandler("weekly")}>
                   <span>Weekly</span>
                 </button>
               </li>
               <li>
-                <button onClick={null}>
+                <button onClick={() => addRepeatHandler("monthly")}>
                   <span>Monthly</span>
                 </button>
               </li>
               <li>
-                <button onClick={null}>
+                <button onClick={() => addRepeatHandler("yearly")}>
                   <span>Yearly</span>
                 </button>
               </li>
@@ -160,9 +217,9 @@ function RepeatPopover() {
                   Custom
                 </button>
               </li>
-              {null && (
+              {showRepeatRemoveButton && (
                 <li>
-                  <button onClick={null}>Never repeat</button>
+                  <button onClick={resetRepeatHandler}>Never repeat</button>
                 </li>
               )}
             </ul>
@@ -171,15 +228,14 @@ function RepeatPopover() {
       )}
     </>
   );
-}
+})
 
 export default RepeatPopover;
 
 /**
  * TODO
  *
- * 버튼 누르면 비활성화가 아니라, 다시 활성화 되도록 만들기
- *
+ * Custom component 만들고, 설정 만들기
  *
  *
  *
