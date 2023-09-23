@@ -6,7 +6,7 @@ import classes from "./AddTask.module.css";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
-import getLastTimeOfDay, { getCustomFormatDateString, getDayOfWeek, getNextClosestDayOfWeekFromDate, getNextDayOfWeekFromDate, getNextRepeatDateOfWeek, getNextRepeatWeek } from "../date/getDates";
+import getLastTimeOfDay, { getNextClosestDayOfWeekFromDate, getNextRepeatDay, getNextRepeatMonth, getNextRepeatWeekWithOption } from "../date/getDates";
 
 const initialTask = {
   id: "", // uuid
@@ -102,16 +102,26 @@ const AddTask = (props) => {
 
     tasksStored.forEach((taskItem) => {
       if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat 등록된 task가 완료됐을 때
-        // rule에 이번주 남은 요일이 있다면, 해당 요일에 해당하는 date를 전달
-        // rule에 이번주 남은 요일이 없다면, interval 적용
-        let nextRepeatDate;
-        if (taskItem.repeatRule.split("-")[1] === "week") {
-          nextRepeatDate = getNextRepeatWeek(taskItem.repeatRule, new Date(taskItem.dueDate))  // week 뒤에 옵션 붙은경우
-        }
-        if (taskItem.repeatRule.split("-")[1] === "day") {}
-        if (taskItem.repeatRule.split("-")[1] === "month") {}
-        if (taskItem.repeatRule.split("-")[1] === "year") {}
 
+        let nextRepeatDate;
+        switch (taskItem.repeatRule.split("-")[1]) {
+          case "day":
+            nextRepeatDate = getNextRepeatDay(new Date(taskItem.dueDate), parseInt(taskItem.repeatRule.split("-")[0]))
+            break;
+          case "week":
+            nextRepeatDate = getNextRepeatWeekWithOption(new Date(taskItem.dueDate), taskItem.repeatRule)
+            break;
+          case "month":
+            const { nextRepeatMonth, newRepeatRule } = getNextRepeatMonth(new Date(taskItem.dueDate), taskItem.repeatRule)
+            nextRepeatDate = nextRepeatMonth
+            break;
+          case "year":
+            
+            break;
+        
+          default:
+            break;
+        }
         const nextRepeatTask = {
           ...taskItem,
           complete: false,
@@ -193,7 +203,9 @@ export default AddTask;
  * 4. myday에서 dueDate가 오늘이거나, myday에서 생성된 task를 taskList에 출력하도록 조정해야 한다
  *
  *
- *
+ * 23일에 해야할것
+ * week 뒤에 옵션이 붙지 않은경우(1-week, 3-week) next repeat date 계산하기
+ * day, month, year 옵션 추가하기
  *
  *
  *

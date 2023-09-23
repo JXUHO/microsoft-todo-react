@@ -106,7 +106,7 @@ export function getDayOfWeek(date) {
 }
 
 
-export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {  // dateObj, ["mon", "tue"]
+export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {  // (dateObj, ["mon", "tue"]) => base와 가장 가까운 target요일
   const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const baseDayIndex = baseDate.getDay();
   targetDaysOfWeek.sort((a, b) => {
@@ -131,46 +131,63 @@ export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {  /
 
 
 
-function getNextRepeatDay(date, offset = 1) {  // daily, custom-days
+export function getNextRepeatDay(date, offset = 1) {  // daily, custom-days
+  const nextRepeatDate = date;
+  nextRepeatDate.setDate(nextRepeatDate.getDate() + offset);
+  return nextRepeatDate
+}
+
+
+export function getNextRepeatMonth(date, repeatRule) {  // (dateObj, "1-month-31") monthly, custom-months
+  const nextRepeatMonth = new Date(date)
+  const offset = parseInt(repeatRule.split("-")[0])
+  let newRepeatRule = repeatRule
+  
+  // 옵션 없을때
+  if (repeatRule.split("-").length === 2) {
+    let expectedMonth = ((date.getMonth() + parseInt(offset)) % 12)
+    nextRepeatMonth.setMonth(nextRepeatMonth.getMonth() + offset);
+    if (nextRepeatMonth.getMonth() !== expectedMonth) {
+      nextRepeatMonth.setDate(0);
+    }
+    newRepeatRule = repeatRule + "-" + date.getDate().toString() 
+    
+  } else { 
+    const expectedMonth = ((date.getMonth() + offset) % 12) 
+    nextRepeatMonth.setMonth(nextRepeatMonth.getMonth() + offset);
+    if (nextRepeatMonth.getMonth() !== expectedMonth) {  
+      nextRepeatMonth.setDate(0);
+    }
+
+    let temp = new Date(nextRepeatMonth)
+    nextRepeatMonth.setDate(parseInt(repeatRule.split("-")[2])) 
+    
+    if (temp.getMonth() !== nextRepeatMonth.getMonth()) { 
+      nextRepeatMonth.setDate(0);
+    }
+
+  }
+
+  return ({ nextRepeatMonth, newRepeatRule });
+}
+
+// 원본 날짜 기억해야함. 31일 => 28일 변환은 가능. 31일 => 28일 => 31일 변환은 안됨.
+// repeatRule 3-month-날짜 추가
+
+
+
+
+
+
+
+export function getNextRepeatYear(date, offset = 1) {  // daily, custom-days
   const nextDay = date;
   nextDay.setDate(nextDay.getDate() + offset);
   return nextDay
 }
 
 
-// export function getNextRepeatDateOfWeek(baseDate, dayOfWeek, intervalOfWeek) {  // interval만큼 뒤의 daysOfWeek의 date obj를 구함
-//   const dayOfWeekMap = {
-//     sun: 0,
-//     mon: 1,
-//     tue: 2,
-//     wed: 3,
-//     thu: 4,
-//     fri: 5,
-//     sat: 6,
-//   };
-
-//   const targetDayOfWeek = dayOfWeekMap[dayOfWeek.toLowerCase()];
-//   const currentDayOfWeek = baseDate.getDay();
-//   let daysUntilTarget = (targetDayOfWeek + 7 - currentDayOfWeek) % 7;
-
-//   if (daysUntilTarget < 0) {
-//     daysUntilTarget += 7;
-//   }
-
-//   const daysToAdd = daysUntilTarget + (intervalOfWeek - 1) * 7;
-
-//   const nextRepeatDate = new Date(baseDate);
-//   nextRepeatDate.setDate(baseDate.getDate() + daysToAdd);
-
-//   if (currentDayOfWeek === targetDayOfWeek) {
-//     nextRepeatDate.setDate(nextRepeatDate.getDate() + 7);
-//   }
-
-//   return nextRepeatDate;
-// }
-
-
-export function getNextRepeatWeek (repeatRule, currentDueDate) {
+export function getNextRepeatWeekWithOption (date, repeatRule) {  // (dateObj, "1-week-sun-wed-fri") => 완료됐을때, rule을 반영한 다음 repeat 날짜
   const dayOfWeekMap = {
     sun: 0,
     mon: 1,
@@ -181,14 +198,24 @@ export function getNextRepeatWeek (repeatRule, currentDueDate) {
     sat: 6,
   };
 
+  const currentDueDate = date
   const ruleDaysArr = repeatRule.split("-").slice(2)
   const currentDayOfWeek = currentDueDate.getDay()
-  let nextRepeatDate;
+  let nextRepeatDate = new Date(currentDueDate);
   let shouldAddInterval = true
   let closestDay = 7
   let earlistOfWeek = 7
+  
+  // 옵션 없을때 ((ex) 1-week, 3-week ...) => dueDate * weeks
+  if (!ruleDaysArr.length) {
+    nextRepeatDate.setTime(nextRepeatDate.getTime() + repeatRule.split("-")[0] * 7 * 24 * 60 * 60 * 1000)
+    return nextRepeatDate
+  }
+
+
+  // 옵션이 존재하고, 이번주에 남은 요일이 있을때. ((ex) 2-week-sat, today: tue)
   for (let i = 0; i < ruleDaysArr.length; i++) {
-    if (dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek > 0 && dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek < closestDay) {  // 이번주에 남은 요일이 있을때.
+    if (dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek > 0 && dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek < closestDay) {  
         closestDay = dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek;
         nextRepeatDate = new Date(currentDueDate)
         nextRepeatDate.setDate(currentDueDate.getDate() + (dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek))
@@ -198,9 +225,9 @@ export function getNextRepeatWeek (repeatRule, currentDueDate) {
       earlistOfWeek = dayOfWeekMap[ruleDaysArr[i]]
     }
   }
-  console.log(earlistOfWeek)
   
-  if (shouldAddInterval) {  // 이번주에 남은 요일이 없을때(오늘 포함) -> 인터벌 주 이후의 해당 요일 date객체를 구해야함.
+  // 옵션이 존재하고, 이번주에 남은 요일이 없을때(오늘 포함) ((ex) 3-week-tue, today: tue)
+  if (shouldAddInterval) {  
     const intervalOfWeek = parseInt(repeatRule.split("-")[0])
     let daysUntilTarget = (earlistOfWeek + 7 - currentDayOfWeek) % 7;
     if (daysUntilTarget < 0) {
@@ -219,18 +246,3 @@ export function getNextRepeatWeek (repeatRule, currentDueDate) {
 }
 
 
-
-
-
-
-// "2023-09-22T14:59:59.000Z" -> Fri Sep 22 2023 23:59:59 GMT+0900 (Korean Standard Time)
-//"1-week-mon-tue-wed-thu-fri" -> ['1', 'week', 'mon', 'tue', 'wed', 'thu', 'fri']
-// export function getNextRepeat(currentDateISO, repeatRule) {
-//   const currentDueDate = new Date(taskItem.dueDate);
-//   const repeatRule = taskItem.repeatRule.split("-");
-//   if (repeatRule.length === 2) {
-
-//   }
-
-
-// }
