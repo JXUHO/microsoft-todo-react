@@ -6,7 +6,7 @@ import classes from "./AddTask.module.css";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
-import getLastTimeOfDay, { getNextClosestDayOfWeekFromDate, getNextRepeatDay, getNextRepeatMonth, getNextRepeatWeekWithOption } from "../date/getDates";
+import getLastTimeOfDay, { getNextClosestDayOfWeekFromDate, getNextRepeatDate, getNextRepeatMonth, getNextRepeatWeekWithOption, getNextRepeatYear } from "../date/getDates";
 
 const initialTask = {
   id: "", // uuid
@@ -99,26 +99,29 @@ const AddTask = (props) => {
     // complete됐다가 complete state가 다시 false로 변하는 경우 고려할것.
 
     let updatedTasks = [];
-
+    let flag = false
     tasksStored.forEach((taskItem) => {
       if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat 등록된 task가 완료됐을 때
-
+        const currentDueDate = new Date(taskItem.dueDate);
         let nextRepeatDate;
+        let repeatRule = taskItem.repeatRule;
         switch (taskItem.repeatRule.split("-")[1]) {
           case "day":
-            nextRepeatDate = getNextRepeatDay(new Date(taskItem.dueDate), parseInt(taskItem.repeatRule.split("-")[0]))
+            nextRepeatDate = getNextRepeatDate(currentDueDate, taskItem.repeatRule)
             break;
           case "week":
-            nextRepeatDate = getNextRepeatWeekWithOption(new Date(taskItem.dueDate), taskItem.repeatRule)
+            nextRepeatDate = getNextRepeatWeekWithOption(currentDueDate, taskItem.repeatRule)
             break;
           case "month":
-            const { nextRepeatMonth, newRepeatRule } = getNextRepeatMonth(new Date(taskItem.dueDate), taskItem.repeatRule)
+            const { nextRepeatMonth, newMonthRepeatRule } = getNextRepeatMonth(currentDueDate, taskItem.repeatRule)
             nextRepeatDate = nextRepeatMonth
+            repeatRule = newMonthRepeatRule
             break;
           case "year":
-            
+            const { nextRepeatYear, newYearRepeatRule } = getNextRepeatYear(currentDueDate, taskItem.repeatRule)
+            nextRepeatDate = nextRepeatYear
+            repeatRule = newYearRepeatRule
             break;
-        
           default:
             break;
         }
@@ -126,12 +129,14 @@ const AddTask = (props) => {
           ...taskItem,
           complete: false,
           dueDate: nextRepeatDate.toISOString(),
+          repeatRule: repeatRule
         };
         taskItem.repeated = true;
         updatedTasks.push(nextRepeatTask);
       }
 
       updatedTasks.push(taskItem);
+      flag = true
     });
 
     // // infinite loop 주의해야함. 조건문 내부에 넣을것. flag를 설정해서 dispatch 이후로 false로 변경, addTaskHandler에서 true로 변경
