@@ -22,11 +22,17 @@ const todoSlice = createSlice({
       );
       todoToChange.importance = !todoToChange.importance;
     },
+    repeatedTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload
+      );
+      todoToChange.repeated = !todoToChange.repeated
+    },
     updateTodos: (state, action) => {
       state.todos = action.payload;
     }
   },
 });
 
-export const { addTodo, removeTodo, completeTodo, importanceTodo, updateTodos } = todoSlice.actions;
+export const { addTodo, removeTodo, completeTodo, importanceTodo, updateTodos, repeatedTodo } = todoSlice.actions;
 export default todoSlice.reducer;

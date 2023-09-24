@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, updateTodos } from "../../store/todoSlice";
+import { addTodo, updateTodos, repeatedTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import classes from "./AddTask.module.css";
 import DuePopover from "./DuePopover";
@@ -30,7 +30,6 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const tasksStored = useSelector((state) => state.todo.todos);
   const [taskInput, setTaskInput] = useState(initialTask);
-  const [repeatFlag, setRepeatFlag] = useState(false)
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
@@ -79,7 +78,7 @@ const AddTask = (props) => {
     if (!taskInput.dueDate && taskInput.repeatRule) {
       repeatRef.current.resetRepeat();
     }
-  }, [taskInput.dueDate, taskInput.repeatRule]);
+  }, [taskInput.dueDate]);
 
   useEffect(() => {  // repeat설정했을때, due버튼 설정
     if (taskInput.repeatRule && !taskInput.dueDate) {
@@ -90,7 +89,7 @@ const AddTask = (props) => {
         dueRef.current.setDue(getNextClosestDayOfWeekFromDate(today, taskInput.repeatRule.split("-").slice(2)))
       }
     } 
-  }, [taskInput.repeatRule, taskInput.dueDate]);
+  }, [taskInput.repeatRule]);
 
 
 
@@ -101,9 +100,7 @@ const AddTask = (props) => {
 
   useEffect(() => {
   
-    let updatedTasks = [];
     tasksStored.forEach((taskItem) => {
-      let updatedTaskItem = { ...taskItem };
       if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat 등록된 task가 완료됐을 때
         const currentDueDate = new Date(taskItem.dueDate);
         let nextRepeatDate;
@@ -140,19 +137,13 @@ const AddTask = (props) => {
           // myday: isToday
         };
 
-        updatedTaskItem = { ...taskItem, repeated: true };  // dispatch 추가
-        updatedTasks.push(updatedTaskItem) 
-        updatedTasks.push(nextRepeatTask);  
-        
+        dispatch(repeatedTodo(taskItem.id))
+        dispatch(addTodo(nextRepeatTask))
       }
-      updatedTasks.push(taskItem)  
     });
-
-    // dispatch(updateTodos(updatedTasks));  
     
   }, [dispatch, tasksStored]);
 
-  // updatedTasks 배열을 state로 만든다.
 
 
 
