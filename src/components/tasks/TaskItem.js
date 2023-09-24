@@ -22,15 +22,30 @@ const TaskItem = ({ todo }) => {
 
   return (
     <div className={classes.taskItem}>
-      <span onClick={completedHandler} style={{color: todo.completed && "red"}}>completed</span>
+      <span
+        onClick={completedHandler}
+        style={{ color: todo.completed && "red" }}
+      >
+        complete
+      </span>
 
       <button onClick={() => detailOpenHandler(todo.id)}>
         <span>{todo.task}</span>
         <div>
-          metaDataInfo
+          <ul>
+            <li>{todo.complete && "completed"}</li>
+            <li>{todo.repeated && "repeated"}</li>
+            <li>{todo.repeatRule}</li>
+            <li>{todo.dueDate}</li>
+          </ul>
         </div>
       </button>
-      <div onClick={importanceHandler} style={{color: todo.importance && "red"}}>star</div>
+      <div
+        onClick={importanceHandler}
+        style={{ color: todo.importance && "red" }}
+      >
+        star
+      </div>
     </div>
   );
 };

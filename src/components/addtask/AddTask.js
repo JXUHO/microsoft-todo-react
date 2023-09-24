@@ -30,6 +30,7 @@ const AddTask = (props) => {
   const dispatch = useDispatch();
   const tasksStored = useSelector((state) => state.todo.todos);
   const [taskInput, setTaskInput] = useState(initialTask);
+  const [repeatFlag, setRepeatFlag] = useState(false)
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
@@ -78,7 +79,7 @@ const AddTask = (props) => {
     if (!taskInput.dueDate && taskInput.repeatRule) {
       repeatRef.current.resetRepeat();
     }
-  }, [taskInput.dueDate]);
+  }, [taskInput.dueDate, taskInput.repeatRule]);
 
   useEffect(() => {  // repeat설정했을때, due버튼 설정
     if (taskInput.repeatRule && !taskInput.dueDate) {
@@ -89,18 +90,20 @@ const AddTask = (props) => {
         dueRef.current.setDue(getNextClosestDayOfWeekFromDate(today, taskInput.repeatRule.split("-").slice(2)))
       }
     } 
-  }, [taskInput.repeatRule]);
+  }, [taskInput.repeatRule, taskInput.dueDate]);
 
 
-  useEffect(() => {
-    // 등록 후 repeat관리
+
+  // 등록 후 repeat관리
     // complete된 경우 repeat이 true인 항목을 false로 업데이트하고, 다음 repeat 기간의 repeat true인 task를 추가하고
     // todos배열을 통째로 dispatch해서 기존의 항목과 대체.
     // complete됐다가 complete state가 다시 false로 변하는 경우 고려할것.
 
+  useEffect(() => {
+  
     let updatedTasks = [];
-    let flag = false
     tasksStored.forEach((taskItem) => {
+      let updatedTaskItem = { ...taskItem };
       if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat 등록된 task가 완료됐을 때
         const currentDueDate = new Date(taskItem.dueDate);
         let nextRepeatDate;
@@ -125,26 +128,33 @@ const AddTask = (props) => {
           default:
             break;
         }
+        console.log(nextRepeatDate);
         const nextRepeatTask = {
           ...taskItem,
           complete: false,
           dueDate: nextRepeatDate.toISOString(),
-          repeatRule: repeatRule
+          repeatRule: repeatRule,
+          id: uuid(),
+          created: new Date().toISOString(),
+          repeated: false
+          // myday: isToday
         };
-        taskItem.repeated = true;
-        updatedTasks.push(nextRepeatTask);
-      }
 
-      updatedTasks.push(taskItem);
-      flag = true
+        updatedTaskItem = { ...taskItem, repeated: true };  // dispatch 추가
+        updatedTasks.push(updatedTaskItem) 
+        updatedTasks.push(nextRepeatTask);  
+        
+      }
+      updatedTasks.push(taskItem)  
     });
 
-    // // infinite loop 주의해야함. 조건문 내부에 넣을것. flag를 설정해서 dispatch 이후로 false로 변경, addTaskHandler에서 true로 변경
-    // if (flag) {
-    //   dispatch(updateTodos(updatedTasks));
-    //   flag = false
-    // }
-  }, [tasksStored]);
+    // dispatch(updateTodos(updatedTasks));  
+    
+  }, [dispatch, tasksStored]);
+
+  // updatedTasks 배열을 state로 만든다.
+
+
 
   return (
     <div className={classes.addTaskBar}>

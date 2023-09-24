@@ -6,7 +6,10 @@ const TaskList = () => {
   const incompletedTodos = todos.filter(todo => !todo.completed)
   return (
     <div>
-      {incompletedTodos.map((todo) => (
+      {/* {incompletedTodos.map((todo) => (
+        <TaskItem key={todo.id} todo={todo}/>
+      ))} */}
+      {todos.map((todo) => (
         <TaskItem key={todo.id} todo={todo}/>
       ))}
     </div>
