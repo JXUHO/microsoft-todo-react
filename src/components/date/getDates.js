@@ -221,6 +221,11 @@ export function getNextRepeatYear(date, repeatRule) {
 }
 
 
+
+// date로 들어온, dueDate로 설정된 날짜가, 오늘과 일치하지 않으면, 가장 가까운 repeat rule에 설정된 날짜로 변경함.
+// week 옵션에는 반드시 요일 옵션이 존재해야 한다 -> RepeatPopover.jsx에서 week 옵션 뒤에 current 요일옵션 추가해야함
+// 아래 코드에서 옵션 없을 때를 제거하고, useRepeatTasks hook에서 repeatRule이 존재하고&&complete가안됐고&&repeated가false이면 해당 요일을 변경해야 한다
+
 export function getNextRepeatWeekWithOption(date, repeatRule) {
   // (dateObj, "1-week-sun-wed-fri") => 완료됐을때, rule을 반영한 다음 repeat 날짜
   const dayOfWeekMap = {

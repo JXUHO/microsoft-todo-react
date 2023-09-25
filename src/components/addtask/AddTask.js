@@ -124,6 +124,7 @@ const AddTask = (props) => {
           />
           <RepeatPopover
             setRepeatRule={taskCreateValueHandler}
+            repeatValue={taskInput.repeatRule}
             ref={repeatRef}
           />
         </div>

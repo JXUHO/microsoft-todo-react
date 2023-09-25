@@ -56,7 +56,8 @@ const useRepeatTasks = (tasksStored) => {
           repeated: false,
           // myday: isToday
         };
-
+         
+        // dispatch() week이 imperative하게 변경된 경우, taskItem.id를 수정해야 함
         dispatch(repeatedTodo(taskItem.id));
         dispatch(addTodo(nextRepeatTask));
       }

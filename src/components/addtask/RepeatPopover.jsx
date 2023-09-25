@@ -7,14 +7,13 @@ import {
   useInteractions,
   useMergeRefs,
 } from "@floating-ui/react";
-import { forwardRef, useImperativeHandle, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { useSelector } from "react-redux";
 import RepeatItems from "./RepeatItems";
 import useRepeatTasks from "../../hooks/useRepeatTasks";
 import RepeatCustom from "./RepeatCustom";
 
-const RepeatPopover = forwardRef(({ setRepeatRule }, ref) => {
-  const dispatch = useDispatch();
+const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
   const tasksStored = useSelector((state) => state.todo.todos);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -113,7 +112,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule }, ref) => {
       default:
         break;
     }
-    setRepeatButtonText(input.charAt(0).toUpperCase() + input.slice(1));
+    // setRepeatButtonText(input.charAt(0).toUpperCase() + input.slice(1));
     setPopoverOpen(false);
     setShowRepeatRemoveButton(true);
   };
@@ -132,6 +131,46 @@ const RepeatPopover = forwardRef(({ setRepeatRule }, ref) => {
   const closePopoverHandler = () => {
     setPopoverOpen(false);
   };
+
+  const closeCustomHandler = () => {
+    setCustomOpen(false);
+  };
+
+  useEffect(() => {
+    // repeatValue가 설정되면, 버튼 text 설정
+    console.log(repeatValue)
+    const repeatValueArr = repeatValue.split("-")
+    // interval 1이면 daily, weekly, weekdays, monthly, yearly
+    // interval 2이상이면 Every [interval] 반복단위, [선택한 요일]
+    let buttonText = "Repeat"
+    if (repeatValueArr[0] === "1" && repeatValueArr.length === 2) {  // 1-week
+      switch (repeatValueArr[1]) {
+        case "day":
+          buttonText = "Daily"
+          break;
+        case "week":
+          buttonText = "Weekly"
+          break;
+        case "month":
+          buttonText = "Monthly"
+          break;
+        case "year":
+          buttonText = "Yearly"
+          break;    
+        default:
+          break;
+      }
+    }
+    if (repeatValueArr.length === 2 && repeatValueArr[0] !== "1") {  // 2-week
+      
+    }
+    
+
+
+    setRepeatButtonText(buttonText)
+  }, [repeatValue])
+
+
 
   return (
     <>
@@ -162,7 +201,10 @@ const RepeatPopover = forwardRef(({ setRepeatRule }, ref) => {
           {...getCustomFloatingProps()}
           style={customFloatingStyles}
         >
-          <RepeatCustom />
+          <RepeatCustom
+            setRepeatRule={setRepeatRule}
+            closeCustom={closeCustomHandler}
+          />
         </div>
       )}
 
