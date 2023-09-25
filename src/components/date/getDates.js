@@ -227,7 +227,7 @@ export function getNextRepeatYear(date, repeatRule) {
 // 아래 코드에서 옵션 없을 때를 제거하고, useRepeatTasks hook에서 repeatRule이 존재하고&&complete가안됐고&&repeated가false이면 해당 요일을 변경해야 한다
 
 export function getNextRepeatWeekWithOption(date, repeatRule) {
-  // (dateObj, "1-week-sun-wed-fri") => 완료됐을때, rule을 반영한 다음 repeat 날짜
+  // (dateObj, "1-week-sun-wed-fri") => 해당하는 task가 완료됐을때, rule을 반영한 다음 repeat 날짜를 return한다
   const dayOfWeekMap = {
     sun: 0,
     mon: 1,
@@ -246,16 +246,7 @@ export function getNextRepeatWeekWithOption(date, repeatRule) {
   let closestDay = 7;
   let earlistOfWeek = 7;
 
-  // 옵션 없을때 ((ex) 1-week, 3-week ...) => dueDate * weeks
-  if (!ruleDaysArr.length) {
-    nextRepeatDate.setTime(
-      nextRepeatDate.getTime() +
-        repeatRule.split("-")[0] * 7 * 24 * 60 * 60 * 1000
-    );
-    return nextRepeatDate;
-  }
-
-  // 옵션이 존재하고, 이번주에 남은 요일이 있을때. ((ex) 2-week-sat, today: tue)
+  // 이번주에 남은 요일이 있을때. ((ex) 2-week-sat, today: tue)
   for (let i = 0; i < ruleDaysArr.length; i++) {
     if (
       dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek > 0 &&
@@ -274,7 +265,7 @@ export function getNextRepeatWeekWithOption(date, repeatRule) {
     }
   }
 
-  // 옵션이 존재하고, 이번주에 남은 요일이 없을때(오늘 포함) ((ex) 3-week-tue, today: tue)
+  // 이번주에 남은 요일이 없을때(오늘 포함) ((ex) 3-week-tue, today: tue)
   if (shouldAddInterval) {
     const intervalOfWeek = parseInt(repeatRule.split("-")[0]);
     let daysUntilTarget = (earlistOfWeek + 7 - currentDayOfWeek) % 7;
@@ -292,3 +283,73 @@ export function getNextRepeatWeekWithOption(date, repeatRule) {
 
   return nextRepeatDate;
 }
+
+
+
+
+// export function getNextRepeatWeekWithOption(date, repeatRule) {
+//   // (dateObj, "1-week-sun-wed-fri") => 완료됐을때, rule을 반영한 다음 repeat 날짜
+//   const dayOfWeekMap = {
+//     sun: 0,
+//     mon: 1,
+//     tue: 2,
+//     wed: 3,
+//     thu: 4,
+//     fri: 5,
+//     sat: 6,
+//   };
+
+//   const currentDueDate = date;
+//   const ruleDaysArr = repeatRule.split("-").slice(2);
+//   const currentDayOfWeek = currentDueDate.getDay();
+//   let nextRepeatDate = new Date(currentDueDate);
+//   let shouldAddInterval = true;
+//   let closestDay = 7;
+//   let earlistOfWeek = 7;
+
+//   // 옵션 없을때 ((ex) 1-week, 3-week ...) => dueDate * weeks
+//   if (!ruleDaysArr.length) {
+//     nextRepeatDate.setTime(
+//       nextRepeatDate.getTime() +
+//         repeatRule.split("-")[0] * 7 * 24 * 60 * 60 * 1000
+//     );
+//     return nextRepeatDate;
+//   }
+
+//   // 옵션이 존재하고, 이번주에 남은 요일이 있을때. ((ex) 2-week-sat, today: tue)
+//   for (let i = 0; i < ruleDaysArr.length; i++) {
+//     if (
+//       dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek > 0 &&
+//       dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek < closestDay
+//     ) {
+//       closestDay = dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek;
+//       nextRepeatDate = new Date(currentDueDate);
+//       nextRepeatDate.setDate(
+//         currentDueDate.getDate() +
+//           (dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek)
+//       );
+//       shouldAddInterval = false;
+//     }
+//     if (dayOfWeekMap[ruleDaysArr[i]] < earlistOfWeek) {
+//       earlistOfWeek = dayOfWeekMap[ruleDaysArr[i]];
+//     }
+//   }
+
+//   // 옵션이 존재하고, 이번주에 남은 요일이 없을때(오늘 포함) ((ex) 3-week-tue, today: tue)
+//   if (shouldAddInterval) {
+//     const intervalOfWeek = parseInt(repeatRule.split("-")[0]);
+//     let daysUntilTarget = (earlistOfWeek + 7 - currentDayOfWeek) % 7;
+//     if (daysUntilTarget < 0) {
+//       daysUntilTarget += 7;
+//     }
+//     const daysToAdd = daysUntilTarget + (intervalOfWeek - 1) * 7;
+//     nextRepeatDate = new Date(currentDueDate);
+//     nextRepeatDate.setDate(currentDueDate.getDate() + daysToAdd);
+
+//     if (currentDayOfWeek === earlistOfWeek) {
+//       nextRepeatDate.setDate(nextRepeatDate.getDate() + 7);
+//     }
+//   }
+
+//   return nextRepeatDate;
+// }

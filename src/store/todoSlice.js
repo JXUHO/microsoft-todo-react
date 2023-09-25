@@ -28,11 +28,15 @@ const todoSlice = createSlice({
       );
       todoToChange.repeated = !todoToChange.repeated
     },
-    updateTodos: (state, action) => {
-      state.todos = action.payload;
+    changeDueDateTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.dueDate = action.payload.dueDate
     }
+
   },
 });
 
-export const { addTodo, removeTodo, completeTodo, importanceTodo, updateTodos, repeatedTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, completeTodo, importanceTodo, repeatedTodo, changeDueDateTodo } = todoSlice.actions;
 export default todoSlice.reducer;

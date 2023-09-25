@@ -13,6 +13,7 @@ const RepeatCustom = ({setRepeatRule, closeCustom}) => {
     fri: false,
     sat: false
   })
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true)
 
   const repeatCustomOptionHandler = (event) => {
     setRepeatCustomOption(event.target.value)
@@ -26,6 +27,14 @@ const RepeatCustom = ({setRepeatRule, closeCustom}) => {
     setRepeatCustomWeekdays(prevState => ({...prevState, [input]: !prevState[input]}))
   }
 
+  useEffect(() => {
+    for (const weekday in repeatCustomWeekdays) {
+      if (repeatCustomWeekdays[weekday] === true) {
+        setIsSaveButtonDisabled(false)
+        break;
+      }
+    }
+  }, [repeatCustomWeekdays])
 
 
   const repeatCustomSaveHandler = () => {
@@ -94,7 +103,7 @@ const RepeatCustom = ({setRepeatRule, closeCustom}) => {
         </div>
       )}
 
-      <button onClick={repeatCustomSaveHandler} > {/**disabled={repeatCustomOption === "week" && {/**요일선택 안됐을때*/}
+      <button onClick={repeatCustomSaveHandler}  disabled={repeatCustomOption === "week" && isSaveButtonDisabled} >
         <span>Save</span>
       </button>
     </div>

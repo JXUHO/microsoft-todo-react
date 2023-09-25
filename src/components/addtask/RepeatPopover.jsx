@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import RepeatItems from "./RepeatItems";
 import useRepeatTasks from "../../hooks/useRepeatTasks";
 import RepeatCustom from "./RepeatCustom";
+import { getDayOfWeek } from "../date/getDates";
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
   const tasksStored = useSelector((state) => state.todo.todos);
@@ -101,7 +102,9 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
         setRepeatRule("1-week-mon-tue-wed-thu-fri", "repeatRule");
         break;
       case "weekly":
-        setRepeatRule("1-week", "repeatRule");
+        // 오늘 요일 구하고, 1-week뒤에 덧붙임
+        const currentDay = getDayOfWeek(new Date())
+        setRepeatRule("1-week-" + currentDay, "repeatRule");
         break;
       case "monthly":
         setRepeatRule("1-month", "repeatRule");
