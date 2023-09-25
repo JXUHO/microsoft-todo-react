@@ -6,7 +6,7 @@ import {
   getNextRepeatMonth,
   getNextRepeatWeekWithOption,
   getNextRepeatYear,
-} from "../components/date/getDates";
+} from "../components/utils/getDates";
 import uuid from "react-uuid";
 import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
 

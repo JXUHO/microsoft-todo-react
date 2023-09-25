@@ -12,9 +12,13 @@ import { useSelector } from "react-redux";
 import RepeatItems from "./RepeatItems";
 import useRepeatTasks from "../../hooks/useRepeatTasks";
 import RepeatCustom from "./RepeatCustom";
-import { getDayOfWeek } from "../date/getDates";
+import {
+  getDayOfWeek,
+  getFullDayNames,
+  isValidWeekdaysArray,
+} from "../utils/getDates";
 
-const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
+const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   const tasksStored = useSelector((state) => state.todo.todos);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -103,7 +107,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
         break;
       case "weekly":
         // 오늘 요일 구하고, 1-week뒤에 덧붙임
-        const currentDay = getDayOfWeek(new Date())
+        const currentDay = getDayOfWeek(new Date());
         setRepeatRule("1-week-" + currentDay, "repeatRule");
         break;
       case "monthly":
@@ -115,15 +119,11 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
       default:
         break;
     }
-    // setRepeatButtonText(input.charAt(0).toUpperCase() + input.slice(1));
     setPopoverOpen(false);
-    setShowRepeatRemoveButton(true);
   };
 
   const resetRepeatHandler = () => {
-    setRepeatButtonText("Repeat");
     setRepeatRule("", "repeatRule");
-    setShowRepeatRemoveButton(false);
     setPopoverOpen(false);
   };
 
@@ -140,40 +140,14 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
   };
 
   useEffect(() => {
-    // repeatValue가 설정되면, 버튼 text 설정
-    console.log(repeatValue)
-    const repeatValueArr = repeatValue.split("-")
-    // interval 1이면 daily, weekly, weekdays, monthly, yearly
-    // interval 2이상이면 Every [interval] 반복단위, [선택한 요일]
-    let buttonText = "Repeat"
-    if (repeatValueArr[0] === "1" && repeatValueArr.length === 2) {  // 1-week
-      switch (repeatValueArr[1]) {
-        case "day":
-          buttonText = "Daily"
-          break;
-        case "week":
-          buttonText = "Weekly"
-          break;
-        case "month":
-          buttonText = "Monthly"
-          break;
-        case "year":
-          buttonText = "Yearly"
-          break;    
-        default:
-          break;
-      }
+    if (repeatRuleValue) {
+      setShowRepeatRemoveButton(true);
+      setRepeatButtonText(getRepeatButtonText(repeatRuleValue));
+    } else {
+      setRepeatButtonText("Repeat");
+      setShowRepeatRemoveButton(false);
     }
-    if (repeatValueArr.length === 2 && repeatValueArr[0] !== "1") {  // 2-week
-      
-    }
-    
-
-
-    setRepeatButtonText(buttonText)
-  }, [repeatValue])
-
-
+  }, [repeatRuleValue]);
 
   return (
     <>
@@ -236,6 +210,70 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatValue }, ref) => {
 });
 
 export default RepeatPopover;
+
+// button text helper function
+const getRepeatButtonText = (repeatRule) => {
+  let repeatButtonText = "Repeat";
+  const repeatRuleArr = repeatRule.split("-");
+
+  if (repeatRuleArr[0] === "1") {
+    // 1-month, 1-week-mon-tue
+    switch (repeatRuleArr[1]) {
+      case "day":
+        repeatButtonText = "Daily";
+        break;
+      case "week":
+        if (isValidWeekdaysArray(repeatRuleArr.slice(2))) {
+          repeatButtonText = "Weekdays";
+        } else {
+          repeatButtonText =
+            "Weekly, " +
+            getFullDayNames(repeatRuleArr.slice(2))
+              .join(", ")
+              .replace(/,([^,]*)$/, " &$1");
+        }
+        break;
+      case "month":
+        repeatButtonText = "Monthly";
+        break;
+      case "year":
+        repeatButtonText = "Yearly";
+        break;
+      default:
+        break;
+    }
+  } else {
+    // 2-year, 2-week-mon-tue-fri
+    switch (repeatRuleArr[1]) {
+      case "day":
+        repeatButtonText = "Every " + repeatRuleArr[0] + " days";
+        break;
+      case "week":
+        if (isValidWeekdaysArray(repeatRuleArr.slice(2))) {
+          repeatButtonText =
+            "Every " + repeatRuleArr[0] + " weeks, " + "Weekdays";
+        } else {
+          repeatButtonText =
+            "Every " +
+            repeatRuleArr[0] +
+            " weeks, " +
+            getFullDayNames(repeatRuleArr.slice(2))
+              .join(", ")
+              .replace(/,([^,]*)$/, " &$1");
+        }
+        break;
+      case "month":
+        repeatButtonText = "Every " + repeatRuleArr[0] + " months";
+        break;
+      case "year":
+        repeatButtonText = "Every " + repeatRuleArr[0] + " years";
+        break;
+      default:
+        break;
+    }
+  }
+  return repeatButtonText;
+};
 
 /**
  * TODO

@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import DueItems from "./DueItems";
-import { getCustomFormatDateString } from "../date/getDates";
+import { getCustomFormatDateString } from "../utils/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './custom-datepicker.css';

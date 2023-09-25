@@ -128,6 +128,36 @@ export function getDayOfWeek(date) {
   }
 }
 
+export function getFullDayNames(abbreviatedDayNames) {  
+  //["mon", "tue"] => ["Monday", "Tuesday"]
+  const dayNameMap = {
+    mon: 'Monday',
+    tue: 'Tuesday',
+    wed: 'Wednesday',
+    thu: 'Thursday',
+    fri: 'Friday',
+    sat: 'Saturday',
+    sun: 'Sunday',
+  };
+
+  return abbreviatedDayNames.map((abbreviatedDay) =>
+    dayNameMap[abbreviatedDay.toLowerCase()] || abbreviatedDay
+  );
+}
+
+export function isValidWeekdaysArray(weekdaysArray) {
+  // ["mon", "tue", "wed"] => false 
+  const validWeekdays = ["mon", "tue", "wed", "thu", "fri"];
+
+  if (weekdaysArray.length !== 5) {
+    return false; 
+  }
+
+  return weekdaysArray.every((weekday) =>
+    validWeekdays.includes(weekday)
+  );
+}
+
 export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {
   // (dateObj, ["mon", "tue"]) => base와 가장 가까운 target요일
   const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -285,71 +315,3 @@ export function getNextRepeatWeekWithOption(date, repeatRule) {
 }
 
 
-
-
-// export function getNextRepeatWeekWithOption(date, repeatRule) {
-//   // (dateObj, "1-week-sun-wed-fri") => 완료됐을때, rule을 반영한 다음 repeat 날짜
-//   const dayOfWeekMap = {
-//     sun: 0,
-//     mon: 1,
-//     tue: 2,
-//     wed: 3,
-//     thu: 4,
-//     fri: 5,
-//     sat: 6,
-//   };
-
-//   const currentDueDate = date;
-//   const ruleDaysArr = repeatRule.split("-").slice(2);
-//   const currentDayOfWeek = currentDueDate.getDay();
-//   let nextRepeatDate = new Date(currentDueDate);
-//   let shouldAddInterval = true;
-//   let closestDay = 7;
-//   let earlistOfWeek = 7;
-
-//   // 옵션 없을때 ((ex) 1-week, 3-week ...) => dueDate * weeks
-//   if (!ruleDaysArr.length) {
-//     nextRepeatDate.setTime(
-//       nextRepeatDate.getTime() +
-//         repeatRule.split("-")[0] * 7 * 24 * 60 * 60 * 1000
-//     );
-//     return nextRepeatDate;
-//   }
-
-//   // 옵션이 존재하고, 이번주에 남은 요일이 있을때. ((ex) 2-week-sat, today: tue)
-//   for (let i = 0; i < ruleDaysArr.length; i++) {
-//     if (
-//       dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek > 0 &&
-//       dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek < closestDay
-//     ) {
-//       closestDay = dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek;
-//       nextRepeatDate = new Date(currentDueDate);
-//       nextRepeatDate.setDate(
-//         currentDueDate.getDate() +
-//           (dayOfWeekMap[ruleDaysArr[i]] - currentDayOfWeek)
-//       );
-//       shouldAddInterval = false;
-//     }
-//     if (dayOfWeekMap[ruleDaysArr[i]] < earlistOfWeek) {
-//       earlistOfWeek = dayOfWeekMap[ruleDaysArr[i]];
-//     }
-//   }
-
-//   // 옵션이 존재하고, 이번주에 남은 요일이 없을때(오늘 포함) ((ex) 3-week-tue, today: tue)
-//   if (shouldAddInterval) {
-//     const intervalOfWeek = parseInt(repeatRule.split("-")[0]);
-//     let daysUntilTarget = (earlistOfWeek + 7 - currentDayOfWeek) % 7;
-//     if (daysUntilTarget < 0) {
-//       daysUntilTarget += 7;
-//     }
-//     const daysToAdd = daysUntilTarget + (intervalOfWeek - 1) * 7;
-//     nextRepeatDate = new Date(currentDueDate);
-//     nextRepeatDate.setDate(currentDueDate.getDate() + daysToAdd);
-
-//     if (currentDayOfWeek === earlistOfWeek) {
-//       nextRepeatDate.setDate(nextRepeatDate.getDate() + 7);
-//     }
-//   }
-
-//   return nextRepeatDate;
-// }

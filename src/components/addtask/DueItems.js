@@ -1,6 +1,6 @@
 import getLastTimeOfDay, {
   getNextMonday,
-} from "../date/getDates";
+} from "../utils/getDates";
 
 const DueItems = ({
   onAddDueDate,

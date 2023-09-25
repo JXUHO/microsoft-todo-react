@@ -8,7 +8,7 @@ import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
-} from "../date/getDates";
+} from "../utils/getDates";
 
 const initialTask = {
   id: "", // uuid
@@ -124,7 +124,7 @@ const AddTask = (props) => {
           />
           <RepeatPopover
             setRepeatRule={taskCreateValueHandler}
-            repeatValue={taskInput.repeatRule}
+            repeatRuleValue={taskInput.repeatRule}
             ref={repeatRef}
           />
         </div>

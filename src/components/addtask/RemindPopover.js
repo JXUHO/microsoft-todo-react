@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import RemindItems from "./RemindItems";
-import { formatTimeToAMPM, getCustomFormatDateString } from "../date/getDates";
+import { formatTimeToAMPM, getCustomFormatDateString } from "../utils/getDates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Popper from "../ui/Popper";

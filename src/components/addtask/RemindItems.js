@@ -4,7 +4,7 @@ import {
   getThreeHoursLater,
   getTomorrow,
   formatTimeToAMPM,
-} from "../date/getDates";
+} from "../utils/getDates";
 
 const RemindItems = ({
   onAddRemind,

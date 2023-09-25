@@ -22,7 +22,6 @@ const RepeatCustom = ({setRepeatRule, closeCustom}) => {
     setRepeatCustomInterval(event.target.value)
   }
 
-
   const repeatCustomWeekdaysHandler = (input) => {
     setRepeatCustomWeekdays(prevState => ({...prevState, [input]: !prevState[input]}))
   }
@@ -47,7 +46,7 @@ const RepeatCustom = ({setRepeatRule, closeCustom}) => {
 
     let repeatRule;
     if (repeatCustomOption === "week") {
-      repeatRule = repeatCustomInterval.toString() + "-week-" + selectedWeekdays.join('-')  // fix needed
+      repeatRule = repeatCustomInterval.toString() + "-week-" + selectedWeekdays.join('-') 
     } else {
       repeatRule = repeatCustomInterval.toString() + "-" + repeatCustomOption
     }
