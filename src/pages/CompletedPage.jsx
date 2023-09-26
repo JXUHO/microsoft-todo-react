@@ -1,4 +1,4 @@
-import Completed from "../components/Completed.js";
+import Completed from "../components/Completed";
 
 const CompletedPage = () => {
   return <Completed />;

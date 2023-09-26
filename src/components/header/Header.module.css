@@ -1,11 +1,3 @@
-.header {
-  background-color: #2564cf;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  color: white;
-}
-
-.header ul {
-  display: flex;
+.custom-bg-color {
+  background-color: #2664cf;
 }

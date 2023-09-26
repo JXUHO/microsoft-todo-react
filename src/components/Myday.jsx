@@ -1,8 +1,8 @@
 import AddTask from "./addtask/AddTask";
 import TaskList from "./tasks/TaskList";
-import CompletedTaskList from "./tasks/CompletedTaskList";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -13,19 +13,20 @@ const Myday = () => {
   };
 
   return (
-    <>
-      <div>
+    <div>
+      <div> {/**task toolbar*/}
         {!isSidebarOpen && (
-          <button onClick={openSidebarHandler}>open/close</button>
+          <button onClick={openSidebarHandler}>
+            <RxHamburgerMenu size="20px" />
+          </button>
         )}
-        <h1>Myday</h1>
-      </div>
+      <h1>Myday</h1>
       <AddTask isMyday={true} />
-      <div>
-        <TaskList />
-        <CompletedTaskList />
       </div>
-    </>
+      <div> {/**flex container */}
+        <TaskList />
+      </div>
+    </div>
   );
 };
 

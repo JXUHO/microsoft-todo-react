@@ -11,15 +11,22 @@ const RootPage = () => {
   const isDetailOpen = useSelector((state) => state.ui.detail);
 
   return (
-    <div className={classes.rootPage}>
+    <div className="flex flex-col h-screen bg-ms-background"> {/**root */}
+
       <Header />
-      <div className={classes.content}>
-        {isSidebarOpen && <Sidebar />}
-        <div className={classes.outlet}>
-          <Outlet />
+
+      <div className="flex flex-row flex-1">   {/**app */}
+
+        {isSidebarOpen && <Sidebar />}  {/**left column */}
+
+        <div className="flex-1 flex-col bg-ms-background">
+          <Outlet />   {/**center column */}
         </div>
-        {isDetailOpen && <TaskDetail />}
+
+        {isDetailOpen && <TaskDetail />}   {/**right column */}
+
       </div>
+
     </div>
   );
 };
