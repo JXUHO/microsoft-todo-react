@@ -15,7 +15,6 @@ const initialTask = {
   task: "", // user input
   steps: {},
   myday: false,
-  tasks: false,
   dueDate: "", // isoString
   remind: "", // isoString
   repeatRule: "",
@@ -28,7 +27,7 @@ const initialTask = {
   complete: false,
 };
 
-const AddTask = (props) => {
+const AddTask = ({isMyday}) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
   const dueRef = useRef();
@@ -43,7 +42,7 @@ const AddTask = (props) => {
       task: event.target.value,
       created: createdTime,
       id: uuid(),
-      myday: props.myday,
+      myday: isMyday,
     }));
   };
 

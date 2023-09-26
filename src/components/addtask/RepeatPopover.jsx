@@ -106,7 +106,6 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
         setRepeatRule("1-week-mon-tue-wed-thu-fri", "repeatRule");
         break;
       case "weekly":
-        // 오늘 요일 구하고, 1-week뒤에 덧붙임
         const currentDay = getDayOfWeek(new Date());
         setRepeatRule("1-week-" + currentDay, "repeatRule");
         break;

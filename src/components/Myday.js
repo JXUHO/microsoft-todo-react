@@ -4,26 +4,37 @@ import CompletedTaskList from "./tasks/CompletedTaskList";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 
-const MydayPage = () => {
-  const isSidebarOpen = useSelector(state => state.ui.sidebar)
+const Myday = () => {
+  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const dispatch = useDispatch();
 
   const openSidebarHandler = () => {
-    dispatch(openSidebar())
-  }
-
+    dispatch(openSidebar());
+  };
 
   return (
     <>
       <div>
-        {!isSidebarOpen && <button onClick={openSidebarHandler}>open/close</button>}
+        {!isSidebarOpen && (
+          <button onClick={openSidebarHandler}>open/close</button>
+        )}
         <h1>Myday</h1>
       </div>
-      <AddTask myday={true}/>
-      <TaskList/>
-      <CompletedTaskList/>
+      <AddTask isMyday={true} />
+      <div>
+        <TaskList />
+        <CompletedTaskList />
+      </div>
     </>
   );
 };
 
-export default MydayPage;
+export default Myday;
+
+/**
+ * TODO
+ * MyDayList 컴포넌트 만들기
+ * CompletedTaskList를 분리하지 않음
+ *
+ *
+ */

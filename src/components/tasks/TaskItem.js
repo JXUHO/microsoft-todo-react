@@ -24,7 +24,7 @@ const TaskItem = ({ todo }) => {
     <div className={classes.taskItem}>
       <span
         onClick={completedHandler}
-        style={{ color: todo.completed && "red" }}
+        style={{ color: todo.complete && "red" }}
       >
         complete
       </span>
