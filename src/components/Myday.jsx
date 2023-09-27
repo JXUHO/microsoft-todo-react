@@ -13,22 +13,32 @@ const Myday = () => {
   };
 
   return (
-    <div>
-      <div> {/**task toolbar*/}
+    <div className="h-full w-full">
+      <div className="block relative shrink-0 items-center mx-6 my-4 h-18">
         {!isSidebarOpen && (
           <button onClick={openSidebarHandler}>
             <RxHamburgerMenu size="20px" />
           </button>
         )}
-      <h1>Myday</h1>
-      <AddTask isMyday={true} />
+        <h2 className="text-xl font-medium">My Day</h2>
+        <span>wednesday</span>
       </div>
-      <div> {/**flex container */}
+
+      <div>
+        <AddTask isMyday={true} />
         <TaskList />
       </div>
     </div>
   );
 };
+
+// {!isSidebarOpen && (
+//   <button onClick={openSidebarHandler}>
+//     <RxHamburgerMenu size="20px" />
+//   </button>
+// )}
+// <h2 className="text-xl font-medium">My Day</h2>
+// <span>wednesday</span>
 
 export default Myday;
 

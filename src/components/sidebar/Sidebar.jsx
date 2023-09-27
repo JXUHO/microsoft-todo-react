@@ -23,10 +23,10 @@ const Sidebar = () => {
     setCurrentLocation(location.pathname);
   }, [location]);
 
-  console.log(currentLocation)
+  console.log(currentLocation);
 
   return (
-    <div className=" flex flex-col w-72 bg-white z-40 shadow-ms-bg-shadow">
+    <div className="flex flex-col w-72 bg-white z-40 shadow-ms-bg-shadow">
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
         <button onClick={closeSidebarHandler}>
           <RxHamburgerMenu size="20px" />
@@ -35,11 +35,11 @@ const Sidebar = () => {
       <div className="flex flex-col flex-1 overflow-hidden pt-1">
         <nav className="overflow-x-hidden overflow-y-auto relative text-sm">
           <ul>
-          <MyDayListBar currentLocation={currentLocation}/>
-          <ImportantListBar currentLocation={currentLocation}/>
-          <PlannedListBar currentLocation={currentLocation}/>
-          <CompletedListBar currentLocation={currentLocation}/>
-          <TasksListBar currentLocation={currentLocation}/>
+            <MyDayListBar currentLocation={currentLocation} />
+            <ImportantListBar currentLocation={currentLocation} />
+            <PlannedListBar currentLocation={currentLocation} />
+            <CompletedListBar currentLocation={currentLocation} />
+            <TasksListBar currentLocation={currentLocation} />
           </ul>
         </nav>
         <div></div>
@@ -64,10 +64,8 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const MyDayListBar = ({currentLocation}) => {
-
-  return (
-    currentLocation === "/myday" ?
+const MyDayListBar = ({ currentLocation }) => {
+  return currentLocation === "/myday" ? (
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/myday">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
@@ -78,28 +76,27 @@ const MyDayListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li>  :
+    </li>
+  ) : (
     <li>
-    <NavLink to="/myday">
-      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
-        <div>
-          <BsSun size="16px" />
+      <NavLink to="/myday">
+        <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+          <div>
+            <BsSun size="16px" />
+          </div>
+          <span className="ml-4">My Day</span>
+          <div></div>
         </div>
-        <span className="ml-4">My Day</span>
-        <div></div>
-      </div>
-    </NavLink>
-  </li> 
-
+      </NavLink>
+    </li>
   );
 };
 
-const ImportantListBar = ({currentLocation}) => {
-  return (
-    currentLocation === "/important" ?
+const ImportantListBar = ({ currentLocation }) => {
+  return currentLocation === "/important" ? (
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/important">
-      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+        <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
             <BsStar size="16px" />
           </div>
@@ -107,10 +104,11 @@ const ImportantListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li> :
+    </li>
+  ) : (
     <li>
       <NavLink to="/important">
-      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+        <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
           <div>
             <BsStar size="16px" />
           </div>
@@ -118,15 +116,14 @@ const ImportantListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li> 
+    </li>
   );
 };
-const PlannedListBar = ({currentLocation}) => {
-  return (
-    currentLocation === "/planned" ?
+const PlannedListBar = ({ currentLocation }) => {
+  return currentLocation === "/planned" ? (
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/planned">
-      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+        <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
             <IoCalendarOutline size="16px" />
           </div>
@@ -134,10 +131,11 @@ const PlannedListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li>:
+    </li>
+  ) : (
     <li>
       <NavLink to="/planned">
-      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+        <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
           <div>
             <IoCalendarOutline size="16px" />
           </div>
@@ -148,12 +146,11 @@ const PlannedListBar = ({currentLocation}) => {
     </li>
   );
 };
-const CompletedListBar = ({currentLocation}) => {
-  return (
-    currentLocation === "/completed" ?
+const CompletedListBar = ({ currentLocation }) => {
+  return currentLocation === "/completed" ? (
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/completed">
-      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+        <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
             <GoCheckCircle size="16px" />
           </div>
@@ -161,10 +158,11 @@ const CompletedListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li>:
+    </li>
+  ) : (
     <li>
       <NavLink to="/completed">
-      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+        <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
           <div>
             <GoCheckCircle size="16px" />
           </div>
@@ -175,12 +173,11 @@ const CompletedListBar = ({currentLocation}) => {
     </li>
   );
 };
-const TasksListBar = ({currentLocation}) => {
-  return (
-    currentLocation === "/inbox" ?
+const TasksListBar = ({ currentLocation }) => {
+  return currentLocation === "/inbox" ? (
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/inbox">
-      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+        <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
             <GoHome size="16px" />
           </div>
@@ -188,10 +185,11 @@ const TasksListBar = ({currentLocation}) => {
           <div></div>
         </div>
       </NavLink>
-    </li>:
+    </li>
+  ) : (
     <li>
       <NavLink to="/inbox">
-      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+        <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
           <div>
             <GoHome size="16px" />
           </div>
@@ -208,6 +206,6 @@ const TasksListBar = ({currentLocation}) => {
  *
  * ::before animation 추가하기
  *
- * 
+ *
  *
  */
