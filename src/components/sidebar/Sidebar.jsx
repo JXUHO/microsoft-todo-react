@@ -1,28 +1,29 @@
-import { NavLink, useLocation,  } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { closeSidebar } from "../../store/uiSlice";
-import {  AiOutlineMail,  } from "react-icons/ai";
+import { AiOutlineMail } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { GoPeople, GoCheckCircle } from "react-icons/go";
-import { PiCheckFatLight,  } from "react-icons/pi";
-import {BsSun, BsStar} from "react-icons/bs"
-import {RxHamburgerMenu} from "react-icons/rx"
-import {GoHome} from "react-icons/go"
+import { PiCheckFatLight } from "react-icons/pi";
+import { BsSun, BsStar } from "react-icons/bs";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { GoHome } from "react-icons/go";
 import { useEffect, useState } from "react";
-import classes from "./Sidebar.module.css"
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const location = useLocation()
-  const [currentLocation, setCurrentLocation] = useState("")
+  const location = useLocation();
+  const [currentLocation, setCurrentLocation] = useState("");
 
   const closeSidebarHandler = () => {
     dispatch(closeSidebar());
   };
 
   useEffect(() => {
-    setCurrentLocation(location.pathname)
-  }, [location])
+    setCurrentLocation(location.pathname);
+  }, [location]);
+
+  console.log(currentLocation)
 
   return (
     <div className=" flex flex-col w-72 bg-white z-40 shadow-ms-bg-shadow">
@@ -34,65 +35,11 @@ const Sidebar = () => {
       <div className="flex flex-col flex-1 overflow-hidden pt-1">
         <nav className="overflow-x-hidden overflow-y-auto relative text-sm">
           <ul>
-            <li>
-              <NavLink to="/myday" >
-                <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6 active:bg-ms-active-blue active:font-semibold">
-                  <div>
-                    <BsSun size="16px"/>
-                  </div>
-                  <span className="ml-4">My Day</span>
-                  <div></div>
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/important">
-                <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
-                  <div>
-                    <BsStar size="16px"/>
-                  </div>
-                  <span className="ml-4">
-                    Important
-                  </span>
-                  <div></div>
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/planned">
-                <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
-                  <div>
-                  <IoCalendarOutline size="16px"/>
-                  </div>
-                  <span className="ml-4">Planned</span>
-                  <div></div>
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/completed">
-                <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
-                  <div>
-                    <GoCheckCircle size="16px"/>
-                  </div>
-                  <span className="ml-4">
-                    Completed
-                  </span>
-                  <div></div>
-                </div>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/inbox">
-                <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
-                  <div>
-                    <GoHome size="16px"/>
-                  </div>
-                  <span className="ml-4">Tasks</span>
-                  <div></div>
-                </div>
-              </NavLink>
-            </li>
+          <MyDayListBar currentLocation={currentLocation}/>
+          <ImportantListBar currentLocation={currentLocation}/>
+          <PlannedListBar currentLocation={currentLocation}/>
+          <CompletedListBar currentLocation={currentLocation}/>
+          <TasksListBar currentLocation={currentLocation}/>
           </ul>
         </nav>
         <div></div>
@@ -117,11 +64,150 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-/** 
+const MyDayListBar = ({currentLocation}) => {
+
+  return (
+    currentLocation === "/myday" ?
+    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+      <NavLink to="/myday">
+        <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+          <div>
+            <BsSun size="16px" />
+          </div>
+          <span className="ml-4">My Day</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>  :
+    <li>
+    <NavLink to="/myday">
+      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+        <div>
+          <BsSun size="16px" />
+        </div>
+        <span className="ml-4">My Day</span>
+        <div></div>
+      </div>
+    </NavLink>
+  </li> 
+
+  );
+};
+
+const ImportantListBar = ({currentLocation}) => {
+  return (
+    currentLocation === "/important" ?
+    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+      <NavLink to="/important">
+      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+          <div>
+            <BsStar size="16px" />
+          </div>
+          <span className="ml-4">Important</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li> :
+    <li>
+      <NavLink to="/important">
+      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+          <div>
+            <BsStar size="16px" />
+          </div>
+          <span className="ml-4">Important</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li> 
+  );
+};
+const PlannedListBar = ({currentLocation}) => {
+  return (
+    currentLocation === "/planned" ?
+    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+      <NavLink to="/planned">
+      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+          <div>
+            <IoCalendarOutline size="16px" />
+          </div>
+          <span className="ml-4">Planned</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>:
+    <li>
+      <NavLink to="/planned">
+      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+          <div>
+            <IoCalendarOutline size="16px" />
+          </div>
+          <span className="ml-4">Planned</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>
+  );
+};
+const CompletedListBar = ({currentLocation}) => {
+  return (
+    currentLocation === "/completed" ?
+    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+      <NavLink to="/completed">
+      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+          <div>
+            <GoCheckCircle size="16px" />
+          </div>
+          <span className="ml-4">Completed</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>:
+    <li>
+      <NavLink to="/completed">
+      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+          <div>
+            <GoCheckCircle size="16px" />
+          </div>
+          <span className="ml-4">Completed</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>
+  );
+};
+const TasksListBar = ({currentLocation}) => {
+  return (
+    currentLocation === "/inbox" ?
+    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+      <NavLink to="/inbox">
+      <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
+          <div>
+            <GoHome size="16px" />
+          </div>
+          <span className="ml-4">Tasks</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>:
+    <li>
+      <NavLink to="/inbox">
+      <div className="flex items-center cursor-pointer hover:bg-ms-white-hover py-3 px-6">
+          <div>
+            <GoHome size="16px" />
+          </div>
+          <span className="ml-4">Tasks</span>
+          <div></div>
+        </div>
+      </NavLink>
+    </li>
+  );
+};
+
+/**
  * TODO
+ *
+ * ::before animation 추가하기
+ *
  * 
- * 현재 위치한 탭 active 색깔 변경하기, 폰트 semibold로 변경하기
- * navlint isActive 이용하는 방법 / state 활용해서 수동으로 스타일 추가하는 방법 / 제 3의 방법 찾아서 해결하기
- * 
- * 
+ *
  */
