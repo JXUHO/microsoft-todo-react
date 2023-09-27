@@ -16,7 +16,12 @@ export default {
         "ms-font-blue": "#2564cf",
         "ms-active-blue": "#eff6fc",
       },
-
+      height: {
+        '18': '4.5rem'
+      },
+      minWidth: {
+      '100': '100px',
+    }
     },
   },
 };

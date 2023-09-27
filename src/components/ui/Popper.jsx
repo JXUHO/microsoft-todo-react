@@ -30,7 +30,7 @@ const PopperWrapper = forwardRef(
     }));
 
     const legacyClick = e => {
-      if (e.target === elRef.current) {  // 클릭이 발생한 곳과 target의 element가 같으면 보이거나/사라짐
+      if (e.target === elRef.current || elRef.current.contains(e.target)) {  // 클릭이 발생한 곳과 target의 element가 같으면 보이거나/사라짐, target의 children element추가
         return toggleVisibility();
       }
       if (isVisible && !isInDOMSubtree(e.target, popperRef.current)) {  // 보여지고있고 클릭한곳이 popper내부가 아니면 사라짐
@@ -85,7 +85,7 @@ const PopperWrapper = forwardRef(
           {({ ref, style, placement, arrowProps }) => {
             return (
               <div
-                className="popover"
+                className="popover z-50"  // z-50 tailwind 문법 추가됨
                 ref={ref}
                 style={style}
                 data-placement={placement}

@@ -17,13 +17,15 @@ import {
   getFullDayNames,
   isValidWeekdaysArray,
 } from "../utils/getDates";
+import {BsRepeat} from 'react-icons/bs'
+
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   const tasksStored = useSelector((state) => state.todo.todos);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
-  const [repeatButtonText, setRepeatButtonText] = useState("Repeat");
+  const [repeatButtonText, setRepeatButtonText] = useState("");
   const [showRepeatRemoveButton, setShowRepeatRemoveButton] = useState(false);
 
   const {
@@ -143,7 +145,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
       setShowRepeatRemoveButton(true);
       setRepeatButtonText(getRepeatButtonText(repeatRuleValue));
     } else {
-      setRepeatButtonText("Repeat");
+      setRepeatButtonText("");
       setShowRepeatRemoveButton(false);
     }
   }, [repeatRuleValue]);
@@ -151,6 +153,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   return (
     <>
       <button ref={floatingRef} {...repeatButtonProps}>
+        <BsRepeat/>
         {repeatButtonText}
       </button>
 

@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
-import classes from "./AddTask.module.css";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
 } from "../utils/getDates";
+import { GoCircle, GoCheckCircle } from "react-icons/go";
 
 const initialTask = {
   id: "", // uuid
@@ -27,7 +27,7 @@ const initialTask = {
   complete: false,
 };
 
-const AddTask = ({isMyday}) => {
+const AddTask = ({ isMyday }) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
   const dueRef = useRef();
@@ -99,9 +99,20 @@ const AddTask = ({isMyday}) => {
   }, [taskInput.repeatRule]);
 
   return (
-    <div className={classes.addTaskBar}>
-      <div>
+    <div
+      className="flex flex-col overflow-hidden rounded"
+    >
+      <div className="flex items-center min-h-[52px] bg-white px-4 w-full" style={{borderBottom: '1px solid #e1dfdd'}}>
+        <div className="ml-2 cursor-pointer">
+          <GoCircle color="#2564cf" size="18px" />
+        </div>
         <input
+        className="px-4"
+          style={{
+            border: "none",
+            backgroundColor: "transparent",
+            outline: "none",
+          }}
           placeholder="Add a task"
           onChange={taskInputHandler}
           value={taskInput.task}
@@ -109,8 +120,8 @@ const AddTask = ({isMyday}) => {
         />
       </div>
 
-      <div className={classes.taskBar}>
-        <div className={classes.taskButtons}>
+      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0">
+        <div className="flex">
           <DuePopover
             setDueDateValue={taskCreateValueHandler}
             dueDateValue={taskInput.dueDate}

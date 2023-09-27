@@ -23,10 +23,8 @@ const Sidebar = () => {
     setCurrentLocation(location.pathname);
   }, [location]);
 
-  console.log(currentLocation)
-
   return (
-    <div className=" flex flex-col w-72 bg-white z-40 shadow-ms-bg-shadow">
+    <div className=" flex flex-col w-72 bg-white z-30 shadow-ms-bg-shadow">
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
         <button onClick={closeSidebarHandler}>
           <RxHamburgerMenu size="20px" />
@@ -67,7 +65,7 @@ export default Sidebar;
 const MyDayListBar = ({currentLocation}) => {
 
   return (
-    currentLocation === "/myday" ?
+    currentLocation === "/myday" || currentLocation === "/today" ?
     <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
       <NavLink to="/myday">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
