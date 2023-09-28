@@ -127,23 +127,23 @@ const AddTask = ({ isMyday }) => {
         />
       </div>
 
-      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0 px-4">
-        <div className="flex">
-          <div className="flex items-center justify-center pl-5">
+      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0 px-4" style={{color: '#323130'}}>
+        <div className="flex items-center justify-center">
+          <div className="flex px-2">
             <DuePopover
               setDueDateValue={taskCreateValueHandler}
               dueDateValue={taskInput.dueDate}
               ref={dueRef}
             />
           </div>
-          <div className="flex items-center justify-center pl-5">
+          <div className="flex px-2">
             <RemindPopover
               setRemindValue={taskCreateValueHandler}
               remindValue={taskInput.remind}
               ref={remindRef}
             />
           </div>
-          <div className="flex items-center justify-center pl-5">
+          <div className="flex px-2">
             <RepeatPopover
               setRepeatRule={taskCreateValueHandler}
               repeatRuleValue={taskInput.repeatRule}

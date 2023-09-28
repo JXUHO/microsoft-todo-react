@@ -7,7 +7,7 @@ export default function getLastTimeOfDay(offset = 0) {
 }
 
 // return "Mon, September 18" format string
-export function getCustomFormatDateString(input, overdue = true) {
+export function getCustomFormatDateString(input, option) {
   const today = new Date();
   const tomorrow = new Date();
   const yesterday = new Date();
@@ -67,10 +67,12 @@ export function getCustomFormatDateString(input, overdue = true) {
   const currentYear = today.getFullYear();
   const yearString = year !== currentYear ? `, ${year}` : '';
 
-  if (overdue && (todayDate - inputDate) / (1000 * 60 * 60 * 24) > 2) {
-    return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}`;
+  if (option === "dueDate" && (todayDate - inputDate) / (1000 * 60 * 60 * 24) > 2) {
+    return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
+  } else if (option === "dueDate") {
+    return `Due ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`
   }
-
+  
   return `${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
 }
 

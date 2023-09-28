@@ -1,5 +1,5 @@
 import AddTask from "./addtask/AddTask";
-import TaskList from "./tasks/TaskList";
+import TaskList from "./tasks/MydayList";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -81,7 +81,7 @@ const Myday = () => {
       </div>
 
 
-      <div className="flex flex-col flex-1 mx-6">
+      <div className="flex flex-col mx-6">
         <AddTask isMyday={true} />
         <TaskList />
       </div>

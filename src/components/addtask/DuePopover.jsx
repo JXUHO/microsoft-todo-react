@@ -30,7 +30,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(5), flip(), shift({padding: 10})],
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -40,7 +40,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(5), flip(), shift({padding: 10})],
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -50,7 +50,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   } = useFloating({
     open: calendarOpen,
     onOpenChange: setCalendarOpen,
-    middleware: [offset(5), flip(), shift({padding: 50})],
+    middleware: [offset(5), flip(), shift({ padding: 50 })],
   });
 
   const {
@@ -119,7 +119,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   useEffect(() => {
     if (dueDateValue) {
       setShowDueRemoveButton(true);
-      setDueButtonText(getCustomFormatDateString(new Date(dueDateValue)));
+      setDueButtonText(getCustomFormatDateString(new Date(dueDateValue), "dueDate"));
     } else {
       setDueButtonText("");
       setShowDueRemoveButton(false);
@@ -128,10 +128,21 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
 
   return (
     <>
-      <button ref={floatingRef} {...dueButtonProps}>
-        <IoCalendarOutline size="16px" color="#797775" />
-        {dueButtonText}
-      </button>
+      {dueButtonText ? (
+        <button
+          ref={floatingRef}
+          {...dueButtonProps}
+          className="flex items-center bg-white px-2 py-px"
+          style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
+        >
+          <IoCalendarOutline size="16px" color="#797775" />
+          <span className="pl-1">{dueButtonText}</span>
+        </button>
+      ) : (
+        <button ref={floatingRef} {...dueButtonProps} className="flex items-center px-1">
+          <IoCalendarOutline size="16px" color="#797775" />
+        </button>
+      )}
 
       {tooltipOpen && (
         <div
@@ -187,9 +198,8 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
 
 export default DuePopover;
 
-
 /**
  * TODO
  * floating ui 화면 밖으로 나가는것 처리하기
- * 
+ *
  */

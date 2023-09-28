@@ -154,10 +154,21 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
 
   return (
     <>
-      <button ref={floatingRef} {...repeatButtonProps}>
-        <BsRepeat size="16px" color="#797775"/>
-        {repeatButtonText}
-      </button>
+      {repeatButtonText ? (
+        <button
+          ref={floatingRef}
+          {...repeatButtonProps}
+          className="flex items-center bg-white px-2 py-px"
+          style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
+        >
+          <BsRepeat size="16px" color="#797775" />
+          <span className="pl-1">{repeatButtonText}</span>
+        </button>
+      ) : (
+        <button ref={floatingRef} {...repeatButtonProps} className="flex items-center px-1">
+          <BsRepeat size="16px" color="#797775" />
+        </button>
+      )}
 
       {tooltipOpen && (
         <div

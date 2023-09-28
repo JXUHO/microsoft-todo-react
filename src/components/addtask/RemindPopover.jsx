@@ -85,7 +85,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
     calendarRefs.setReference,
   ]);
 
-  const dueButtonProps = getTooltipReferenceProps(
+  const remindButtonProps = getTooltipReferenceProps(
     getPopoverReferenceProps({
       onClick() {
         setCalendarOpen(false);
@@ -122,7 +122,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
       setRemindButtonText(
         formatTimeToAMPM(dateObj) +
           ", " +
-          getCustomFormatDateString(dateObj, false)
+          getCustomFormatDateString(dateObj, "remind")
       );
       setShowRemoveReminderButton(true);
     } else {
@@ -133,10 +133,21 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
 
   return (
     <>
-      <button ref={floatingRef} {...dueButtonProps}>
-        <VscBell size="16px" color="#797775"/>
-        {remindButtonText}
-      </button>
+      {remindButtonText ? (
+        <button
+          ref={floatingRef}
+          {...remindButtonProps}
+          className="flex items-center bg-white px-2 py-px"
+          style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
+        >
+          <VscBell size="16px" color="#797775" />
+          <span className="pl-1">{remindButtonText}</span>
+        </button>
+      ) : (
+        <button ref={floatingRef} {...remindButtonProps} className="flex items-center px-1">
+          <VscBell size="16px" color="#797775" />
+        </button>
+      )}
 
       {tooltipOpen && (
         <div
