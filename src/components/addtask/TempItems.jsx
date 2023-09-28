@@ -1,76 +1,104 @@
-import getLastTimeOfDay, {
+import {
+  getCustomFormatDateString,
   getNextMonday,
+  getThreeHoursLater,
+  getTomorrow,
+  formatTimeToAMPM,
 } from "../utils/getDates";
 
-const DueItems = ({
-  onAddDueDate,
+const RemindItems = ({
+  onAddRemind,
   onClosePopover,
   showRemoveButton,
-  resetDue,
+  resetRemind,
   showCalendar,
   ...props
 }) => {
 
-  const today = getLastTimeOfDay();
-  const todayDayString = today.toString().slice(0, 3);
 
-  const tomorrow = getLastTimeOfDay(1);
-  const tomorrowDayString = tomorrow.toString().slice(0, 3);
+  const laterToday = getThreeHoursLater();
+  const laterTodayTimeText = formatTimeToAMPM(laterToday);
 
-  const nextMonday = new Date(getNextMonday().setHours(23,59,59));
-  const nextMondayDayString = nextMonday.toString().slice(0, 3);
+  const tomorrow = getTomorrow();
+  const tomorrowTimeText =
+    tomorrow.toString().slice(0, 3) + ", " + formatTimeToAMPM(tomorrow, false);
 
-  const addDueDateHandler = (input) => {
-    if (input === "today") {
-      onAddDueDate(today);
+  const nextMonday = getNextMonday();
+  const nextMondayTimeText =
+    nextMonday.toString().slice(0, 3) +
+    ", " +
+    formatTimeToAMPM(nextMonday, false);
+
+
+
+  const addRemindHandler = (input) => {
+    if (input === "laterToday") {
+      onAddRemind({
+        time: laterToday,
+        text: formatTimeToAMPM(laterToday) + ", Today",
+      });
     }
     if (input === "tomorrow") {
-      onAddDueDate(tomorrow);
+      onAddRemind({
+        time: tomorrow,
+        text: formatTimeToAMPM(tomorrow) + ", Tomorrow",
+      });
     }
     if (input === "nextWeek") {
-      onAddDueDate(nextMonday);
+      onAddRemind({
+        time: nextMonday,
+        text:
+          formatTimeToAMPM(nextMonday) +
+          ", " +
+          getCustomFormatDateString(nextMonday),
+      });
     }
+
     onClosePopover();
   };
+
+
+  const removeRemindHandler = () => {
+    resetRemind();
+  };
+
 
   const calendarOpenHandler = () => {
-    showCalendar("dueCalendar");
+    showCalendar("remindCalendar");
     onClosePopover();
   };
 
-  const removeDueHandler = () => {
-    resetDue();
-  };
+
 
   return (
     <div>
-      <div>Due</div>
+      <div>Reminder</div>
       <ul>
         <li>
-          <button onClick={() => addDueDateHandler("today")}>
-            <span>Today </span>
-            <span>{todayDayString}</span>
+          <button onClick={() => addRemindHandler("laterToday")}>
+            <span>Later Today </span>
+            <span>{laterTodayTimeText}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDueDateHandler("tomorrow")}>
+          <button onClick={() => addRemindHandler("tomorrow")}>
             <span>Tomorrow </span>
-            <span>{tomorrowDayString}</span>
+            <span>{tomorrowTimeText}</span>
           </button>
         </li>
         <li>
-          <button onClick={() => addDueDateHandler("nextWeek")}>
+          <button onClick={() => addRemindHandler("nextWeek")}>
             <span>Next week </span>
-            <span>{nextMondayDayString}</span>
+            <span>{nextMondayTimeText}</span>
           </button>
         </li>
         <li>----------------</li>
         <li>
-          <button onClick={calendarOpenHandler}>Pick a date</button>
+          <button onClick={calendarOpenHandler}>Pick a date & time</button>
         </li>
         {showRemoveButton && (
           <li>
-            <button onClick={removeDueHandler}>Remove due date</button>
+            <button onClick={removeRemindHandler}>Remove reiminder</button>
           </li>
         )}
       </ul>
@@ -78,12 +106,32 @@ const DueItems = ({
   );
 };
 
-export default DueItems;
+export default RemindItems;
 
 /**
  * TODO
- * (complete)todayDate를 연월일로 잘라서 가공하기
- * addDueDateHandler를 tomorrow, next week에도 붙이기
+ *
+ *
+ *
+ * later today는 3시간 이후 반올림
+ * 시간 선택은 공통적으로 09:00, 12:00, 5:00, 8:00
+ * tomorrow는 공통적으로 9:00
+ * next week은 공통적으로 9:00
+ *
+ *
+ *
+ *
+ * 11:50am later today -> 3pm
+ *
+ * 5am later today -> 8am
+ * tomorrow 9am
+ * next week 9am
+ *
+ * 12:14am later today -> 3am
+ * tomorrow 9am
+ * next week 9am
+ *
+ * 4:16am later today -> 7am
  *
  *
  *

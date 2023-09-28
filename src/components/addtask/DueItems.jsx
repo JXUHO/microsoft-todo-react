@@ -1,4 +1,4 @@
-import getLastTimeOfDay, { getNextMonday,  } from "../utils/getDates";
+import getLastTimeOfDay, { getNextMonday9AM,  } from "../utils/getDates";
 
 const DueItems = ({onItemClick, getCalendarReferenceProps, onPickADateClick, isRemoveDueButtonShow, onRemoveDueButtonClick}) => {
 
@@ -8,18 +8,22 @@ const DueItems = ({onItemClick, getCalendarReferenceProps, onPickADateClick, isR
   const tomorrow = getLastTimeOfDay(1);
   const tomorrowDayString = tomorrow.toString().slice(0, 3);
 
-  const nextMonday = new Date(getNextMonday().setHours(23,59,59));
+  const nextMonday = new Date(getNextMonday9AM().setHours(23,59,59));
   const nextMondayDayString = nextMonday.toString().slice(0, 3);
 
   const addDueDateHandler = (input) => {
-    if (input === "today") {
-      onItemClick(today);
-    }
-    if (input === "tomorrow") {
-      onItemClick(tomorrow);
-    }
-    if (input === "nextWeek") {
-      onItemClick(nextMonday);
+    switch (input) {
+      case "today":
+        onItemClick(today);
+        break;
+      case "tomorrow":
+        onItemClick(tomorrow);
+        break;
+      case "nextWeek":
+        onItemClick(nextMonday);
+        break;
+      default:
+        break;
     }
   };
 

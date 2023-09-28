@@ -1,119 +1,190 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import {
+  offset,
+  useClick,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+  useMergeRefs,
+} from "@floating-ui/react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+
+import { VscBell } from "react-icons/vsc";
 import RemindItems from "./RemindItems";
 import { formatTimeToAMPM, getCustomFormatDateString } from "../utils/getDates";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Popper from "../ui/Popper";
+import RemindCalendar from "./RemindCalendar";
 
+const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [remindButtonText, setRemindButtonText] = useState("");
+  const [showRemoveReminderButton, setShowRemoveReminderButton] =
+    useState(false);
 
-const RemindPopover = forwardRef(({setRemindValue, remindValue}, ref) => {
-  const [remindButtonText, setRemindButtonText] = useState("Remind");
-  const [showRemindRemoveButton, setShowRemindRemoveButton] = useState(false);
-  const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
+  const {
+    refs: tooltipRefs,
+    floatingStyles: tooltipFloatingStyles,
+    context: tooltipContext,
+  } = useFloating({
+    open: tooltipOpen,
+    onOpenChange: setTooltipOpen,
+    middleware: [offset(15)],
+  });
 
-  const remindPopoverRef = useRef(null);
-  const remindTooltipRef = useRef(null);
-  const remindCalendarRef = useRef(null);
+  const {
+    refs: popoverRefs,
+    floatingStyles: popoverFloatingStyles,
+    context: popoverContext,
+  } = useFloating({
+    open: popoverOpen,
+    onOpenChange: setPopoverOpen,
+    middleware: [offset(15)],
+  });
 
-  const remindCalendarHandler = () => {
-    setRemindButtonText(
-      formatTimeToAMPM(remindSelectedTime) +
-        ", " +
-        getCustomFormatDateString(remindSelectedTime, false)
-    );
-    setRemindValue(remindSelectedTime, "remind")
+  const {
+    refs: calendarRefs,
+    floatingStyles: calendarFloatingStyles,
+    context: calendarContext,
+  } = useFloating({
+    open: calendarOpen,
+    onOpenChange: setCalendarOpen,
+    middleware: [offset(15)],
+  });
+
+  const {
+    getReferenceProps: getTooltipReferenceProps,
+    getFloatingProps: getTooltipFloatingProps,
+  } = useInteractions([
+    useHover(tooltipContext),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const {
+    getReferenceProps: getPopoverReferenceProps,
+    getFloatingProps: getPopoverFloatingProps,
+  } = useInteractions([
+    useClick(popoverContext),
+    useDismiss(popoverContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const {
+    getReferenceProps: getCalendarReferenceProps,
+    getFloatingProps: getCalendarFloatingProps,
+  } = useInteractions([useClick(calendarContext), useDismiss(calendarContext)]);
+
+  const floatingRef = useMergeRefs([
+    tooltipRefs.setReference,
+    popoverRefs.setReference,
+    calendarRefs.setReference,
+  ]);
+
+  const dueButtonProps = getTooltipReferenceProps(
+    getPopoverReferenceProps({
+      onClick() {
+        setCalendarOpen(false);
+      },
+    })
+  );
+
+  const addRemindHandler = (dateObj) => {
+    setRemindValue(dateObj, "remind")
+    setPopoverOpen(false);
   };
 
-  const remindHandler = (remind) => {
-    setRemindButtonText(remind.text);
-    setRemindSelectedTime(remind.time);
-    setRemindValue(remind.time, "remind")
+  const resetRemindHandler = () => {
+    setRemindValue("", "remind");
+    setPopoverOpen(false);
   };
 
   useImperativeHandle(ref, () => ({
-    resetRemind: resetRemindHandler
-  }))
+    resetRemind: resetRemindHandler,
+  }));
 
-  const resetRemindHandler = () => {
-    setRemindValue("", "remind")
-    setRemindSelectedTime(new Date());
-    setRemindButtonText("Remind");
-    setShowRemindRemoveButton(false);
+  const closePopoverHandler = () => {
+    setPopoverOpen(false);
+  };
+
+  const calendarSaveButtonHander = (dateObj) => {
+    addRemindHandler(dateObj);
+    setCalendarOpen(false);
   };
 
   useEffect(() => {
     if (remindValue) {
-      setShowRemindRemoveButton(true);
+      const dateObj = new Date(remindValue)
+      setRemindButtonText(
+        formatTimeToAMPM(dateObj) +
+          ", " +
+          getCustomFormatDateString(dateObj, false)
+      );
+      setShowRemoveReminderButton(true);
+    } else {
+      setRemindButtonText("");
+      setShowRemoveReminderButton(false);
     }
   }, [remindValue]);
 
-  const showCalendarHandler = (calendarId) => {
-    const calendar = document.getElementById(calendarId);
-    if (calendar) {
-      calendar.click();
-    }
-  };
-
-  const closePopoverHandler = () => {
-    remindPopoverRef.current.setVisibility(false);
-  };
-
   return (
-    <div>
-      <button id="remind">{remindButtonText}</button>
-      <Popper
-        initOpen={false}
-        ref={remindPopoverRef}
-        placement="bottom"
-        target="remind"
-        toggle="legacy"
-      >
-        <RemindItems
-          onAddRemind={remindHandler} // 완료
-          onClosePopover={closePopoverHandler} // 완료
-          showRemoveButton={showRemindRemoveButton}
-          resetRemind={resetRemindHandler}
-          showCalendar={showCalendarHandler}
-        />
-      </Popper>
-      <Popper
-        initOpen={false}
-        ref={remindTooltipRef}
-        placement="bottom"
-        target="remind"
-        toggle="hover"
-      >
-        Remind me
-      </Popper>
-      <DatePicker
-        id="remindCalendar"
-        ref={remindCalendarRef}
-        selected={remindSelectedTime}
-        onChange={(date) => setRemindSelectedTime(date)}
-        showTimeSelect
-        timeIntervals={15}
-        todayButton="Reset"
-        shouldCloseOnSelect={false}
-        customInput={<span></span>}
-        showPopperArrow={false}
-      >
-        <div>
-          <div
-            style={{
-              textAlign: "center",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-            onClick={() => {
-              remindCalendarRef.current.setOpen(false);
-              remindCalendarHandler();
-            }}
-          >
-            Save
-          </div>
+    <>
+      <button ref={floatingRef} {...dueButtonProps}>
+        <VscBell size="16px" />
+        {remindButtonText}
+      </button>
+
+      {tooltipOpen && (
+        <div
+          ref={tooltipRefs.setFloating}
+          style={{
+            ...tooltipFloatingStyles,
+            background: "white",
+            color: "black",
+            padding: 10,
+            border: "1px solid black",
+            zIndex: 50,
+          }}
+          {...getTooltipFloatingProps()}
+        >
+          Remind me
         </div>
-      </DatePicker>
-    </div>
+      )}
+
+      {calendarOpen && (
+        <div
+          ref={calendarRefs.setFloating}
+          {...getCalendarFloatingProps()}
+          style={{ ...calendarFloatingStyles, zIndex: 40 }}
+        >
+          <RemindCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+        </div>
+      )}
+
+      {popoverOpen && (
+        <div
+          ref={popoverRefs.setFloating}
+          style={{
+            ...popoverFloatingStyles,
+            background: "white",
+            border: "1px solid black",
+            padding: 10,
+            zIndex: 40,
+          }}
+          {...getPopoverFloatingProps()}
+        >
+          <RemindItems
+            onItemClick={addRemindHandler}
+            getCalendarReferenceProps={getCalendarReferenceProps}
+            onPickADateClick={closePopoverHandler}
+            isRemoveReminderButtonShow={showRemoveReminderButton}
+            onRemoveReminderButtonClick={resetRemindHandler}
+          />
+        </div>
+      )}
+    </>
   );
 });
 

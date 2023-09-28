@@ -63,21 +63,26 @@ export function getCustomFormatDateString(input, overdue = true) {
   const month = months[input.getMonth()];
   const dayOfMonth = input.getDate();
 
+  const year = input.getFullYear();
+  const currentYear = today.getFullYear();
+  const yearString = year !== currentYear ? `, ${year}` : '';
+
   if (overdue && (todayDate - inputDate) / (1000 * 60 * 60 * 24) > 2) {
     return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}`;
   }
 
-  return `${dayOfWeek}, ${month} ${dayOfMonth}`;
+  return `${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
 }
 
-export function getTomorrow() {
+export function getTomorrow9AM() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(9, 0, 0, 0);
   return tomorrow;
 }
 
-export function getNextMonday() {
+export function getNextMonday9AM() {
+  // if today is monday, return today
   const today = new Date();
   const dayOfWeek = today.getDay();
   const nextMonday = new Date();
@@ -118,6 +123,7 @@ export function formatTimeToAMPM(date, minute = true) {
 }
 
 export function getDayOfWeek(date) {
+  // dateObj => "thu"
   const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const dayIndex = date.getDay();
 
@@ -159,7 +165,7 @@ export function isValidWeekdaysArray(weekdaysArray) {
 }
 
 export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {
-  // (dateObj, ["mon", "tue"]) => base와 가장 가까운 target요일
+  // (dateObj, ["mon", "tue"]) => baseDate와 가장 가까운 target요일
   const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const baseDayIndex = baseDate.getDay();
   targetDaysOfWeek.sort((a, b) => {
@@ -184,7 +190,7 @@ export function getNextClosestDayOfWeekFromDate(baseDate, targetDaysOfWeek) {
 }
 
 export function getNextRepeatDate(date, repeatRule) {
-  // daily, custom-days
+  // (dateObj, "1-day"), daily, custom-days
   const nextRepeatDate = date;
   const offset = parseInt(repeatRule.split("-")[0]);
   nextRepeatDate.setDate(nextRepeatDate.getDate() + offset);

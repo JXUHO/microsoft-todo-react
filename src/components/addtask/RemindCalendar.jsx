@@ -2,14 +2,17 @@ import { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const DueCalendar = ({onCalendarSaveClick}) => {
-  const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
+
+const RemindCalendar = ({onCalendarSaveClick}) => {
+  const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
 
   return (
     <ReactDatePicker
-      selected={dueSelectedDate}
-      onChange={(date) => setDueSelectedDate(date)}
+      selected={remindSelectedTime}
+      onChange={(date) => setRemindSelectedTime(date)}
       todayButton="Reset"
+      showTimeSelect
+      timeIntervals={15}
       inline
     >
       <div>
@@ -20,7 +23,7 @@ const DueCalendar = ({onCalendarSaveClick}) => {
             fontWeight: "bold",
           }}
           onClick={() => {
-            onCalendarSaveClick(dueSelectedDate)
+            onCalendarSaveClick(remindSelectedTime)
           }}
         >
           Save
@@ -30,4 +33,4 @@ const DueCalendar = ({onCalendarSaveClick}) => {
   );
 };
 
-export default DueCalendar;
+export default RemindCalendar;

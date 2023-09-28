@@ -1,74 +1,46 @@
 import {
   getCustomFormatDateString,
-  getNextMonday,
+  getNextMonday9AM,
   getThreeHoursLater,
-  getTomorrow,
+  getTomorrow9AM,
   formatTimeToAMPM,
 } from "../utils/getDates";
 
 const RemindItems = ({
-  onAddRemind,
-  onClosePopover,
-  showRemoveButton,
-  resetRemind,
-  showCalendar,
-  ...props
+  onItemClick,
+  getCalendarReferenceProps,
+  onPickADateClick,
+  isRemoveReminderButtonShow,
+  onRemoveReminderButtonClick,
 }) => {
-
-
   const laterToday = getThreeHoursLater();
   const laterTodayTimeText = formatTimeToAMPM(laterToday);
 
-  const tomorrow = getTomorrow();
+  const tomorrow = getTomorrow9AM();
   const tomorrowTimeText =
     tomorrow.toString().slice(0, 3) + ", " + formatTimeToAMPM(tomorrow, false);
 
-  const nextMonday = getNextMonday();
+  const nextMonday = getNextMonday9AM();
   const nextMondayTimeText =
     nextMonday.toString().slice(0, 3) +
     ", " +
     formatTimeToAMPM(nextMonday, false);
 
-
-
-  const addRemindHandler = (input) => {
-    if (input === "laterToday") {
-      onAddRemind({
-        time: laterToday,
-        text: formatTimeToAMPM(laterToday) + ", Today",
-      });
+  const addRemindHandler = (option) => {
+    switch (option) {
+      case "laterToday":
+        onItemClick(laterToday);
+        break;
+      case "tomorrow":
+        onItemClick(tomorrow);
+        break;
+      case "nextWeek":
+        onItemClick(nextMonday);
+        break;
+      default:
+        break;
     }
-    if (input === "tomorrow") {
-      onAddRemind({
-        time: tomorrow,
-        text: formatTimeToAMPM(tomorrow) + ", Tomorrow",
-      });
-    }
-    if (input === "nextWeek") {
-      onAddRemind({
-        time: nextMonday,
-        text:
-          formatTimeToAMPM(nextMonday) +
-          ", " +
-          getCustomFormatDateString(nextMonday),
-      });
-    }
-
-    onClosePopover();
   };
-
-
-  const removeRemindHandler = () => {
-    resetRemind();
-  };
-
-
-  const calendarOpenHandler = () => {
-    showCalendar("remindCalendar");
-    onClosePopover();
-  };
-
-
 
   return (
     <div>
@@ -94,11 +66,21 @@ const RemindItems = ({
         </li>
         <li>----------------</li>
         <li>
-          <button onClick={calendarOpenHandler}>Pick a date & time</button>
+          <button
+            {...getCalendarReferenceProps({
+              onClick() {
+                onPickADateClick();
+              },
+            })}
+          >
+            Pick a date & time
+          </button>
         </li>
-        {showRemoveButton && (
+        {isRemoveReminderButtonShow && (
           <li>
-            <button onClick={removeRemindHandler}>Remove reiminder</button>
+            <button onClick={onRemoveReminderButtonClick}>
+              Remove reiminder
+            </button>
           </li>
         )}
       </ul>

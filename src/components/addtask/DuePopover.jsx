@@ -91,8 +91,6 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   );
 
   const addDueDateHandler = (dateObj) => {
-    // date object
-    setDueButtonText(getCustomFormatDateString(dateObj));
     setDueDateValue(dateObj, "dueDate");
     setPopoverOpen(false);
   };
@@ -141,7 +139,6 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
             background: "white",
             color: "black",
             padding: 10,
-            zIndex: 30,
             border: "1px solid black",
             zIndex: 50,
           }}
@@ -187,3 +184,10 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
 });
 
 export default DuePopover;
+
+
+/**
+ * TODO
+ * floating ui 화면 밖으로 나가는것 처리하기
+ * 
+ */
