@@ -17,11 +17,14 @@ export default {
         "ms-active-blue": "#eff6fc",
       },
       height: {
-        '18': '4.5rem'
+        18: "4.5rem",
       },
       minWidth: {
-      '100': '100px',
-    }
+        100: "100px",
+      },
+      minHeight: {
+        52: "52px"
+      }
     },
   },
 };

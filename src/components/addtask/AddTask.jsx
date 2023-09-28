@@ -10,7 +10,6 @@ import getLastTimeOfDay, {
 } from "../utils/getDates";
 import { GoCircle, GoCheckCircle } from "react-icons/go";
 
-
 const initialTask = {
   id: "", // uuid
   task: "", // user input
@@ -101,14 +100,21 @@ const AddTask = ({ isMyday }) => {
 
   return (
     <div
-      className="flex flex-col overflow-hidden rounded"
+      className="flex flex-col overflow-hidden rounded bg-white"
+      style={{
+        boxShadow:
+          "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+      }}
     >
-      <div className="flex items-center min-h-[52px] bg-white px-4 w-full" style={{borderBottom: '1px solid #e1dfdd'}}>
+      <div
+        className="flex items-center min-h-[52px] bg-white px-4 w-full"
+        style={{ borderBottom: "1px solid #e1dfdd" }}
+      >
         <div className="ml-2 cursor-pointer">
           <GoCircle color="#2564cf" size="18px" />
         </div>
         <input
-        className="px-4"
+          className="px-4"
           style={{
             border: "none",
             backgroundColor: "transparent",
@@ -121,27 +127,38 @@ const AddTask = ({ isMyday }) => {
         />
       </div>
 
-      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0">
+      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0 px-4">
         <div className="flex">
-          <DuePopover
-            setDueDateValue={taskCreateValueHandler}
-            dueDateValue={taskInput.dueDate}
-            ref={dueRef}
-          />
-          <RemindPopover
-            setRemindValue={taskCreateValueHandler}
-            remindValue={taskInput.remind}
-            ref={remindRef}
-          />
-          <RepeatPopover
-            setRepeatRule={taskCreateValueHandler}
-            repeatRuleValue={taskInput.repeatRule}
-            ref={repeatRef}
-          />
+          <div className="flex items-center justify-center pl-5">
+            <DuePopover
+              setDueDateValue={taskCreateValueHandler}
+              dueDateValue={taskInput.dueDate}
+              ref={dueRef}
+            />
+          </div>
+          <div className="flex items-center justify-center pl-5">
+            <RemindPopover
+              setRemindValue={taskCreateValueHandler}
+              remindValue={taskInput.remind}
+              ref={remindRef}
+            />
+          </div>
+          <div className="flex items-center justify-center pl-5">
+            <RepeatPopover
+              setRepeatRule={taskCreateValueHandler}
+              repeatRuleValue={taskInput.repeatRule}
+              ref={repeatRef}
+            />
+          </div>
         </div>
 
-        <button disabled={!taskInput.task.trim()} onClick={addTaskHandler}>
-          add
+        <button
+          className="h-8 border-solid px-2 text-xs font-medium text-ms-blue bg-white disabled:cursor-not-allowed disabled:text-gray-400"
+          style={{borderWidth: '1px'}}
+          disabled={!taskInput.task.trim()}
+          onClick={addTaskHandler}
+        >
+          Add
         </button>
       </div>
     </div>

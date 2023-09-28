@@ -21,7 +21,7 @@ const TaskItem = ({ todo }) => {
   };
 
   return (
-    <div className={classes.taskItem}>
+    <div className="flex items-center relative mt-2 min-h-52 px-4 py-0 bg-white rounded" style={{boxShadow: '0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)'}}>
       <span
         onClick={completedHandler}
         style={{ color: todo.complete && "red" }}

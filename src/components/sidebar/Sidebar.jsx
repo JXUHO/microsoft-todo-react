@@ -24,7 +24,7 @@ const Sidebar = () => {
   }, [location]);
 
   return (
-    <div className=" flex flex-col w-72 bg-white z-30 shadow-ms-bg-shadow">
+    <div className=" flex flex-col w-72 bg-white z-30" style={{boxShadow: "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)"}}>
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
         <button onClick={closeSidebarHandler}>
           <RxHamburgerMenu size="20px" />

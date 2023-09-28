@@ -155,7 +155,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   return (
     <>
       <button ref={floatingRef} {...repeatButtonProps}>
-        <BsRepeat/>
+        <BsRepeat size="16px" color="#797775"/>
         {repeatButtonText}
       </button>
 

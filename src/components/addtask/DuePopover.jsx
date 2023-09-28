@@ -129,7 +129,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   return (
     <>
       <button ref={floatingRef} {...dueButtonProps}>
-        <IoCalendarOutline size="16px" />
+        <IoCalendarOutline size="16px" color="#797775" />
         {dueButtonText}
       </button>
 

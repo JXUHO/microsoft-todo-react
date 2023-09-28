@@ -59,19 +59,19 @@ const Myday = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="self-start shrink-0 cursor-pointer px-3 ml-0.5">
+          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiArrowsDownUpThin size="20px" />
               <span className="ml-1 text-sm">Sort</span>
             </div>
           </div>
-          <div className="self-start shrink-0 cursor-pointer px-3 ml-0.5">
+          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiFolderSimpleThin size="20px" />
               <span className="ml-1 text-sm">Group</span>
             </div>
           </div>
-          <div className="self-start shrink-0 cursor-pointer px-3 ml-0.5">
+          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
               <span className="ml-1 text-sm">Suggestions</span>
@@ -81,7 +81,7 @@ const Myday = () => {
       </div>
 
 
-      <div className="flex flex-col flex-1 overflow-hidden mx-6 border-solid" style={{boxShadow: '0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)'}}>
+      <div className="flex flex-col flex-1 mx-6">
         <AddTask isMyday={true} />
         <TaskList />
       </div>
