@@ -1,5 +1,7 @@
 import {
+  flip,
   offset,
+  shift,
   useClick,
   useDismiss,
   useFloating,
@@ -29,7 +31,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {
@@ -39,7 +41,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {
@@ -49,7 +51,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: calendarOpen,
     onOpenChange: setCalendarOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {

@@ -1,5 +1,7 @@
 import {
+  flip,
   offset,
+  shift,
   useClick,
   useDismiss,
   useFloating,
@@ -35,7 +37,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {
@@ -45,7 +47,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {
@@ -55,7 +57,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: customOpen,
     onOpenChange: setCustomOpen,
-    middleware: [offset(15)],
+    middleware: [offset(15), flip(), shift({padding: 10})],
   });
 
   const {
