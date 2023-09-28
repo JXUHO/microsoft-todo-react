@@ -1,137 +1,189 @@
 import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+  offset,
+  useClick,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+  useMergeRefs,
+} from "@floating-ui/react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+
+import { IoCalendarOutline } from "react-icons/io5";
 import DueItems from "./DueItems";
 import { getCustomFormatDateString } from "../utils/getDates";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "./custom-datepicker.css";
-import Popper from "../ui/Popper";
-import { IoCalendarOutline } from "react-icons/io5";
+import DueCalendar from "./DueCalendar";
 
 const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [dueButtonText, setDueButtonText] = useState("");
   const [showDueRemoveButton, setShowDueRemoveButton] = useState(false);
-  const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
 
-  const duePopoverRef = useRef(null);
-  const dueTooltipRef = useRef(null);
-  const dueCalendarRef = useRef(null);
+  const {
+    refs: tooltipRefs,
+    floatingStyles: tooltipFloatingStyles,
+    context: tooltipContext,
+  } = useFloating({
+    open: tooltipOpen,
+    onOpenChange: setTooltipOpen,
+    middleware: [offset(15)],
+  });
 
-  const dueDateCalendarHandler = () => {
-    setDueButtonText(getCustomFormatDateString(dueSelectedDate));
-    setDueDateValue(dueSelectedDate, "dueDate");
+  const {
+    refs: popoverRefs,
+    floatingStyles: popoverFloatingStyles,
+    context: popoverContext,
+  } = useFloating({
+    open: popoverOpen,
+    onOpenChange: setPopoverOpen,
+    middleware: [offset(15)],
+  });
+
+  const {
+    refs: calendarRefs,
+    floatingStyles: calendarFloatingStyles,
+    context: calendarContext,
+  } = useFloating({
+    open: calendarOpen,
+    onOpenChange: setCalendarOpen,
+    middleware: [offset(15)],
+  });
+
+  const {
+    getReferenceProps: getTooltipReferenceProps,
+    getFloatingProps: getTooltipFloatingProps,
+  } = useInteractions([
+    useHover(tooltipContext),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const {
+    getReferenceProps: getPopoverReferenceProps,
+    getFloatingProps: getPopoverFloatingProps,
+  } = useInteractions([
+    useClick(popoverContext),
+    useDismiss(popoverContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const {
+    getReferenceProps: getCalendarReferenceProps,
+    getFloatingProps: getCalendarFloatingProps,
+  } = useInteractions([useClick(calendarContext), useDismiss(calendarContext)]);
+
+  const floatingRef = useMergeRefs([
+    tooltipRefs.setReference,
+    popoverRefs.setReference,
+    calendarRefs.setReference,
+  ]);
+
+  const dueButtonProps = getTooltipReferenceProps(
+    getPopoverReferenceProps({
+      onClick() {
+        setCalendarOpen(false);
+      },
+    })
+  );
+
+  const addDueDateHandler = (dateObj) => {
+    // date object
+    setDueButtonText(getCustomFormatDateString(dateObj));
+    setDueDateValue(dateObj, "dueDate");
+    setPopoverOpen(false);
   };
 
-  const dueDateHandler = (dueDate) => {
-    setDueButtonText(getCustomFormatDateString(dueDate));
-    setDueSelectedDate(dueDate);
-    setDueDateValue(dueDate, "dueDate");
+  const resetDueHandler = () => {
+    setDueDateValue("", "dueDate");
+    setPopoverOpen(false);
   };
 
   useImperativeHandle(ref, () => ({
     resetDue: resetDueHandler,
-    setDue: dueDateHandler,
+    setDue: addDueDateHandler,
   }));
 
-  const resetDueHandler = () => {
-    setDueDateValue("", "dueDate");
-    setDueSelectedDate(new Date());
-    setDueButtonText("");
-    setShowDueRemoveButton(false);
+  const closePopoverHandler = () => {
+    setPopoverOpen(false);
+  };
+
+  const calendarSaveButtonHander = (dateObj) => {
+    addDueDateHandler(dateObj);
+    setCalendarOpen(false);
   };
 
   useEffect(() => {
     if (dueDateValue) {
       setShowDueRemoveButton(true);
+      setDueButtonText(getCustomFormatDateString(new Date(dueDateValue)));
+    } else {
+      setDueButtonText("");
+      setShowDueRemoveButton(false);
     }
   }, [dueDateValue]);
 
-  const showCalendarHandler = (calendarId) => {
-    const calendar = document.getElementById(calendarId);
-    if (calendar) {
-      calendar.click();
-    }
-  };
-
-  const closePopoverHandler = () => {
-    duePopoverRef.current.setVisibility(false);
-  };
-
   return (
-    <div>
-      <div id='due'>
-        <div>
-          <IoCalendarOutline size='16px'/>
-        </div>
+    <>
+      <button ref={floatingRef} {...dueButtonProps}>
+        <IoCalendarOutline size="16px" />
         {dueButtonText}
-      </div>
-      <Popper
-        initOpen={false}
-        ref={duePopoverRef}
-        placement="bottom"
-        target="due"
-        toggle="legacy"
-      >
-        <DueItems
-          onAddDueDate={dueDateHandler}
-          onClosePopover={closePopoverHandler}
-          showRemoveButton={showDueRemoveButton}
-          resetDue={resetDueHandler}
-          showCalendar={showCalendarHandler}
-        />
-      </Popper>
-      <Popper
-        initOpen={false}
-        ref={dueTooltipRef}
-        placement="bottom"
-        target="due"
-        toggle="hover"
-      >
-        Add due date
-      </Popper>
-      <DatePicker
-        id="dueCalendar"
-        ref={dueCalendarRef}
-        selected={dueSelectedDate}
-        onChange={(date) => setDueSelectedDate(date)}
-        shouldCloseOnSelect={false}
-        customInput={<span />}
-        showPopperArrow={false}
-        todayButton="Reset"
-      >
-        <div>
-          <div
-            style={{
-              textAlign: "center",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-            onClick={() => {
-              dueCalendarRef.current.setOpen(false);
-              dueDateCalendarHandler();
-            }}
-          >
-            Save
-          </div>
+      </button>
+
+      {tooltipOpen && (
+        <div
+          ref={tooltipRefs.setFloating}
+          style={{
+            ...tooltipFloatingStyles,
+            background: "white",
+            color: "black",
+            padding: 10,
+            zIndex: 30,
+            border: "1px solid black",
+            zIndex: 50,
+          }}
+          {...getTooltipFloatingProps()}
+        >
+          Add due date
         </div>
-      </DatePicker>
-    </div>
+      )}
+
+      {calendarOpen && (
+        <div
+          ref={calendarRefs.setFloating}
+          {...getCalendarFloatingProps()}
+          style={{ ...calendarFloatingStyles, zIndex: 40 }}
+        >
+          <DueCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+        </div>
+      )}
+
+      {popoverOpen && (
+        <div
+          ref={popoverRefs.setFloating}
+          style={{
+            ...popoverFloatingStyles,
+            background: "white",
+            border: "1px solid black",
+            padding: 10,
+            zIndex: 40,
+          }}
+          {...getPopoverFloatingProps()}
+        >
+          <DueItems
+            onItemClick={addDueDateHandler}
+            getCalendarReferenceProps={getCalendarReferenceProps}
+            onPickADateClick={closePopoverHandler}
+            isRemoveDueButtonShow={showDueRemoveButton}
+            onRemoveDueButtonClick={resetDueHandler}
+          />
+        </div>
+      )}
+    </>
   );
 });
 
 export default DuePopover;
-
-
-
-/** 
- * TODO
- * 
- * id='due' 내부에 있는 아이콘을 클릭하더라도 popover가 trigger되게 해야 한다 (해결)
- * 
- * 
- */

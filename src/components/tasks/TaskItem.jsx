@@ -5,7 +5,7 @@ import { openDetail } from "../../store/uiSlice";
 import classes from "./TaskItem.module.css";
 
 const TaskItem = ({ todo }) => {
-  const todos = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();
 
   const completedHandler = () => {

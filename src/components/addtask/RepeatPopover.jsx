@@ -165,7 +165,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
             background: "white",
             color: "black",
             padding: 10,
-            zIndex: 30,
+            zIndex: 50,
             border: "1px solid black",
           }}
           {...getTooltipFloatingProps()}
@@ -178,7 +178,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
         <div
           ref={customRefs.setFloating}
           {...getCustomFloatingProps()}
-          style={customFloatingStyles}
+          style={{...customFloatingStyles, zIndex: 40}}
         >
           <RepeatCustom
             setRepeatRule={setRepeatRule}
@@ -195,6 +195,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
             background: "white",
             border: "1px solid black",
             padding: 10,
+            zIndex: 40
           }}
           {...getPopoverFloatingProps()}
         >

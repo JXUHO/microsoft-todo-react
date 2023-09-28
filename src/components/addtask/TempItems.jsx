@@ -1,6 +1,15 @@
-import getLastTimeOfDay, { getNextMonday,  } from "../utils/getDates";
+import getLastTimeOfDay, {
+  getNextMonday,
+} from "../utils/getDates";
 
-const DueItems = ({onItemClick, getCalendarReferenceProps, onPickADateClick, isRemoveDueButtonShow, onRemoveDueButtonClick}) => {
+const DueItems = ({
+  onAddDueDate,
+  onClosePopover,
+  showRemoveButton,
+  resetDue,
+  showCalendar,
+  ...props
+}) => {
 
   const today = getLastTimeOfDay();
   const todayDayString = today.toString().slice(0, 3);
@@ -13,14 +22,24 @@ const DueItems = ({onItemClick, getCalendarReferenceProps, onPickADateClick, isR
 
   const addDueDateHandler = (input) => {
     if (input === "today") {
-      onItemClick(today);
+      onAddDueDate(today);
     }
     if (input === "tomorrow") {
-      onItemClick(tomorrow);
+      onAddDueDate(tomorrow);
     }
     if (input === "nextWeek") {
-      onItemClick(nextMonday);
+      onAddDueDate(nextMonday);
     }
+    onClosePopover();
+  };
+
+  const calendarOpenHandler = () => {
+    showCalendar("dueCalendar");
+    onClosePopover();
+  };
+
+  const removeDueHandler = () => {
+    resetDue();
   };
 
   return (
@@ -47,17 +66,11 @@ const DueItems = ({onItemClick, getCalendarReferenceProps, onPickADateClick, isR
         </li>
         <li>----------------</li>
         <li>
-        <button
-            {...getCalendarReferenceProps({
-              onClick() {
-                onPickADateClick();
-              },
-            })}
-          >Pick a date</button>
+          <button onClick={calendarOpenHandler}>Pick a date</button>
         </li>
-        {isRemoveDueButtonShow && (
+        {showRemoveButton && (
           <li>
-            <button onClick={onRemoveDueButtonClick}>Remove due date</button>
+            <button onClick={removeDueHandler}>Remove due date</button>
           </li>
         )}
       </ul>
