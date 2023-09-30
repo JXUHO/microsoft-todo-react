@@ -116,7 +116,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
       </div>
 
       {isWeek && (
-        <div className="flex justify-center rounded w-full m-1.5 ">
+        <div className="flex justify-center rounded w-full m-1.5 text-xs">
           <button
             onClick={() => repeatCustomWeekdaysHandler("sun")}
             className="shrink-0 h-9 w-9 text-center"

@@ -19,8 +19,7 @@ import {
   getFullDayNames,
   isValidWeekdaysArray,
 } from "../utils/getDates";
-import {BsRepeat} from 'react-icons/bs'
-
+import { BsRepeat } from "react-icons/bs";
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   const tasksStored = useSelector((state) => state.todo.todos);
@@ -37,7 +36,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -47,7 +46,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -57,14 +56,16 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
   } = useFloating({
     open: customOpen,
     onOpenChange: setCustomOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
+
+  
 
   const {
     getReferenceProps: getTooltipReferenceProps,
     getFloatingProps: getTooltipFloatingProps,
   } = useInteractions([
-    useHover(tooltipContext),
+    useHover(tooltipContext, { delay: { open: 200, close: 0 } }),
     useDismiss(tooltipContext, {
       referencePress: true,
     }),
@@ -165,7 +166,11 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
           <span className="pl-1">{repeatButtonText}</span>
         </button>
       ) : (
-        <button ref={floatingRef} {...repeatButtonProps} className="flex items-center px-1">
+        <button
+          ref={floatingRef}
+          {...repeatButtonProps}
+          className="flex items-center px-1"
+        >
           <BsRepeat size="16px" color="#797775" />
         </button>
       )}
@@ -191,7 +196,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
         <div
           ref={customRefs.setFloating}
           {...getCustomFloatingProps()}
-          style={{...customFloatingStyles, zIndex: 40}}
+          style={{ ...customFloatingStyles, zIndex: 40 }}
         >
           <RepeatCustom
             setRepeatRule={setRepeatRule}
@@ -205,10 +210,10 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
           ref={popoverRefs.setFloating}
           style={{
             ...popoverFloatingStyles,
-            background: "white",
-            border: "1px solid black",
-            padding: 10,
-            zIndex: 40
+            // background: "white",
+            // border: "1px solid black",
+            // padding: 10,
+            zIndex: 40,
           }}
           {...getPopoverFloatingProps()}
         >

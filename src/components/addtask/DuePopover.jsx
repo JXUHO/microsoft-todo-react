@@ -30,7 +30,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(5), flip(), shift({ padding: 10 })],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -50,14 +50,14 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   } = useFloating({
     open: calendarOpen,
     onOpenChange: setCalendarOpen,
-    middleware: [offset(5), flip(), shift({ padding: 50 })],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
   const {
     getReferenceProps: getTooltipReferenceProps,
     getFloatingProps: getTooltipFloatingProps,
   } = useInteractions([
-    useHover(tooltipContext),
+    useHover(tooltipContext, { delay: { open: 200, close: 0 } }),
     useDismiss(tooltipContext, {
       referencePress: true,
     }),
@@ -176,9 +176,6 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
           ref={popoverRefs.setFloating}
           style={{
             ...popoverFloatingStyles,
-            background: "white",
-            border: "1px solid black",
-            padding: 10,
             zIndex: 40,
           }}
           {...getPopoverFloatingProps()}

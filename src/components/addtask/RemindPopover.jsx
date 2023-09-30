@@ -41,7 +41,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(5), flip(), shift({padding: 10})],
   });
 
   const {
@@ -58,7 +58,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
     getReferenceProps: getTooltipReferenceProps,
     getFloatingProps: getTooltipFloatingProps,
   } = useInteractions([
-    useHover(tooltipContext),
+    useHover(tooltipContext, { delay: { open: 200, close: 0 } }),
     useDismiss(tooltipContext, {
       referencePress: true,
     }),
@@ -181,9 +181,6 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
           ref={popoverRefs.setFloating}
           style={{
             ...popoverFloatingStyles,
-            background: "white",
-            border: "1px solid black",
-            padding: 10,
             zIndex: 40,
           }}
           {...getPopoverFloatingProps()}
