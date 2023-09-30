@@ -22,7 +22,7 @@ import {
 import { BsRepeat } from "react-icons/bs";
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
-  const tasksStored = useSelector((state) => state.todo.todos);
+  // const tasksStored = useSelector((state) => state.todo.todos);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
@@ -58,8 +58,6 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
     onOpenChange: setCustomOpen,
     middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
-
-  
 
   const {
     getReferenceProps: getTooltipReferenceProps,
@@ -100,7 +98,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
     })
   );
 
-  useRepeatTasks(tasksStored);
+  useRepeatTasks();
 
   const addRepeatHandler = (input) => {
     switch (input) {
@@ -209,9 +207,6 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
           ref={popoverRefs.setFloating}
           style={{
             ...popoverFloatingStyles,
-            // background: "white",
-            // border: "1px solid black",
-            // padding: 10,
             zIndex: 40,
           }}
           {...getPopoverFloatingProps()}

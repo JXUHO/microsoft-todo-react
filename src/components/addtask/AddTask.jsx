@@ -53,8 +53,8 @@ const AddTask = ({ isMyday }) => {
   };
 
   const addTaskHandler = () => {
-    dispatch(addTodo(taskInput)); // redux에 todo 등록
-    setTaskInput(initialTask); // input state 초기화
+    dispatch(addTodo(taskInput));
+    setTaskInput(initialTask); 
     initializeButtons();
   };
 

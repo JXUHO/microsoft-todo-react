@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDayOfWeek,
   getNextRepeatDate,
@@ -10,12 +10,15 @@ import {
 import uuid from "react-uuid";
 import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
 
-const useRepeatTasks = (tasksStored) => {
+const useRepeatTasks = () => {
   const dispatch = useDispatch();
+
+  const tasksStored = useSelector((state) => state.todo.todos);
+  
 
   useEffect(() => {
     tasksStored.forEach((taskItem) => {
-      if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {
+      if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat설정되었고, 완료됐고, 아직 반복 안됐으면
         const currentDueDate = new Date(taskItem.dueDate);
         let nextRepeatDate;
         let repeatRule = taskItem.repeatRule;
@@ -67,6 +70,7 @@ const useRepeatTasks = (tasksStored) => {
         taskItem.repeatRule &&
         !taskItem.complete &&
         !taskItem.repeated &&
+        taskItem.repeatRule.split("-").length !== 2 &&  // 확인하기
         !taskItem.repeatRule
           .split("-")
           .slice(2)
@@ -77,7 +81,6 @@ const useRepeatTasks = (tasksStored) => {
           taskItem.repeatRule
         );
         dispatch(changeDueDateTodo({id: taskItem.id, dueDate: fixedDueDate.toISOString()})) 
-
         // 여기서는 due를 repeat에 맞게 변경. 등록 후 사이드바에서 due를 변경할 때는 repeat 요일을 due에 맞게 변경.
         // 여러 요일 옵션이 선택된 경우에는, due를 설정한 요일을 해당 옵션에 더한다
       }

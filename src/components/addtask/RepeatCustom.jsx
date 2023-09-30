@@ -37,21 +37,20 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
           return;
         }
       }
-      setIsSaveButtonDisabled(true)
-    }
-    saveButtonDisabledHandler()
+      setIsSaveButtonDisabled(true);
+    };
+    saveButtonDisabledHandler();
   }, [repeatCustomWeekdays]);
 
   const repeatCustomSaveHandler = () => {
-    let selectedWeekdays = [];
-    for (const weekday in repeatCustomWeekdays) {
-      if (repeatCustomWeekdays[weekday] === true) {
-        selectedWeekdays.push(weekday);
-      }
-    }
-
     let repeatRule;
     if (repeatCustomOption === "week") {
+      let selectedWeekdays = [];
+      for (const weekday in repeatCustomWeekdays) {
+        if (repeatCustomWeekdays[weekday] === true) {
+          selectedWeekdays.push(weekday);
+        }
+      }
       repeatRule =
         repeatCustomInterval.toString() + "-week-" + selectedWeekdays.join("-");
     } else {
@@ -69,7 +68,6 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
       setIsWeek(true);
     }
   }, [repeatCustomOption]);
-
 
   return (
     <div
@@ -141,7 +139,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.mon
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -160,7 +158,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.tue
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -179,7 +177,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.wed
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -198,7 +196,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.thu
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -217,7 +215,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.fri
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -236,7 +234,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             className="shrink-0 h-9 w-9 text-center"
             style={
               repeatCustomWeekdays.sat
-              ? {
+                ? {
                     color: "white",
                     borderColor: "#2564cf",
                     background: "#2564cf",
@@ -253,17 +251,20 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
           </button>
         </div>
       )}
-        <button
-          onClick={repeatCustomSaveHandler}
-          disabled={repeatCustomOption === "week" && isSaveButtonDisabled}
-          className="disabled:opacity-50 disabled:cursor-default text-white font-bold bg-ms-blue px-3 border-none w-auto h-auto rounded cursor-pointer hover:bg-ms-blue-hover"
-          style={{paddingTop: '0.4rem', paddingBottom:'0.4rem'}}
-        >
-          <span>Save</span>
-        </button>
-      
+      <button
+        onClick={repeatCustomSaveHandler}
+        disabled={repeatCustomOption === "week" && isSaveButtonDisabled}
+        className="disabled:opacity-50 disabled:cursor-default text-white font-bold bg-ms-blue px-3 border-none w-auto h-auto rounded cursor-pointer hover:bg-ms-blue-hover"
+        style={{ paddingTop: "0.4rem", paddingBottom: "0.4rem" }}
+      >
+        <span>Save</span>
+      </button>
     </div>
   );
 };
 
 export default RepeatCustom;
+
+/**
+ * day, month, year 2 이상 custom 됐을때 오류 발생.
+ */
