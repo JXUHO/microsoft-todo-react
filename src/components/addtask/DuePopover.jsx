@@ -135,12 +135,12 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
           className="flex items-center bg-white px-2 py-px"
           style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
         >
-          <IoCalendarOutline size="16px" color="#797775" />
+          <IoCalendarOutline size="17px" color="#797775" />
           <span className="pl-1">{dueButtonText}</span>
         </button>
       ) : (
         <button ref={floatingRef} {...dueButtonProps} className="flex items-center px-1">
-          <IoCalendarOutline size="16px" color="#797775" />
+          <IoCalendarOutline size="17px" color="#797775" />
         </button>
       )}
 
@@ -149,13 +149,12 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
           ref={tooltipRefs.setFloating}
           style={{
             ...tooltipFloatingStyles,
-            background: "white",
-            color: "black",
-            padding: 10,
-            border: "1px solid black",
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
             zIndex: 50,
           }}
           {...getTooltipFloatingProps()}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >
           Add due date
         </div>

@@ -1,12 +1,10 @@
 import {
-  getCustomFormatDateString,
   getNextMonday9AM,
   getThreeHoursLater,
   getTomorrow9AM,
   formatTimeToAMPM,
 } from "../utils/getDates";
 
-import { TbClockCheck, TbClockPlus } from "react-icons/tb";
 import { BsTrash3, BsCalendarCheck, BsClock } from "react-icons/bs";
 
 const RemindItems = ({

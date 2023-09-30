@@ -31,7 +31,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -41,7 +41,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: popoverOpen,
     onOpenChange: setPopoverOpen,
-    middleware: [offset(5), flip(), shift({padding: 10})],
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -51,7 +51,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   } = useFloating({
     open: calendarOpen,
     onOpenChange: setCalendarOpen,
-    middleware: [offset(15), flip(), shift({padding: 10})],
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
   const {
@@ -94,7 +94,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
   );
 
   const addRemindHandler = (dateObj) => {
-    setRemindValue(dateObj, "remind")
+    setRemindValue(dateObj, "remind");
     setPopoverOpen(false);
   };
 
@@ -118,7 +118,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
 
   useEffect(() => {
     if (remindValue) {
-      const dateObj = new Date(remindValue)
+      const dateObj = new Date(remindValue);
       setRemindButtonText(
         formatTimeToAMPM(dateObj) +
           ", " +
@@ -140,12 +140,16 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
           className="flex items-center bg-white px-2 py-px"
           style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
         >
-          <VscBell size="16px" color="#797775" />
+          <VscBell size="17px" color="#797775" />
           <span className="pl-1">{remindButtonText}</span>
         </button>
       ) : (
-        <button ref={floatingRef} {...remindButtonProps} className="flex items-center px-1">
-          <VscBell size="16px" color="#797775" />
+        <button
+          ref={floatingRef}
+          {...remindButtonProps}
+          className="flex items-center px-1"
+        >
+          <VscBell size="17px" color="#797775" />
         </button>
       )}
 
@@ -154,13 +158,12 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
           ref={tooltipRefs.setFloating}
           style={{
             ...tooltipFloatingStyles,
-            background: "white",
-            color: "black",
-            padding: 10,
-            border: "1px solid black",
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
             zIndex: 50,
           }}
           {...getTooltipFloatingProps()}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >
           Remind me
         </div>

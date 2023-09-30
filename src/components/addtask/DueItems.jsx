@@ -1,6 +1,4 @@
 import getLastTimeOfDay, { getNextMonday9AM } from "../utils/getDates";
-import { CgCalendarDue, CgCalendarNext } from "react-icons/cg";
-import { TbCalendarTime } from "react-icons/tb";
 import {
   BsTrash3,
   BsCalendarPlus,
