@@ -27,5 +27,8 @@ export default MydayList;
  * TODO
  * props로 옵션 받아와서, 해당 옵션이 true인것만 map해서 출력하기
  * completed탭이나 earlier탭 고려하기
+ * 
+ * 등록순 역순으로 출력해야함
+ * 
  *
  */
