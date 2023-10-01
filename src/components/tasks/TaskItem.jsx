@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { completeTodo, importanceTodo } from "../../store/todoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addCompletedTodo, completeTodo, importanceTodo, removeCompletedTodo } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -25,14 +25,21 @@ import {
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
+  const completedTodos = useSelector(state => state.todo.completedTodos)
   const [isHovered, setIsHovered] = useState(false);
   const [dueText, setDueText] = useState("");
   const [remindText, setRemindText] = useState("");
   const [isRepeat, setIsRepeat] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
+
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
+    if (completedTodos.some(element => element.id === todo.id)) {
+      dispatch(removeCompletedTodo(todo.id))
+    } else {
+      dispatch(addCompletedTodo({...todo, complete: true}))
+    }
   };
 
   const importanceHandler = () => {
@@ -63,12 +70,8 @@ const TaskItem = ({ todo }) => {
     open: tooltipOpen,
     onOpenChange: setTooltipOpen,
     placement: "top",
-    middleware: [
-      offset(5),
-      flip(),
-      shift({ padding: 10 }),
-    ],
-  })
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
+  });
 
   const {
     getReferenceProps: getTooltipReferenceProps,
@@ -107,43 +110,38 @@ const TaskItem = ({ todo }) => {
       <button
         onClick={() => detailOpenHandler(todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
+        style={{color: '#292827'}}
       >
-        <span>{todo.task}</span>
+        <span style={todo.complete ? {textDecoration: 'line-through'} : null}>{todo.task}</span>
         <div className="flex flex-row items-center leading-3">
           <span className="text-xs" style={{ color: "#797775" }}>
             Tasks
           </span>
 
-          {dueText && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="mr-1">
-                <IoCalendarOutline
-                  size="14px"
-                  color={dueText === "Today" ? "#2564cf" : "#797775"}
-                />
+          <div
+            className="flex items-center"
+            style={
+              dueText === "Today"
+                ? { color: "#2564cf" }
+                : dueText.split(",")[0] === "Overdue"
+                ? { color: "#a80000" }
+                : { color: "#797775" }
+            }
+          >
+            {dueText && (
+              <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+                <span className="mr-1">
+                  <IoCalendarOutline size="14px" />
+                </span>
+                <span className="text-xs mr-1">{dueText}</span>
+              </div>
+            )}
+            {isRepeat && (
+              <span>
+                <PiArrowsClockwiseBold size="14px" />
               </span>
-              <span
-                className="text-xs mr-1"
-                style={
-                  dueText === "Today"
-                    ? { color: "#2564cf" }
-                    : { color: "#797775" }
-                }
-              >
-                {dueText}
-              </span>
-            </div>
-          )}
-
-          {isRepeat && (
-            <span>
-              <PiArrowsClockwiseBold
-                size="14px"
-                color={dueText === "Today" ? "#2564cf" : "#797775"}
-              />
-            </span>
-          )}
-
+            )}
+          </div>
           {remindText && (
             <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
               <span className="mr-1">
@@ -194,7 +192,6 @@ export default TaskItem;
 /**
  * TODO
  *
- * Task item 아래항목 출력하기
  *
  *
  *

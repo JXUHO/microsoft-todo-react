@@ -23,8 +23,32 @@ export default {
         100: "100px",
       },
       minHeight: {
-        52: "52px"
-      }
+        52: "52px",
+      },
+      animation: {
+        rotate90: 'clock90 1s',
+        rotateM90: 'counterClock90 1s',
+      },
+      keyframes: {
+        clock90: {
+          "0%": {
+            transform: "rotate(0deg)" /* Start with no rotation */,
+          },
+          "100%": {
+            transform:
+              "rotate(90deg)" /* Rotate 360 degrees (one full rotation) */,
+          },
+        },
+        counterClock90: {
+          "0%": {
+            transform: "rotate(0deg)" /* Start with no rotation */,
+          },
+          "100%": {
+            transform:
+              "rotate(-90deg)" /* Rotate 360 degrees (one full rotation) */,
+          },
+        }
+      },
     },
   },
 };

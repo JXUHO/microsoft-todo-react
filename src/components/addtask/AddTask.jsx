@@ -114,7 +114,7 @@ const AddTask = ({ isMyday }) => {
           <GoCircle color="#2564cf" size="18px" />
         </div>
         <input
-          className="px-4"
+          className="px-4 placeholder:text-ms-blue"
           style={{
             border: "none",
             backgroundColor: "transparent",

@@ -18,7 +18,7 @@ const useRepeatTasks = () => {
 
   useEffect(() => {
     tasksStored.forEach((taskItem) => {
-      if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat설정되었고, 완료됐고, 아직 반복 안됐으면
+      if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {  // repeat설정되었고, 완료됐고, 아직 반복 안됐으면 새로운 task 생성
         const currentDueDate = new Date(taskItem.dueDate);
         let nextRepeatDate;
         let repeatRule = taskItem.repeatRule;
