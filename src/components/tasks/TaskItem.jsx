@@ -6,13 +6,22 @@ import {
   BsCheckCircle,
   BsCheckCircleFill,
   BsStar,
-  BsStarFill
+  BsStarFill,
 } from "react-icons/bs";
 import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { getCustomFormatDateString } from "../utils/getDates";
 import { IoCalendarOutline } from "react-icons/io5";
 import { VscBell } from "react-icons/vsc";
+import {
+  flip,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
@@ -20,6 +29,7 @@ const TaskItem = ({ todo }) => {
   const [dueText, setDueText] = useState("");
   const [remindText, setRemindText] = useState("");
   const [isRepeat, setIsRepeat] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
@@ -44,6 +54,31 @@ const TaskItem = ({ todo }) => {
       setIsRepeat(true);
     }
   }, [todo]);
+
+  const {
+    refs: tooltipRefs,
+    floatingStyles: tooltipFloatingStyles,
+    context: tooltipContext,
+  } = useFloating({
+    open: tooltipOpen,
+    onOpenChange: setTooltipOpen,
+    placement: "top",
+    middleware: [
+      offset(5),
+      flip(),
+      shift({ padding: 10 }),
+    ],
+  })
+
+  const {
+    getReferenceProps: getTooltipReferenceProps,
+    getFloatingProps: getTooltipFloatingProps,
+  } = useInteractions([
+    useHover(tooltipContext, { delay: { open: 300, close: 0 } }),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
 
   return (
     <div
@@ -122,13 +157,34 @@ const TaskItem = ({ todo }) => {
         </div>
       </button>
 
-
       <div
         className="pr-2 hover:cursor-pointer"
         onClick={importanceHandler}
+        ref={tooltipRefs.setReference}
+        {...getTooltipReferenceProps()}
       >
-        { todo.importance ? <BsStarFill size='18px' style={{color: '#2564cf'}}/> : <BsStar size='18px' style={{color: '#2564cf'}}/>}
+        {todo.importance ? (
+          <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+        ) : (
+          <BsStar size="18px" style={{ color: "#2564cf" }} />
+        )}
       </div>
+
+      {tooltipOpen && (
+        <div
+          ref={tooltipRefs.setFloating}
+          {...getTooltipFloatingProps()}
+          style={{
+            ...tooltipFloatingStyles,
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+            zIndex: 50,
+          }}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
+        >
+          {todo.importance ? "Remove importance." : "Mark task as important."}
+        </div>
+      )}
     </div>
   );
 };
