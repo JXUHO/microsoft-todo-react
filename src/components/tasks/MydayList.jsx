@@ -33,13 +33,15 @@ const MydayList = () => {
     setTodoArr(todos);
   }, [todos]);
 
+
   useEffect(() => {
-    if (sortBy) {
+    // if (sortBy) {
       console.log('useeffect trigger');
       console.log(sortTasks(sortBy, sortOrder, todos))
       setTodoArr(sortTasks(sortBy, sortOrder, todos));
-    }
-  }, [sortBy, sortOrder]);
+    // }
+    
+  }, [todos, sortBy, sortOrder]);
 
   return (
     <>

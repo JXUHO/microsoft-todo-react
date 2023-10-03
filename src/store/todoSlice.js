@@ -26,11 +26,11 @@ const todoSlice = createSlice({
       );
       todoToChange.importance = !todoToChange.importance;
 
-      const index = state.todos.indexOf(todoToChange);
-      if (index !== -1 && todoToChange.importance) {
-        state.todos.splice(index, 1); // Remove the element from its current position
-        state.todos.push(todoToChange); // Add it to the last
-      }
+        const index = state.todos.indexOf(todoToChange);
+        if (index !== -1 && todoToChange.importance) {
+          state.todos.splice(index, 1); // Remove the element from its current position
+          state.todos.push(todoToChange); // Add it to the last
+        }
     },
     repeatedTodo: (state, action) => {
       const todoToChange = state.todos.find(
