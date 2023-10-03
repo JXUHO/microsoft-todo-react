@@ -24,7 +24,7 @@ const initialTask = {
   note: "",
   importance: false,
   created: "",
-  complete: false,
+  complete: "",
 };
 
 const AddTask = ({ isMyday }) => {

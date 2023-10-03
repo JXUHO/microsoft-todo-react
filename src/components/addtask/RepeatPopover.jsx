@@ -10,7 +10,6 @@ import {
   useMergeRefs,
 } from "@floating-ui/react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { useSelector } from "react-redux";
 import RepeatItems from "./RepeatItems";
 import useRepeatTasks from "../../hooks/useRepeatTasks";
 import RepeatCustom from "./RepeatCustom";

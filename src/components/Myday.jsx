@@ -1,18 +1,21 @@
 import AddTask from "./addtask/AddTask";
-import TaskList from "./tasks/MydayList";
+import MydayList from "./tasks/MydayList";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsSun } from "react-icons/bs";
 import {
   PiDotsThreeBold,
-  PiArrowsDownUpThin,
-  PiFolderSimpleThin,
   PiLightbulbThin,
 } from "react-icons/pi";
+import { useState } from "react";
+import SortPopover from "./toolbar/SortPopover";
+import GroupPopover from "./toolbar/GroupPopover";
+import OptionIndicator from "./toolbar/OptionIndicator";
 
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
+  const isSortOptionSelected = useSelector((state) => state.sort.myday.sortBy)
   const dispatch = useDispatch();
 
   const openSidebarHandler = () => {
@@ -59,18 +62,8 @@ const Myday = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
-            <div className="flex items-center">
-              <PiArrowsDownUpThin size="20px" />
-              <span className="ml-1 text-sm">Sort</span>
-            </div>
-          </div>
-          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
-            <div className="flex items-center">
-              <PiFolderSimpleThin size="20px" />
-              <span className="ml-1 text-sm">Group</span>
-            </div>
-          </div>
+          <SortPopover/>
+          <GroupPopover/>
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
@@ -78,14 +71,17 @@ const Myday = () => {
             </div>
           </div>
         </div>
+        
       </div>
 
 
       <div className="flex flex-col mx-6">
+        {isSortOptionSelected && <OptionIndicator/>}
         <AddTask isMyday={true} />
-        <TaskList />
+        <MydayList />
       </div>
-        
+
+
 
     </>
   );
@@ -93,25 +89,11 @@ const Myday = () => {
 
 export default Myday;
 
-// <div>
-//   <div> {/**task toolbar*/}
-//     {!isSidebarOpen && (
-//       <button onClick={openSidebarHandler}>
-//         <RxHamburgerMenu size="20px" />
-//       </button>
-//     )}
-//   <h1>Myday</h1>
-//   <AddTask isMyday={true} />
-//   </div>
-//   <div> {/**flex container */}
-//     <TaskList />
-//   </div>
-// </div>
 
 /**
  * TODO
  * MyDayList 컴포넌트 만들기
- * CompletedTaskList를 분리하지 않음
+ * CompletedMydayList를 분리하지 않음
  *
  *
  */

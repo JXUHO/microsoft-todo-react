@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addCompletedTodo, completeTodo, importanceTodo, removeCompletedTodo } from "../../store/todoSlice";
+import { completeTodo, importanceTodo } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -25,7 +25,6 @@ import {
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
-  const completedTodos = useSelector(state => state.todo.completedTodos)
   const [isHovered, setIsHovered] = useState(false);
   const [dueText, setDueText] = useState("");
   const [remindText, setRemindText] = useState("");
@@ -34,12 +33,7 @@ const TaskItem = ({ todo }) => {
 
 
   const completedHandler = () => {
-    dispatch(completeTodo(todo.id));
-    if (completedTodos.some(element => element.id === todo.id)) {
-      dispatch(removeCompletedTodo(todo.id))
-    } else {
-      dispatch(addCompletedTodo({...todo, complete: true}))
-    }
+    dispatch(completeTodo(todo.id));  // 
   };
 
   const importanceHandler = () => {
@@ -94,7 +88,7 @@ const TaskItem = ({ todo }) => {
       <span
         onClick={completedHandler}
         style={{ color: todo.complete && "red" }}
-        className="flex items-center justify-center w-8 h-8"
+        className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -192,6 +186,7 @@ export default TaskItem;
 /**
  * TODO
  *
+ * 클릭하면 파란색으로 바뀜. state로 관리
  *
  *
  *
