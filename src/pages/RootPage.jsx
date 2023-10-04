@@ -4,8 +4,6 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
 import { useSelector } from "react-redux";
 
-// import classes from "./RootPage.module.css";
-
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
@@ -23,7 +21,7 @@ const RootPage = () => {
           <Outlet />   {/**center column */}
         </div>
 
-        {isDetailOpen && <TaskDetail />}   {/**right column */}
+        {isDetailOpen && <TaskDetail/>}   {/**right column */}
 
       </div>
 

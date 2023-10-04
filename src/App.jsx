@@ -70,7 +70,13 @@ export default App;
  * Header search bar
  * AddTask.js fix payload (considering delete item using id)
  * implement steps
- * (ongoing) implement date/remind/repeat compoenent popover
+ * (complete) implement date/remind/repeat compoenent popover
+ * 
+ * make right click modal
+ * activated task blue color
+ * AddTask retracted
+ * detail page
+ * Searchbar
  * 
  * 
  * 

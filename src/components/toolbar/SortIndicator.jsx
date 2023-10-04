@@ -108,9 +108,10 @@ const SortIndicator = ({ currentLocation }) => {
             className="flex items-center cursor-pointer w-6 h-6 p-1 pt-1.5 mx-1"
             ref={closeTooltipRefs.setReference}
             {...getCloseTooltipReferenceProps()}
+            onClick={initializeSortHandler}
           >
-            <button onClick={initializeSortHandler}>
-              <BsXLg />
+            <button >
+              <BsXLg/>
             </button>
           </div>
         </div>
