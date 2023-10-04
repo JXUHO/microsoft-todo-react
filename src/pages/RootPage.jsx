@@ -13,7 +13,7 @@ const RootPage = () => {
 
       <Header />
 
-      <div className="flex flex-row flex-1">   {/**app */}
+      <div className="flex flex-1">   {/**app */}
 
         {isSidebarOpen && <Sidebar />}  {/**left column */}
 

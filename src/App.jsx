@@ -72,6 +72,7 @@ export default App;
  * implement steps
  * (complete) implement date/remind/repeat compoenent popover
  * 
+ * complete탭 task 순서 수정하기
  * make right click modal
  * activated task blue color
  * AddTask retracted

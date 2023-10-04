@@ -8,12 +8,10 @@ const SortItems = ({onItemClick, currentLocation}) => {
   // 현재 페이지 가지고와서, 페이지에 따라 render 다르게해야 한다
   const dispatch = useDispatch()
 
+  
   if (currentLocation === "today") currentLocation = 'myday'
 
-  console.log(currentLocation);
-
   const importanceHandler = () => {
-    console.log("importance dispatch")
     onItemClick()
     dispatch(setSortBy({option: "importance", location: currentLocation}))
   }

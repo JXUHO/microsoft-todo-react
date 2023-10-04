@@ -23,7 +23,7 @@ const TaskDetail = () => {
     dispatch(closeDetail());
   };
 
-  const activeResizeHandler = useCallback(() => {
+  const activeResizeHandler = useCallback((mouseDownEvent) => {
     setIsResizing(true);
     console.log("active");
   }, []);
@@ -48,19 +48,17 @@ const TaskDetail = () => {
 
   useEffect(() => {
     window.addEventListener("mousemove", resizeHandler);
-
-    document.addEventListener("mouseup", deactiveResizeHandler);
-
+    window.addEventListener("mouseup", deactiveResizeHandler);
     console.log(sidebarWidth);
     return () => {
       window.removeEventListener("mousemove", resizeHandler);
-      document.removeEventListener("mouseup", deactiveResizeHandler);
+      window.removeEventListener("mouseup", deactiveResizeHandler);
     };
   }, [resizeHandler, deactiveResizeHandler]);
 
   return (
     <div
-      className="flex flex-row min-w-[360px] max-w-[700px]"
+      className="flex flex-row"
       ref={sidebarRef}
       style={{ width: sidebarWidth }}
       onMouseDown={(e) => e.preventDefault()}

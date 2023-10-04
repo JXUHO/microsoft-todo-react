@@ -10,7 +10,7 @@ const MydayList = () => {
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const [completeArr, setCompleteArr] = useState([]);
-  const sortOrder = useSelector((state) => state.sort.myday.order);  // slice맞게 수정해야함
+  const sortOrder = useSelector((state) => state.sort.myday.order);  
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
 
   const rotate = isCompleteOpen ? "rotate(90deg)" : "rotate(0)";
@@ -106,17 +106,8 @@ export default MydayList;
 /**
  * TODO
  *
- * - todoSlice에서 completedTodos 배열 삭제, addCompletedTodo & removeCompletedTodo reducer 삭제. -> MydayList에서 해당하는 코드 변경
- * - AddTask component에서 completedTime항목 추가(or complete삭제하고 Time만 남기는 것도 고려.)
- * - Myday component에서 sort popover, group popover기능 구현, 해당 value를 MydayList에 props로 전달 -> Myday에서 TasksToolbar component를 따로 분리하는것 고려.
- * - sort, group옵션은 redux store에 저장.
- * - MydayList component에 useEffect hook 정의, todos배열이 변경되거나, 전달된 sort, group옵션이 변경되면 조건에 따라 정렬해서 render.
- *
- * 
- * 
- * 
- * - utils/sortTasks함수에서 해당 항목이 존재하지 않으면 따로 정렬하지 않는 옵션을 추가해야함 (importance항목 없으면 추가정렬 안함)
- * 
+ * Complete탭은 별도로 추가된 순서에 따라 정렬함. todoSlice의 completeTodo에서 complete되면 완료된 시간을 isoString으로 추가하고,
+ * complete가 비활성화되면 시간을 삭제한다. 이에 따라서 정렬 로직 생성할것
  *
  *
  *
@@ -129,17 +120,6 @@ export default MydayList;
  *
  *
  *
- *
- * props로 옵션 받아와서, 해당 옵션이 true인것만 map해서 출력하기
- * completed탭이나 earlier탭 고려하기
- *
- *
- * 등록순 역순으로 출력해야함(해결)
- * important눌리면 가장 앞으로 출력해야함(해결)
- *
- *
- * complete는 완료된 element를 가장 위에서 render한다.
- * complete가 다시 false로 바뀌거나 기존의 순서로 돌아온다
  *
  *
  *
