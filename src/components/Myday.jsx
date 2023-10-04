@@ -4,18 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsSun } from "react-icons/bs";
-import {
-  PiDotsThreeBold,
-  PiLightbulbThin,
-} from "react-icons/pi";
+import { PiDotsThreeBold, PiLightbulbThin } from "react-icons/pi";
 import { useState } from "react";
 import SortPopover from "./toolbar/SortPopover";
 import GroupPopover from "./toolbar/GroupPopover";
-import OptionIndicator from "./toolbar/OptionIndicator";
+import SortIndicator from "./toolbar/SortIndicator";
 
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
-  const isSortOptionSelected = useSelector((state) => state.sort.myday.sortBy)
+  const isSortOptionSelected = useSelector((state) => state.sort.myday.sortBy);
   const dispatch = useDispatch();
 
   const openSidebarHandler = () => {
@@ -62,8 +59,8 @@ const Myday = () => {
           </div>
         </div>
         <div className="flex">
-          <SortPopover currentLocation="myday"/>
-          <GroupPopover/>
+          <SortPopover currentLocation="myday" />
+          <GroupPopover />
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
@@ -71,24 +68,20 @@ const Myday = () => {
             </div>
           </div>
         </div>
-        
       </div>
 
-
       <div className="flex flex-col mx-6">
-        {isSortOptionSelected && <OptionIndicator currentLocation="myday"/>}
+        <div className="flex items-center justify-end">
+          {isSortOptionSelected && <SortIndicator currentLocation="myday" />}
+        </div>
         <AddTask isMyday={true} />
         <MydayList />
       </div>
-
-
-
     </>
   );
 };
 
 export default Myday;
-
 
 /**
  * TODO
