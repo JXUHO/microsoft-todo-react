@@ -35,12 +35,12 @@ const MydayList = () => {
 
 
   useEffect(() => {
-    // if (sortBy) {
-      console.log('useeffect trigger');
-      console.log(sortTasks(sortBy, sortOrder, todos))
+    if (sortBy) {
+      // console.log('useeffect trigger');
+      // console.log(sortTasks(sortBy, sortOrder, todos))
       setTodoArr(sortTasks(sortBy, sortOrder, todos));
-    // }
-    
+    }
+
   }, [todos, sortBy, sortOrder]);
 
   return (

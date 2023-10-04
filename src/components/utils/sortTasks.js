@@ -3,7 +3,6 @@ export default function sortTasks(sortBy, sortOrder, todos) {
 
   switch (sortBy) {
 
-
     case "importance":
       let importanceSelectedTasks = [];
       sortedArr.forEach((task) => {

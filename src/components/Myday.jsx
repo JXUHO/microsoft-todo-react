@@ -62,7 +62,7 @@ const Myday = () => {
           </div>
         </div>
         <div className="flex">
-          <SortPopover/>
+          <SortPopover currentLocation="myday"/>
           <GroupPopover/>
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
@@ -76,7 +76,7 @@ const Myday = () => {
 
 
       <div className="flex flex-col mx-6">
-        {isSortOptionSelected && <OptionIndicator/>}
+        {isSortOptionSelected && <OptionIndicator currentLocation="myday"/>}
         <AddTask isMyday={true} />
         <MydayList />
       </div>

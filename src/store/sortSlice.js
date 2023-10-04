@@ -7,24 +7,28 @@ const sortSlice = createSlice({
     important: { sortBy: "", order: "descending" },
     completed: { sortBy: "", order: "descending" },
     tasks: { sortBy: "", order: "descending" },
-
   },
+
   reducers: {
-    setSortBy: (state, action) => {  // dispatch(setSortBy({option: "importance", location: location.pathname}))
-      console.log("sortSlice setSortBy triggered")
-      const location = action.payload.location.slice(1)
-      state[location].sortBy = action.payload.option;
+
+    setSortBy: (state, action) => {
+      const { option, location } = action.payload;
+      state[location].sortBy = option;
     },
-    changeOrder: (state, action) => {  // dispatch(changeOrder(location.pathname))
-      const location = action.payload.slice(1)
-      if (state[location].order === 'descending') {
-        state[location].order = 'ascending'
+
+
+    changeOrder: (state, action) => {
+      // dispatch(changeOrder(myday))
+      const location = action.payload;
+      if (state[location].order === "descending") {
+        state[location].order = "ascending";
       } else {
-        state[location].order = 'descending'
+        state[location].order = "descending";
       }
     },
-    initializeState: (state, action) => {  // dispatch(initializeState(location.pathname))
-      const location = action.payload.slice(1)
+    initializeState: (state, action) => {
+      // dispatch(initializeState(myday))
+      const location = action.payload;
       state[location] = { sortBy: "", order: "descending" };
     },
   },

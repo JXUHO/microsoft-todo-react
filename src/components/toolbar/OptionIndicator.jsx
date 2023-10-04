@@ -1,23 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import { changeOrder, initializeState } from "../../store/sortSlice";
 import { BsXLg, BsChevronUp, BsChevronDown } from "react-icons/bs";
 
-const OptionIndicator = () => {
-  const location = useLocation();
+const OptionIndicator = ({currentLocation}) => {
   const dispatch = useDispatch();
   const sortOption = useSelector(
-    (state) => state.sort[location.pathname.slice(1)].sortBy
+    (state) => state.sort[currentLocation].sortBy
   );
   const sortOrder = useSelector(
-    (state) => state.sort[location.pathname.slice(1)].order
+    (state) => state.sort[currentLocation].order
   );
 
   const initializeSortHandler = () => {
-    dispatch(initializeState(location.pathname));
+    dispatch(initializeState(currentLocation));
   };
   const changeOrderHandler = () => {
-    dispatch(changeOrder(location.pathname));
+    dispatch(changeOrder(currentLocation));
   };
 
   return (

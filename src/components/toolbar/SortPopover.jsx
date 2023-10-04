@@ -13,7 +13,7 @@ import { useState } from "react";
 import { PiArrowsDownUpThin } from "react-icons/pi";
 import SortItems from "./SortItems";
 
-const SortPopover = () => {
+const SortPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -91,7 +91,7 @@ const SortPopover = () => {
           }}
           {...getPopoverFloatingProps()}
         >
-          <SortItems onItemClick={popoverCloseHandler}/>
+          <SortItems onItemClick={popoverCloseHandler} currentLocation={currentLocation}/>
         </div>
       )}
       {tooltipOpen && (
