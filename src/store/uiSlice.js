@@ -7,7 +7,7 @@ const uiSlice = createSlice({
     openSidebar: (state) => ({ ...state, sidebar: true }),
     closeSidebar: (state) => ({ ...state, sidebar: false }),
     openDetail: (state, action) => ({ ...state, detail: true, id: action.payload }),
-    closeDetail: (state) => ({ ...state, detail: false }),
+    closeDetail: (state) => ({ ...state, detail: false, id: "" }),
   },
 });
 
