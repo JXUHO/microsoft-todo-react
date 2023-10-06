@@ -15,7 +15,8 @@ export default {
         "ms-bg-shadow": "box-shadow: 0px 0.3px 0.9px rgba(0,0,0,0.1)",
         "ms-font-blue": "#2564cf",
         "ms-active-blue": "#eff6fc",
-        "ms-bg-border": '#e1dfdd'
+        "ms-bg-border": '#e1dfdd',
+        "ms-scrollbar": '#8a8886'
       },
       height: {
         18: "4.5rem",

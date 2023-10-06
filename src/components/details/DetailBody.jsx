@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-const DetailBody= (props) => {
+const   DetailBody= (props) => {
   const todos = useSelector(state => state.todo.todos);
   const todoDetail = todos.find(todo => todo.id === props.id)
 

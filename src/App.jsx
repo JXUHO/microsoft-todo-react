@@ -78,7 +78,7 @@ export default App;
  * AddTask retracted
  * detail page
  * Searchbar
- * 
+ * dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * 
  * 
  * 

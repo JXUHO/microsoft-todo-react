@@ -12,7 +12,9 @@ const TaskDetail = () => {
 
   const sidebarRef = useRef();
   const [isResizing, setIsResizing] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(300);
+  const [resizerPosition, setResizerPosition] = useState(360);
+  const [isHover, setIsHover] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(360);
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -33,27 +35,35 @@ const TaskDetail = () => {
     console.log("deactive");
   }, []);
 
+  useEffect(() => {
+    if (!isResizing) {
+      console.log("resizing");
+      setSidebarWidth(resizerPosition);
+    }
+  }, [isResizing, resizerPosition]);
+
   const resizeHandler = useCallback(
-    (mouseMoveEvent) => {
-      if (isResizing) {
-        console.log("resizing");
-        setSidebarWidth(
-          sidebarRef.current.getBoundingClientRect().right -
-            mouseMoveEvent.clientX
-        );
+    (event) => {
+      if (!isResizing) return;
+      let calculatedPosition =
+        sidebarRef.current.getBoundingClientRect().right - event.clientX;
+      if (calculatedPosition > 700) {
+        calculatedPosition = 700;
       }
+      if (calculatedPosition < 360) {
+        calculatedPosition = 360;
+      }
+      setResizerPosition(calculatedPosition);
     },
     [isResizing]
   );
 
   useEffect(() => {
-    window.addEventListener("mousemove", resizeHandler);
-
+    console.log(resizerPosition);
+    document.addEventListener("mousemove", resizeHandler);
     document.addEventListener("mouseup", deactiveResizeHandler);
-
-    console.log(sidebarWidth);
     return () => {
-      window.removeEventListener("mousemove", resizeHandler);
+      document.removeEventListener("mousemove", resizeHandler);
       document.removeEventListener("mouseup", deactiveResizeHandler);
     };
   }, [resizeHandler, deactiveResizeHandler]);
@@ -63,13 +73,16 @@ const TaskDetail = () => {
       className="flex flex-row min-w-[360px] max-w-[700px]"
       ref={sidebarRef}
       style={{ width: sidebarWidth }}
-      onMouseDown={(e) => e.preventDefault()}
     >
       <div
-        className="w-1 absolute z-50 cursor-ew-resize h-full m-0 p-0 box-border"
-        style={{ color: "#8a8886" }}
+        className={`w-1 absolute z-50 h-full m-0 p-0 box-border bg-ms-scrollbar opacity-0 ${
+          (isHover || isResizing) && "opacity-40 cursor-ew-resize"
+        }`}
         onMouseDown={activeResizeHandler}
-      />
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        style={{ right: resizerPosition }}
+      ></div>
       <div
         className="flex flex-col w-full"
         style={{
@@ -82,7 +95,7 @@ const TaskDetail = () => {
         </div>
         <div className="flex flex-col  before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border  before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
-            <button onClick={closeDetailHandler} className="">
+            <button onClick={closeDetailHandler}>
               <LuPanelRightClose size="16px" />
             </button>
 

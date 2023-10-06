@@ -12,7 +12,7 @@ const TaskDetail = () => {
 
   const sidebarRef = useRef();
   const [isResizing, setIsResizing] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(300);
+  const [sidebarWidth, setSidebarWidth] = useState(360);
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -23,51 +23,43 @@ const TaskDetail = () => {
     dispatch(closeDetail());
   };
 
-  const activeResizeHandler = useCallback((mouseDownEvent) => {
+  const activeResizeHandler = useCallback(() => {
     setIsResizing(true);
-    console.log("active");
   }, []);
 
   const deactiveResizeHandler = useCallback(() => {
     setIsResizing(false);
-    console.log("deactive");
   }, []);
 
   const resizeHandler = useCallback(
-    (mouseMoveEvent) => {
-      if (isResizing) {
-        console.log("resizing");
-        setSidebarWidth(
-          sidebarRef.current.getBoundingClientRect().right -
-            mouseMoveEvent.clientX
-        );
-      }
+    (event) => {
+      if (!isResizing) return;
+      setSidebarWidth(sidebarRef.current.getBoundingClientRect().right - event.clientX);
     },
     [isResizing]
   );
 
   useEffect(() => {
-    window.addEventListener("mousemove", resizeHandler);
-    window.addEventListener("mouseup", deactiveResizeHandler);
+    document.addEventListener("mousemove", resizeHandler);
+    document.addEventListener("mouseup", deactiveResizeHandler);
     console.log(sidebarWidth);
     return () => {
-      window.removeEventListener("mousemove", resizeHandler);
-      window.removeEventListener("mouseup", deactiveResizeHandler);
+      document.removeEventListener("mousemove", resizeHandler);
+      document.removeEventListener("mouseup", deactiveResizeHandler);
     };
   }, [resizeHandler, deactiveResizeHandler]);
 
   return (
     <div
-      className="flex flex-row"
+      className="flex flex-row min-w-[360px] max-w-[700px]"
       ref={sidebarRef}
       style={{ width: sidebarWidth }}
       onMouseDown={(e) => e.preventDefault()}
     >
       <div
-        className="w-1 absolute z-50 cursor-ew-resize h-full m-0 p-0 box-border"
-        style={{ color: "#8a8886" }}
+        className="w-1 absolute z-50 cursor-ew-resize h-full m-0 p-0 box-border bg-ms-scrollbar opacity-0 hover:opacity-40"  // mousedown에서 수정
         onMouseDown={activeResizeHandler}
-      />
+      ></div>
       <div
         className="flex flex-col w-full"
         style={{
