@@ -13,7 +13,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { IoCalendarOutline } from "react-icons/io5";
 import DueItems from "./DueItems";
-import { getCustomFormatDateString } from "../utils/getDates";
+import { getCustomFormatDateString } from "../../utils/getDates";
 import DueCalendar from "./DueCalendar";
 
 const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {

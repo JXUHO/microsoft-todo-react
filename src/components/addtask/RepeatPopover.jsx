@@ -17,7 +17,7 @@ import {
   getDayOfWeek,
   getFullDayNames,
   isValidWeekdaysArray,
-} from "../utils/getDates";
+} from "../../utils/getDates";
 import { BsRepeat } from "react-icons/bs";
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {

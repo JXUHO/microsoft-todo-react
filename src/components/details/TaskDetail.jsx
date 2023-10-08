@@ -5,16 +5,19 @@ import DetailBody from "./DetailBody";
 import { LuPanelRightClose } from "react-icons/lu";
 import { BsTrash3 } from "react-icons/bs";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getCustomFormatDateString } from "../../utils/getDates";
 
 const TaskDetail = () => {
   const detailId = useSelector((state) => state.ui.id);
   const dispatch = useDispatch();
+  const todos = useSelector(state => state.todo.todos);
 
   const sidebarRef = useRef();
   const [isResizing, setIsResizing] = useState(false);
   const [resizerPosition, setResizerPosition] = useState(360);
   const [isHover, setIsHover] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(360);
+  const [createdTime, setCreatedTime] = useState("")
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -24,6 +27,12 @@ const TaskDetail = () => {
     dispatch(removeTodo(id));
     dispatch(closeDetail());
   };
+
+  useEffect(() => {
+    const todoDetail = todos.find(todo => todo.id === detailId)
+    setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)))
+  }, [])
+
 
   const startResizeHandler = useCallback(() => {
     setIsResizing(true);
@@ -65,7 +74,7 @@ const TaskDetail = () => {
 
   return (
     <>
-    <div
+    <div 
       className="flex flex-row min-w-[360px] max-w-[700px]"
       ref={sidebarRef}
       style={{ width: sidebarWidth, transition:'width 180ms ease' }}
@@ -95,7 +104,7 @@ const TaskDetail = () => {
               <LuPanelRightClose size="16px" />
             </button>
 
-            <p>created time</p>
+            <p className="text-xs" style={{color:'#605E5C'}}>Created {createdTime}</p>
 
             <button onClick={() => removeTaskHandler(detailId)}>
               <BsTrash3 size="16px" />

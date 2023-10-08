@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import TaskItem from "./TaskItem";
 import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
-import sortTasks from "../utils/sortTasks";
+import sortTasks from "../../utils/sortTasks";
 
 const MydayList = () => {
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);

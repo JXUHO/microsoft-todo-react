@@ -6,11 +6,8 @@ const   DetailBody= (props) => {
 
   return (
     <>
-      <ul>
-        <li>
-          {todoDetail.task}
-        </li>
-      </ul>
+      <div className="flex "></div>
+
     </>
   )
 }

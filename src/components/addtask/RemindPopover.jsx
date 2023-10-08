@@ -13,7 +13,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { VscBell } from "react-icons/vsc";
 import RemindItems from "./RemindItems";
-import { formatTimeToAMPM, getCustomFormatDateString } from "../utils/getDates";
+import { formatTimeToAMPM, getCustomFormatDateString } from "../../utils/getDates";
 import RemindCalendar from "./RemindCalendar";
 
 const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {

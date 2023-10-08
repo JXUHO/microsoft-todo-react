@@ -3,7 +3,7 @@ import {
   getThreeHoursLater,
   getTomorrow9AM,
   formatTimeToAMPM,
-} from "../utils/getDates";
+} from "../../utils/getDates";
 
 import { BsTrash3, BsCalendarCheck, BsClock } from "react-icons/bs";
 
