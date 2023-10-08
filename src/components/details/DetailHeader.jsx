@@ -33,6 +33,7 @@ const DetailHeader = ({ taskId }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [newTask, setNewTask] = useState("");
   const [isEscaped, setIsEscaped] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputRef = useRef();
 
@@ -51,17 +52,17 @@ const DetailHeader = ({ taskId }) => {
   const blurHandler = () => {
     if (!isEscaped) {
       if (!newTask) {
-        setNewTask(todo.task)
+        setNewTask(todo.task);
         return;
       }
       dispatch(changeTaskTodo({ id: todo.id, task: newTask }));
-      console.log("dispatch");
     }
+    setIsFocused(false);
   };
 
   const focusHandler = () => {
+    setIsFocused(true);
     setIsEscaped(false);
-    console.log("focus");
   };
 
   useEffect(() => {
@@ -82,9 +83,7 @@ const DetailHeader = ({ taskId }) => {
       inputRef.current.blur();
       setNewTask(todo.task); // 초기화
     }
-  }, [isEscaped])
-
-
+  }, [isEscaped]);
 
   const {
     refs: tooltipRefs,
@@ -144,6 +143,8 @@ const DetailHeader = ({ taskId }) => {
               outline: "none",
               resize: "none",
               backgroundColor: isHover ? "#f5f4f4" : "white",
+              textDecoration: todo.complete && !isFocused ? "line-through" : "",
+              color: todo.complete && !isFocused ? "#767678" : "",
             }}
           />
         </div>
@@ -183,11 +184,3 @@ const DetailHeader = ({ taskId }) => {
 
 export default DetailHeader;
 
-/**
- * TODO
- *
- * 
- * 
- *
- *
- */
