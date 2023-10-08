@@ -87,7 +87,6 @@ const TaskItem = ({ todo }) => {
     >
       <span
         onClick={completedHandler}
-        style={{ color: todo.complete && "red" }}
         className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

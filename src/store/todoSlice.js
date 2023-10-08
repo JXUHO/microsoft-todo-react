@@ -38,12 +38,20 @@ const todoSlice = createSlice({
       );
       todoToChange.repeated = !todoToChange.repeated;
     },
+
     changeDueDateTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange.dueDate = action.payload.dueDate;
     },
+
+    changeTaskTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.task = action.payload.task
+    }
   },
 });
 
@@ -54,5 +62,6 @@ export const {
   importanceTodo,
   repeatedTodo,
   changeDueDateTodo,
+  changeTaskTodo
 } = todoSlice.actions;
 export default todoSlice.reducer;

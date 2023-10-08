@@ -71,15 +71,18 @@ export default App;
  * AddTask.js fix payload (considering delete item using id)
  * implement steps
  * (complete) implement date/remind/repeat compoenent popover
+ * (complete) complete탭 task 순서 수정하기
  * 
- * complete탭 task 순서 수정하기
+ * 
  * make right click modal
+ * 
  * activated task blue color
- * AddTask retracted
+ * AddTask component retracted
+ * 
  * detail page
  * Searchbar
  * dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
- * 
+ * taskList component scroll 가능하게 만들기
  * 
  * 
  * 
