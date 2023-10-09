@@ -16,7 +16,8 @@ export default {
         "ms-font-blue": "#2564cf",
         "ms-active-blue": "#eff6fc",
         "ms-bg-border": '#e1dfdd',
-        "ms-scrollbar": '#8a8886'
+        "ms-scrollbar": '#8a8886',
+        "ms-light-text": '#605E5C'
       },
       height: {
         18: "4.5rem",

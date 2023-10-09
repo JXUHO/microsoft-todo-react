@@ -135,7 +135,6 @@ const DetailStepItem = ({ step, taskId }) => {
               resize: "none",
               backgroundColor: isHover ? "#f5f4f4" : "white",
               textDecoration: step.complete && !isFocused ? "line-through" : "",
-              // color: step.complete && !isFocused ? "#767678" : "",
             }}
           />
         </span>

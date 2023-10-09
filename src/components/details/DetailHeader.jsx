@@ -139,9 +139,7 @@ const DetailHeader = ({ taskId }) => {
             onKeyDown={keyDownHandler}
             style={{
               height: "21px",
-              border: "none",
               outline: "none",
-              resize: "none",
               backgroundColor: isHover ? "#f5f4f4" : "white",
               textDecoration: todo.complete && !isFocused ? "line-through" : "",
               color: todo.complete && !isFocused ? "#767678" : "",

@@ -1,6 +1,10 @@
 import {useSelector } from "react-redux";
 import DetailHeader from "./DetailHeader";
 import DetailSteps from "./DetailSteps";
+import DetailOptions from "./DetailOptions";
+import DetailPickCategory from "./DetailPickCategory";
+import DetailAddFile from "./DetailAddFile";
+import DetailNote from "./DetailNote";
 
 
 const Details = ({taskId}) => {
@@ -15,6 +19,10 @@ const Details = ({taskId}) => {
     <div className="py-0 pr-4 pl-6 mt-4 flex-1 overflow-y-scroll overflow-x-hidden ">
       <DetailHeader taskId={taskId}/>
       <DetailSteps taskId={taskId}/>
+      <DetailOptions />
+      <DetailPickCategory/>
+      <DetailAddFile/>
+      <DetailNote/>
     </div>
   )
 
