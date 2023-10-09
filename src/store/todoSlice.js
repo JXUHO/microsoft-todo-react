@@ -38,19 +38,38 @@ const todoSlice = createSlice({
       );
       todoToChange.repeated = !todoToChange.repeated;
     },
-
     changeDueDateTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange.dueDate = action.payload.dueDate;
     },
-
     changeTaskTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange.task = action.payload.task
+    },
+
+
+    addStep: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.steps.push(action.payload.step)
+    },
+    completeStep: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.taskId
+      );
+      const stepToChange = todoToChange.steps.find(step => step.id === action.payload.stepId)
+      stepToChange.complete = !stepToChange.complete
+    },
+    removeStep: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.taskId
+      );
+      todoToChange.steps = todoToChange.steps.filter(step => step.id !== action.payload.stepId)
     }
   },
 });
@@ -62,6 +81,9 @@ export const {
   importanceTodo,
   repeatedTodo,
   changeDueDateTodo,
-  changeTaskTodo
+  changeTaskTodo,
+  addStep,
+  completeStep,
+  removeStep
 } = todoSlice.actions;
 export default todoSlice.reducer;

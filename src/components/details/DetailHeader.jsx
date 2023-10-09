@@ -108,13 +108,13 @@ const DetailHeader = ({ taskId }) => {
 
   return (
     <div
-      className="flex items-center justify-between min-h-52 px-4 py-4 bg-white rounded-t z-10 hover:bg-ms-white-hover"
+      className="flex items-center justify-between p-4 bg-white rounded-t z-10 hover:bg-ms-white-hover"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
       <div className="flex flex-1 items-center">
         <span
-          className="flex items-center justify-center w-8 h-6 hover:cursor-pointer"
+          className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completedHandler}
           onMouseEnter={() => setIsCheckHover(true)}
           onMouseLeave={() => setIsCheckHover(false)}
@@ -151,7 +151,7 @@ const DetailHeader = ({ taskId }) => {
       </div>
 
       <div
-        className="pr-2 hover:cursor-pointer"
+        className="hover:cursor-pointer"
         onClick={importanceHandler}
         ref={tooltipRefs.setReference}
         {...getTooltipReferenceProps()}

@@ -8,12 +8,12 @@ import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
 } from "../../utils/getDates";
-import { GoCircle, GoCheckCircle } from "react-icons/go";
+import { GoCircle } from "react-icons/go";
 
 const initialTask = {
   id: "", // uuid
   task: "", // user input
-  steps: {},
+  steps: [],
   myday: false,
   dueDate: "", // isoString
   remind: "", // isoString
@@ -53,7 +53,8 @@ const AddTask = ({ isMyday }) => {
   };
 
   const addTaskHandler = () => {
-    dispatch(addTodo(taskInput));
+    const trimmedTaskInput = {...taskInput, task: taskInput.task.trim()}
+    dispatch(addTodo(trimmedTaskInput));
     setTaskInput(initialTask); 
     initializeButtons();
   };
@@ -61,6 +62,9 @@ const AddTask = ({ isMyday }) => {
   const handleEnterKeyPress = (event) => {
     if (event.key === "Enter" && taskInput.task.trim()) {
       addTaskHandler();
+    }
+    if (event.key === "Escape") {
+      setTaskInput(initialTask)
     }
   };
 
@@ -114,7 +118,7 @@ const AddTask = ({ isMyday }) => {
           <GoCircle color="#2564cf" size="18px" />
         </div>
         <input
-          className="px-4 placeholder:text-ms-blue"
+          className="px-4 placeholder:text-ms-blue focus:placeholder:text-gray-500"
           style={{
             border: "none",
             backgroundColor: "transparent",

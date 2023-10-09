@@ -1,5 +1,4 @@
 import { useState } from "react";
-import classes from "./Searchbar.module.css";
 
 const Searchbar = () => {
   const [searchContent, setSearchContent] = useState("");
@@ -9,7 +8,7 @@ const Searchbar = () => {
   };
 
   return (
-    <div className={classes.Searchbar}>
+    <div className="flex">
       <input onChange={searchHandler} />
     </div>
   );

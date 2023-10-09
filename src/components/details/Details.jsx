@@ -1,5 +1,6 @@
 import {useSelector } from "react-redux";
 import DetailHeader from "./DetailHeader";
+import DetailSteps from "./DetailSteps";
 
 
 const Details = ({taskId}) => {
@@ -13,6 +14,7 @@ const Details = ({taskId}) => {
   return( 
     <div className="py-0 pr-4 pl-6 mt-4 flex-1 overflow-y-scroll overflow-x-hidden ">
       <DetailHeader taskId={taskId}/>
+      <DetailSteps taskId={taskId}/>
     </div>
   )
 
