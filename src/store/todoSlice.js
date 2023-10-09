@@ -70,6 +70,14 @@ const todoSlice = createSlice({
         (todo) => todo.id === action.payload.taskId
       );
       todoToChange.steps = todoToChange.steps.filter(step => step.id !== action.payload.stepId)
+    },
+    changeStep: (state, action) => {
+      //dispatch(changeStep({taskId, stepId: step.id, content: ""}))
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.taskId
+      );
+      const stepToChange = todoToChange.steps.find(step => step.id === action.payload.stepId)
+      stepToChange.content = action.payload.content
     }
   },
 });
@@ -84,6 +92,7 @@ export const {
   changeTaskTodo,
   addStep,
   completeStep,
-  removeStep
+  removeStep,
+  changeStep
 } = todoSlice.actions;
 export default todoSlice.reducer;

@@ -75,6 +75,7 @@ export default App;
  * 
  * 
  * make right click modal
+ * 삭제 모달
  * 
  * activated task blue color
  * AddTask component retracted

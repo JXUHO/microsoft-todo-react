@@ -11,6 +11,7 @@ const DetailSteps = ({ taskId }) => {
   const inputRef = useRef();
   const addRef = useRef();
   const [newStep, setNewStep] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const todo = useSelector((state) =>
     state.todo.todos.find((todo) => todo.id === taskId)
   );
@@ -34,6 +35,12 @@ const DetailSteps = ({ taskId }) => {
     }
   };
 
+  const focusHandler = () => {
+    setIsFocused(true)
+  }
+  const blurHandler = () => {
+    setIsFocused(false)
+  }
 
   return (
     <div className="flex flex-col items-center bg-white rounded-b border-y-0">
@@ -45,13 +52,13 @@ const DetailSteps = ({ taskId }) => {
 
       <div className="flex items-center bg-white w-full p-4">
         <div className="cursor-pointer px-0.5">
-          {/* {isFocused ? ( */}
+          {isFocused ? (
           <BsCircle color="#2564cf" size="16px" />
-          {/* ) : (
+          ) : (
             <button onClick={focusHandler}>
               <TfiPlus size="16px" style={{ color: "#2564cf" }} />
             </button>
-          )} */}
+          )}
         </div>
         <input
           ref={inputRef}
@@ -65,6 +72,8 @@ const DetailSteps = ({ taskId }) => {
           onChange={inputHandler}
           value={newStep}
           onKeyDown={keyDownHandler}
+          onFocus={focusHandler}
+          onBlur={blurHandler}
         />
         {newStep && (
           <button
