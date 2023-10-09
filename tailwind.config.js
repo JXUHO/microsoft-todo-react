@@ -51,6 +51,9 @@ export default {
           },
         }
       },
+      width: {
+        divider: "calc(100% - 25px)"
+      }
     },
   },
 };
