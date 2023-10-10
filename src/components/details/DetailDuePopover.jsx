@@ -1,0 +1,225 @@
+import {
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+  useMergeRefs,
+} from "@floating-ui/react";
+import { useEffect, useState } from "react";
+import { VscBell } from "react-icons/vsc";
+import RemindItems from "../addtask/RemindItems";
+import {
+  formatTimeToAMPM,
+  getCustomFormatDateString,
+} from "../../utils/getDates";
+import RemindCalendar from "../addtask/RemindCalendar";
+import { useDispatch, useSelector } from "react-redux";
+import { changeOptionTodo } from "../../store/todoSlice";
+import { BsXLg } from "react-icons/bs";
+import { IoCalendarOutline } from "react-icons/io5";
+import DueCalendar from "../addtask/DueCalendar";
+import DueItems from "../addtask/DueItems";
+
+const DetailDuePopover = ({ taskId }) => {
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [dueText, setDueText] = useState("");
+  const [isHover, setIsHover] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const todo = useSelector((state) =>
+    state.todo.todos.find((todo) => todo.id === taskId)
+  );
+
+  const {
+    refs: popoverRefs,
+    floatingStyles: popoverFloatingStyles,
+    context: popoverContext,
+  } = useFloating({
+    open: popoverOpen,
+    onOpenChange: setPopoverOpen,
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
+  });
+
+  const {
+    refs: calendarRefs,
+    floatingStyles: calendarFloatingStyles,
+    context: calendarContext,
+  } = useFloating({
+    open: calendarOpen,
+    onOpenChange: setCalendarOpen,
+    middleware: [offset(15), flip(), shift({ padding: 10 })],
+  });
+
+  const {
+    getReferenceProps: getPopoverReferenceProps,
+    getFloatingProps: getPopoverFloatingProps,
+  } = useInteractions([
+    useClick(popoverContext),
+    useDismiss(popoverContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const {
+    getReferenceProps: getCalendarReferenceProps,
+    getFloatingProps: getCalendarFloatingProps,
+  } = useInteractions([useClick(calendarContext), useDismiss(calendarContext)]);
+
+  const floatingRef = useMergeRefs([
+    popoverRefs.setReference,
+    calendarRefs.setReference,
+  ]);
+
+  const dueButtonProps = getPopoverReferenceProps({
+    onClick() {
+      setCalendarOpen(false);
+    },
+  });
+
+  const {
+    refs: tooltipRefs,
+    floatingStyles: tooltipFloatingStyles,
+    context: tooltipContext,
+  } = useFloating({
+    open: tooltipOpen,
+    onOpenChange: setTooltipOpen,
+    placement: "top",
+    middleware: [offset(-3), flip(), shift({ padding: 10 })],
+  });
+
+  const {
+    getReferenceProps: getTooltipReferenceProps,
+    getFloatingProps: getTooltipFloatingProps,
+  } = useInteractions([
+    useHover(tooltipContext, { delay: { open: 300, close: 0 } }),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
+
+  const addDueHandler = (dateObj) => {
+    const content = dateObj.toISOString();
+    // 선택한 dateObj의 isoString을 해당 task remind에 저장함
+    dispatch(changeOptionTodo({ id: taskId, option: "dueDate", content }));
+    setPopoverOpen(false);
+  };
+
+  const resetDueHandler = () => {
+    // 해당 task remind를 empty string으로 변경함
+    dispatch(changeOptionTodo({ id: taskId, option: "dueDate", content: "" }));
+    setPopoverOpen(false);
+  };
+
+  const closePopoverHandler = () => {
+    setPopoverOpen(false);
+  };
+
+  const calendarSaveButtonHander = (dateObj) => {
+    addDueHandler(dateObj);
+    setCalendarOpen(false);
+  };
+
+  useEffect(() => {
+    if (todo.dueDate) {
+      setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
+    }
+  }, [todo.dueDate]);
+
+  return (
+    <>
+      <div
+        className="flex bg-white w-full items-center justify-between text-ms-light-text hover:bg-ms-white-hover hover:text-black"
+        style={{ borderBottom: "solid 0.5px #edebe9" }}
+        onMouseOver={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
+        {todo.dueDate ? (
+          <div className="flex w-full p-4" style={{ color: "#2564cf" }}>
+            <div
+              className="flex items-center"
+              ref={floatingRef}
+              {...dueButtonProps}
+            >
+              <IoCalendarOutline size="17px" color="#2564cf" />
+              <div className="mx-4">
+                <div>{dueText}</div>
+              </div>
+            </div>
+            {isHover && (
+              <button
+                onClick={resetDueHandler}
+                className="ml-auto"
+                ref={tooltipRefs.setReference}
+                {...getTooltipReferenceProps()}
+              >
+                <BsXLg size="16px" style={{ paddingRight: "2px" }} />
+              </button>
+            )}
+          </div>
+        ) : (
+          <div
+            className="flex w-full items-center p-4"
+            ref={floatingRef}
+            {...dueButtonProps}
+          >
+            <IoCalendarOutline size="17px" color="#797775" />
+            <span className="mx-4">Add due date</span>
+          </div>
+        )}
+      </div>
+
+      {calendarOpen && (
+        <div
+          ref={calendarRefs.setFloating}
+          {...getCalendarFloatingProps()}
+          style={{ ...calendarFloatingStyles, zIndex: 40 }}
+        >
+          <DueCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+        </div>
+      )}
+
+      {popoverOpen && (
+        <div
+          ref={popoverRefs.setFloating}
+          style={{
+            ...popoverFloatingStyles,
+            zIndex: 40,
+          }}
+          {...getPopoverFloatingProps()}
+        >
+          <DueItems
+            onItemClick={addDueHandler}
+            getCalendarReferenceProps={getCalendarReferenceProps}
+            onPickADateClick={closePopoverHandler}
+            isRemoveDueButtonShow={false}
+            onRemoveDueButtonClick={resetDueHandler}
+          />
+        </div>
+      )}
+
+      {tooltipOpen && (
+        <div
+          ref={tooltipRefs.setFloating}
+          {...getTooltipFloatingProps()}
+          style={{
+            ...tooltipFloatingStyles,
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+            zIndex: 50,
+          }}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
+        >
+          Remove due date
+        </div>
+      )}
+    </>
+  );
+};
+
+export default DetailDuePopover;

@@ -4,6 +4,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMydayTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";
+import DetailDuePopover from "./DetailDuePopover";
 
 const DetailOptions = ({ taskId }) => {
   const [isMyday, setIsMyday] = useState(false);
@@ -56,7 +57,9 @@ const DetailOptions = ({ taskId }) => {
 
       <div className="rounded my-2">
         <DetailRemindPopover taskId={taskId} />
-        <div
+        <DetailDuePopover taskId={taskId} />
+
+        {/* <div
           className="flex bg-white w-full p-4 items-center justify-between text-ms-light-text hover:bg-ms-white-hover hover:text-black"
           style={{ borderBottom: "solid 0.5px #edebe9" }}
           onClick={null}
@@ -65,7 +68,9 @@ const DetailOptions = ({ taskId }) => {
             <IoCalendarOutline size="17px" color="#797775" />
             <span className="mx-4">Add due date</span>
           </div>
-        </div>
+        </div> */}
+
+
         <div
           className="flex bg-white w-full p-4 items-center justify-between text-ms-light-text hover:bg-ms-white-hover hover:text-black"
           onClick={null}
@@ -75,6 +80,8 @@ const DetailOptions = ({ taskId }) => {
             <span className="mx-4">Repeat</span>
           </div>
         </div>
+
+
       </div>
     </>
   );
