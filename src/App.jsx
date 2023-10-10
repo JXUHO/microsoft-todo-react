@@ -74,18 +74,23 @@ export default App;
  * (complete) complete탭 task 순서 수정하기
  * 
  * 
+ * 
+ * Detail resizer popover랑 겹치면 UI 오류발생 -> 안겹치게 바꾸기
+ * 
+ * 
  * make right click modal
  * 삭제 모달
  * 
- * activated task blue color
+ * activated task blue color  
  * AddTask component retracted
- * 
- * detail page
+
  * Searchbar
  * dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * taskList component scroll 가능하게 만들기
  * 
+ * RepeatPopover -> useRepeatTasks 함수 호출 위치 고민해보기 -> repeat설정된 task가 완료되면 새로운 task생성하는 역할
  * 
+ * floating ui -> useListNavigation 사용, 방향키로 선택 가능하도록 설정하기
  * 
  * 
  */

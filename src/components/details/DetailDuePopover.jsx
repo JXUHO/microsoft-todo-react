@@ -127,6 +127,7 @@ const DetailDuePopover = ({ taskId }) => {
 
   useEffect(() => {
     if (todo.dueDate) {
+      console.log(todo.dueDate);
       setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
     }
   }, [todo.dueDate]);
@@ -139,14 +140,14 @@ const DetailDuePopover = ({ taskId }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.dueDate ? (
-          <div className="flex w-full p-4" style={{ color: "#2564cf" }}>
+        {todo.dueDate ? (  // 외곽 클릭해도 popover 켜질 수 있는 방법 생각하기
+          <div className="flex justify-between w-full p-4" style={{ color: "#2564cf" }}>
             <div
-              className="flex items-center"
+              className="flex items-center flex-auto"
               ref={floatingRef}
               {...dueButtonProps}
             >
-              <IoCalendarOutline size="17px" color="#2564cf" />
+              <IoCalendarOutline size="17px" color="#2564cf" />  
               <div className="mx-4">
                 <div>{dueText}</div>
               </div>
@@ -154,7 +155,7 @@ const DetailDuePopover = ({ taskId }) => {
             {isHover && (
               <button
                 onClick={resetDueHandler}
-                className="ml-auto"
+                className=""
                 ref={tooltipRefs.setReference}
                 {...getTooltipReferenceProps()}
               >

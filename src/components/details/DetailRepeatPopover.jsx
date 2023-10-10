@@ -10,21 +10,19 @@ import {
   useMergeRefs,
 } from "@floating-ui/react";
 import { useEffect, useState } from "react";
-import { VscBell } from "react-icons/vsc";
-import RemindItems from "../addtask/RemindItems";
-import {
-  formatTimeToAMPM,
-  getCustomFormatDateString,
-} from "../../utils/getDates";
-import RemindCalendar from "../addtask/RemindCalendar";
+import { getDayOfWeek } from "../../utils/getDates";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOptionTodo } from "../../store/todoSlice";
-import { BsXLg } from "react-icons/bs";
+import { BsRepeat, BsXLg } from "react-icons/bs";
+import RepeatCustom from "../addtask/RepeatCustom";
+import RepeatItems from "../addtask/RepeatItems";
 
-const DetailRemindPopover = ({ taskId }) => {
+import { getRepeatButtonText } from "../addtask/RepeatPopover";
+
+const DetailRepeatPopover = ({ taskId }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  const [remindText, setRemindText] = useState({ date: "", time: "" });
+  const [customOpen, setCustomOpen] = useState(false);
+  const [repeatText, setRepeatText] = useState("");
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -44,12 +42,12 @@ const DetailRemindPopover = ({ taskId }) => {
   });
 
   const {
-    refs: calendarRefs,
-    floatingStyles: calendarFloatingStyles,
-    context: calendarContext,
+    refs: customRefs,
+    floatingStyles: customFloatingStyles,
+    context: customContext,
   } = useFloating({
-    open: calendarOpen,
-    onOpenChange: setCalendarOpen,
+    open: customOpen,
+    onOpenChange: setCustomOpen,
     middleware: [offset(15), flip(), shift({ padding: 10 })],
   });
 
@@ -64,18 +62,18 @@ const DetailRemindPopover = ({ taskId }) => {
   ]);
 
   const {
-    getReferenceProps: getCalendarReferenceProps,
-    getFloatingProps: getCalendarFloatingProps,
-  } = useInteractions([useClick(calendarContext), useDismiss(calendarContext)]);
+    getReferenceProps: getCustomReferenceProps,
+    getFloatingProps: getCustomFloatingProps,
+  } = useInteractions([useClick(customContext), useDismiss(customContext)]);
 
   const floatingRef = useMergeRefs([
     popoverRefs.setReference,
-    calendarRefs.setReference,
+    customRefs.setReference,
   ]);
 
-  const remindButtonProps = getPopoverReferenceProps({
+  const repeatButtonProps = getPopoverReferenceProps({
     onClick() {
-      setCalendarOpen(false);
+      setCustomOpen(false);
     },
   });
 
@@ -100,16 +98,64 @@ const DetailRemindPopover = ({ taskId }) => {
     }),
   ]);
 
-  const addRemindHandler = (dateObj) => {
-    const content = dateObj.toISOString();
-    // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    dispatch(changeOptionTodo({ id: taskId, option: "remind", content }));
+  const addRepeatHandler = (input) => {
+    switch (input) {
+      case "daily":
+        dispatch(
+          changeOptionTodo({
+            id: taskId,
+            content: "1-day",
+            option: "repeatRule",
+          })
+        );
+        break;
+      case "weekdays":
+        dispatch(
+          changeOptionTodo({
+            id: taskId,
+            content: "1-week-mon-tue-wed-thu-fri",
+            option: "repeatRule",
+          })
+        );
+        break;
+      case "weekly":
+        const currentDay = getDayOfWeek(new Date());
+        dispatch(
+          changeOptionTodo({
+            id: taskId,
+            content: "1-week-" + currentDay,
+            option: "repeatRule",
+          })
+        );
+        break;
+      case "monthly":
+        dispatch(
+          changeOptionTodo({
+            id: taskId,
+            content: "1-month",
+            option: "repeatRule",
+          })
+        );
+        break;
+      case "yearly":
+        dispatch(
+          changeOptionTodo({
+            id: taskId,
+            content: "1-year",
+            option: "repeatRule",
+          })
+        );
+        break;
+      default:
+        break;
+    }
     setPopoverOpen(false);
   };
 
-  const resetRemindHandler = () => {
-    // 해당 task remind를 empty string으로 변경함
-    dispatch(changeOptionTodo({ id: taskId, option: "remind", content: "" }));
+  const resetRepeatHandler = () => {
+    dispatch(
+      changeOptionTodo({ id: taskId, option: "repeatRule", content: "" })
+    );
     setPopoverOpen(false);
   };
 
@@ -117,20 +163,13 @@ const DetailRemindPopover = ({ taskId }) => {
     setPopoverOpen(false);
   };
 
-  const calendarSaveButtonHander = (dateObj) => {
-    addRemindHandler(dateObj);
-    setCalendarOpen(false);
+  const setRepeatRule = (content, option) => {
+    dispatch(changeOptionTodo({ id: taskId, option, content }));
   };
 
   useEffect(() => {
-    if (todo.remind) {
-      const dateObj = new Date(todo.remind);
-      setRemindText({
-        date: getCustomFormatDateString(dateObj, "remind"),
-        time: formatTimeToAMPM(dateObj),
-      });
-    }
-  }, [todo.remind]);
+    setRepeatText(getRepeatButtonText(todo.repeatRule));
+  }, [todo.repeatRule]);
 
   return (
     <>
@@ -140,24 +179,21 @@ const DetailRemindPopover = ({ taskId }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.remind ? (
-          <div className="flex w-full px-4 py-2" style={{ color: "#2564cf" }}>
+        {todo.repeatRule ? (
+          <div className="flex w-full p-4" style={{ color: "#2564cf" }}>
             <div
-              className="flex items-center"
+              className="flex items-center flex-auto"
               ref={floatingRef}
-              {...remindButtonProps}
+              {...repeatButtonProps}
             >
-              <VscBell size="17px" color="#2564cf" />
+              <BsRepeat size="17px" color="#2564cf"/>
               <div className="mx-4">
-                <div>Remind me at {remindText.time}</div>
-                <div className="text-xs" style={{ color: "#605E5C" }}>
-                  {remindText.date}
-                </div>
+                <div>{repeatText}</div>
               </div>
             </div>
             {isHover && (
               <button
-                onClick={resetRemindHandler}
+                onClick={resetRepeatHandler}
                 className="ml-auto"
                 ref={tooltipRefs.setReference}
                 {...getTooltipReferenceProps()}
@@ -170,21 +206,24 @@ const DetailRemindPopover = ({ taskId }) => {
           <div
             className="flex w-full items-center p-4"
             ref={floatingRef}
-            {...remindButtonProps}
+            {...repeatButtonProps}
           >
-            <VscBell size="17px" color="#797775" />
-            <span className="mx-4">Remind me</span>
+            <BsRepeat size="17px" color="#797775" />
+            <span className="mx-4">Repeat</span>
           </div>
         )}
       </div>
 
-      {calendarOpen && (
+      {customOpen && (
         <div
-          ref={calendarRefs.setFloating}
-          {...getCalendarFloatingProps()}
-          style={{ ...calendarFloatingStyles, zIndex: 40 }}
+          ref={customRefs.setFloating}
+          {...getCustomFloatingProps()}
+          style={{ ...customFloatingStyles, zIndex: 40 }}
         >
-          <RemindCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+          <RepeatCustom
+            setRepeatRule={setRepeatRule}
+            closeCustom={() => setCustomOpen(false)}
+          />
         </div>
       )}
 
@@ -197,12 +236,12 @@ const DetailRemindPopover = ({ taskId }) => {
           }}
           {...getPopoverFloatingProps()}
         >
-          <RemindItems
-            onItemClick={addRemindHandler}
-            getCalendarReferenceProps={getCalendarReferenceProps}
-            onPickADateClick={closePopoverHandler}
-            isRemoveReminderButtonShow={false}
-            onRemoveReminderButtonClick={resetRemindHandler}
+          <RepeatItems
+            onItemClick={addRepeatHandler}
+            getCustomReferenceProps={getCustomReferenceProps}
+            isNeverRepeatShow={false}
+            onNeverRepeatClick={resetRepeatHandler}
+            onCustomClick={closePopoverHandler}
           />
         </div>
       )}
@@ -219,11 +258,20 @@ const DetailRemindPopover = ({ taskId }) => {
           }}
           className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >
-          Remove reminder
+          Remove recurrence
         </div>
       )}
     </>
   );
 };
 
-export default DetailRemindPopover;
+export default DetailRepeatPopover;
+
+
+/**
+ * TODO
+ * weekly text 수정하기
+ * 활성화됐을 때 버튼 전체 클릭 가능하도록 수정하기
+ * 
+ * 
+ */

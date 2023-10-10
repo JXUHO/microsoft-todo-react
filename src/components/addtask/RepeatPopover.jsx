@@ -11,7 +11,6 @@ import {
 } from "@floating-ui/react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import RepeatItems from "./RepeatItems";
-import useRepeatTasks from "../../hooks/useRepeatTasks";
 import RepeatCustom from "./RepeatCustom";
 import {
   getDayOfWeek,
@@ -21,7 +20,6 @@ import {
 import { BsRepeat } from "react-icons/bs";
 
 const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
-  // const tasksStored = useSelector((state) => state.todo.todos);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
@@ -97,9 +95,8 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
     })
   );
 
-  useRepeatTasks();
-
   const addRepeatHandler = (input) => {
+  
     switch (input) {
       case "daily":
         setRepeatRule("1-day", "repeatRule");
@@ -226,7 +223,7 @@ const RepeatPopover = forwardRef(({ setRepeatRule, repeatRuleValue }, ref) => {
 export default RepeatPopover;
 
 // button text helper function
-const getRepeatButtonText = (repeatRule) => {
+export const getRepeatButtonText = (repeatRule) => {
   let repeatButtonText = "Repeat";
   const repeatRuleArr = repeatRule.split("-");
 

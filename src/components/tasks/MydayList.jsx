@@ -1,8 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TaskItem from "./TaskItem";
 import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import sortTasks from "../../utils/sortTasks";
+import repeatTask from "../../utils/repeatTask";
+import { addTodo, changeDueDateTodo, repeatedTodo } from "../../store/todoSlice";
 
 const MydayList = () => {
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
@@ -10,8 +12,10 @@ const MydayList = () => {
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const [completeArr, setCompleteArr] = useState([]);
-  const sortOrder = useSelector((state) => state.sort.myday.order);  
+  const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
+  const dispatch = useDispatch()
+  
 
   const rotate = isCompleteOpen ? "rotate(90deg)" : "rotate(0)";
 
@@ -33,15 +37,26 @@ const MydayList = () => {
     setTodoArr(todos);
   }, [todos]);
 
-
   useEffect(() => {
     if (sortBy) {
-      // console.log('useeffect trigger');
-      // console.log(sortTasks(sortBy, sortOrder, todos))
       setTodoArr(sortTasks(sortBy, sortOrder, todos));
     }
-
   }, [todos, sortBy, sortOrder]);
+
+  useEffect(() => {
+    todoArr.map((todo) => {
+      const repeatInfo = repeatTask(todo);
+    if (!repeatInfo) return;
+    if (repeatInfo instanceof Date) {
+      dispatch(
+        changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
+      );
+    } else {
+      dispatch(repeatedTodo(todo.id));
+      dispatch(addTodo(repeatInfo));
+    }
+    });
+  }, [todoArr]);
 
   return (
     <>

@@ -1,5 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import { completeTodo, importanceTodo } from "../../store/todoSlice";
+import { useDispatch } from "react-redux";
+import {
+  addTodo,
+  changeDueDateTodo,
+  completeTodo,
+  importanceTodo,
+  repeatedTodo,
+} from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -22,6 +28,7 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
+import repeatTask from "../../utils/repeatTask";
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
@@ -31,9 +38,8 @@ const TaskItem = ({ todo }) => {
   const [isRepeat, setIsRepeat] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-
   const completedHandler = () => {
-    dispatch(completeTodo(todo.id));  // 
+    dispatch(completeTodo(todo.id)); //
   };
 
   const importanceHandler = () => {
@@ -103,9 +109,11 @@ const TaskItem = ({ todo }) => {
       <button
         onClick={() => detailOpenHandler(todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
-        style={{color: '#292827'}}
+        style={{ color: "#292827" }}
       >
-        <span style={todo.complete ? {textDecoration: 'line-through'} : null}>{todo.task}</span>
+        <span style={todo.complete ? { textDecoration: "line-through" } : null}>
+          {todo.task}
+        </span>
         <div className="flex flex-row items-center leading-3">
           <span className="text-xs" style={{ color: "#797775" }}>
             Tasks
