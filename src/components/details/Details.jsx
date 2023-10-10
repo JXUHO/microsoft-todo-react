@@ -19,10 +19,10 @@ const Details = ({taskId}) => {
     <div className="py-0 pr-4 pl-6 mt-4 flex-1 overflow-y-scroll overflow-x-hidden ">
       <DetailHeader taskId={taskId}/>
       <DetailSteps taskId={taskId}/>
-      <DetailOptions />
-      <DetailPickCategory/>
-      <DetailAddFile/>
-      <DetailNote/>
+      <DetailOptions taskId={taskId}/>
+      <DetailPickCategory taskId={taskId}/>
+      <DetailAddFile taskId={taskId}/>
+      <DetailNote taskId={taskId}/>
     </div>
   )
 
