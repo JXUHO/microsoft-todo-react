@@ -56,6 +56,12 @@ const todoSlice = createSlice({
       );
       todoToChange.myday = !todoToChange.myday
     },
+    changeOptionTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange[action.payload.option] = action.payload.content
+    },
 
 
     addStep: (state, action) => {
@@ -97,6 +103,7 @@ export const {
   changeDueDateTodo,
   changeTaskTodo,
   changeMydayTodo,
+  changeOptionTodo,
   addStep,
   completeStep,
   removeStep,
