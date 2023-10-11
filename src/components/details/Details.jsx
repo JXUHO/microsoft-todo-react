@@ -2,7 +2,7 @@ import {useDispatch, useSelector } from "react-redux";
 import DetailHeader from "./DetailHeader";
 import DetailSteps from "./DetailSteps";
 import DetailOptions from "./DetailOptions";
-import DetailPickCategory from "./DetailPickCategory";
+import DetailCategories from "./DetailCategories";
 import DetailAddFile from "./DetailAddFile";
 import DetailNote from "./DetailNote";
 import { changeOptionTodo } from "../../store/todoSlice";
@@ -19,7 +19,7 @@ const Details = ({taskId}) => {
   useEffect(() => {
     // due 제거되면 repeat도 제거
     if (!todo.dueDate && todo.repeatRule) {
-      dispatch(changeOptionTodo({id:taskId, option: "repeatRule", content: ""}))
+      dispatch(changeOptionTodo({id:taskId, option: "repeatRule", content: ""}))  
     }
   }, [todo.dueDate]);
 
@@ -48,7 +48,7 @@ const Details = ({taskId}) => {
       <DetailHeader taskId={taskId}/>
       <DetailSteps taskId={taskId}/>
       <DetailOptions taskId={taskId}/>
-      <DetailPickCategory taskId={taskId}/>
+      <DetailCategories taskId={taskId}/>
       <DetailAddFile taskId={taskId}/>
       <DetailNote taskId={taskId}/>
     </div>

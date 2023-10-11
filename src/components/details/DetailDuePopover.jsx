@@ -10,13 +10,9 @@ import {
   useMergeRefs,
 } from "@floating-ui/react";
 import { useEffect, useState } from "react";
-import { VscBell } from "react-icons/vsc";
-import RemindItems from "../addtask/RemindItems";
 import {
-  formatTimeToAMPM,
   getCustomFormatDateString,
 } from "../../utils/getDates";
-import RemindCalendar from "../addtask/RemindCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOptionTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
@@ -127,7 +123,6 @@ const DetailDuePopover = ({ taskId }) => {
 
   useEffect(() => {
     if (todo.dueDate) {
-      console.log(todo.dueDate);
       setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
     }
   }, [todo.dueDate]);

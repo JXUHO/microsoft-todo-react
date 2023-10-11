@@ -62,6 +62,18 @@ const todoSlice = createSlice({
       );
       todoToChange[action.payload.option] = action.payload.content
     },
+    addCategoryTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.category.push(action.payload.category)
+    },
+    removeCategoryTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.category = todoToChange.category.filter(element => element !== action.payload.category)
+    },
 
 
     addStep: (state, action) => {
@@ -104,6 +116,8 @@ export const {
   changeTaskTodo,
   changeMydayTodo,
   changeOptionTodo,
+  addCategoryTodo,
+  removeCategoryTodo,
   addStep,
   completeStep,
   removeStep,

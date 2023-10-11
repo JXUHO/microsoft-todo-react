@@ -19,7 +19,7 @@ const initialTask = {
   remind: "", // isoString
   repeatRule: "",
   repeated: false,
-  category: "",
+  category: [],
   file: null, // db 주소?
   note: "",
   importance: false,

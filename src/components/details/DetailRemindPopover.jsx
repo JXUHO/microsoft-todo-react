@@ -143,7 +143,7 @@ const DetailRemindPopover = ({ taskId }) => {
         {todo.remind ? (
           <div className="flex w-full px-4 py-2" style={{ color: "#2564cf" }}>
             <div
-              className="flex items-center"
+              className="flex items-center flex-auto"
               ref={floatingRef}
               {...remindButtonProps}
             >
