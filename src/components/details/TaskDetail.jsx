@@ -31,7 +31,7 @@ const TaskDetail = () => {
   useEffect(() => {
     const todoDetail = todos.find(todo => todo.id === detailId)
     setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)))
-  }, [])
+  }, [detailId, todos])
 
 
   const startResizeHandler = useCallback(() => {

@@ -22,7 +22,7 @@ import { getRepeatButtonText } from "../addtask/RepeatPopover";
 const DetailRepeatPopover = ({ taskId }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
-  const [repeatText, setRepeatText] = useState("");
+  const [repeatText, setRepeatText] = useState({ title: "", description: "" });
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -168,7 +168,11 @@ const DetailRepeatPopover = ({ taskId }) => {
   };
 
   useEffect(() => {
-    setRepeatText(getRepeatButtonText(todo.repeatRule));
+    const repeatButtonText = getRepeatButtonText(todo.repeatRule).split(",");
+    setRepeatText({
+      title: repeatButtonText[0],
+      description: repeatButtonText.slice(1).join(","),
+    });
   }, [todo.repeatRule]);
 
   return (
@@ -180,15 +184,16 @@ const DetailRepeatPopover = ({ taskId }) => {
         onMouseLeave={() => setIsHover(false)}
       >
         {todo.repeatRule ? (
-          <div className="flex w-full p-4" style={{ color: "#2564cf" }}>
+          <div className={`flex w-full ${repeatText.description ? "px-4 py-2" : "p-4"}`} style={{ color: "#2564cf"}}>
             <div
               className="flex items-center flex-auto"
               ref={floatingRef}
               {...repeatButtonProps}
             >
-              <BsRepeat size="17px" color="#2564cf"/>
+              <BsRepeat size="17px" color="#2564cf" />
               <div className="mx-4">
-                <div>{repeatText}</div>
+                <div>{repeatText.title}</div>
+                <div style={{fontSize:"11px", color:"#292827"}}>{repeatText.description}</div>
               </div>
             </div>
             {isHover && (
@@ -267,11 +272,9 @@ const DetailRepeatPopover = ({ taskId }) => {
 
 export default DetailRepeatPopover;
 
-
 /**
  * TODO
- * weekly text 수정하기
  * 활성화됐을 때 버튼 전체 클릭 가능하도록 수정하기
- * 
- * 
+ *
+ *
  */

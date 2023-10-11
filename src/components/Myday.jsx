@@ -5,7 +5,6 @@ import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsSun } from "react-icons/bs";
 import { PiDotsThreeBold, PiLightbulbThin } from "react-icons/pi";
-import { useState } from "react";
 import SortPopover from "./toolbar/SortPopover";
 import GroupPopover from "./toolbar/GroupPopover";
 import SortIndicator from "./toolbar/SortIndicator";

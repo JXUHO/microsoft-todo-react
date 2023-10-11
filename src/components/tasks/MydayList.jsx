@@ -11,7 +11,6 @@ const MydayList = () => {
   const [completeCount, setCompleteCount] = useState(0);
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
-  const [completeArr, setCompleteArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
   const dispatch = useDispatch()
@@ -56,7 +55,7 @@ const MydayList = () => {
       dispatch(addTodo(repeatInfo));
     }
     });
-  }, [todoArr]);
+  }, [todoArr, dispatch]);
 
   return (
     <>
