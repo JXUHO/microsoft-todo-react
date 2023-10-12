@@ -22,6 +22,7 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
+import TaskItemCategories from "./TaskItemCategories";
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
@@ -109,7 +110,7 @@ const TaskItem = ({ todo }) => {
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>
           {todo.task}
         </span>
-        <div className="flex flex-row items-center leading-3">
+        <div className="flex flex-wrap flex-row items-center leading-3">
           <span className="text-xs" style={{ color: "#797775" }}>
             Tasks
           </span>
@@ -156,6 +157,7 @@ const TaskItem = ({ todo }) => {
               </span>
             </div>
           )}
+          <TaskItemCategories todo={todo} />
         </div>
       </button>
 
