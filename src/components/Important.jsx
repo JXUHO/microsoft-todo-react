@@ -1,6 +1,5 @@
 import AddTask from "./addtask/AddTask";
-import TaskList from "./tasks/MydayList";
-import CompletedTaskList from "./tasks/CompletedTaskList";
+
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 
@@ -21,7 +20,7 @@ const Important = () => {
       </div>
       <AddTask myday={false}/>
       {/* <TaskList/> */}
-      <CompletedTaskList/>
+
     </>
   );
 };

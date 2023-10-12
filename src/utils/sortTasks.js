@@ -12,9 +12,9 @@ export default function sortTasks(sortBy, sortOrder, todos) {
       });
       sortedArr = sortedArr.filter((task) => !task.importance);
       if (sortOrder === "descending") {
-        sortedArr = [...sortedArr, ...importanceSelectedTasks];
-      } else {
         sortedArr = [...importanceSelectedTasks, ...sortedArr];
+      } else {
+        sortedArr = [...sortedArr, ...importanceSelectedTasks];
       }
       break;
 
@@ -34,7 +34,7 @@ export default function sortTasks(sortBy, sortOrder, todos) {
       if (sortOrder === "descending") {
         dueSelectedTasks = dueSelectedTasks.reverse();
       }
-      sortedArr = [...sortedArr, ...dueSelectedTasks];
+      sortedArr = [...dueSelectedTasks, ...sortedArr];
       break;
 
 
