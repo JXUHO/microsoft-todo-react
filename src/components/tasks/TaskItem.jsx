@@ -1,11 +1,5 @@
 import { useDispatch } from "react-redux";
-import {
-  addTodo,
-  changeDueDateTodo,
-  completeTodo,
-  importanceTodo,
-  repeatedTodo,
-} from "../../store/todoSlice";
+import { completeTodo, importanceTodo } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -28,18 +22,17 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
-import repeatTask from "../../utils/repeatTask";
 
 const TaskItem = ({ todo }) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [dueText, setDueText] = useState("");
   const [remindText, setRemindText] = useState("");
-  const [isRepeat, setIsRepeat] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [stepIncompleteLength, setStepIncompleteLength] = useState(0);
 
   const completedHandler = () => {
-    dispatch(completeTodo(todo.id)); //
+    dispatch(completeTodo(todo.id));
   };
 
   const importanceHandler = () => {
@@ -57,8 +50,10 @@ const TaskItem = ({ todo }) => {
     if (todo.remind) {
       setRemindText(getCustomFormatDateString(new Date(todo.remind), "remind"));
     }
-    if (todo.repeatRule) {
-      setIsRepeat(true);
+    if (todo.steps.length) {
+      setStepIncompleteLength(
+        todo.steps.filter((step) => step.complete).length
+      );
     }
   }, [todo]);
 
@@ -119,6 +114,14 @@ const TaskItem = ({ todo }) => {
             Tasks
           </span>
 
+          {todo.steps.length !== 0 && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                {stepIncompleteLength} of {todo.steps.length}
+              </span>
+            </div>
+          )}
+
           <div
             className="flex items-center"
             style={
@@ -137,7 +140,7 @@ const TaskItem = ({ todo }) => {
                 <span className="text-xs mr-1">{dueText}</span>
               </div>
             )}
-            {isRepeat && (
+            {todo.repeatRule && (
               <span>
                 <PiArrowsClockwiseBold size="14px" />
               </span>
