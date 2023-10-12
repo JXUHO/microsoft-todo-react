@@ -11,8 +11,9 @@ import {
 } from "@floating-ui/react";
 import { useState } from "react";
 import { PiFolderSimpleThin } from "react-icons/pi";
+import GroupItems from "./GroupItems";
 
-const GroupPopover = () => {
+const GroupPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -64,6 +65,10 @@ const GroupPopover = () => {
     setPopoverOpen(true);
   };
 
+  const popoverCloseHandler = () => {
+    setPopoverOpen(false)
+  }
+
   return (
     <>
       <div
@@ -87,7 +92,7 @@ const GroupPopover = () => {
           }}
           {...getPopoverFloatingProps()}
         >
-          popover
+          <GroupItems onItemClick={popoverCloseHandler} currentLocation={currentLocation}/>
         </div>
       )}
       {tooltipOpen && (

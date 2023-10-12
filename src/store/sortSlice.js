@@ -28,14 +28,14 @@ const sortSlice = createSlice({
         state[location].order = "descending";
       }
     },
-    initializeState: (state, action) => {
-      // dispatch(initializeState('myday'))
+    initializeSort: (state, action) => {
+      // dispatch(initializeSort('myday'))
       const location = action.payload;
       state[location] = { sortBy: "", order: "descending" };
     },
   },
 });
 
-export const { setSortBy, changeOrder, initializeState } = sortSlice.actions;
+export const { setSortBy, changeOrder, initializeSort } = sortSlice.actions;
 
 export default sortSlice.reducer;

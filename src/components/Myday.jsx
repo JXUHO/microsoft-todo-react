@@ -8,10 +8,12 @@ import { PiDotsThreeBold, PiLightbulbThin } from "react-icons/pi";
 import SortPopover from "./toolbar/SortPopover";
 import GroupPopover from "./toolbar/GroupPopover";
 import SortIndicator from "./toolbar/SortIndicator";
+import GroupIndicator from "./toolbar/GroupIndicator";
 
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isSortOptionSelected = useSelector((state) => state.sort.myday.sortBy);
+  const isGroupOptionSelected = useSelector((state) => state.group.myday.groupBy);
   const dispatch = useDispatch();
 
   const openSidebarHandler = () => {
@@ -59,7 +61,7 @@ const Myday = () => {
         </div>
         <div className="flex">
           <SortPopover currentLocation="myday" />
-          <GroupPopover />
+          <GroupPopover currentLocation="myday"/>
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
@@ -72,6 +74,7 @@ const Myday = () => {
       <div className="flex flex-col mx-6">
         <div className="flex items-center justify-end">
           {isSortOptionSelected && <SortIndicator currentLocation="myday" />}
+          {isGroupOptionSelected && <GroupIndicator currentLocation="myday" />}
         </div>
         <AddTask isMyday={true} />
         <MydayList />

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { changeOrder, initializeState } from "../../store/sortSlice";
+import { changeOrder, initializeSort } from "../../store/sortSlice";
 import { BsXLg, BsChevronUp, BsChevronDown } from "react-icons/bs";
 import {
   flip,
@@ -10,41 +10,43 @@ import {
   useInteractions,
   useHover,
 } from "@floating-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SortIndicator = ({ currentLocation }) => {
   const [reverseTooltipOpen, setReverseTooltipOpen] = useState(false);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
+  const [sortIndicatorText, setSortIndicatorText] = useState("")
 
   const dispatch = useDispatch();
   const sortOption = useSelector((state) => state.sort[currentLocation].sortBy);
   const sortOrder = useSelector((state) => state.sort[currentLocation].order);
 
   const initializeSortHandler = () => {
-    dispatch(initializeState(currentLocation));
+    dispatch(initializeSort(currentLocation));
   };
   const changeOrderHandler = () => {
     dispatch(changeOrder(currentLocation));
   };
 
-  let sortIndicatorText = "";
-  switch (sortOption) {
-    case "importance":
-      sortIndicatorText = "Sorted by importance";
-      break;
-    case "dueDate":
-      sortIndicatorText = "Sorted by due date";
-      break;
-    case "alphabetically":
-      sortIndicatorText = "Sorted alphabetically";
-      break;
-    case "creationDate":
-      sortIndicatorText = "Sorted by creation date";
-      break;
-
-    default:
-      break;
-  }
+  useEffect(() => {
+    switch (sortOption) {
+      case "importance":
+        setSortIndicatorText("Sorted by importance");
+        break;
+      case "dueDate":
+        setSortIndicatorText("Sorted by due date");
+        break;
+      case "alphabetically":
+        setSortIndicatorText("Sorted alphabetically");
+        break;
+      case "creationDate":
+        setSortIndicatorText("Sorted by creation date");
+        break;
+  
+      default:
+        break;
+    }
+  }, [sortOption])
 
   const {
     refs: reverseTooltipRefs,

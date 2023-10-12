@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { BsRepeat, BsSun, BsXLg } from "react-icons/bs";
-import { IoCalendarOutline } from "react-icons/io5";
+import { BsSun, BsXLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMydayTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";

@@ -54,7 +54,6 @@ const repeatTask = (taskItem) => {
       // myday: isToday
     };
     return (nextRepeatTask)
-    // dispatch(addTodo(nextRepeatTask));
   } else if (
     // week에서 선택한 요일과 due에 설정된 요일이 다를때, imperative하게 due를 변경
     taskItem.repeatRule &&
@@ -71,12 +70,6 @@ const repeatTask = (taskItem) => {
       taskItem.repeatRule
     );
     return (modifiedDueDate)
-    // dispatch(
-    //   changeDueDateTodo({
-    //     id: taskItem.id,
-    //     dueDate: modifiedDueDate.toISOString(),
-    //   })
-    // );
 
     // 여기서는 due를 repeat 옵션에 맞게 변경. 등록 후 사이드바에서 due를 변경할 때는 repeat 요일을 due에 맞게 변경.
     // 여러 요일 옵션이 선택된 경우에는, due를 설정한 요일을 해당 옵션에 더한다
