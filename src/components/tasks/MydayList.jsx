@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import TaskItem from "./TaskItem";
 import { useEffect, useState } from "react";
-import { BsChevronRight } from "react-icons/bs";
 import sortTasks from "../../utils/sortTasks";
 import repeatTask from "../../utils/repeatTask";
 import {
@@ -21,21 +19,19 @@ const MydayList = () => {
   const groupBy = useSelector((state) => state.group.myday.groupBy);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     //  todoArr 생성.
-    
-    const mydayTodos = todos.slice().reverse().filter(todo => todo.myday)
-    
+    const mydayTodos = todos
+      .slice()
+      .reverse()
+      .filter((todo) => todo.myday);
+
     if (sortBy) {
       setTodoArr(sortTasks(sortBy, sortOrder, mydayTodos));
     } else {
-      setTodoArr(mydayTodos);}
-
-
+      setTodoArr(mydayTodos);
+    }
   }, [todos, sortBy, sortOrder]);
-
-
 
   useEffect(() => {
     // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
@@ -53,7 +49,6 @@ const MydayList = () => {
     });
   }, [todoArr, dispatch]);
 
-
   return (
     <>
       <div className="flex flex-col">
@@ -64,8 +59,8 @@ const MydayList = () => {
         )}
 
         <div>
-          {todoArr.some((todo) => todo.complete) && ( 
-            <CompleteList todoArr={todoArr} />
+          {todoArr.some((todo) => todo.complete) && (
+            <CompleteList myday={true} />
           )}
         </div>
       </div>
@@ -74,9 +69,6 @@ const MydayList = () => {
 };
 
 export default MydayList;
-
-
-
 
 /**
  * TODO
@@ -92,6 +84,6 @@ export default MydayList;
  * drag-drop을 통해 task끼리 순서 변경 가능함
  * complete탭에서 importance버튼이 눌리면 상단으로 이동함
  *
- * 
+ *
  *
  */

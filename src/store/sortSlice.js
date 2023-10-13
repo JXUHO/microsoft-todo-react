@@ -11,14 +11,11 @@ const sortSlice = createSlice({
   // sortBy: importance, dueDate, alphabetically, creationDate
 
   reducers: {
-
     setSortBy: (state, action) => {
       // dispatch(setSortBy({option:'importance', location: 'myday'}))
       const { option, location } = action.payload;
       state[location].sortBy = option;
     },
-
-
     changeOrder: (state, action) => {
       // dispatch(changeOrder('myday'))
       const location = action.payload;

@@ -1,43 +1,22 @@
 import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import TaskItem from "./TaskItem";
-import { useSelector } from "react-redux";
-import sortTasks from "../../utils/sortTasks";
 
-const CompleteList = ({ myday }) => {
-  const todos = useSelector((state) => state.todo.todos);
-  const sortOrder = useSelector((state) => state.sort.myday.order);
-  const sortBy = useSelector((state) => state.sort.myday.sortBy);
+const CompleteList = ({ todoArr }) => {
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
-  const [todoArr, setTodoArr] = useState([]);
 
   const toggleCompleteHandler = () => {
     setIsCompleteOpen((prevState) => !prevState);
   };
 
+
+  const completeCount = todoArr.reduce((acc, todo) => todo.complete ? acc + 1 : acc, 0);
+
+
   useEffect(() => {
-    // myday, complete, sortBy 순서대로 적용해야함
-    let todoTemp = todos.slice().reverse();
+    
+  }, [todoArr])
 
-    todoTemp = todoTemp.filter((todo) => todo.complete);
-
-    // myday check
-    if (myday) {
-      todoTemp = todoTemp.filter((todo) => todo.myday);
-    }
-
-    // sort옵션 적용
-    if (sortBy) {
-      setTodoArr(sortTasks(sortBy, sortOrder, todoTemp));
-    } else {
-      setTodoArr(todoTemp);
-    }
-  }, [todos, sortBy, sortOrder]);
-
-  const completeCount = todoArr.reduce(
-    (acc, todo) => (todo.complete ? acc + 1 : acc),
-    0
-  );
 
   return (
     <>
@@ -65,11 +44,13 @@ const CompleteList = ({ myday }) => {
           </h3>
         </div>
       </div>
-      {isCompleteOpen && (
+      {isCompleteOpen && ( // 기본 sort는 complete 시간 내림차순 + importance우선
         <div>
-          {todoArr.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} />
-          ))}
+          {todoArr.slice().map((todo) => {
+            if (todo.complete) {
+              return <TaskItem key={todo.id} todo={todo} />;
+            }
+          })}
         </div>
       )}
     </>
