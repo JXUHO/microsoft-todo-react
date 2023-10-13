@@ -8,7 +8,7 @@ const CompleteList = ({ myday }) => {
   const todos = useSelector((state) => state.todo.todos);
   const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
-  const [isCompleteOpen, setIsCompleteOpen] = useState(false);
+  const [isCompleteOpen, setIsCompleteOpen] = useState(true);
   const [todoArr, setTodoArr] = useState([]);
 
   const toggleCompleteHandler = () => {

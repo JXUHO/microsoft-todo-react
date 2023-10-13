@@ -21,10 +21,10 @@ const initialTask = {
   repeated: false,
   category: [],
   file: null, // db 주소?
-  note: "",
+  note: {content:"", updated:""},
   importance: false,
-  created: "",
-  complete: "",
+  created: "", // isoString
+  complete: "", // isoString
 };
 
 const AddTask = ({ isMyday }) => {
