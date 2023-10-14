@@ -10,14 +10,14 @@ import Details from "./Details";
 const TaskDetail = () => {
   const detailId = useSelector((state) => state.ui.id);
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
 
   const sidebarRef = useRef();
   const [isResizing, setIsResizing] = useState(false);
   const [resizerPosition, setResizerPosition] = useState(360);
   const [isHover, setIsHover] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(360);
-  const [createdTime, setCreatedTime] = useState("")
+  const [createdTime, setCreatedTime] = useState("");
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -29,10 +29,9 @@ const TaskDetail = () => {
   };
 
   useEffect(() => {
-    const todoDetail = todos.find(todo => todo.id === detailId)
-    setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)))
-  }, [detailId, todos])
-
+    const todoDetail = todos.find((todo) => todo.id === detailId);
+    setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
+  }, [detailId, todos]);
 
   const startResizeHandler = useCallback(() => {
     setIsResizing(true);
@@ -51,7 +50,8 @@ const TaskDetail = () => {
   const resizeHandler = useCallback(
     (event) => {
       if (!isResizing) return;
-      let calculatedPosition = sidebarRef.current.getBoundingClientRect().right - event.clientX;
+      let calculatedPosition =
+        sidebarRef.current.getBoundingClientRect().right - event.clientX;
       if (calculatedPosition > 700) {
         calculatedPosition = 700;
       }
@@ -73,11 +73,10 @@ const TaskDetail = () => {
   }, [resizeHandler, finishResizeHandler]);
 
   return (
-    <>
-    <div 
+    <div
       className="flex flex-row min-w-[360px] max-w-[700px]"
       ref={sidebarRef}
-      style={{ width: sidebarWidth, transition:'width 180ms ease' }}
+      style={{ width: sidebarWidth, transition: "width 180ms ease" }}
     >
       <div
         className={`w-1 absolute h-full m-0 p-0 box-border bg-ms-scrollbar opacity-0 translate-x-1 ${
@@ -86,25 +85,29 @@ const TaskDetail = () => {
         onMouseDown={startResizeHandler}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        style={{ right: resizerPosition, zIndex:'200' }}
+        style={{ right: resizerPosition, zIndex: "200" }}
       ></div>
+
       <div
-        className="flex flex-col w-full justify-between"
+        className="flex flex-col w-full justify-between overflow-hidden h-full"
         style={{
           boxShadow:
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        <div className="flex">
-          <Details taskId={detailId} />
-        </div>
+        {/* <div className="flex flex-col flex-1 sticky overflow-x-hidden overflow-y-scroll"> */}
+        <Details taskId={detailId} />
+        {/* </div> */}
+
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
             <button onClick={closeDetailHandler}>
               <LuPanelRightClose size="16px" />
             </button>
 
-            <p className="text-xs" style={{color:'#605E5C'}}>Created {createdTime}</p>
+            <p className="text-xs" style={{ color: "#605E5C" }}>
+              Created {createdTime}
+            </p>
 
             <button onClick={() => removeTaskHandler(detailId)}>
               <BsTrash3 size="16px" />
@@ -113,7 +116,6 @@ const TaskDetail = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
@@ -126,6 +128,6 @@ export default TaskDetail;
  * Created Today
  * Created Yesterday
  * Created on Sun, October 8
- * 
+ *
  *
  */

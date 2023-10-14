@@ -9,7 +9,7 @@ const RootPage = () => {
   const isDetailOpen = useSelector((state) => state.ui.detail);
 
   return (
-    <div className="flex flex-col h-screen bg-ms-background"> {/**root */}
+    <div className="flex flex-col h-screen bg-ms-background overflow-hidden"> {/**root */}
 
       <Header />
 
