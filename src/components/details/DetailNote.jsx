@@ -102,6 +102,6 @@ const timeAgo = (date) => {
   if (interval === 1) {
     return "a minute ago";
   }
-  
+
   return "a few seconds ago";
 };
