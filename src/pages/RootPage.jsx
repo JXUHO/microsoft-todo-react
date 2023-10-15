@@ -17,7 +17,7 @@ const RootPage = () => {
 
         {isSidebarOpen && <Sidebar />}  {/**left column */}
 
-        <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
+        <div className="flex flex-1 flex-col bg-ms-background ">
           <Outlet />   {/**center column */}
         </div>
 

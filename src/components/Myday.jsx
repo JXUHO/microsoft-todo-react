@@ -76,7 +76,7 @@ const Myday = () => {
           {isSortOptionSelected && <SortIndicator currentLocation="myday" />}
           {isGroupOptionSelected && <GroupIndicator currentLocation="myday" />}
         </div>
-        <AddTask isMyday={true} />
+        <AddTask currentLocation={"myday"} />
         <MydayList />
       </div>
     </>

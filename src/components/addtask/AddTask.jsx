@@ -27,12 +27,28 @@ const initialTask = {
   complete: "", // isoString
 };
 
-const AddTask = ({ isMyday }) => {
+const AddTask = ({ currentLocation }) => {
   const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
+
+  
+  let isMyday = false
+  let isImportant = false
+  switch (currentLocation) {
+    case "myday":
+      isMyday = true
+      break;
+    case "important":
+      isImportant = true
+      break;
+  
+    default:
+      break;
+  }
+
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
@@ -43,6 +59,7 @@ const AddTask = ({ isMyday }) => {
       created: createdTime,
       id: uuid(),
       myday: isMyday,
+      importance: isImportant
     }));
   };
 

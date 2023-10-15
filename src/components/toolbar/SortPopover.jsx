@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import { PiArrowsDownUpThin } from "react-icons/pi";
 import SortItems from "./SortItems";
+import MydaySortItems from "./MydaySortItems";
+import ImportantSortItems from "./ImportantSortItems";
 
 const SortPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -68,6 +70,19 @@ const SortPopover = ({currentLocation}) => {
     setPopoverOpen(false)
   }
 
+  let sortItemsComponent;
+  switch (currentLocation) {
+    case "myday":
+      sortItemsComponent = <MydaySortItems onItemClick={popoverCloseHandler} currentLocation={"myday"}/>
+      break;
+    case "important":
+      sortItemsComponent = <ImportantSortItems onItemClick={popoverCloseHandler} currentLocation={"important"}/>
+      break;
+  
+    default:
+      break;
+  }
+
   return (
     <>
       <div
@@ -91,7 +106,7 @@ const SortPopover = ({currentLocation}) => {
           }}
           {...getPopoverFloatingProps()}
         >
-          <SortItems onItemClick={popoverCloseHandler} currentLocation={currentLocation}/>
+          {sortItemsComponent}
         </div>
       )}
       {tooltipOpen && (

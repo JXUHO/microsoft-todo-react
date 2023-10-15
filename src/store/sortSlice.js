@@ -8,7 +8,7 @@ const sortSlice = createSlice({
     completed: { sortBy: "", order: "descending" },
     tasks: { sortBy: "", order: "descending" },
   },
-  // sortBy: importance, dueDate, alphabetically, creationDate
+  // sortBy: importance, dueDate, alphabetically, creationDate, myday
 
   reducers: {
     setSortBy: (state, action) => {

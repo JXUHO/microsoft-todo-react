@@ -2,7 +2,6 @@ export default function sortTasks(sortBy, sortOrder, todos) {
   let sortedArr = [...todos];
 
   switch (sortBy) {
-
     case "importance":
       let importanceSelectedTasks = [];
       sortedArr.forEach((task) => {
@@ -17,8 +16,6 @@ export default function sortTasks(sortBy, sortOrder, todos) {
         sortedArr = [...sortedArr, ...importanceSelectedTasks];
       }
       break;
-
-
 
     case "dueDate":
       let dueSelectedTasks = [];
@@ -37,18 +34,35 @@ export default function sortTasks(sortBy, sortOrder, todos) {
       sortedArr = [...dueSelectedTasks, ...sortedArr];
       break;
 
-
-
     case "alphabetically":
       sortedArr = sortedArr.sort((a, b) => a.task.localeCompare(b.task));
-      if (sortOrder === "descending") {sortedArr = sortedArr.reverse()}
+      if (sortOrder === "descending") {
+        sortedArr = sortedArr.reverse();
+      }
       break;
 
-
-
     case "creationDate":
-      sortedArr = sortedArr.sort((a, b) => new Date(a.created) - new Date(b.created));
-      if (sortOrder === "descending") {sortedArr = sortedArr.reverse()}
+      sortedArr = sortedArr.sort(
+        (a, b) => new Date(a.created) - new Date(b.created)
+      );
+      if (sortOrder === "descending") {
+        sortedArr = sortedArr.reverse();
+      }
+      break;
+
+    case "myday":
+      let mydaySelectedTasks = [];
+      sortedArr.forEach((task) => {
+        if (task.myday) {
+          mydaySelectedTasks.push(task);
+        }
+      });
+      sortedArr = sortedArr.filter((task) => !task.myday);
+      if (sortOrder === "descending") {
+        sortedArr = [...mydaySelectedTasks, ...sortedArr];
+      } else {
+        sortedArr = [...sortedArr, ...mydaySelectedTasks];
+      }
       break;
 
     default:
@@ -56,7 +70,4 @@ export default function sortTasks(sortBy, sortOrder, todos) {
   }
 
   return sortedArr;
-
 }
-
-

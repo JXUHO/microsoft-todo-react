@@ -16,9 +16,9 @@ const DetailAddFile = () => {
     setInputFile(event.target.files[0])
   }
 
-  useEffect(() => {
-    console.log(inputFile);
-  }, [inputFile])
+  // useEffect(() => {
+  //   console.log(inputFile);
+  // }, [inputFile])
   
 
   return (
