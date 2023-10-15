@@ -54,15 +54,13 @@ const Details = ({ taskId }) => {
   }, [todo.repeatRule]);
 
   return (
-    <div className="flex flex-col flex-1 sticky overflow-x-hidden overflow-y-scroll h-">
-      <div className="py-0 pr-4 pl-6 mt-4">
-        <DetailHeader taskId={taskId} />
+    <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto py-0 pr-4 pl-6 mt-4 h-20">
+        <DetailHeader taskId={taskId} />  
         <DetailSteps taskId={taskId} />
         <DetailOptions taskId={taskId} />
         <DetailCategories taskId={taskId} />
         <DetailAddFile taskId={taskId} />
         <DetailNote taskId={taskId} />
-      </div>
     </div>
   );
 };

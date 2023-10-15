@@ -51,7 +51,7 @@ const MydayList = () => {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-y-auto pb-6 -mx-1 px-1">
         {groupBy === "category" ? (
           <GroupLists todoArr={todoArr} />
         ) : (

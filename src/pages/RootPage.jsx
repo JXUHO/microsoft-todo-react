@@ -9,15 +9,15 @@ const RootPage = () => {
   const isDetailOpen = useSelector((state) => state.ui.detail);
 
   return (
-    <div className="flex flex-col h-screen bg-ms-background overflow-hidden"> {/**root */}
+    <div className="flex flex-col bg-ms-background h-screen overflow-hidden"> {/**root */}
 
       <Header />
 
-      <div className="flex flex-1">   {/**app */}
+      <div className="flex flex-1 overflow-hidden">   {/**app */}
 
         {isSidebarOpen && <Sidebar />}  {/**left column */}
 
-        <div className="flex-1 flex-col bg-ms-background">
+        <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
           <Outlet />   {/**center column */}
         </div>
 

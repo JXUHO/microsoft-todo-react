@@ -6,7 +6,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Segoe","Segoe UI","Arial","sans-serif";
+  font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
   font-size: 14px;
   overflow: hidden;
   cursor: default;
@@ -17,4 +17,18 @@ body #root {
   height: 100%;
 }
 
-input,textarea{width:100%;display:block}
+input,
+textarea {
+  width: 100%;
+  display: block;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A19F9D;
+  border-radius: 10px;
+}

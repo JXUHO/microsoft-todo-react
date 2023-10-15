@@ -74,7 +74,7 @@ const TaskDetail = () => {
 
   return (
     <div
-      className="flex flex-row min-w-[360px] max-w-[700px]"
+      className="flex flex-row min-w-[360px] max-w-[700px] box-border"
       ref={sidebarRef}
       style={{ width: sidebarWidth, transition: "width 180ms ease" }}
     >
@@ -89,15 +89,15 @@ const TaskDetail = () => {
       ></div>
 
       <div
-        className="flex flex-col w-full justify-between overflow-hidden h-full"
+        className="flex flex-col w-full h-full relative flex-1 box-border"
         style={{
           boxShadow:
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        {/* <div className="flex flex-col flex-1 sticky overflow-x-hidden overflow-y-scroll"> */}
+      
         <Details taskId={detailId} />
-        {/* </div> */}
+
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
