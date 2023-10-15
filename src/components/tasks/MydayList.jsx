@@ -49,9 +49,10 @@ const MydayList = () => {
     });
   }, [todoArr, dispatch]);
 
+
   return (
     <>
-      <div className="flex flex-col overflow-y-auto pb-6 -mx-1 px-1">
+      <div className="flex flex-col overflow-y-auto pb-6 px-6">
         {groupBy === "category" ? (
           <GroupLists todoArr={todoArr} />
         ) : (

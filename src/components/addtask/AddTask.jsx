@@ -104,7 +104,7 @@ const AddTask = ({ isMyday }) => {
 
   return (
     <div
-      className="flex flex-col rounded bg-white mb-2"
+      className="flex flex-col rounded bg-white mb-2 mx-6"
       style={{
         boxShadow:
           "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
