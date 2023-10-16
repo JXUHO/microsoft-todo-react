@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../../store/todoSlice";
+import { addTodo, plannedAddTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
@@ -37,7 +37,6 @@ const AddTask = ({ currentLocation }) => {
   
   let isMyday = false
   let isImportant = false
-  let isPlanned = false
   switch (currentLocation) {
     case "myday":
       isMyday = true
@@ -49,7 +48,6 @@ const AddTask = ({ currentLocation }) => {
     default:
       break;
   }
-
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
@@ -71,10 +69,13 @@ const AddTask = ({ currentLocation }) => {
   };
 
 
-  // currentLocation === "planned"일 경우, due가 설정되어있지 않을때, today를 dueDate로 설정하는 reducer dispatch
   const addTaskHandler = () => {
     const trimmedTaskInput = {...taskInput, task: taskInput.task.trim()}
-    dispatch(addTodo(trimmedTaskInput));
+    if (currentLocation === "planned") {
+      dispatch(plannedAddTodo(trimmedTaskInput))
+    } else {
+      dispatch(addTodo(trimmedTaskInput));
+    }
     setTaskInput(initialTask); 
     initializeButtons();
   };

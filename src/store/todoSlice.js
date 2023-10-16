@@ -86,6 +86,13 @@ const todoSlice = createSlice({
         updated: new Date().toISOString(),
       };
     },
+    plannedAddTodo: (state, action) => {
+      if (!action.payload.dueDate) {
+        state.todos.push({...action.payload, dueDate: new Date().toISOString()});
+      } else {
+        state.todos.push(action.payload);
+      }
+    },
 
 
 
@@ -141,6 +148,7 @@ export const {
   addCategoryTodo,
   removeCategoryTodo,
   addNoteTodo,
+  plannedAddTodo,
   
   addStep,
   completeStep,
