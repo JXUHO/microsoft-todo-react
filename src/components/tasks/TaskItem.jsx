@@ -9,7 +9,7 @@ import {
   BsStarFill,
   BsSun,
 } from "react-icons/bs";
-import { PiArrowsClockwiseBold } from "react-icons/pi";
+import { PiArrowsClockwiseBold, PiNoteBlankLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { getCustomFormatDateString } from "../../utils/getDates";
 import { IoCalendarOutline } from "react-icons/io5";
@@ -24,6 +24,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
+import { FiPaperclip } from "react-icons/Fi";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -168,7 +169,31 @@ const TaskItem = ({ todo, currentLocation }) => {
               </span>
             </div>
           )}
+
+          {/* note */}
+          {todo.note.content.trim() && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+                <PiNoteBlankLight size="14px" />
+              </span>
+              {!todo.file && !todo.dueDate && !todo.remind && <span className="text-xs mr-1" style={{ color: "#797775" }}>Note</span>}
+              </div>
+            )}
+
+          {/* file attached */}
+          {todo.file && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+              <FiPaperclip size="12px" style={{transform: "rotate(180deg)"}}/>
+              </span>
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>Files attached</span>
+              </div>
+            )}
+
+
           <TaskItemCategories todo={todo} />
+
+
         </div>
       </button>
 

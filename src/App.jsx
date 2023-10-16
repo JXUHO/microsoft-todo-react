@@ -72,10 +72,7 @@ export default App;
  * implement steps
  * (complete) implement date/remind/repeat compoenent popover
  * (complete) complete탭 task 순서 수정하기
- * 
- * 
- * 
- * Detail resizer popover랑 겹치면 UI 오류발생 -> 안겹치게 바꾸기
+ * (complete) Detail resizer <-> popover랑 겹치면 UI 오류발생 -> 안겹치게 바꾸기
  * 
  * 
  * make right click modal
@@ -94,6 +91,8 @@ export default App;
  * 
  * 
  * UI -> task list scrollbar 생성될 때, taskItem 가로길이 바뀜. scrollbar 유무에 따라 padding 동적으로 변경하기
+ * 
+ * taskDetail file 첨부했을때, 백엔드 저장 구현하기
  * 
  */
 
