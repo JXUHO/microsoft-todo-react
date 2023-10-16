@@ -30,8 +30,8 @@ const Important = () => {
 
   return (
     <>
-      <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 mt-4 mb-10 ">
-        <div className="flex items-center flex-1 min-w-100 mr-5 pt-4 ml-1">
+      <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 my-4 ">
+        <div className="flex items-center flex-1 min-w-100 mr-5 py-2 ml-1">
           <div className="flex flex-col pt-1">
             <div className="flex items-center">
               <div>
@@ -46,7 +46,7 @@ const Important = () => {
                 )}
               </div>
               <div>
-                <h2 className="text-xl font-medium text-ms-blue">Important</h2>
+                <h2 className="text-xl font-medium py-2 text-ms-blue">Important</h2>
               </div>
               <div className="px-3">
                 <PiDotsThreeBold />

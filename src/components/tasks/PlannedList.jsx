@@ -19,14 +19,14 @@ const PlannedList = () => {
     next5Days: true,
     later: true,
   });
-  const [todoList, setTodoList] = useState({
+  const [sortedArr, setSortedArr] = useState({
     earlier: [],
     today: [],
     tomorrow: [],
     next5Days: [],
     later: [],
   });
-  const [plannedCount, setPlannedCount] = useState({
+  const [count, setCount] = useState({
     earlier: 0,
     today: 0,
     tomorrow: 0,
@@ -51,24 +51,22 @@ const PlannedList = () => {
       next5Days: 0,
       later: 0,
     };
-
-    const categorizedTodoList = {
+    const tempSortedArr = {
       earlier: [],
       today: [],
       tomorrow: [],
       next5Days: [],
       later: [],
     };
-
     todoArr.forEach((todo) => {
       if (!todo.dueDate) return;
       const category = classifyDate(todo);
-      categorizedTodoList[category].push(todo);
+      tempSortedArr[category].push(todo);
       listCount[category]++;
     });
 
-    setTodoList(categorizedTodoList);
-    setPlannedCount(listCount);
+    setSortedArr(tempSortedArr);
+    setCount(listCount);
   }, [todoArr]);
 
   useEffect(() => {
@@ -87,82 +85,86 @@ const PlannedList = () => {
     });
   }, [todoArr, dispatch]);
 
+
+
+
+
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">
-      {plannedCount.earlier !== 0 && (
+      {count.earlier !== 0 && (
         <TaskItemHeader
           title="Earlier"
           isOpen={isOpen.earlier}
           openHandler={() => toggleListHandler("earlier")}
-          count={plannedCount.earlier}
+          count={count.earlier}
         />
       )}
-      {plannedCount.earlier !== 0 && isOpen.earlier && (
+      {count.earlier !== 0 && isOpen.earlier && (
         <div>
-          {todoList.earlier.slice().map((todo) => (
+          {sortedArr.earlier.slice().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
       )}
 
-      {plannedCount.today !== 0 && (
+      {count.today !== 0 && (
         <TaskItemHeader
           title="Today"
           isOpen={isOpen.today}
           openHandler={() => toggleListHandler("today")}
-          count={plannedCount.today}
+          count={count.today}
         />
       )}
-      {plannedCount.today !== 0 && isOpen.today && (
+      {count.today !== 0 && isOpen.today && (
         <div>
-          {todoList.today.slice().map((todo) => (
+          {sortedArr.today.slice().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
       )}
 
-      {plannedCount.tomorrow !== 0 && (
+      {count.tomorrow !== 0 && (
         <TaskItemHeader
           title="Tomorrow"
           isOpen={isOpen.tomorrow}
           openHandler={() => toggleListHandler("tomorrow")}
-          count={plannedCount.tomorrow}
+          count={count.tomorrow}
         />
       )}
-      {plannedCount.tomorrow !== 0 && isOpen.tomorrow && (
+      {count.tomorrow !== 0 && isOpen.tomorrow && (
         <div>
-          {todoList.tomorrow.slice().map((todo) => (
+          {sortedArr.tomorrow.slice().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
       )}
-      {plannedCount.next5Days !== 0 && (
+      {count.next5Days !== 0 && (
         <TaskItemHeader
           title="Next Week Text"
           isOpen={isOpen.next5Days}
           openHandler={() => toggleListHandler("next5Days")}
-          count={plannedCount.next5Days}
+          count={count.next5Days}
         />
       )}
-      {plannedCount.next5Days !== 0 && isOpen.next5Days && (
+      {count.next5Days !== 0 && isOpen.next5Days && (
         <div>
-          {todoList.next5Days.slice().map((todo) => (
+          {sortedArr.next5Days.slice().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
       )}
 
-      {plannedCount.later !== 0 && (
+      {count.later !== 0 && (
         <TaskItemHeader
           title="Later"
           isOpen={isOpen.later}
           openHandler={() => toggleListHandler("later")}
-          count={plannedCount.later}
+          count={count.later}
         />
       )}
-      {plannedCount.later !== 0 && isOpen.later && (
+      {count.later !== 0 && isOpen.later && (
         <div>
-          {todoList.later.slice().map((todo) => (
+          {sortedArr.later.slice().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
@@ -172,6 +174,9 @@ const PlannedList = () => {
 };
 
 export default PlannedList;
+
+
+
 
 const classifyDate = (task) => {
   if (!task.dueDate) return;
@@ -196,3 +201,5 @@ const classifyDate = (task) => {
     return "later";
   }
 };
+
+

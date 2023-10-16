@@ -37,6 +37,7 @@ const AddTask = ({ currentLocation }) => {
   
   let isMyday = false
   let isImportant = false
+  let isPlanned = false
   switch (currentLocation) {
     case "myday":
       isMyday = true
@@ -69,6 +70,8 @@ const AddTask = ({ currentLocation }) => {
     repeatRef.current.resetRepeat();
   };
 
+
+  // currentLocation === "planned"일 경우, due가 설정되어있지 않을때, today를 dueDate로 설정하는 reducer dispatch
   const addTaskHandler = () => {
     const trimmedTaskInput = {...taskInput, task: taskInput.task.trim()}
     dispatch(addTodo(trimmedTaskInput));
