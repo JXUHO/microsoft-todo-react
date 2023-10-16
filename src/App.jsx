@@ -8,8 +8,8 @@ import RootPage from "./pages/RootPage";
 import ImportantPage from "./pages/ImportantPage";
 import PlannedPage from "./pages/PlannedPage";
 import CompletedPage from "./pages/CompletedPage";
-import AllTasksPage from "./pages/AllTasksPage";
 import SearchPage from "./pages/SearchPage";
+import Inbox from "./components/Inbox";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "inbox",
-        element: <AllTasksPage/>
+        element: <Inbox/>
       },
       {
         path: "search",
@@ -92,6 +92,8 @@ export default App;
  * 
  * floating ui -> useListNavigation 사용, 방향키로 선택 가능하도록 설정하기
  * 
+ * 
+ * UI -> task list scrollbar 생성될 때, taskItem 가로길이 바뀜. scrollbar 유무에 따라 padding 동적으로 변경하기
  * 
  */
 

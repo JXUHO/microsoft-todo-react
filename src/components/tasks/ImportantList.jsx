@@ -10,7 +10,7 @@ import {
 import TaskItem from "./TaskItem";
 
 
-const ImportantList = () => {
+const ImportantList = ({currentLocation}) => {
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.important.order);
@@ -47,8 +47,8 @@ const ImportantList = () => {
     <>
       <div className="flex flex-col overflow-y-auto pb-6 px-6">
         {todoArr.slice().map((todo) => {
-          if (todo.importance) {
-            return <TaskItem key={todo.id} todo={todo} />;
+          if (todo.importance && !todo.complete) {
+            return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
           }
         })}
       </div>

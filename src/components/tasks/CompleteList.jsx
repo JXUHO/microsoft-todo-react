@@ -4,7 +4,7 @@ import TaskItem from "./TaskItem";
 import { useSelector } from "react-redux";
 import sortTasks from "../../utils/sortTasks";
 
-const CompleteList = ({ myday }) => {
+const CompleteList = ({ currentLocation }) => {
   const todos = useSelector((state) => state.todo.todos);
   const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
@@ -22,7 +22,7 @@ const CompleteList = ({ myday }) => {
     todoTemp = todoTemp.filter((todo) => todo.complete);
 
     // myday check
-    if (myday) {
+    if (currentLocation === "myday") {
       todoTemp = todoTemp.filter((todo) => todo.myday);
     }
 

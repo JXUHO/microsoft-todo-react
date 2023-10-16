@@ -66,7 +66,7 @@ const Important = () => {
           )}
         </div>
         <AddTask currentLocation={"important"} />
-        <ImportantList />
+        <ImportantList currentLocation={"important"}/>
       </div>
     </>
   );

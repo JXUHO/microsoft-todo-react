@@ -2,7 +2,7 @@ import { useState } from "react";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
 
-const GroupLists = ({ todoArr }) => {
+const GroupLists = ({ todoArr, currentLocation }) => {
   const [categoryOpen, setCategoryOpen] = useState({
     blue: true,
     green: true,

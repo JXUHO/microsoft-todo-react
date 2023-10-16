@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
-import AddTask from "../components/addtask/AddTask"
+import AddTask from "./addtask/AddTask"
 
-const AllTasks = () => {
+const Inbox = () => {
   const [collapse, setCollapse] = useOutletContext();
 
 
@@ -19,10 +19,10 @@ const AllTasks = () => {
           open/close
         </button>
       )}
-      <p>AllTasks</p>
+      <p>Inbox</p>
       <AddTask/>
     </>
   )
 }
 
-export default AllTasks;
+export default Inbox;

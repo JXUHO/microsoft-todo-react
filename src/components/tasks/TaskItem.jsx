@@ -7,6 +7,7 @@ import {
   BsCheckCircleFill,
   BsStar,
   BsStarFill,
+  BsSun,
 } from "react-icons/bs";
 import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { useEffect, useState } from "react";
@@ -24,7 +25,7 @@ import {
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
 
-const TaskItem = ({ todo }) => {
+const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [dueText, setDueText] = useState("");
@@ -111,9 +112,19 @@ const TaskItem = ({ todo }) => {
           {todo.task}
         </span>
         <div className="flex flex-wrap flex-row items-center leading-3">
-          <span className="text-xs" style={{ color: "#797775" }}>
+
+          {currentLocation !== "tasks" && <span className="text-xs" style={{ color: "#797775" }}>
             Tasks
-          </span>
+          </span>}
+
+          {currentLocation !=="myday" && todo.myday && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+                <BsSun size="12px" />
+              </span>
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>My Day</span>
+              </div>
+            )}
 
           {todo.steps.length !== 0 && (
             <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">

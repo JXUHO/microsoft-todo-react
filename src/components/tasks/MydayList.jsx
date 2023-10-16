@@ -11,7 +11,7 @@ import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 
-const MydayList = () => {
+const MydayList = ({currentLocation}) => {
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.myday.order);
@@ -54,14 +54,14 @@ const MydayList = () => {
     <>
       <div className="flex flex-col overflow-y-auto pb-6 px-6">
         {groupBy === "category" ? (
-          <GroupLists todoArr={todoArr} />
+          <GroupLists todoArr={todoArr} currentLocation={currentLocation}/>
         ) : (
-          <BasicList todoArr={todoArr} />
+          <BasicList todoArr={todoArr} currentLocation={currentLocation}/>
         )}
 
         <div>
           {todoArr.some((todo) => todo.complete) && (
-            <CompleteList myday={true} />
+            <CompleteList currentLocation={currentLocation}/>
           )}
         </div>
       </div>
