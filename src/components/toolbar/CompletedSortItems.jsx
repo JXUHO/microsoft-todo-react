@@ -4,10 +4,16 @@ import SortDueDateItem from "./sortListItems/SortDueDateItem";
 import SortAlphabeticallyItem from "./sortListItems/SortAlphabeticallyItem";
 import SortCreationDateItem from "./sortListItems/SortCreationDateItem";
 import SortAddMydayItem from "./sortListItems/SortAddMydayItem";
+import SortImportanceItem from "./sortListItems/SortImportanceItem";
 
-const ImportantSortItems = ({onItemClick, currentLocation}) => {
+const CompletedSortItems = ({onItemClick, currentLocation}) => {
   // 현재 페이지 가지고와서, 페이지에 따라 render 다르게해야 한다
   const dispatch = useDispatch()
+
+  const importanceHandler = () => {
+    onItemClick()
+    dispatch(setSortBy({option: "importance", location: currentLocation}))
+  }
 
   const dueDateHandler = () => {
     onItemClick()
@@ -45,6 +51,7 @@ const ImportantSortItems = ({onItemClick, currentLocation}) => {
         Sort By
       </div>
       <ul>
+        <SortImportanceItem importanceHandler={importanceHandler}/>
         <SortDueDateItem dueDateHandler={dueDateHandler} />
         <SortAddMydayItem addMydayHandler={addMydayHandler} /> 
         <SortAlphabeticallyItem alphabeticallyHandler={alphabeticallyHandler} />
@@ -54,4 +61,4 @@ const ImportantSortItems = ({onItemClick, currentLocation}) => {
   );
 };
 
-export default ImportantSortItems;
+export default CompletedSortItems;

@@ -11,9 +11,9 @@ import {
 } from "@floating-ui/react";
 import { useState } from "react";
 import { PiArrowsDownUpThin } from "react-icons/pi";
-import SortItems from "./SortItems";
 import MydaySortItems from "./MydaySortItems";
 import ImportantSortItems from "./ImportantSortItems";
+import CompletedSortItems from "./CompletedSortItems";
 
 const SortPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -77,6 +77,9 @@ const SortPopover = ({currentLocation}) => {
       break;
     case "important":
       sortItemsComponent = <ImportantSortItems onItemClick={popoverCloseHandler} currentLocation={"important"}/>
+      break;
+    case "completed":
+      sortItemsComponent = <CompletedSortItems onItemClick={popoverCloseHandler} currentLocation={"completed"}/>
       break;
   
     default:

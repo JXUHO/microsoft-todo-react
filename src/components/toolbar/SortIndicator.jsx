@@ -42,6 +42,12 @@ const SortIndicator = ({ currentLocation }) => {
       case "creationDate":
         setSortIndicatorText("Sorted by creation date");
         break;
+      case "myday":
+        setSortIndicatorText("Sorted by added to My Day");
+        break;
+      case "completed":
+        setSortIndicatorText("Sorted by Completed");
+        break;
   
       default:
         break;

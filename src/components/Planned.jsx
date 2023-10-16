@@ -27,7 +27,7 @@ const Planned = () => {
                   </button>
                 ) : (
                   <div className="px-2 py-1.5 text-ms-blue" >
-                    <IoCalendarOutline size="20px" />
+                    <IoCalendarOutline size="22px" />
                   </div>
                 )}
               </div>

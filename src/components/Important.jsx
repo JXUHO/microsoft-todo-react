@@ -1,15 +1,12 @@
 import AddTask from "./addtask/AddTask";
-import MydayList from "./tasks/MydayList";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { BsStar } from "react-icons/bs";
-import { PiDotsThreeBold, PiLightbulbThin } from "react-icons/pi";
+import { PiDotsThreeBold } from "react-icons/pi";
 import SortPopover from "./toolbar/SortPopover";
-import GroupPopover from "./toolbar/GroupPopover";
 import SortIndicator from "./toolbar/SortIndicator";
-import GroupIndicator from "./toolbar/GroupIndicator";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { setSortBy } from "../store/sortSlice";
 import ImportantList from "./tasks/ImportantList";
 
@@ -41,7 +38,7 @@ const Important = () => {
                   </button>
                 ) : (
                   <div className="px-2 py-1.5 text-ms-blue">
-                    <BsStar size="20px" />
+                    <BsStar size="22px" />
                   </div>
                 )}
               </div>

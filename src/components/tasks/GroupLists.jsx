@@ -38,13 +38,16 @@ const GroupLists = ({ todoArr, currentLocation }) => {
       }
     });
     } else {
-      categoryCount.uncategorized++
+      if (!todo.complete) {
+        categoryCount.uncategorized++
+      }
     }
     
   });
 
+  const noIncomplete = todoArr.every((todo) => todo.complete === "")
   return (
-    <>
+    <div className="flex flex-col overflow-y-auto px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px", marginBottom:"-5px"}}>
       {categoryCount.blue !== 0 && (
         <div>
           <TaskHeader
@@ -195,7 +198,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
         </div>
       )}
 
-    </>
+    </div>
   );
 };
 

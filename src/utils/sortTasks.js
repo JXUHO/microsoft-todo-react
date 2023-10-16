@@ -65,6 +65,17 @@ export default function sortTasks(sortBy, sortOrder, todos) {
       }
       break;
 
+      case "completed":
+        sortedArr = sortedArr.sort(
+        (a, b) => new Date(a.complete) - new Date(b.complete)
+      );
+      if (sortOrder === "descending") {
+        sortedArr = sortedArr.reverse();
+      }
+      break;
+
+
+
     default:
       break;
   }
