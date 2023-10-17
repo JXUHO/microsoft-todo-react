@@ -1,198 +1,247 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { completeTodo, importanceTodo } from "../../store/todoSlice";
+import { openDetail } from "../../store/uiSlice";
 import {
-  addTodo,
-  changeDueDateTodo,
-  repeatedTodo,
-} from "../../store/todoSlice";
-import repeatTask from "../../utils/repeatTask";
+  BsCircle,
+  BsCheckCircle,
+  BsCheckCircleFill,
+  BsStar,
+  BsStarFill,
+  BsSun,
+} from "react-icons/bs";
+import { PiArrowsClockwiseBold, PiNoteBlankLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
-import TaskItemHeader from "./TaskItemHeader";
-import TaskItem from "./TaskItem";
+import { getCustomFormatDateString } from "../../utils/getDates";
+import { IoCalendarOutline } from "react-icons/io5";
+import { VscBell } from "react-icons/vsc";
+import {
+  flip,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
+import TaskItemCategories from "./TaskItemCategories";
+import { FiPaperclip } from "react-icons/Fi";
 
-const PlannedList = () => {
-  const todoArr = useSelector((state) => state.todo.todos);
+const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState({
-    earlier: false,
-    today: true,
-    tomorrow: true,
-    next5Days: true,
-    later: true,
-  });
-  const [todoList, setTodoList] = useState({
-    earlier: [],
-    today: [],
-    tomorrow: [],
-    next5Days: [],
-    later: [],
-  });
-  const [plannedCount, setPlannedCount] = useState({
-    earlier: 0,
-    today: 0,
-    tomorrow: 0,
-    next5Days: 0,
-    later: 0,
-  });
+  const [isHovered, setIsHovered] = useState(false);
+  const [dueText, setDueText] = useState("");
+  const [remindText, setRemindText] = useState("");
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [stepIncompleteLength, setStepIncompleteLength] = useState(0);
 
-  const toggleListHandler = (title) => {
-    setIsOpen((prevState) => {
-      return {
-        ...prevState,
-        [title]: !prevState[title],
-      };
-    });
+  const completedHandler = () => {
+    dispatch(completeTodo(todo.id));
+  };
+
+  const importanceHandler = () => {
+    dispatch(importanceTodo(todo.id));
+  };
+
+  const detailOpenHandler = (id) => {
+    dispatch(openDetail(id));
   };
 
   useEffect(() => {
-    const listCount = {
-      earlier: 0,
-      today: 0,
-      tomorrow: 0,
-      next5Days: 0,
-      later: 0,
-    };
+    if (todo.dueDate) {
+      setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
+    }
+    if (todo.remind) {
+      setRemindText(getCustomFormatDateString(new Date(todo.remind), "remind"));
+    }
+    if (todo.steps.length) {
+      setStepIncompleteLength(
+        todo.steps.filter((step) => step.complete).length
+      );
+    }
+    if (!todo.dueDate) {
+      setDueText("")
+    }
+    if (!todo.remind) {
+      setRemindText("")
+    }
+  }, [todo]);
 
-    const categorizedTodoList = {
-      earlier: [],
-      today: [],
-      tomorrow: [],
-      next5Days: [],
-      later: [],
-    };
+  const {
+    refs: tooltipRefs,
+    floatingStyles: tooltipFloatingStyles,
+    context: tooltipContext,
+  } = useFloating({
+    open: tooltipOpen,
+    onOpenChange: setTooltipOpen,
+    placement: "top",
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
+  });
 
-    todoArr.forEach((todo) => {
-      if (!todo.dueDate) return;
-      const category = classifyDate(todo);
-      categorizedTodoList[category].push(todo);
-      listCount[category]++;
-    });
-
-    setTodoList(categorizedTodoList);
-    setPlannedCount(listCount);
-  }, [todoArr]);
-
-  useEffect(() => {
-    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-    todoArr.map((todo) => {
-      const repeatInfo = repeatTask(todo);
-      if (!repeatInfo) return;
-      if (repeatInfo instanceof Date) {
-        dispatch(
-          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-        );
-      } else {
-        dispatch(repeatedTodo(todo.id));
-        dispatch(addTodo(repeatInfo));
-      }
-    });
-  }, [todoArr, dispatch]);
+  const {
+    getReferenceProps: getTooltipReferenceProps,
+    getFloatingProps: getTooltipFloatingProps,
+  } = useInteractions([
+    useHover(tooltipContext, { delay: { open: 300, close: 0 } }),
+    useDismiss(tooltipContext, {
+      referencePress: true,
+    }),
+  ]);
 
   return (
-    <div className="flex flex-col overflow-y-auto pb-6 px-6">
-      {plannedCount.earlier !== 0 && (
-        <TaskItemHeader
-          title="Earlier"
-          isOpen={isOpen.earlier}
-          openHandler={() => toggleListHandler("earlier")}
-          count={plannedCount.earlier}
-        />
-      )}
-      {plannedCount.earlier !== 0 && isOpen.earlier && (
-        <div>
-          {todoList.earlier.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
-        </div>
-      )}
+    <div
+      className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover"
+      style={{
+        boxShadow:
+          "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+      }}
+    >
+      <span
+        onClick={completedHandler}
+        className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {todo.complete ? (
+          <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+        ) : isHovered ? (
+          <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+        ) : (
+          <BsCircle size="16px" style={{ color: "#2564cf" }} />
+        )}
+      </span>
 
-      {plannedCount.today !== 0 && (
-        <TaskItemHeader
-          title="Today"
-          isOpen={isOpen.today}
-          openHandler={() => toggleListHandler("today")}
-          count={plannedCount.today}
-        />
-      )}
-      {plannedCount.today !== 0 && isOpen.today && (
-        <div>
-          {todoList.today.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
-        </div>
-      )}
+      <button
+        onClick={() => detailOpenHandler(todo.id)}
+        className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
+        style={{ color: "#292827" }}
+      >
+        <span style={todo.complete ? { textDecoration: "line-through" } : null}>
+          {todo.task}
+        </span>
 
-      {plannedCount.tomorrow !== 0 && (
-        <TaskItemHeader
-          title="Tomorrow"
-          isOpen={isOpen.tomorrow}
-          openHandler={() => toggleListHandler("tomorrow")}
-          count={plannedCount.tomorrow}
-        />
-      )}
-      {plannedCount.tomorrow !== 0 && isOpen.tomorrow && (
-        <div>
-          {todoList.tomorrow.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
-        </div>
-      )}
-      {plannedCount.next5Days !== 0 && (
-        <TaskItemHeader
-          title="Next Week Text"
-          isOpen={isOpen.next5Days}
-          openHandler={() => toggleListHandler("next5Days")}
-          count={plannedCount.next5Days}
-        />
-      )}
-      {plannedCount.next5Days !== 0 && isOpen.next5Days && (
-        <div>
-          {todoList.next5Days.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
-        </div>
-      )}
 
-      {plannedCount.later !== 0 && (
-        <TaskItemHeader
-          title="Later"
-          isOpen={isOpen.later}
-          openHandler={() => toggleListHandler("later")}
-          count={plannedCount.later}
-        />
-      )}
-      {plannedCount.later !== 0 && isOpen.later && (
-        <div>
-          {todoList.later.slice().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+        <div className="flex flex-wrap flex-row items-center leading-3">
+
+          {currentLocation !== "tasks" && <span className="text-xs" style={{ color: "#797775" }}>
+            Tasks
+          </span>}
+
+          {currentLocation !=="myday" && todo.myday && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+                <BsSun size="12px" />
+              </span>
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>My Day</span>
+              </div>
+            )}
+
+          {todo.steps.length !== 0 && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                {stepIncompleteLength} of {todo.steps.length}
+              </span>
+            </div>
+          )}
+
+          <div
+            className="flex items-center"
+            style={
+              dueText === "Today"
+                ? { color: "#2564cf" }
+                : dueText.split(",")[0] === "Overdue"
+                ? { color: "#a80000" }
+                : { color: "#797775" }
+            }
+          >
+            {dueText && (
+              <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+                <span className="mr-1">
+                  <IoCalendarOutline size="14px" />
+                </span>
+                <span className="text-xs mr-1">{dueText}</span>
+              </div>
+            )}
+            {todo.repeatRule && (
+              <span>
+                <PiArrowsClockwiseBold size="14px" />
+              </span>
+            )}
+          </div>
+          {remindText && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+                <VscBell size="14px" color="#797775" />
+              </span>
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                {remindText}
+              </span>
+            </div>
+          )}
+
+          {/* note */}
+          {todo.note.content.trim() && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+                <PiNoteBlankLight size="14px" />
+              </span>
+              {!todo.file && !todo.dueDate && !todo.remind && <span className="text-xs mr-1" style={{ color: "#797775" }}>Note</span>}
+              </div>
+            )}
+
+          {/* file attached */}
+          {todo.file && (
+            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
+              <span className="mr-1">
+              <FiPaperclip size="12px" style={{transform: "rotate(180deg)"}}/>
+              </span>
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>Files attached</span>
+              </div>
+            )}
+
+          <TaskItemCategories todo={todo} />
+
+        </div>
+      </button>
+
+      <div
+        className="pr-2 hover:cursor-pointer"
+        onClick={importanceHandler}
+        ref={tooltipRefs.setReference}
+        {...getTooltipReferenceProps()}
+      >
+        {todo.importance ? (
+          <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+        ) : (
+          <BsStar size="18px" style={{ color: "#2564cf" }} />
+        )}
+      </div>
+
+      {tooltipOpen && (
+        <div
+          ref={tooltipRefs.setFloating}
+          {...getTooltipFloatingProps()}
+          style={{
+            ...tooltipFloatingStyles,
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+            zIndex: 50,
+          }}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
+        >
+          {todo.importance ? "Remove importance." : "Mark task as important."}
         </div>
       )}
     </div>
   );
 };
 
-export default PlannedList;
+export default TaskItem;
 
-const classifyDate = (task) => {
-  if (!task.dueDate) return;
-  const dateToClassify = new Date(task.dueDate);
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-
-  const tomorrow = new Date(currentDate);
-  tomorrow.setDate(currentDate.getDate() + 1);
-  const oneWeekLater = new Date(currentDate);
-  oneWeekLater.setDate(currentDate.getDate() + 7);
-
-  if (dateToClassify < currentDate) {
-    return "earlier";
-  } else if (dateToClassify.toDateString() === currentDate.toDateString()) {
-    return "today";
-  } else if (dateToClassify.toDateString() === tomorrow.toDateString()) {
-    return "tomorrow";
-  } else if (dateToClassify > tomorrow && dateToClassify <= oneWeekLater) {
-    return "next5Days";
-  } else {
-    return "later";
-  }
-};
+/**
+ * TODO
+ *
+ * 클릭하면 파란색으로 바뀜. state로 관리
+ *
+ *
+ *
+ */

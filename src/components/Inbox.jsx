@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import sortTasks from "../utils/sortTasks";
 import repeatTask from "../utils/repeatTask";
 import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
+import CompleteList from "./tasks/CompleteList";
 
 const Inbox = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -102,6 +103,7 @@ const Inbox = () => {
             <BasicList todoArr={todoArr} currentLocation={"tasks"} />
           )}
         </div>
+        <CompleteList currentLocation={"tasks"} />
       </div>
     </>
   );

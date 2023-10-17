@@ -24,7 +24,14 @@ const Sidebar = () => {
   }, [location]);
 
   return (
-    <div className=" flex flex-col bg-white z-30" style={{boxShadow: "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)", width:"290px"}}>
+    <div
+      className=" flex flex-col bg-white z-30"
+      style={{
+        boxShadow:
+          "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+        width: "290px",
+      }}
+    >
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
         <button onClick={closeSidebarHandler}>
           <RxHamburgerMenu size="20px" />
@@ -39,7 +46,13 @@ const Sidebar = () => {
             <CompletedListBar currentLocation={currentLocation} />
             <TasksListBar currentLocation={currentLocation} />
             <li>
-              <div style={{height: '1px', backgroundColor: '#edebe9', margin: '9px 16px'}}></div>
+              <div
+                style={{
+                  height: "1px",
+                  backgroundColor: "#edebe9",
+                  margin: "9px 16px",
+                }}
+              />
             </li>
           </ul>
         </nav>
@@ -63,11 +76,14 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
 
+
+export default Sidebar;
+//before:-translate-y-2/4 before:animate-expand
+// before height 100%는 ul의 height
 const MyDayListBar = ({ currentLocation }) => {
   return currentLocation === "/myday" || currentLocation === "/today" ? (
-    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+    <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">
       <NavLink to="/myday">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
@@ -95,7 +111,7 @@ const MyDayListBar = ({ currentLocation }) => {
 
 const ImportantListBar = ({ currentLocation }) => {
   return currentLocation === "/important" ? (
-    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+    <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">
       <NavLink to="/important">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
@@ -122,7 +138,7 @@ const ImportantListBar = ({ currentLocation }) => {
 };
 const PlannedListBar = ({ currentLocation }) => {
   return currentLocation === "/planned" ? (
-    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+    <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">
       <NavLink to="/planned">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
@@ -149,7 +165,7 @@ const PlannedListBar = ({ currentLocation }) => {
 };
 const CompletedListBar = ({ currentLocation }) => {
   return currentLocation === "/completed" ? (
-    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+    <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">
       <NavLink to="/completed">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
@@ -176,7 +192,7 @@ const CompletedListBar = ({ currentLocation }) => {
 };
 const TasksListBar = ({ currentLocation }) => {
   return currentLocation === "/inbox" ? (
-    <li className="before:content-[''] before:w-0.5 before:h-11 before:block before:bg-ms-blue before:absolute">
+    <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">
       <NavLink to="/inbox">
         <div className="flex items-center cursor-pointer py-3 px-6 bg-ms-active-blue font-semibold">
           <div>
@@ -201,12 +217,3 @@ const TasksListBar = ({ currentLocation }) => {
     </li>
   );
 };
-
-/**
- * TODO
- *
- * ::before animation 추가하기
- *
- *
- *
- */

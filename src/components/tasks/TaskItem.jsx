@@ -122,7 +122,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
         <div className="flex flex-wrap flex-row items-center leading-3">
 
-          {currentLocation !== "tasks" && <span className="text-xs" style={{ color: "#797775" }}>
+          {<span className="text-xs" style={{ color: "#797775" }}>
             Tasks
           </span>}
 

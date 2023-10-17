@@ -31,6 +31,7 @@ export default {
       animation: {
         rotate90: 'clock90 1s',
         rotateM90: 'counterClock90 1s',
+        expand: "expand 0.25s forwards"
       },
       keyframes: {
         clock90: {
@@ -50,6 +51,14 @@ export default {
             transform:
               "rotate(-90deg)" /* Rotate 360 degrees (one full rotation) */,
           },
+        },
+        expand: {
+          "0%" : {
+            height: "0%"
+          },
+          "100%" : {
+            height: "100%"
+          }
         }
       },
       width: {
