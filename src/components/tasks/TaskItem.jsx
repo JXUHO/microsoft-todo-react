@@ -58,6 +58,12 @@ const TaskItem = ({ todo, currentLocation }) => {
         todo.steps.filter((step) => step.complete).length
       );
     }
+    if (!todo.dueDate) {
+      setDueText("")
+    }
+    if (!todo.remind) {
+      setRemindText("")
+    }
   }, [todo]);
 
   const {
@@ -112,6 +118,8 @@ const TaskItem = ({ todo, currentLocation }) => {
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>
           {todo.task}
         </span>
+
+
         <div className="flex flex-wrap flex-row items-center leading-3">
 
           {currentLocation !== "tasks" && <span className="text-xs" style={{ color: "#797775" }}>
@@ -190,9 +198,7 @@ const TaskItem = ({ todo, currentLocation }) => {
               </div>
             )}
 
-
           <TaskItemCategories todo={todo} />
-
 
         </div>
       </button>

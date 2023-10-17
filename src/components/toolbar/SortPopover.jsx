@@ -81,6 +81,9 @@ const SortPopover = ({currentLocation}) => {
     case "completed":
       sortItemsComponent = <CompletedSortItems onItemClick={popoverCloseHandler} currentLocation={"completed"}/>
       break;
+    case "tasks":
+      sortItemsComponent = <CompletedSortItems onItemClick={popoverCloseHandler} currentLocation={"tasks"}/>
+      break;
   
     default:
       break;

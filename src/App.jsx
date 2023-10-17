@@ -9,7 +9,7 @@ import ImportantPage from "./pages/ImportantPage";
 import PlannedPage from "./pages/PlannedPage";
 import CompletedPage from "./pages/CompletedPage";
 import SearchPage from "./pages/SearchPage";
-import Inbox from "./components/Inbox";
+import InboxPage from "./pages/InboxPage";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "inbox",
-        element: <Inbox/>
+        element: <InboxPage />
       },
       {
         path: "search",

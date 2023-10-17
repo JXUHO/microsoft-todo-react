@@ -1,7 +1,8 @@
 import Inbox from "../components/Inbox";
 
+
 const InboxPage = () => {
-  return <Inbox />;
+  return <Inbox/>
 };
 
 export default InboxPage;

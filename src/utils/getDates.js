@@ -40,7 +40,7 @@ export function getCustomFormatDateString(input, option) {
   } else if (inputDate.toISOString() === tomorrowDate.toISOString()) {
     return "Tomorrow";
   } else if (inputDate.toISOString() === yesterdayDate.toISOString()) {
-    return "Yesterday";
+    return "Overdue, Yesterday";
   }
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -67,12 +67,14 @@ export function getCustomFormatDateString(input, option) {
   const currentYear = today.getFullYear();
   const yearString = year !== currentYear ? `, ${year}` : '';
 
-  if (option === "dueDate" && (todayDate - inputDate) / (1000 * 60 * 60 * 24) > 2) {
-    return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
-  } else if (option === "dueDate") {
-    return `Due ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`
+  if (option === "dueDate") {
+    if (inputDate <= yesterdayDate) {
+      return `Overdue, ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
+    } else {
+      return `Due ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`
+    }
   }
-  
+
   return `${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
 }
 
