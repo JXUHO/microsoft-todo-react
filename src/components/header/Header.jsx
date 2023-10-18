@@ -16,7 +16,9 @@ const Header = () => {
           <Link to="/">To Do</Link>
         </li>
       </ul>
+
       <Searchbar />
+      
       <ul className="flex items-center">
         <li className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100">
           <AiOutlineSetting size="20px"/>

@@ -18,9 +18,11 @@ export default {
         "ms-bg-border": "#e1dfdd",
         "ms-scrollbar": "#8a8886",
         "ms-light-text": "#605E5C",
+        "ms-input-hover": "#edebe9"
       },
       height: {
         18: "4.5rem",
+        2.1: "2.1rem"
       },
       minWidth: {
         100: "100px",
@@ -100,6 +102,8 @@ export default {
       },
       width: {
         divider: "calc(100% - 25px)",
+        100: "25rem",
+        100.1: "25.1rem"
       },
     },
   },
