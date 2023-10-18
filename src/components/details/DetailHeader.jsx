@@ -159,7 +159,7 @@ const DetailHeader = ({ taskId }) => {
         {...getTooltipReferenceProps()}
       >
         {todo.importance ? (
-          <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+          <div className="animate-fillAnimation"><BsStarFill size="18px" style={{ color: "#2564cf" }} /></div>
         ) : (
           <BsStar size="18px" style={{ color: "#2564cf" }} />
         )}

@@ -15,9 +15,9 @@ export default {
         "ms-bg-shadow": "box-shadow: 0px 0.3px 0.9px rgba(0,0,0,0.1)",
         "ms-font-blue": "#2564cf",
         "ms-active-blue": "#eff6fc",
-        "ms-bg-border": '#e1dfdd',
-        "ms-scrollbar": '#8a8886',
-        "ms-light-text": '#605E5C'
+        "ms-bg-border": "#e1dfdd",
+        "ms-scrollbar": "#8a8886",
+        "ms-light-text": "#605E5C",
       },
       height: {
         18: "4.5rem",
@@ -29,11 +29,12 @@ export default {
         52: "52px",
       },
       animation: {
-        rotate90: 'clock90 1s',
+        rotate90: "clock90 1s",
         expand: "expand 0.25s forwards",
         slideFadeDown100: "slideFadeDown100 250ms forwards",
         slideFadeDown5: "slideFadeDown5 200ms forwards",
         checkAnimationBase: "checkAnimationBase 100ms",
+        fillAnimation: "fillAnimation 100ms"
       },
       keyframes: {
         clock90: {
@@ -46,53 +47,60 @@ export default {
           },
         },
         expand: {
-          "0%" : {
-            height: "0%"
+          "0%": {
+            height: "0%",
           },
-          "100%" : {
-            height: "100%"
-          }
+          "100%": {
+            height: "100%",
+          },
         },
         slideFadeDown100: {
-          "0%" : {
+          "0%": {
             transform: "translate3d(0, -100%, 0)",
-            opacity: "0"
+            opacity: "0",
           },
-          "100%" : {
+          "100%": {
             transform: "translate3d(0, 0, 0)",
-            opacity: "1"
-          }
+            opacity: "1",
+          },
         },
         slideFadeDown5: {
-          "0%" : {
+          "0%": {
             transform: "translate3d(0, -5%, 0)",
-            opacity: "0"
+            opacity: "0",
           },
-          "50%" : {
+          "50%": {
             transform: "translate3d(0, -1%, 0)",
-            opacity: "0.8"
+            opacity: "0.8",
           },
-          "100%" : {
+          "100%": {
             transform: "translate3d(0, 0, 0)",
-            opacity: "1"
-          }
+            opacity: "1",
+          },
         },
         checkAnimationBase: {
-          "0%" : {
+          "0%": {
             transform: "scale(0.4)",
-            opacity: "0"
+            opacity: "0",
           },
-          "100%" : {
+          "100%": {
             transform: "scale(1)",
-            opacity: "1"
-          }
+            opacity: "1",
+          },
         },
-
-
+        fillAnimation: {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.4)",
+          },
+          "100%": {
+            transform: "scale(1)",
+          },
+        },
       },
       width: {
-        divider: "calc(100% - 25px)"
-      }
+        divider: "calc(100% - 25px)",
+      },
     },
   },
 };
