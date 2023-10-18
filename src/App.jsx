@@ -95,5 +95,9 @@ export default App;
  * taskDetail file 첨부했을때, 백엔드 저장 구현하기
  * myday처리, repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기
  * 
+ * 
+ * Popover, tooltip 독립된 component로 구현해서 코드 가독성 높이기
+ * 
+ * 
  */
 

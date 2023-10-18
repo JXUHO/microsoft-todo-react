@@ -51,7 +51,7 @@ const MydayList = ({ currentLocation }) => {
 
   return (
     <>
-      <div>
+      <div className="overflow-y-auto">
         {groupBy === "category" ? (
           <GroupLists todoArr={todoArr} currentLocation={currentLocation} />
         ) : (

@@ -59,7 +59,7 @@ const PlannedList = () => {
       later: [],
     };
     todoArr.forEach((todo) => {
-      if (!todo.dueDate) return;
+      if (!todo.dueDate || todo.complete) return;
       const category = classifyDate(todo);
       tempSortedArr[category].push(todo);
       listCount[category]++;
@@ -86,9 +86,6 @@ const PlannedList = () => {
   }, [todoArr, dispatch]);
 
 
-
-
-
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">
       {count.earlier !== 0 && (
@@ -101,7 +98,7 @@ const PlannedList = () => {
       )}
       {count.earlier !== 0 && isOpen.earlier && (
         <div>
-          {sortedArr.earlier.slice().map((todo) => (
+          {sortedArr.earlier.slice().reverse().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
@@ -117,7 +114,7 @@ const PlannedList = () => {
       )}
       {count.today !== 0 && isOpen.today && (
         <div>
-          {sortedArr.today.slice().map((todo) => (
+          {sortedArr.today.slice().reverse().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
@@ -133,7 +130,7 @@ const PlannedList = () => {
       )}
       {count.tomorrow !== 0 && isOpen.tomorrow && (
         <div>
-          {sortedArr.tomorrow.slice().map((todo) => (
+          {sortedArr.tomorrow.slice().reverse().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
@@ -148,7 +145,7 @@ const PlannedList = () => {
       )}
       {count.next5Days !== 0 && isOpen.next5Days && (
         <div>
-          {sortedArr.next5Days.slice().map((todo) => (
+          {sortedArr.next5Days.slice().reverse().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>
@@ -164,7 +161,7 @@ const PlannedList = () => {
       )}
       {count.later !== 0 && isOpen.later && (
         <div>
-          {sortedArr.later.slice().map((todo) => (
+          {sortedArr.later.slice().reverse().map((todo) => (
             <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
           ))}
         </div>

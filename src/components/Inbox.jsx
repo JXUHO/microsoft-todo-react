@@ -97,14 +97,14 @@ const Inbox = () => {
           {isGroupOptionSelected && <GroupIndicator currentLocation="tasks" />}
         </div>
         <AddTask currentLocation={"tasks"} />
-        <div>
+        <div className="overflow-y-auto">
           {groupBy === "category" ? (
             <GroupLists todoArr={todoArr} currentLocation={"tasks"} />
           ) : (
             <BasicList todoArr={todoArr} currentLocation={"tasks"} />
           )}
+          <CompleteList currentLocation={"tasks"} />
         </div>
-        <CompleteList currentLocation={"tasks"} />
       </div>
     </>
   );

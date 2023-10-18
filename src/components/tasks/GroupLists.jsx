@@ -47,7 +47,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
 
   const noIncomplete = todoArr.every((todo) => todo.complete === "")
   return (
-    <div className="flex flex-col overflow-y-auto px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px", marginBottom:"-5px"}}>
+    <div className="flex flex-col px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px", marginBottom:"-5px"}}>
       {categoryCount.blue !== 0 && (
         <div>
           <TaskHeader
