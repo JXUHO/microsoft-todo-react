@@ -6,6 +6,15 @@ import { BsTrash3 } from "react-icons/bs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getCustomFormatDateString } from "../../utils/getDates";
 import Details from "./Details";
+import {
+  flip,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
 
 const TaskDetail = () => {
   const detailId = useSelector((state) => state.ui.id);
@@ -18,6 +27,10 @@ const TaskDetail = () => {
   const [isHover, setIsHover] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(360);
   const [createdTime, setCreatedTime] = useState("");
+
+  const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
+  const [removeTooltipOpen, setRemoveTooltipOpen] = useState(false);
+
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -72,6 +85,49 @@ const TaskDetail = () => {
     };
   }, [resizeHandler, finishResizeHandler]);
 
+  const {
+    refs: closeTooltipRefs,
+    floatingStyles: closeTooltipFloatingStyles,
+    context: closeTooltipContext,
+  } = useFloating({
+    open: closeTooltipOpen,
+    onOpenChange: setCloseTooltipOpen,
+    placement: "top",
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
+  });
+
+  const {
+    getReferenceProps: getCloseTooltipReferenceProps,
+    getFloatingProps: getCloseTooltipFloatingProps,
+  } = useInteractions([
+    useHover(closeTooltipContext, { delay: { open: 300, close: 0 } }),
+    useDismiss(closeTooltipContext, {
+      referencePress: true,
+    }),
+  ]);
+  const {
+    refs: removeTooltipRefs,
+    floatingStyles: removeTooltipFloatingStyles,
+    context: removeTooltipContext,
+  } = useFloating({
+    open: removeTooltipOpen,
+    onOpenChange: setRemoveTooltipOpen,
+    placement: "top",
+    middleware: [offset(5), flip(), shift({ padding: 10 })],
+  });
+
+  const {
+    getReferenceProps: getRemoveTooltipReferenceProps,
+    getFloatingProps: getRemoveTooltipFloatingProps,
+  } = useInteractions([
+    useHover(removeTooltipContext, { delay: { open: 300, close: 0 } }),
+    useDismiss(removeTooltipContext, {
+      referencePress: true,
+    }),
+  ]);
+
+
+
   return (
     <div
       className="flex flex-row min-w-[360px] max-w-[700px] box-border"
@@ -101,7 +157,7 @@ const TaskDetail = () => {
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
-            <button onClick={closeDetailHandler}>
+            <button onClick={closeDetailHandler} ref={closeTooltipRefs.setReference} {...getCloseTooltipReferenceProps()}>
               <LuPanelRightClose size="16px" />
             </button>
 
@@ -109,25 +165,45 @@ const TaskDetail = () => {
               Created {createdTime}
             </p>
 
-            <button onClick={() => removeTaskHandler(detailId)}>
+            <button onClick={() => removeTaskHandler(detailId)} ref={removeTooltipRefs.setReference} {...getRemoveTooltipReferenceProps()}>
               <BsTrash3 size="16px" />
             </button>
           </div>
         </div>
       </div>
+
+      {closeTooltipOpen && (
+        <div
+          ref={closeTooltipRefs.setFloating}
+          {...getCloseTooltipFloatingProps()}
+          style={{
+            ...closeTooltipFloatingStyles,
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+            zIndex: 50,
+          }}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
+        >
+          Hide detail view
+        </div>
+      )}
+      {removeTooltipOpen && (
+        <div
+          ref={removeTooltipRefs.setFloating}
+          {...getRemoveTooltipFloatingProps()}
+          style={{
+            ...removeTooltipFloatingStyles,
+            boxShadow:
+              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+            zIndex: 50,
+          }}
+          className="bg-white py-1.5 rounded-sm px-2 text-xs"
+        >
+          Delete task
+        </div>
+      )}
     </div>
   );
 };
 
 export default TaskDetail;
-
-/**
- * TODO
- * 받아온 detailId로 detail body 구현 가능
- *
- * Created Today
- * Created Yesterday
- * Created on Sun, October 8
- *
- *
- */
