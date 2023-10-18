@@ -7,6 +7,7 @@ const RemindCalendar = ({onCalendarSaveClick}) => {
   const [remindSelectedTime, setRemindSelectedTime] = useState(new Date());
 
   return (
+    <div className="animate-slideFadeDown5">
     <ReactDatePicker
       selected={remindSelectedTime}
       onChange={(date) => setRemindSelectedTime(date)}
@@ -30,6 +31,7 @@ const RemindCalendar = ({onCalendarSaveClick}) => {
         </div>
       </div>
     </ReactDatePicker>
+    </div>
   );
 };
 

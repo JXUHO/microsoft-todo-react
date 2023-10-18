@@ -30,8 +30,9 @@ export default {
       },
       animation: {
         rotate90: 'clock90 1s',
-        rotateM90: 'counterClock90 1s',
-        expand: "expand 0.25s forwards"
+        expand: "expand 0.25s forwards",
+        slideFadeDown100: "slideFadeDown100 250ms forwards",
+        slideFadeDown5: "slideFadeDown5 200ms forwards",
       },
       keyframes: {
         clock90: {
@@ -43,15 +44,6 @@ export default {
               "rotate(90deg)" /* Rotate 360 degrees (one full rotation) */,
           },
         },
-        counterClock90: {
-          "0%": {
-            transform: "rotate(0deg)" /* Start with no rotation */,
-          },
-          "100%": {
-            transform:
-              "rotate(-90deg)" /* Rotate 360 degrees (one full rotation) */,
-          },
-        },
         expand: {
           "0%" : {
             height: "0%"
@@ -59,7 +51,32 @@ export default {
           "100%" : {
             height: "100%"
           }
+        },
+        slideFadeDown100: {
+          "0%" : {
+            transform: "translate3d(0, -100%, 0)",
+            opacity: "0"
+          },
+          "100%" : {
+            transform: "translate3d(0, 0, 0)",
+            opacity: "1"
+          }
+        },
+        slideFadeDown5: {
+          "0%" : {
+            transform: "translate3d(0, -5%, 0)",
+            opacity: "0"
+          },
+          "50%" : {
+            transform: "translate3d(0, -1%, 0)",
+            opacity: "0.8"
+          },
+          "100%" : {
+            transform: "translate3d(0, 0, 0)",
+            opacity: "1"
+          }
         }
+
       },
       width: {
         divider: "calc(100% - 25px)"

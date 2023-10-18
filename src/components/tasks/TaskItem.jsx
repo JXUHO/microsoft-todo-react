@@ -89,7 +89,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   return (
     <div
-      className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover"
+      className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover animate-slideFadeDown100"
       style={{
         boxShadow:
           "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",

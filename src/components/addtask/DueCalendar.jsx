@@ -6,13 +6,13 @@ const DueCalendar = ({onCalendarSaveClick}) => {
   const [dueSelectedDate, setDueSelectedDate] = useState(new Date());
 
   return (
+    <div className="animate-slideFadeDown5">
     <ReactDatePicker
       selected={dueSelectedDate}
       onChange={(date) => setDueSelectedDate(date)}
       todayButton="Reset"
       inline
     >
-      <div>
         <div
           style={{
             textAlign: "center",
@@ -25,8 +25,8 @@ const DueCalendar = ({onCalendarSaveClick}) => {
         >
           Save
         </div>
-      </div>
     </ReactDatePicker>
+    </div>
   );
 };
 

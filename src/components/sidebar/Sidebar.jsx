@@ -79,8 +79,8 @@ const Sidebar = () => {
 
 
 export default Sidebar;
-//before:-translate-y-2/4 before:animate-expand
-// before height 100%는 ul의 height
+
+
 const MyDayListBar = ({ currentLocation }) => {
   return currentLocation === "/myday" || currentLocation === "/today" ? (
     <li className="relative before:content-[''] before:w-0.5 before:bg-ms-blue before:absolute before:top-2/4 before:-translate-y-2/4 before:animate-expand">

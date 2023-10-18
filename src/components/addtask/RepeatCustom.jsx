@@ -71,7 +71,7 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
 
   return (
     <div
-      className="flex flex-col items-center bg-white p-1.5"
+      className="flex flex-col items-center bg-white p-1.5 animate-slideFadeDown5"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 6.4px 14.4px 0px, rgba(0, 0, 0, 0.11) 0px 1.2px 3.6px 0px",
