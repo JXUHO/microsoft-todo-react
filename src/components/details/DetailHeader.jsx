@@ -28,7 +28,6 @@ const DetailHeader = ({ taskId }) => {
   );
 
   const dispatch = useDispatch();
-  const [isCheckHover, setIsCheckHover] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [newTask, setNewTask] = useState("");
@@ -116,15 +115,20 @@ const DetailHeader = ({ taskId }) => {
         <span
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completedHandler}
-          onMouseEnter={() => setIsCheckHover(true)}
-          onMouseLeave={() => setIsCheckHover(false)}
         >
           {todo.complete ? (
-            <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
-          ) : isCheckHover ? (
-            <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+            <div className="animate-checkAnimationBase">
+              <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+            </div>
           ) : (
-            <BsCircle size="16px" style={{ color: "#2564cf" }} />
+            <div className="flex items-center">
+              <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20">
+                <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+              </div>
+              <div className="z-10">
+                <BsCircle size="16px" style={{ color: "#2564cf" }} />
+              </div>
+            </div>
           )}
         </span>
 
@@ -181,4 +185,3 @@ const DetailHeader = ({ taskId }) => {
 };
 
 export default DetailHeader;
-

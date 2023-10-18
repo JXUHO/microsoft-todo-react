@@ -29,6 +29,9 @@ const CompleteList = ({ currentLocation }) => {
     // sort옵션 적용
     if (sortBy) {
       setTodoArr(sortTasks(sortBy, sortOrder, todoTemp));
+    } else if (currentLocation !== "completed") {
+      // setTodoArr(todoTemp);
+      setTodoArr(sortTasks("completed", sortOrder, todoTemp));
     } else {
       setTodoArr(todoTemp);
     }

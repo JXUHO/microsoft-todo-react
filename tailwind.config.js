@@ -33,6 +33,7 @@ export default {
         expand: "expand 0.25s forwards",
         slideFadeDown100: "slideFadeDown100 250ms forwards",
         slideFadeDown5: "slideFadeDown5 200ms forwards",
+        checkAnimationBase: "checkAnimationBase 100ms",
       },
       keyframes: {
         clock90: {
@@ -75,7 +76,18 @@ export default {
             transform: "translate3d(0, 0, 0)",
             opacity: "1"
           }
-        }
+        },
+        checkAnimationBase: {
+          "0%" : {
+            transform: "scale(0.4)",
+            opacity: "0"
+          },
+          "100%" : {
+            transform: "scale(1)",
+            opacity: "1"
+          }
+        },
+
 
       },
       width: {

@@ -28,7 +28,6 @@ import { FiPaperclip } from "react-icons/Fi";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
-  const [isHovered, setIsHovered] = useState(false);
   const [dueText, setDueText] = useState("");
   const [remindText, setRemindText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -59,10 +58,10 @@ const TaskItem = ({ todo, currentLocation }) => {
       );
     }
     if (!todo.dueDate) {
-      setDueText("")
+      setDueText("");
     }
     if (!todo.remind) {
-      setRemindText("")
+      setRemindText("");
     }
   }, [todo]);
 
@@ -98,15 +97,20 @@ const TaskItem = ({ todo, currentLocation }) => {
       <span
         onClick={completedHandler}
         className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {todo.complete ? (
-          <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
-        ) : isHovered ? (
-          <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+          <div className="animate-checkAnimationBase">
+            <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+          </div>
         ) : (
-          <BsCircle size="16px" style={{ color: "#2564cf" }} />
+          <div className="flex items-center">
+            <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20">
+              <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+            </div>
+            <div className="z-10">
+              <BsCircle size="16px" style={{ color: "#2564cf" }} />
+            </div>
+          </div>
         )}
       </span>
 
@@ -119,21 +123,23 @@ const TaskItem = ({ todo, currentLocation }) => {
           {todo.task}
         </span>
 
-
         <div className="flex flex-wrap flex-row items-center leading-3">
+          {
+            <span className="text-xs" style={{ color: "#797775" }}>
+              Tasks
+            </span>
+          }
 
-          {<span className="text-xs" style={{ color: "#797775" }}>
-            Tasks
-          </span>}
-
-          {currentLocation !=="myday" && todo.myday && (
+          {currentLocation !== "myday" && todo.myday && (
             <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
               <span className="mr-1">
                 <BsSun size="12px" />
               </span>
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>My Day</span>
-              </div>
-            )}
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                My Day
+              </span>
+            </div>
+          )}
 
           {todo.steps.length !== 0 && (
             <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
@@ -184,22 +190,30 @@ const TaskItem = ({ todo, currentLocation }) => {
               <span className="mr-1">
                 <PiNoteBlankLight size="14px" />
               </span>
-              {!todo.file && !todo.dueDate && !todo.remind && <span className="text-xs mr-1" style={{ color: "#797775" }}>Note</span>}
-              </div>
-            )}
+              {!todo.file && !todo.dueDate && !todo.remind && (
+                <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                  Note
+                </span>
+              )}
+            </div>
+          )}
 
           {/* file attached */}
           {todo.file && (
             <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
               <span className="mr-1">
-              <FiPaperclip size="12px" style={{transform: "rotate(180deg)"}}/>
+                <FiPaperclip
+                  size="12px"
+                  style={{ transform: "rotate(180deg)" }}
+                />
               </span>
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>Files attached</span>
-              </div>
-            )}
+              <span className="text-xs mr-1" style={{ color: "#797775" }}>
+                Files attached
+              </span>
+            </div>
+          )}
 
           <TaskItemCategories todo={todo} />
-
         </div>
       </button>
 
