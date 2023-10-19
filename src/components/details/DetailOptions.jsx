@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BsSun, BsXLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { changeMydayTodo } from "../../store/todoSlice";
+import { changeMydayTodo, changeOptionTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";
 import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";

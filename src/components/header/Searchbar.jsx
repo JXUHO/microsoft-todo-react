@@ -1,23 +1,55 @@
+import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { BsX } from "react-icons/bs";
 import { VscSearch } from "react-icons/vsc";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchContent, setSearchContent] = useState("");
-  const inputRef = useRef()
-  const [isFocus, setIsFocus] = useState(false)
+  const inputRef = useRef();
+  const [isActive, setIsActive] = useState(false);
 
   const searchHandler = (event) => {
     setSearchContent(event.target.value);
+    if (location.pathname !== "/search") {
+      navigate("/search");
+    }
   };
 
   const clickHandler = () => {
-    console.log('trigger');
+    if (!isActive) {
+      setIsActive(true);
+    }
+  };
+  useEffect(() => {
+    if (isActive) {
+      inputRef.current.focus();
+    }
+  }, [isActive]);
 
-    inputRef.current.focus()
-  }
+  const blurHandler = () => {
+    if (location.pathname === "/search" && searchContent === "") {
+      navigate("/myday");
+    }
+  };
 
+  const clearButtonHandler = () => {
+    setSearchContent("");
+    inputRef.current.blur();
+    if (location.pathname === "/search") {
+      navigate("/myday");
+    }
+  };
+
+  useEffect(() => {
+    if (location.pathname !== "/search") {
+      setSearchContent("");
+      setIsActive(false);
+    }
+  }, [location]);
 
   return (
     <div
@@ -28,15 +60,24 @@ const Searchbar = () => {
         <VscSearch size="16px" />
       </button>
 
-        <input
-          className="flex-1 rounded-r-md outline-none bg-transparent"
-          onChange={searchHandler}
-          placeholder={isFocus? "Search" : ""}
-          ref={inputRef}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-        />
-        <button className="flex items-center justify-center w-8 h-full"><BsX size="16px" className="text-ms-light-text"/></button>
+      {isActive && (
+        <div className="flex flex-1 items-center h-full rounded-md">
+          <input
+            className="flex-1 rounded-r-md outline-none bg-transparent"
+            onChange={searchHandler}
+            placeholder={"Search"}
+            ref={inputRef}
+            onBlur={blurHandler}
+            value={searchContent}
+          />
+          <button
+            className="flex items-center justify-center w-8 h-full"
+            onClick={clearButtonHandler}
+          >
+            <BsX size="16px" className="text-ms-light-text" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
