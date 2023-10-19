@@ -34,6 +34,9 @@ const Searchbar = () => {
     if (location.pathname === "/search" && searchContent === "") {
       navigate("/myday");
     }
+    if (location.pathname !== "/search") {
+      setIsActive(false);
+    }
   };
 
   const clearButtonHandler = () => {
@@ -83,3 +86,10 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
+
+/**
+ * TODO
+ * seachbar active된 상태에서 clear버튼 누르면 searchbar clear -> isActive==false에 따른 flickering 발생
+ * location 변화에 따라 useEffect hook trigger되므로, 성능에 악영향
+ */
+

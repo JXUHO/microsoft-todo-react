@@ -93,6 +93,8 @@ export default App;
  * UI -> task list scrollbar 생성될 때, taskItem 가로길이 바뀜. scrollbar 유무에 따라 padding 동적으로 변경하기
  * 
  * taskDetail file 첨부했을때, 백엔드 저장 구현하기
+ * 
+ * 
  * myday처리, repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기
  * 
  * 

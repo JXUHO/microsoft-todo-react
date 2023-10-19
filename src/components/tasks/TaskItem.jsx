@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { completeTodo, importanceTodo } from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
@@ -25,6 +25,7 @@ import {
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
 import { FiPaperclip } from "react-icons/Fi";
+import { addActive } from "../../store/activeSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   const [remindText, setRemindText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [stepIncompleteLength, setStepIncompleteLength] = useState(0);
+  const isActive = useSelector((state) => state.active.active); //#eff6fc
 
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
@@ -41,8 +43,9 @@ const TaskItem = ({ todo, currentLocation }) => {
     dispatch(importanceTodo(todo.id));
   };
 
-  const detailOpenHandler = (id) => {
+  const taskClickHandler = (id) => {
     dispatch(openDetail(id));
+    dispatch(addActive(id));
   };
 
   useEffect(() => {
@@ -88,7 +91,12 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   return (
     <div
-      className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover animate-slideFadeDown100"
+      // className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover animate-slideFadeDown100"
+      className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
+        isActive === todo.id
+          ? "bg-ms-active-blue"
+          : "bg-white hover:bg-ms-white-hover"
+      }`}
       style={{
         boxShadow:
           "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
@@ -115,7 +123,7 @@ const TaskItem = ({ todo, currentLocation }) => {
       </span>
 
       <button
-        onClick={() => detailOpenHandler(todo.id)}
+        onClick={() => taskClickHandler(todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
         style={{ color: "#292827" }}
       >
@@ -224,7 +232,9 @@ const TaskItem = ({ todo, currentLocation }) => {
         {...getTooltipReferenceProps()}
       >
         {todo.importance ? (
-          <div className="animate-fillAnimation"><BsStarFill size="18px" style={{ color: "#2564cf" }} /></div>
+          <div className="animate-fillAnimation">
+            <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+          </div>
         ) : (
           <BsStar size="18px" style={{ color: "#2564cf" }} />
         )}
