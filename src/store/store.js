@@ -4,6 +4,7 @@ import uiSliceReducer from "./uiSlice";
 import sortSliceReducer from "./sortSlice"
 import groupSliceReducer from "./groupSlice"
 import activeSliceReducer from "./activeSlice"
+import searchSliceReducer from "./searchSlice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     sort: sortSliceReducer,
     group: groupSliceReducer,
     active: activeSliceReducer,
+    search: searchSliceReducer,
   },
 });

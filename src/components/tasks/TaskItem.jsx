@@ -25,7 +25,7 @@ import {
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
 import { FiPaperclip } from "react-icons/Fi";
-import { addActive } from "../../store/activeSlice";
+import { addActiveTask } from "../../store/activeSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   const [remindText, setRemindText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [stepIncompleteLength, setStepIncompleteLength] = useState(0);
-  const isActive = useSelector((state) => state.active.active); //#eff6fc
+  const isActive = useSelector((state) => state.active.activeTask); //#eff6fc
 
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
@@ -45,7 +45,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   const taskClickHandler = (id) => {
     dispatch(openDetail(id));
-    dispatch(addActive(id));
+    dispatch(addActiveTask(id));
   };
 
   useEffect(() => {

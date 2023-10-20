@@ -73,19 +73,19 @@ export default App;
  * (complete) implement date/remind/repeat compoenent popover
  * (complete) complete탭 task 순서 수정하기
  * (complete) Detail resizer <-> popover랑 겹치면 UI 오류발생 -> 안겹치게 바꾸기
+ * (complete) activated task blue color  
+ * (complete) UI -> searchbar x버튼 눌렀을 때 flickering문제 해결하기
  * 
  * 
- * make right click modal
+ * make task 우클릭 modal 기능 구현하기
  * 삭제 모달
  * 
- * activated task blue color  
  * AddTask component retracted
 
  * Searchbar
  * dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * taskList component scroll 가능하게 만들기
  * 
- * RepeatPopover -> useRepeatTasks 함수 호출 위치 고민해보기 -> repeat설정된 task가 완료되면 새로운 task생성하는 역할
  * 
  * floating ui -> useListNavigation 사용, 방향키로 선택 가능하도록 설정하기
  * 
@@ -95,10 +95,16 @@ export default App;
  * taskDetail file 첨부했을때, 백엔드 저장 구현하기
  * 
  * 
+ * RepeatPopover -> useRepeatTasks 함수 호출 위치 고민해보기 -> repeat설정된 task가 완료되면 새로운 task생성하는 역할
  * myday처리, repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기
  * 
  * 
  * Popover, tooltip 독립된 component로 구현해서 코드 가독성 높이기
+ * 
+ * 
+ * UI -> Sidebar mount될때, task 개수 0으로 표시됐다가 사라짐 -> flickering발생
+ * 
+ * GroupLists -> TaskHeader & TaskItemHeader 동일한 컴포넌트로 만들기
  * 
  * 
  */

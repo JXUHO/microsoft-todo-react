@@ -7,6 +7,7 @@ const sortSlice = createSlice({
     important: { sortBy: "", order: "descending" },
     completed: { sortBy: "", order: "descending" },
     tasks: { sortBy: "", order: "descending" },
+    search: {sortBy: "", order: "descending"}
   },
   // sortBy: importance, dueDate, alphabetically, creationDate, myday, completed
 

@@ -46,6 +46,10 @@ const DetailSteps = ({ taskId }) => {
     if(isFocused) inputRef.current.focus()
   }, [isFocused])
 
+  useEffect(() => {
+    setNewStep("")
+  }, [taskId])
+
   return (
     <div className="flex flex-col items-center bg-white rounded-b border-y-0">
 

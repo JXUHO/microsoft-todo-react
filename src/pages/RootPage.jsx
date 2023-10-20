@@ -5,6 +5,8 @@ import TaskDetail from "../components/details/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { initializeActive } from "../store/activeSlice";
+import { closeDetail } from "../store/uiSlice";
+import { initializeQuery } from "../store/searchSlice";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -15,6 +17,7 @@ const RootPage = () => {
 
   useEffect(() => {
     dispatch(initializeActive())
+    dispatch(closeDetail());
   }, [location])
 
   
@@ -22,7 +25,7 @@ const RootPage = () => {
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden"> {/**root */}
 
-      <Header />
+      <Header />  
 
       <div className="flex flex-1 overflow-hidden">   {/**app */}
         {isSidebarOpen && <Sidebar />}  {/**left column */}

@@ -3,17 +3,21 @@ import { useRef } from "react";
 import { useState } from "react";
 import { BsX } from "react-icons/bs";
 import { VscSearch } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { addQuery, initializeQuery } from "../../store/searchSlice";
 
 const Searchbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchContent, setSearchContent] = useState("");
   const inputRef = useRef();
   const [isActive, setIsActive] = useState(false);
+  const searchQuery = useSelector(state => state.search.query)
+  const dispatch = useDispatch()
 
   const searchHandler = (event) => {
-    setSearchContent(event.target.value);
+    // setUserInput(event.target.value);
+    dispatch(addQuery(event.target.value));
     if (location.pathname !== "/search") {
       navigate("/search");
     }
@@ -22,6 +26,7 @@ const Searchbar = () => {
   const clickHandler = () => {
     if (!isActive) {
       setIsActive(true);
+      dispatch(initializeQuery());
     }
   };
   useEffect(() => {
@@ -31,7 +36,7 @@ const Searchbar = () => {
   }, [isActive]);
 
   const blurHandler = () => {
-    if (location.pathname === "/search" && searchContent === "") {
+    if (location.pathname === "/search" && searchQuery === "") {
       navigate("/myday");
     }
     if (location.pathname !== "/search") {
@@ -40,8 +45,8 @@ const Searchbar = () => {
   };
 
   const clearButtonHandler = () => {
-    setSearchContent("");
-    inputRef.current.blur();
+    setIsActive(false);
+    dispatch(initializeQuery());
     if (location.pathname === "/search") {
       navigate("/myday");
     }
@@ -49,7 +54,6 @@ const Searchbar = () => {
 
   useEffect(() => {
     if (location.pathname !== "/search") {
-      setSearchContent("");
       setIsActive(false);
     }
   }, [location]);
@@ -71,7 +75,7 @@ const Searchbar = () => {
             placeholder={"Search"}
             ref={inputRef}
             onBlur={blurHandler}
-            value={searchContent}
+            value={searchQuery}
           />
           <button
             className="flex items-center justify-center w-8 h-full"

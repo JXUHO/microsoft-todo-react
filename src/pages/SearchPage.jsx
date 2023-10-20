@@ -1,13 +1,11 @@
+import Search from "../components/Search";
 
 const SearchPage = () => {
-
-
-
-  return(
+  return (
     <>
-      <p>Searchpage</p>
+      <Search />
     </>
-  )
-}
+  );
+};
 
 export default SearchPage;
