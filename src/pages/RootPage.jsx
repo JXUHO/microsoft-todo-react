@@ -7,11 +7,14 @@ import { useEffect } from "react";
 import { initializeActiveStep, initializeActiveTask } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
 import { initializeQuery } from "../store/searchSlice";
+import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
+import repeatTask from "../utils/repeatTask";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
-  
+  const todoArr = useSelector((state) => state.todo.todos);
+
   const location = useLocation()
   const dispatch = useDispatch()
 
@@ -20,6 +23,22 @@ const RootPage = () => {
     dispatch(initializeActiveStep())
     dispatch(closeDetail());
   }, [location])
+
+  useEffect(() => {
+    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
+    todoArr.map((todo) => {
+      const repeatInfo = repeatTask(todo);
+      if (!repeatInfo) return;
+      if (repeatInfo instanceof Date) {
+        dispatch(
+          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
+        );
+      } else {
+        dispatch(repeatedTodo(todo.id));
+        dispatch(addTodo(repeatInfo));
+      }
+    });
+  }, [todoArr, dispatch]);
 
   
   
@@ -43,6 +62,6 @@ const RootPage = () => {
 export default RootPage;
 
 /**
- * open/close state에 따라 conditional style 적용하기
+ * open/close state에 따라 우측 scrollbar conditional style 적용하기
  *
  */

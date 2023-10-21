@@ -1,12 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
-import repeatTask from "../../utils/repeatTask";
-import {
-  addTodo,
-  changeDueDateTodo,
-  repeatedTodo,
-} from "../../store/todoSlice";
 import TaskItem from "./TaskItem";
 
 
@@ -16,8 +10,6 @@ const ImportantList = ({currentLocation}) => {
   const sortOrder = useSelector((state) => state.sort.important.order);
   const sortBy = useSelector((state) => state.sort.important.sortBy);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     //  todoArr 생성.
     if (sortBy) {
@@ -26,22 +18,6 @@ const ImportantList = ({currentLocation}) => {
       setTodoArr(todos);
     }
   }, [todos, sortBy, sortOrder]);
-
-  useEffect(() => {
-    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-    todoArr.map((todo) => {
-      const repeatInfo = repeatTask(todo);
-      if (!repeatInfo) return;
-      if (repeatInfo instanceof Date) {
-        dispatch(
-          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-        );
-      } else {
-        dispatch(repeatedTodo(todo.id));
-        dispatch(addTodo(repeatInfo));
-      }
-    });
-  }, [todoArr, dispatch]);
 
   return (
     <>

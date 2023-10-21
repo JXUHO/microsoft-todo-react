@@ -12,8 +12,6 @@ import GroupLists from "./tasks/GroupLists";
 import BasicList from "./tasks/BasicList";
 import { useEffect, useState } from "react";
 import sortTasks from "../utils/sortTasks";
-import repeatTask from "../utils/repeatTask";
-import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
 import CompleteList from "./tasks/CompleteList";
 
 const Inbox = () => {
@@ -42,22 +40,6 @@ const Inbox = () => {
       setTodoArr(allTasks);
     }
   }, [todos, sortBy, sortOrder]);
-
-  useEffect(() => {
-    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-    todoArr.map((todo) => {
-      const repeatInfo = repeatTask(todo);
-      if (!repeatInfo) return;
-      if (repeatInfo instanceof Date) {
-        dispatch(
-          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-        );
-      } else {
-        dispatch(repeatedTodo(todo.id));
-        dispatch(addTodo(repeatInfo));
-      }
-    });
-  }, [todoArr, dispatch]);
 
   return (
     <>

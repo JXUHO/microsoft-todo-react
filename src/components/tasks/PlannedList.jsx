@@ -1,17 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addTodo,
-  changeDueDateTodo,
-  repeatedTodo,
-} from "../../store/todoSlice";
-import repeatTask from "../../utils/repeatTask";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 
 const PlannedList = () => {
   const todoArr = useSelector((state) => state.todo.todos);
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState({
     earlier: false,
     today: true,
@@ -68,23 +61,6 @@ const PlannedList = () => {
     setSortedArr(tempSortedArr);
     setCount(listCount);
   }, [todoArr]);
-
-  useEffect(() => {
-    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-    todoArr.map((todo) => {
-      const repeatInfo = repeatTask(todo);
-      if (!repeatInfo) return;
-      if (repeatInfo instanceof Date) {
-        dispatch(
-          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-        );
-      } else {
-        dispatch(repeatedTodo(todo.id));
-        dispatch(addTodo(repeatInfo));
-      }
-    });
-  }, [todoArr, dispatch]);
-
 
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">

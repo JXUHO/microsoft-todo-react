@@ -111,12 +111,11 @@ const DetailStepItem = ({ step, taskId }) => {
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className={`flex items-center justify-between p-4 w-full bg-white hover:bg-ms-white-hover ${
-          isActive === step.id ? "bg-ms-active-tertiary" : ""
-        }`}
+        className="flex items-center justify-between p-4 w-full bg-white hover:bg-ms-white-hover"
+        style={{backgroundColor:  isActive === step.id ? "#f3f2f1" : (isHover ? "#f5f4f4" : "white")}}
         onClick={activeStepHandler}
       >
-        <span
+        <span 
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completeStepHandler}
           onMouseEnter={() => setIsCheckHover(true)}
