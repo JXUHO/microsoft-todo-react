@@ -7,20 +7,23 @@ const activeSlice = createSlice({
   reducers: {
     addActiveTask: (state, action) => {
       //dispatch(addActive(taskId))
-      state.activeTask = action.payload
+      state.activeTask = action.payload;  
     },
     addActiveStep: (state, action) => {
       //dispatch(addActive(taskId))
       state.activeStep = action.payload
     },
-    initializeActive: (state) => {
-      // dispatch(initializeActive())
+    initializeActiveTask: (state) => {
+      // dispatch(initializeActiveTask())
       state.activeTask = ""
+    },
+    initializeActiveStep: (state) => {
+      // dispatch(initializeActiveStep())
       state.activeStep = ""
     },
   },
 });
 
-export const { addActiveTask, addActiveStep, initializeActive } = activeSlice.actions;
+export const { addActiveTask, addActiveStep, initializeActiveTask, initializeActiveStep } = activeSlice.actions;
 
 export default activeSlice.reducer;

@@ -5,7 +5,7 @@ import {
   BsCircle,
   BsXLg,
 } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeStep, completeStep, removeStep } from "../../store/todoSlice";
 import {
   flip,
@@ -16,10 +16,16 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
+import { addActiveStep } from "../../store/activeSlice";
 
 const DetailStepItem = ({ step, taskId }) => {
   const [isCheckHover, setIsCheckHover] = useState(false);
   const dispatch = useDispatch();
+  const isActive = useSelector((state) => state.active.activeStep);
+
+  const activeStepHandler = () => {
+    dispatch(addActiveStep(step.id));
+  };
 
   const completeStepHandler = () => {
     dispatch(completeStep({ taskId, stepId: step.id }));
@@ -46,7 +52,7 @@ const DetailStepItem = ({ step, taskId }) => {
         setNewStep(step.content);
         return;
       }
-      dispatch(changeStep({taskId, stepId: step.id, content: newStep}))
+      dispatch(changeStep({ taskId, stepId: step.id, content: newStep }));
     }
     setIsFocused(false);
   };
@@ -72,7 +78,7 @@ const DetailStepItem = ({ step, taskId }) => {
   useEffect(() => {
     if (isEscaped) {
       inputRef.current.blur();
-      setNewStep(step.content); 
+      setNewStep(step.content);
     }
   }, [isEscaped]);
 
@@ -97,13 +103,19 @@ const DetailStepItem = ({ step, taskId }) => {
     }),
   ]);
 
+
   return (
     <div
-      className="flex flex-col w-full after:block after:content-[''] after:w-divider after:border-b after:ml-auto"
+      className={`flex flex-col w-full after:block after:content-[''] after:w-divider after:border-b after:ml-auto `}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="flex items-center justify-between p-4 w-full bg-white hover:bg-ms-white-hover">
+      <div
+        className={`flex items-center justify-between p-4 w-full bg-white hover:bg-ms-white-hover ${
+          isActive === step.id ? "bg-ms-active-tertiary" : ""
+        }`}
+        onClick={activeStepHandler}
+      >
         <span
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completeStepHandler}
@@ -119,7 +131,7 @@ const DetailStepItem = ({ step, taskId }) => {
           )}
         </span>
 
-        <span className="w-full px-4" style={{ color: "#605E5C" }}>
+        <span className="w-full px-4">
           <input
             ref={inputRef}
             rows="1"
@@ -133,7 +145,7 @@ const DetailStepItem = ({ step, taskId }) => {
               border: "none",
               outline: "none",
               resize: "none",
-              backgroundColor: isHover ? "#f5f4f4" : "white",
+              backgroundColor:  isActive === step.id ? "#f3f2f1" : (isHover ? "#f5f4f4" : "white"),
               textDecoration: step.complete && !isFocused ? "line-through" : "",
             }}
           />
@@ -147,8 +159,6 @@ const DetailStepItem = ({ step, taskId }) => {
           <BsXLg size="16px" style={{ paddingRight: "2px" }} />
         </button>
       </div>
-
-
 
       {tooltipOpen && (
         <div
@@ -171,8 +181,7 @@ const DetailStepItem = ({ step, taskId }) => {
 
 export default DetailStepItem;
 
-
-/** 
+/**
  * TODO
  * 전부 지우면 삭제 확인메세지 modal 이후 삭제하기
  */

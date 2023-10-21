@@ -25,7 +25,7 @@ import {
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
 import { FiPaperclip } from "react-icons/Fi";
-import { addActiveTask } from "../../store/activeSlice";
+import { addActiveTask, initializeActiveStep } from "../../store/activeSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -46,6 +46,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   const taskClickHandler = (id) => {
     dispatch(openDetail(id));
     dispatch(addActiveTask(id));
+    dispatch(initializeActiveStep())
   };
 
   useEffect(() => {
@@ -91,7 +92,6 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   return (
     <div
-      // className="flex items-center mt-2 min-h-52 px-4 py-0 bg-white rounded hover:bg-ms-white-hover animate-slideFadeDown100"
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
         isActive === todo.id
           ? "bg-ms-active-blue"
@@ -260,12 +260,3 @@ const TaskItem = ({ todo, currentLocation }) => {
 };
 
 export default TaskItem;
-
-/**
- * TODO
- *
- * 클릭하면 파란색으로 바뀜. state로 관리
- *
- *
- *
- */

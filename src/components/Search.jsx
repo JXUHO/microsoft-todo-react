@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "../store/uiSlice";
 import { RxHamburgerMenu } from "react-icons/rx";
-import BasicList from "./tasks/BasicList";
 import {
   flip,
   offset,
@@ -28,54 +27,63 @@ const Search = () => {
   const showCompleted = useSelector((state) => state.search.showCompleted);
   const searchQuery = useSelector((state) => state.search.query);
   const todoArr = useSelector((state) => state.todo.todos);
-  const [searchedTasks, setSearchedTasks] = useState([]); // id의 배열
-  const [searchedNotes, setSearchedNotes] = useState([]); // id의 배열
-  const [searchedSteps, setSearchedSteps] = useState([]); // id의 배열
-  const [searchedCategories, setSearchedCategories] = useState([]); // id의 배열
+  const [searchedTasks, setSearchedTasks] = useState([]); 
+  const [searchedNotes, setSearchedNotes] = useState([]); 
+  const [searchedSteps, setSearchedSteps] = useState([]); 
+  const [searchedCategories, setSearchedCategories] = useState([]); 
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());
   };
 
   useEffect(() => {
-    const sortedArr = sortTasks("alphabetically", "ascending", todoArr)
-    const query = searchQuery.toLowerCase()
-    setSearchedTasks(sortedArr.filter((todo) => todo.task.toLowerCase().includes(query)))
-    setSearchedNotes(sortedArr.filter((todo) => todo.note.content.toLowerCase().includes(query)))
+    let sortedArr = sortTasks("alphabetically", "ascending", todoArr);
 
-    const stepsTemp = []
+    if (!showCompleted) {
+      sortedArr = sortedArr.filter((task) => !task.complete);
+    }
+
+    const query = searchQuery.toLowerCase();
+    setSearchedTasks(
+      sortedArr.filter((todo) => todo.task.toLowerCase().includes(query))
+    );
+    setSearchedNotes(
+      sortedArr.filter((todo) =>
+        todo.note.content.toLowerCase().includes(query)
+      )
+    );
+
+    const stepsTemp = [];
     //dispatch(addStep({ id: taskId, step: { id: uuid(), content: newStep, complete: false } }));
-    sortedArr.forEach(todo => {
-      todo.steps.forEach(step => {
-        if(step.content.toLowerCase().includes(query)){
-          stepsTemp.push({todo, step})
+    sortedArr.forEach((todo) => {
+      todo.steps.forEach((step) => {
+        if (step.content.toLowerCase().includes(query)) {
+          stepsTemp.push({ todo, step });
         }
-      })
-    })
+      });
+    });
 
-    const categoriesTemp = []
-    sortedArr.forEach(todo => {
-      todo.category.forEach(item => {
-        if(item.toLowerCase().includes(query) && !categoriesTemp.includes(todo)){
-          categoriesTemp.push(todo)
+    const categoriesTemp = [];
+    sortedArr.forEach((todo) => {
+      todo.category.forEach((item) => {
+        if (
+          item.toLowerCase().includes(query) &&
+          !categoriesTemp.includes(todo)
+        ) {
+          categoriesTemp.push(todo);
         }
-      })
-    })
-    setSearchedSteps(stepsTemp)
-    setSearchedCategories(categoriesTemp)
+      });
+    });
+    setSearchedSteps(stepsTemp);
+    setSearchedCategories(categoriesTemp);
+  }, [searchQuery, todoArr, showCompleted]);
 
-  }, [searchQuery, todoArr]);
-
-  useEffect(() => {
-    // console.log("tasks");
-    // console.log(searchedTasks);
-    // console.log("notes");
-    // console.log(searchedNotes);
-    console.log("steps");
-    console.log(searchedSteps);
-    // console.log("categories");
-    // console.log(searchedCategories);
-  }, [searchedTasks, searchedNotes,searchedSteps,searchedCategories])
+  const isEmpty =
+    (searchedTasks.length === 0 &&
+      searchedNotes.length === 0 &&
+      searchedSteps.length === 0 &&
+      searchedCategories.length === 0) ||
+    searchQuery.length === 0;
 
   return (
     <>
@@ -103,12 +111,29 @@ const Search = () => {
         </div>
       </div>
       <div className="flex flex-1 flex-col overflow-hidden">
-        <div className="flex flex-col overflow-y-auto pb-6 px-6">
-          <SearchedTasks todoArr={searchedTasks}/>
-          <SearchedNotes todoArr={searchedNotes} />
-          <SearchedSteps todoArr={searchedSteps} />
-          <SearchedCategories todoArr={searchedCategories} />
-        </div>
+        {isEmpty ? (
+          <div className="flex flex-col items-center justify-center text-xl h-full">
+            <img
+              src="public\error-404.png"
+              alt="not found icon"
+              style={{ width: "50px", paddingBottom: "4px" }}
+            />
+            <div
+              className=" text-ms-light-text font-semibold text-center"
+              style={{ maxWidth: "350px" }}
+            >
+              We searched high and low but couldn't find what you're looking
+              for.
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col overflow-y-auto pb-6 px-6">
+            <SearchedTasks todoArr={searchedTasks} />
+            <SearchedNotes todoArr={searchedNotes} />
+            <SearchedSteps todoArr={searchedSteps} />
+            <SearchedCategories todoArr={searchedCategories} />
+          </div>
+        )}
       </div>
     </>
   );
@@ -116,15 +141,7 @@ const Search = () => {
 
 export default Search;
 
-const lexicographicSearch = (inputArray, searchTerm) => {
-  // Filter the array to include only items that contain the search term
-  const searchResults = inputArray.filter((item) => item.includes(searchTerm));
 
-  // Sort the filtered array lexicographically
-  searchResults.sort();
-
-  return searchResults;
-};
 
 const OptionPopover = () => {
   const [popoverOpen, setPopoverOpen] = useState(false);

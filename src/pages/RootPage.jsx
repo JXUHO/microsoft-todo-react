@@ -4,7 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { initializeActive } from "../store/activeSlice";
+import { initializeActiveStep, initializeActiveTask } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
 import { initializeQuery } from "../store/searchSlice";
 
@@ -16,7 +16,8 @@ const RootPage = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeActive())
+    dispatch(initializeActiveTask())
+    dispatch(initializeActiveStep())
     dispatch(closeDetail());
   }, [location])
 
