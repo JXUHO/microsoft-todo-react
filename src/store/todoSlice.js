@@ -76,12 +76,16 @@ const todoSlice = createSlice({
       todoToChange.myday = !todoToChange.myday;
     },
 
-    // detail에서 변경한 due, repeat충돌할 때, 조정해야함
     changeOptionTodo: (state, action) => {
-      const todoToChange = state.todos.find(
+      //{ id: taskId, option: "dueDate", content }
+      let todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange[action.payload.option] = action.payload.content;
+      const modifiedDue = repeatDueSynchronizer(todoToChange);
+      if (modifiedDue) {
+        todoToChange.dueDate = modifiedDue.toISOString()
+      }
     },
 
     addCategoryTodo: (state, action) => {
