@@ -4,12 +4,13 @@ import {
   getNextRepeatMonth,
   getNextRepeatWeekWithOption,
   getNextRepeatYear,
+  isDateToday,
 } from "./getDates";
 import uuid from "react-uuid";
 
-const repeatTask = (taskItem) => {
+const getNextRepeatTask = (taskItem) => {
 
-  if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {
+  // if (taskItem.repeatRule && taskItem.complete && !taskItem.repeated) {
     // repeat설정되었고, 완료됐고, 아직 반복 안됐으면 새로운 task 생성
     const currentDueDate = new Date(taskItem.dueDate);
     let nextRepeatDate;
@@ -51,10 +52,37 @@ const repeatTask = (taskItem) => {
       id: uuid(),
       created: new Date().toISOString(),
       repeated: false,
-      // myday: isToday
+      myday: isDateToday(nextRepeatDate)
     };
     return (nextRepeatTask)
-  } else if (
+  // } 
+  // else if (
+  //   // week에서 선택한 요일과 due에 설정된 요일이 다를때, imperative하게 due를 변경
+  //   taskItem.repeatRule &&
+  //   !taskItem.complete &&
+  //   !taskItem.repeated &&
+  //   taskItem.repeatRule.split("-")[1] === "week" && // 확인하기
+  //   !taskItem.repeatRule
+  //     .split("-")
+  //     .slice(2)
+  //     .includes(getDayOfWeek(new Date(taskItem.dueDate)))
+  // ) {
+  //   const modifiedDueDate = getNextRepeatWeekWithOption(
+  //     new Date(taskItem.dueDate),
+  //     taskItem.repeatRule
+  //   );
+  //   return (modifiedDueDate)
+
+  //   // 여기서는 due를 repeat 옵션에 맞게 변경. 등록 후 사이드바에서 due를 변경할 때는 repeat 요일을 due에 맞게 변경.
+  //   // 여러 요일 옵션이 선택된 경우에는, due를 설정한 요일을 해당 옵션에 더한다
+  // }
+};
+
+export default getNextRepeatTask;
+
+
+export function repeatDueSynchronizer (taskItem) {
+  if (
     // week에서 선택한 요일과 due에 설정된 요일이 다를때, imperative하게 due를 변경
     taskItem.repeatRule &&
     !taskItem.complete &&
@@ -70,10 +98,7 @@ const repeatTask = (taskItem) => {
       taskItem.repeatRule
     );
     return (modifiedDueDate)
-
-    // 여기서는 due를 repeat 옵션에 맞게 변경. 등록 후 사이드바에서 due를 변경할 때는 repeat 요일을 due에 맞게 변경.
-    // 여러 요일 옵션이 선택된 경우에는, due를 설정한 요일을 해당 옵션에 더한다
   }
-};
-
-export default repeatTask;
+  // 여기서는 due를 repeat 옵션에 맞게 변경. 등록 후 사이드바에서 due를 변경할 때는 repeat 요일을 due에 맞게 변경.
+  // 여러 요일 옵션이 선택된 경우에는, due를 설정한 요일을 해당 옵션에 더한다
+}

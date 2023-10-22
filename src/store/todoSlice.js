@@ -1,12 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { isDateToday } from "../utils/getDates";
+import getNextRepeatTask, { repeatDueSynchronizer } from "../utils/repeatTask";
 
 const todoSlice = createSlice({
   name: "todos",
   initialState: { todos: [] },
   reducers: {
     addTodo: (state, action) => {
-      state.todos.push(action.payload);
+      const modifiedDue = repeatDueSynchronizer(action.payload);
+      if (modifiedDue) {
+        action.payload = {
+          ...action.payload,
+          dueDate: modifiedDue.toISOString(),
+        };
+      }
+
+      if (!action.payload.myday) {
+        if (isDateToday(new Date(action.payload.dueDate))) {
+          state.todos.push({ ...action.payload, myday: true });
+        } else {
+          state.todos.push({ ...action.payload, myday: false });
+        }
+      } else {
+        state.todos.push(action.payload);
+      }
     },
+
+    // addTodo: (state, action) => {
+    //   state.todos.push(action.payload);
+    // },
+
+
+
     completeTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload
@@ -15,8 +40,30 @@ const todoSlice = createSlice({
         todoToChange.complete = "";
       } else {
         todoToChange.complete = new Date().toISOString();
+        if (todoToChange.repeatRule && !todoToChange.repeated) {
+          // repeatRule존재하면, 새로운 repeat task 생성
+          todoToChange.repeated = true;
+          state.todos.push(getNextRepeatTask(todoToChange))
+        }
       }
     },
+
+
+
+    // completeTodo: (state, action) => {
+    //   const todoToChange = state.todos.find(
+    //     (todo) => todo.id === action.payload
+    //   );
+    //   if (todoToChange.complete) {
+    //     todoToChange.complete = "";
+    //   } else {
+    //     todoToChange.complete = new Date().toISOString();
+    //   }
+    // },
+
+
+
+
     removeTodo: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },
@@ -32,12 +79,19 @@ const todoSlice = createSlice({
         state.todos.push(todoToChange); // Add it to the last
       }
     },
+
+
+
     repeatedTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload
       );
       todoToChange.repeated = !todoToChange.repeated;
     },
+
+
+
+
     changeDueDateTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
@@ -56,12 +110,21 @@ const todoSlice = createSlice({
       );
       todoToChange.myday = !todoToChange.myday;
     },
+
+
+
+
     changeOptionTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange[action.payload.option] = action.payload.content;
     },
+
+
+
+
+
     addCategoryTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
@@ -88,16 +151,14 @@ const todoSlice = createSlice({
     },
     plannedAddTodo: (state, action) => {
       if (!action.payload.dueDate) {
-        state.todos.push({...action.payload, dueDate: new Date().toISOString()});
+        state.todos.push({
+          ...action.payload,
+          dueDate: new Date().toISOString(),
+        });
       } else {
         state.todos.push(action.payload);
       }
     },
-
-
-
-
-
 
     addStep: (state, action) => {
       const todoToChange = state.todos.find(
@@ -135,6 +196,17 @@ const todoSlice = createSlice({
   },
 });
 
+// export const checkMyday = (taskInput) => {
+//   return (dispatch) => {
+//     // 만약 currentLocation이 myday가 아니고, dueDate가 오늘이면, myday true
+//     if (isDateToday(new Date(taskInput.dueDate))) {
+//       dispatch(addTodo({...taskInput, myday:true}))
+//     } else {
+//       dispatch(addTodo({...taskInput, myday:false}))
+//     }
+//   };
+// };
+
 export const {
   addTodo,
   removeTodo,
@@ -149,7 +221,7 @@ export const {
   removeCategoryTodo,
   addNoteTodo,
   plannedAddTodo,
-  
+
   addStep,
   completeStep,
   removeStep,

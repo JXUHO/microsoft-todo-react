@@ -77,6 +77,7 @@ export default App;
  * (complete) UI -> searchbar x버튼 눌렀을 때 flickering문제 해결하기
  * (complete) Searchbar
  * (complete) taskList component scroll 가능하게 만들기
+ * (complete) repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기(RootPage로 이동)
  * 
  * 
  * make task 우클릭 modal 기능 구현하기
@@ -95,12 +96,8 @@ export default App;
  * taskDetail file 첨부했을때, 백엔드 저장 구현하기
  * 
  * 
- * RepeatPopover -> useRepeatTasks 함수 호출 위치 고민해보기 -> repeat설정된 task가 완료되면 새로운 task생성하는 역할
- * myday처리, repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기
- * 
- * 
- * 
- * 
+ * myday처리, 
+ *
  * 
  * Popover, tooltip 독립된 component로 구현해서 코드 가독성 높이기
  * 
@@ -109,6 +106,12 @@ export default App;
  * 
  * Refactor -> GroupLists -> TaskHeader & TaskItemHeader 동일한 컴포넌트로 만들기
  * 
+ * 
+ * Task Item multi selection (shift, ctrl키)
+ * 
+ * PlannedList component next week text 변경하기
+ * 
+ * UI -> TaskItem myday sun icon 정렬 수정하기
  * 
  */
 

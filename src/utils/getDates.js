@@ -6,6 +6,14 @@ export default function getLastTimeOfDay(offset = 0) {
   return date;
 }
 
+export function isDateToday (dateToCheck) {
+  const currentDate = new Date(); 
+  dateToCheck.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+  return dateToCheck.getTime() === currentDate.getTime();
+}
+
+
 // return "Mon, September 18" format string
 export function getCustomFormatDateString(input, option) {
   const today = new Date();

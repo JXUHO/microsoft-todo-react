@@ -6,7 +6,7 @@ import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
-  getNextClosestDayOfWeekFromDate,
+  getNextClosestDayOfWeekFromDate, isDateToday,
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
 
@@ -74,6 +74,8 @@ const AddTask = ({ currentLocation }) => {
     if (currentLocation === "planned") {
       dispatch(plannedAddTodo(trimmedTaskInput))
     } else {
+      // thunk사용
+      // dispatch(checkMyday(taskInput))
       dispatch(addTodo(trimmedTaskInput));
     }
     setTaskInput(initialTask); 
