@@ -26,12 +26,6 @@ const todoSlice = createSlice({
       }
     },
 
-    // addTodo: (state, action) => {
-    //   state.todos.push(action.payload);
-    // },
-
-
-
     completeTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload
@@ -43,26 +37,10 @@ const todoSlice = createSlice({
         if (todoToChange.repeatRule && !todoToChange.repeated) {
           // repeatRule존재하면, 새로운 repeat task 생성
           todoToChange.repeated = true;
-          state.todos.push(getNextRepeatTask(todoToChange))
+          state.todos.push(getNextRepeatTask(todoToChange));
         }
       }
     },
-
-
-
-    // completeTodo: (state, action) => {
-    //   const todoToChange = state.todos.find(
-    //     (todo) => todo.id === action.payload
-    //   );
-    //   if (todoToChange.complete) {
-    //     todoToChange.complete = "";
-    //   } else {
-    //     todoToChange.complete = new Date().toISOString();
-    //   }
-    // },
-
-
-
 
     removeTodo: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
@@ -79,19 +57,6 @@ const todoSlice = createSlice({
         state.todos.push(todoToChange); // Add it to the last
       }
     },
-
-
-
-    repeatedTodo: (state, action) => {
-      const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload
-      );
-      todoToChange.repeated = !todoToChange.repeated;
-    },
-
-
-
-
     changeDueDateTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
@@ -111,19 +76,13 @@ const todoSlice = createSlice({
       todoToChange.myday = !todoToChange.myday;
     },
 
-
-
-
+    // detail에서 변경한 due, repeat충돌할 때, 조정해야함
     changeOptionTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
       todoToChange[action.payload.option] = action.payload.content;
     },
-
-
-
-
 
     addCategoryTodo: (state, action) => {
       const todoToChange = state.todos.find(
@@ -158,6 +117,19 @@ const todoSlice = createSlice({
       } else {
         state.todos.push(action.payload);
       }
+    },
+
+    // todo의 created가 오늘이 아니고, myday가 true이고, dueDate가 오늘이 아니면 myday를 false로 변경.
+    updateMydayTodo: (state) => {
+      state.todos.map((todo) => {
+        if (
+          !isDateToday(new Date(todo.created)) &&
+          todo.myday &&
+          !isDateToday(new Date(todo.dueDate))
+        ) {
+          todo.myday = false;
+        }
+      });
     },
 
     addStep: (state, action) => {
@@ -196,23 +168,11 @@ const todoSlice = createSlice({
   },
 });
 
-// export const checkMyday = (taskInput) => {
-//   return (dispatch) => {
-//     // 만약 currentLocation이 myday가 아니고, dueDate가 오늘이면, myday true
-//     if (isDateToday(new Date(taskInput.dueDate))) {
-//       dispatch(addTodo({...taskInput, myday:true}))
-//     } else {
-//       dispatch(addTodo({...taskInput, myday:false}))
-//     }
-//   };
-// };
-
 export const {
   addTodo,
   removeTodo,
   completeTodo,
   importanceTodo,
-  repeatedTodo,
   changeDueDateTodo,
   changeTaskTodo,
   changeMydayTodo,
@@ -221,6 +181,7 @@ export const {
   removeCategoryTodo,
   addNoteTodo,
   plannedAddTodo,
+  updateMydayTodo,
 
   addStep,
   completeStep,

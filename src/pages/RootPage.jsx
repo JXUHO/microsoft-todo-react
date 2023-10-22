@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { initializeActiveStep, initializeActiveTask } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
-import { addTodo, changeDueDateTodo, repeatedTodo } from "../store/todoSlice";
-import repeatTask from "../utils/repeatTask";
+import { updateMydayTodo } from "../store/todoSlice";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -23,31 +22,12 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location])
 
-  // useEffect(() => {
-  //   // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-  //   todoArr.map((todo) => {
-  //     if (!todo.repeatRule) return;
-  //     const repeatInfo = repeatTask(todo);
-  //     if (!repeatInfo) return;
 
-  //     // repeatRule에 따라 duedate를 변경하는 것은 addTodo로 이동시킬 수 있음
-  //     // if (repeatInfo instanceof Date) {
-  //     //   dispatch(
-  //     //     changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-  //     //   );
+  // todo의 created가 오늘이 아니고, myday가 true이고, dueDate가 오늘이 아니면 myday를 false로 변경.
+  useEffect(() => {
+    updateMydayTodo()
+  }, [dispatch])
 
-  //     // } 
-  //     // else {
-  //     //   // 새로운 repeat task를 생성하는 것은 complete됐을 때로 수정할 수 있음
-  //     //   dispatch(repeatedTodo(todo.id));
-  //     //   dispatch(addTodo(repeatInfo));
-  //     // }
-
-  //     // todo의 created가 오늘이 아니고, myday가 true이고, dueDate가 오늘이 아니면 myday를 false로 변경.
-
-
-  //   });
-  // }, [todoArr, dispatch]);
   
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden"> {/**root */}
@@ -73,21 +53,3 @@ export default RootPage;
  *
  */
 
-
-/**
- *   useEffect(() => {
-    // repeat완료됐을때 새로운 task생성 & due와 repeat어긋났을때 due 수정
-    todoArr.map((todo) => {
-      const repeatInfo = repeatTask(todo);
-      if (!repeatInfo) return;
-      if (repeatInfo instanceof Date) {
-        dispatch(
-          changeDueDateTodo({ id: todo.id, dueDate: repeatInfo.toISOString() })
-        );
-      } else {
-        dispatch(repeatedTodo(todo.id));
-        dispatch(addTodo(repeatInfo));
-      }
-    });
-  }, [todoArr, dispatch]);
- */
