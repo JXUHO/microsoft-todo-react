@@ -22,9 +22,8 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location])
 
-
-  // todo의 created가 오늘이 아니고, myday가 true이고, dueDate가 오늘이 아니면 myday를 false로 변경.
   useEffect(() => {
+    // reload될 때, 날짜 변경됐으면 myday변경
     updateMydayTodo()
   }, [dispatch])
 

@@ -119,7 +119,6 @@ const todoSlice = createSlice({
       }
     },
 
-    // todo의 created가 오늘이 아니고, myday가 true이고, dueDate가 오늘이 아니면 myday를 false로 변경.
     updateMydayTodo: (state) => {
       state.todos.map((todo) => {
         if (
@@ -128,6 +127,11 @@ const todoSlice = createSlice({
           !isDateToday(new Date(todo.dueDate))
         ) {
           todo.myday = false;
+        } else if (
+          !isDateToday(new Date(todo.created)) &&
+          isDateToday(new Date(todo.dueDate))
+        ) {
+          todo.myday = true;
         }
       });
     },

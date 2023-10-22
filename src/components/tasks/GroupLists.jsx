@@ -47,7 +47,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
 
   const noIncomplete = todoArr.every((todo) => todo.complete === "")
   return (
-    <div className="flex flex-col px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px", marginBottom:"-5px"}}>
+    <div className="flex flex-col px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px"}}>
       {categoryCount.blue !== 0 && (
         <div>
           <TaskHeader
@@ -62,7 +62,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("blue") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -83,7 +83,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("green") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -104,7 +104,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("orange") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -125,7 +125,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("purple") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -146,7 +146,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("red") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -167,7 +167,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (todo.category.includes("yellow") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
@@ -190,7 +190,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                 .slice()
                 .map((todo) => {
                   if (!todo.category.length && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} />;
+                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
                   }
                 })}
             </div>
