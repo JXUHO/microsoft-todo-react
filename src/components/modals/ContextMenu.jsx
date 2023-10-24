@@ -23,7 +23,7 @@ import {
   FloatingOverlay,
 } from "@floating-ui/react";
 
-export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
+export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
   return (
     <button
       {...props}
@@ -32,10 +32,26 @@ export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
       role="menuitem"
       disabled={disabled}
     >
-      {label}
+      {children}
     </button>
   );
 });
+
+
+
+// export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
+//   return (
+//     <button
+//       {...props}
+//       className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4"
+//       ref={ref}
+//       role="menuitem"
+//       disabled={disabled}
+//     >
+//       {label}
+//     </button>
+//   );
+// });
 
 export const Menu = forwardRef(
   ({ children, isClicked, setIsClicked }, forwardedRef) => {
@@ -116,7 +132,6 @@ export const Menu = forwardRef(
     }, [refs, isClicked]);
 
     return (
-      // body 내부에 root와 평행한 새로운 portal을 생성함 - modal 띄우기 위함
       <FloatingPortal>
         {isOpen && (
           <>

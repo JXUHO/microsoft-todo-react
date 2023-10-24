@@ -27,13 +27,11 @@ import TaskItemCategories from "./TaskItemCategories";
 import { FiPaperclip } from "react-icons/Fi";
 import { addActiveTask, initializeActiveStep } from "../../store/activeSlice";
 import { Menu, MenuItem } from "../modals/ContextMenu";
+import TaskItemOptions from "./TaskItemOptions";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
-  const [dueText, setDueText] = useState("");
-  const [remindText, setRemindText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [stepIncompleteLength, setStepIncompleteLength] = useState(0);
   const isActive = useSelector((state) => state.active.activeTask); //#eff6fc
 
   const completedHandler = () => {
@@ -45,30 +43,10 @@ const TaskItem = ({ todo, currentLocation }) => {
   };
 
   const taskClickHandler = (id) => {
-    dispatch(openDetail(id));
+    dispatch(openDetail());
     dispatch(addActiveTask(id));
-    dispatch(initializeActiveStep())
+    dispatch(initializeActiveStep());
   };
-
-  useEffect(() => {
-    if (todo.dueDate) {
-      setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
-    }
-    if (todo.remind) {
-      setRemindText(getCustomFormatDateString(new Date(todo.remind), "remind"));
-    }
-    if (todo.steps.length) {
-      setStepIncompleteLength(
-        todo.steps.filter((step) => step.complete).length
-      );
-    }
-    if (!todo.dueDate) {
-      setDueText("");
-    }
-    if (!todo.remind) {
-      setRemindText("");
-    }
-  }, [todo]);
 
   const {
     refs: tooltipRefs,
@@ -91,7 +69,6 @@ const TaskItem = ({ todo, currentLocation }) => {
     }),
   ]);
 
-
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
@@ -103,8 +80,6 @@ const TaskItem = ({ todo, currentLocation }) => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
-
-
 
   return (
     <div
@@ -143,105 +118,21 @@ const TaskItem = ({ todo, currentLocation }) => {
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
         style={{ color: "#292827" }}
         onContextMenu={(e) => {
-            e.preventDefault();
-            setIsClicked(true);
-            dispatch(addActiveTask(todo.id));
-          }}
+          e.preventDefault();
+          setIsClicked(true);
+          dispatch(addActiveTask(todo.id));
+        }}
       >
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>
           {todo.task}
         </span>
 
         <div className="flex flex-wrap flex-row items-center leading-3">
-          {
-            <span className="text-xs" style={{ color: "#797775" }}>
-              Tasks
-            </span>
-          }
+          <span className="text-xs" style={{ color: "#797775" }}>
+            Tasks
+          </span>
 
-          {currentLocation !== "myday" && todo.myday && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="mr-1">
-                <BsSun size="12px" />
-              </span>
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>
-                My Day
-              </span>
-            </div>
-          )}
-
-          {todo.steps.length !== 0 && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>
-                {stepIncompleteLength} of {todo.steps.length}
-              </span>
-            </div>
-          )}
-
-          <div
-            className="flex items-center"
-            style={
-              dueText === "Today"
-                ? { color: "#2564cf" }
-                : dueText.split(",")[0] === "Overdue"
-                ? { color: "#a80000" }
-                : { color: "#797775" }
-            }
-          >
-            {dueText && (
-              <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-                <span className="mr-1">
-                  <IoCalendarOutline size="14px" />
-                </span>
-                <span className="text-xs mr-1">{dueText}</span>
-              </div>
-            )}
-            {todo.repeatRule && (
-              <span>
-                <PiArrowsClockwiseBold size="14px" />
-              </span>
-            )}
-          </div>
-          {remindText && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="mr-1">
-                <VscBell size="14px" color="#797775" />
-              </span>
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>
-                {remindText}
-              </span>
-            </div>
-          )}
-
-          {/* note */}
-          {todo.note.content.trim() && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="mr-1">
-                <PiNoteBlankLight size="14px" />
-              </span>
-              {!todo.file && !todo.dueDate && !todo.remind && (
-                <span className="text-xs mr-1" style={{ color: "#797775" }}>
-                  Note
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* file attached */}
-          {todo.file && (
-            <div className="flex items-center before:content-['\2022'] before:mx-1.5 before:my-0 before:text-gray-500">
-              <span className="mr-1">
-                <FiPaperclip
-                  size="12px"
-                  style={{ transform: "rotate(180deg)" }}
-                />
-              </span>
-              <span className="text-xs mr-1" style={{ color: "#797775" }}>
-                Files attached
-              </span>
-            </div>
-          )}
-
+          <TaskItemOptions todo={todo} currentLocation={currentLocation} />
           <TaskItemCategories todo={todo} />
         </div>
       </button>
@@ -277,13 +168,11 @@ const TaskItem = ({ todo, currentLocation }) => {
         </div>
       )}
 
-
-      <Menu isClicked={isClicked} setIsClicked={setIsClicked} >
-        <MenuItem label="Added to Myday" onClick={() => console.log("back")} />
-        <MenuItem label="Forward" />
-        <MenuItem label="Reload" />
-        <MenuItem label="Save As..." />
-        <MenuItem label="Print" />
+      <Menu isClicked={isClicked} setIsClicked={setIsClicked}>
+        <MenuItem>
+          <div>icon</div>
+          <div>Add to My Day</div>
+        </MenuItem>
       </Menu>
     </div>
   );

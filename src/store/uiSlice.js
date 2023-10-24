@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice = createSlice({
   name: "ui",
-  initialState: { sidebar: false, detail: false, id: "" },
+  initialState: { sidebar: false, detail: false },
   reducers: {
     openSidebar: (state) => ({ ...state, sidebar: true }),
     closeSidebar: (state) => ({ ...state, sidebar: false }),
-    openDetail: (state, action) => ({ ...state, detail: true, id: action.payload }),
-    closeDetail: (state) => ({ ...state, detail: false, id: "" }),
+    openDetail: (state, action) => ({ ...state, detail: true }),
+    closeDetail: (state) => ({ ...state, detail: false }),
   },
 });
 

@@ -62,7 +62,7 @@ const StepItem = ({ todo, step }) => {
   };
 
   const taskClickHandler = (taskId, stepId) => {
-    dispatch(openDetail(taskId));
+    dispatch(openDetail());
     dispatch(addActiveStep(stepId));
     dispatch(addActiveTask(taskId));
   };
