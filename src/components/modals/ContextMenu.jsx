@@ -28,6 +28,7 @@ export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
     <button
       {...props}
       className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4"
+      style={{ color: "#292827" }}
       ref={ref}
       role="menuitem"
       disabled={disabled}
@@ -37,21 +38,9 @@ export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
   );
 });
 
-
-
-// export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
-//   return (
-//     <button
-//       {...props}
-//       className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4"
-//       ref={ref}
-//       role="menuitem"
-//       disabled={disabled}
-//     >
-//       {label}
-//     </button>
-//   );
-// });
+export const MenuSeparator = forwardRef((props, ref) => {
+  return <div style={{ borderBottom: "1px solid #edebe9", margin: "6px 0" }} />;
+});
 
 export const Menu = forwardRef(
   ({ children, isClicked, setIsClicked }, forwardedRef) => {
@@ -140,7 +129,7 @@ export const Menu = forwardRef(
               initialFocus={refs.floating}
             >
               <div
-                className="min-w-[200px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
+                className="min-w-[250px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
                 ref={refs.setFloating}
                 style={{
                   ...floatingStyles,

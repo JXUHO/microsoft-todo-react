@@ -1,5 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { completeTodo, importanceTodo } from "../../store/todoSlice";
+import {
+  changeDueDateTodo,
+  changeMydayTodo,
+  changeOptionTodo,
+  completeTodo,
+  importanceTodo,
+  removeTodo,
+} from "../../store/todoSlice";
 import { openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -8,12 +15,14 @@ import {
   BsStar,
   BsStarFill,
   BsSun,
+  BsCalendarDate,
+  BsCalendarPlus,
+  BsTrash3,
+  BsCalendarX,
+  BsSunset,
+  BsStarHalf,
 } from "react-icons/bs";
-import { PiArrowsClockwiseBold, PiNoteBlankLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
-import { getCustomFormatDateString } from "../../utils/getDates";
-import { IoCalendarOutline } from "react-icons/io5";
-import { VscBell } from "react-icons/vsc";
 import {
   flip,
   offset,
@@ -24,14 +33,16 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
-import { FiPaperclip } from "react-icons/Fi";
 import { addActiveTask, initializeActiveStep } from "../../store/activeSlice";
-import { Menu, MenuItem } from "../modals/ContextMenu";
+import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import TaskItemOptions from "./TaskItemOptions";
+import { GoCheckCircle } from "react-icons/go";
+import getLastTimeOfDay from "../../utils/getDates";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const isActive = useSelector((state) => state.active.activeTask); //#eff6fc
 
   const completedHandler = () => {
@@ -68,8 +79,6 @@ const TaskItem = ({ todo, currentLocation }) => {
       referencePress: true,
     }),
   ]);
-
-  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     const handleClick = () => {
@@ -131,7 +140,6 @@ const TaskItem = ({ todo, currentLocation }) => {
           <span className="text-xs" style={{ color: "#797775" }}>
             Tasks
           </span>
-
           <TaskItemOptions todo={todo} currentLocation={currentLocation} />
           <TaskItemCategories todo={todo} />
         </div>
@@ -168,14 +176,132 @@ const TaskItem = ({ todo, currentLocation }) => {
         </div>
       )}
 
-      <Menu isClicked={isClicked} setIsClicked={setIsClicked}>
-        <MenuItem>
-          <div>icon</div>
-          <div>Add to My Day</div>
-        </MenuItem>
-      </Menu>
+      <TaskContextMenu
+        todo={todo}
+        isClicked={isClicked}
+        setIsClicked={setIsClicked}
+      />
     </div>
   );
 };
 
 export default TaskItem;
+
+const TaskContextMenu = ({ todo, isClicked, setIsClicked }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <Menu isClicked={isClicked} setIsClicked={setIsClicked}>
+      {todo.myday ? (
+        <MenuItem onClick={() => dispatch(changeMydayTodo(todo.id))}>
+          <div className="mx-1">
+            <BsSunset size="16px" />
+          </div>
+          <div className="px-1 mx-1">Remove from My Day</div>
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={() => dispatch(changeMydayTodo(todo.id))}>
+          <div className="mx-1">
+            <BsSun size="16px" />
+          </div>
+          <div className="px-1 mx-1">Add to My Day</div>
+        </MenuItem>
+      )}
+
+      {todo.importance ? (
+        <MenuItem onClick={() => dispatch(importanceTodo(todo.id))}>
+          <div className="mx-1">
+            <BsStarHalf size="16px" />
+          </div>
+          <div className="px-1 mx-1">Remove importance</div>
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={() => dispatch(importanceTodo(todo.id))}>
+          <div className="mx-1">
+            <BsStar size="16px" />
+          </div>
+          <div className="px-1 mx-1">Mark as important</div>
+        </MenuItem>
+      )}
+
+      {todo.complete ? (
+        <MenuItem onClick={() => dispatch(completeTodo(todo.id))}>
+          <div className="mx-1">
+            <BsCircle size="16px" />
+          </div>
+          <div className="px-1 mx-1">Mark as not completed</div>
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={() => dispatch(completeTodo(todo.id))}>
+          <div className="mx-1">
+            <GoCheckCircle size="16px" />
+          </div>
+          <div className="px-1 mx-1">Mark as completed</div>
+        </MenuItem>
+      )}
+
+      <MenuSeparator />
+
+      <MenuItem
+        onClick={() =>
+          dispatch(
+            changeDueDateTodo({
+              id: todo.id,
+              dueDate: new Date().toISOString(),
+            })
+          )
+        }
+      >
+        <div className="mx-1">
+          <BsCalendarDate size="16px" />
+        </div>
+        <div className="px-1 mx-1">Due today</div>
+      </MenuItem>
+
+      <MenuItem
+        onClick={() =>
+          dispatch(
+            changeOptionTodo({
+              id: todo.id,
+              option: "dueDate",
+              content: getLastTimeOfDay(1).toISOString(),
+            })
+          )
+        }
+      >
+        <div className="mx-1">
+          <BsCalendarPlus size="16px" />
+        </div>
+        <div className="px-1 mx-1">Due tomorrow</div>
+      </MenuItem>
+
+      {todo.dueDate && (
+        <MenuItem
+          onClick={() =>
+            dispatch(
+              changeOptionTodo({
+                id: todo.id,
+                option: "dueDate",
+                content: "",
+              })
+            )
+          }
+        >
+          <div className="mx-1">
+            <BsCalendarX size="16px" />
+          </div>
+          <div className="px-1 mx-1">Remove due date</div>
+        </MenuItem>
+      )}
+
+      <MenuSeparator />
+
+      <MenuItem onClick={() => dispatch(removeTodo(todo.id))}>
+        <div className="mx-1 text-red-700">
+          <BsTrash3 size="16px" />
+        </div>
+        <div className="px-1 mx-1 text-red-700">Delete task</div>
+      </MenuItem>
+    </Menu>
+  );
+};

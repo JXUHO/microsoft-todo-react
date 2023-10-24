@@ -28,13 +28,13 @@ const DetailNote = ({ taskId }) => {
 
   useEffect(() => {
     setNote(todo.note.content);
-  }, [todo.note.content]);
+  }, [todo?.note.content]);
 
   useEffect(() => {
     if (todo.note.updated) {
       setUpdatedText(timeAgo(new Date(todo.note.updated)));
     }
-  }, [todo.note.updated]);
+  }, [todo?.note.updated]);
 
   return (
     <div
