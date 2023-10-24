@@ -1,4 +1,5 @@
 import {
+  FloatingFocusManager,
   flip,
   offset,
   shift,
@@ -15,6 +16,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import DueItems from "./DueItems";
 import { getCustomFormatDateString } from "../../utils/getDates";
 import DueCalendar from "./DueCalendar";
+import { useRef } from "react";
 
 const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -171,6 +173,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
       )}
 
       {popoverOpen && (
+        <FloatingFocusManager context={popoverContext} initialFocus={popoverRefs.floating}>
         <div
           ref={popoverRefs.setFloating}
           style={{
@@ -187,6 +190,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
             onRemoveDueButtonClick={resetDueHandler}
           />
         </div>
+        </FloatingFocusManager>
       )}
     </>
   );

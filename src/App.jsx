@@ -78,9 +78,12 @@ export default App;
  * (complete) Searchbar
  * (complete) taskList component scroll 가능하게 만들기
  * (complete) repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기(RootPage로 이동)
+ * (complete) myday처리
  * 
  * 
- * make task 우클릭 modal 기능 구현하기
+ * 
+ * 
+ * make task context menu 기능 구현하기
  * 삭제 모달
  * 
  * AddTask component retracted
@@ -96,7 +99,6 @@ export default App;
  * taskDetail file 첨부했을때, 백엔드 저장 구현하기
  * 
  * 
- * myday처리, 
  *
  * 
  * Popover, tooltip 독립된 component로 구현해서 코드 가독성 높이기
