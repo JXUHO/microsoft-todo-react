@@ -17,7 +17,8 @@ import {
 } from "@floating-ui/react";
 
 const TaskDetail = () => {
-  const detailId = useSelector((state) => state.ui.id);
+  // const detailId = useSelector((state) => state.ui.id);
+  const detailId = useSelector((state) => state.active.activeTask);
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todo.todos);
 

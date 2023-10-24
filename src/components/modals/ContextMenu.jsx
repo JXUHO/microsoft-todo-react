@@ -27,7 +27,7 @@ export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
   return (
     <button
       {...props}
-      className="MenuItem"
+      className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4"
       ref={ref}
       role="menuitem"
       disabled={disabled}
@@ -37,123 +37,130 @@ export const MenuItem = forwardRef(({ label, disabled, ...props }, ref) => {
   );
 });
 
-export const Menu = forwardRef(({ children, isClicked, setIsClicked }, forwardedRef) => {
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+export const Menu = forwardRef(
+  ({ children, isClicked, setIsClicked }, forwardedRef) => {
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
 
-  const listItemsRef = useRef([]);
-  const listContentRef = useRef(
-    Children.map(children, (child) =>
-      isValidElement(child) ? child.props.label : null
-    )
-  );
+    const listItemsRef = useRef([]);
+    const listContentRef = useRef(
+      Children.map(children, (child) =>
+        isValidElement(child) ? child.props.label : null
+      )
+    );
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    middleware: [
-      offset({ mainAxis: 5, alignmentAxis: 4 }),
-      flip({
-        fallbackPlacements: ["left-start"],
-      }),
-      shift({ padding: 10 }),
-    ],
-    placement: "right-start",
-    strategy: "fixed",
-    whileElementsMounted: autoUpdate,
-  });
+    const { refs, floatingStyles, context } = useFloating({
+      open: isOpen,
+      onOpenChange: setIsOpen,
+      middleware: [
+        offset({ mainAxis: 5, alignmentAxis: 4 }),
+        flip({
+          fallbackPlacements: ["left-start"],
+        }),
+        shift({ padding: 10 }),
+      ],
+      placement: "right-start",
+      strategy: "fixed",
+      whileElementsMounted: autoUpdate,
+    });
 
-  const role = useRole(context, { role: "menu" });
-  const dismiss = useDismiss(context);
-  const listNavigation = useListNavigation(context, {
-    listRef: listItemsRef,
-    onNavigate: setActiveIndex,
-    activeIndex,
-  });
-  const typeahead = useTypeahead(context, {
-    enabled: isOpen,
-    listRef: listContentRef,
-    onMatch: setActiveIndex,
-    activeIndex,
-  });
+    const role = useRole(context, { role: "menu" });
+    const dismiss = useDismiss(context);
+    const listNavigation = useListNavigation(context, {
+      listRef: listItemsRef,
+      onNavigate: setActiveIndex,
+      activeIndex,
+    });
+    const typeahead = useTypeahead(context, {
+      enabled: isOpen,
+      listRef: listContentRef,
+      onMatch: setActiveIndex,
+      activeIndex,
+    });
 
-  const { getFloatingProps, getItemProps } = useInteractions([
-    role,
-    dismiss,
-    listNavigation,
-    typeahead,
-  ]);
+    const { getFloatingProps, getItemProps } = useInteractions([
+      role,
+      dismiss,
+      listNavigation,
+      typeahead,
+    ]);
 
-  useEffect(() => {
+    useEffect(() => {
+      function onContextMenu(e) {
+        if (isClicked) {
+          e.preventDefault();
+          refs.setPositionReference({
+            getBoundingClientRect() {
+              return {
+                width: 0,
+                height: 0,
+                x: e.clientX,
+                y: e.clientY,
+                top: e.clientY,
+                right: e.clientX,
+                bottom: e.clientY,
+                left: e.clientX,
+              };
+            },
+          });
 
-    function onContextMenu(e) {
-      if (isClicked) {
-        e.preventDefault();
-        refs.setPositionReference({
-          getBoundingClientRect() {
-            return {
-              width: 0,
-              height: 0,
-              x: e.clientX,
-              y: e.clientY,
-              top: e.clientY,
-              right: e.clientX,
-              bottom: e.clientY,
-              left: e.clientX,
-            };
-          },
-        });
-
-        setIsOpen(true);
-        setIsClicked(false)
+          setIsOpen(true);
+          setIsClicked(false);
+        }
       }
-    }
 
-    document.addEventListener("contextmenu", onContextMenu);
-    return () => {
-      document.removeEventListener("contextmenu", onContextMenu);
-    };
-  }, [refs, isClicked]);
+      document.addEventListener("contextmenu", onContextMenu);
+      return () => {
+        document.removeEventListener("contextmenu", onContextMenu);
+      };
+    }, [refs, isClicked]);
 
-  return (
-    // body 내부에 root와 평행한 새로운 portal을 생성함 - modal 띄우기 위함
-    <FloatingPortal>
-      {isOpen && (
-        <>
-          {/* <FloatingOverlay></FloatingOverlay>  // behind element의 cursor pointer 막음 */}
-          <FloatingFocusManager context={context} initialFocus={refs.floating}>
-            <div
-              className="ContextMenu"
-              ref={refs.setFloating}
-              style={floatingStyles}
-              {...getFloatingProps()}
+    return (
+      // body 내부에 root와 평행한 새로운 portal을 생성함 - modal 띄우기 위함
+      <FloatingPortal>
+        {isOpen && (
+          <>
+            <FloatingFocusManager
+              context={context}
+              initialFocus={refs.floating}
             >
-              {Children.map(
-                children,
-                (child, index) =>
-                  isValidElement(child) &&
-                  cloneElement(
-                    child,
-                    getItemProps({
-                      tabIndex: activeIndex === index ? 0 : -1,
-                      ref(node) {
-                        listItemsRef.current[index] = node;
-                      },
-                      onClick() {
-                        child.props.onClick?.();
-                        setIsOpen(false);
-                      },
-                      onMouseUp() {
-                        child.props.onClick?.();
-                        setIsOpen(false);
-                      },
-                    })
-                  )
-              )}
-            </div>
-          </FloatingFocusManager>
-        </>
-      )}
-    </FloatingPortal>
-  );
-});
+              <div
+                className="min-w-[200px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
+                ref={refs.setFloating}
+                style={{
+                  ...floatingStyles,
+                  boxShadow:
+                    "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+                }}
+                {...getFloatingProps()}
+              >
+                {Children.map(
+                  children,
+                  (child, index) =>
+                    isValidElement(child) &&
+                    cloneElement(
+                      child,
+                      getItemProps({
+                        tabIndex: activeIndex === index ? 0 : -1,
+                        ref(node) {
+                          listItemsRef.current[index] = node;
+                        },
+                        onClick() {
+                          child.props.onClick?.();
+                          setIsOpen(false);
+                        },
+                        onMouseUp() {
+                          child.props.onClick?.();
+                          setIsOpen(false);
+                        },
+                      })
+                    )
+                )}
+              </div>
+            </FloatingFocusManager>
+          </>
+        )}
+      </FloatingPortal>
+    );
+  }
+);

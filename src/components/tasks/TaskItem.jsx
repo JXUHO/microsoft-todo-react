@@ -26,6 +26,7 @@ import {
 import TaskItemCategories from "./TaskItemCategories";
 import { FiPaperclip } from "react-icons/Fi";
 import { addActiveTask, initializeActiveStep } from "../../store/activeSlice";
+import { Menu, MenuItem } from "../modals/ContextMenu";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -90,6 +91,21 @@ const TaskItem = ({ todo, currentLocation }) => {
     }),
   ]);
 
+
+  const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    const handleClick = () => {
+      setIsClicked(false);
+    };
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
+
+
   return (
     <div
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
@@ -126,6 +142,11 @@ const TaskItem = ({ todo, currentLocation }) => {
         onClick={() => taskClickHandler(todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
         style={{ color: "#292827" }}
+        onContextMenu={(e) => {
+            e.preventDefault();
+            setIsClicked(true);
+            dispatch(addActiveTask(todo.id));
+          }}
       >
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>
           {todo.task}
@@ -255,6 +276,15 @@ const TaskItem = ({ todo, currentLocation }) => {
           {todo.importance ? "Remove importance." : "Mark task as important."}
         </div>
       )}
+
+
+      <Menu isClicked={isClicked} setIsClicked={setIsClicked} >
+        <MenuItem label="Added to Myday" onClick={() => console.log("back")} />
+        <MenuItem label="Forward" />
+        <MenuItem label="Reload" />
+        <MenuItem label="Save As..." />
+        <MenuItem label="Print" />
+      </Menu>
     </div>
   );
 };
