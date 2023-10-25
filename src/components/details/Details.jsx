@@ -23,7 +23,7 @@ const Details = ({ taskId }) => {
         changeOptionTodo({ id: taskId, option: "repeatRule", content: "" })
       );
     }
-  }, [todo?.dueDate]);
+  }, [todo.dueDate]);
 
   useEffect(() => {
     // repeat설정했을때, due버튼 설정
@@ -51,7 +51,7 @@ const Details = ({ taskId }) => {
         );
       }
     }
-  }, [todo?.repeatRule]);
+  }, [todo.repeatRule]);
 
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto py-0 pr-4 pl-6 mt-4 h-20">

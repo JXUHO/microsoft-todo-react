@@ -20,7 +20,6 @@ import {
   useTypeahead,
   FloatingPortal,
   FloatingFocusManager,
-  FloatingOverlay,
 } from "@floating-ui/react";
 
 export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
@@ -123,46 +122,41 @@ export const Menu = forwardRef(
     return (
       <FloatingPortal>
         {isOpen && (
-          <>
-            <FloatingFocusManager
-              context={context}
-              initialFocus={refs.floating}
+          <FloatingFocusManager context={context} initialFocus={refs.floating}>
+            <div
+              className="min-w-[250px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
+              ref={refs.setFloating}
+              style={{
+                ...floatingStyles,
+                boxShadow:
+                  "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+              }}
+              {...getFloatingProps()}
             >
-              <div
-                className="min-w-[250px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
-                ref={refs.setFloating}
-                style={{
-                  ...floatingStyles,
-                  boxShadow:
-                    "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
-                }}
-                {...getFloatingProps()}
-              >
-                {Children.map(
-                  children,
-                  (child, index) =>
-                    isValidElement(child) &&
-                    cloneElement(
-                      child,
-                      getItemProps({
-                        tabIndex: activeIndex === index ? 0 : -1,
-                        ref(node) {
-                          listItemsRef.current[index] = node;
-                        },
-                        onClick() {
-                          child.props.onClick?.();
-                          setIsOpen(false);
-                        },
-                        onMouseUp() {
-                          child.props.onClick?.();
-                          setIsOpen(false);
-                        },
-                      })
-                    )
-                )}
-              </div>
-            </FloatingFocusManager>
-          </>
+              {Children.map(
+                children,
+                (child, index) =>
+                  isValidElement(child) &&
+                  cloneElement(
+                    child,
+                    getItemProps({
+                      tabIndex: activeIndex === index ? 0 : -1,
+                      ref(node) {
+                        listItemsRef.current[index] = node;
+                      },
+                      onClick() {
+                        child.props.onClick?.();
+                        setIsOpen(false);
+                      },
+                      onMouseUp() {
+                        child.props.onClick?.();
+                        setIsOpen(false);
+                      },
+                    })
+                  )
+              )}
+            </div>
+          </FloatingFocusManager>
         )}
       </FloatingPortal>
     );

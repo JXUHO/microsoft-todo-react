@@ -114,6 +114,7 @@ export default App;
  * PlannedList component next week text 변경하기
  * 
  * UI -> TaskItem myday sun icon 정렬 수정하기
+ * UI -> searchbar hover cursor pointer
  * 
  */
 

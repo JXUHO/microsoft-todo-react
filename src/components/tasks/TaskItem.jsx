@@ -7,7 +7,7 @@ import {
   importanceTodo,
   removeTodo,
 } from "../../store/todoSlice";
-import { openDetail } from "../../store/uiSlice";
+import { closeDetail, openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
   BsCheckCircle,
@@ -22,7 +22,7 @@ import {
   BsSunset,
   BsStarHalf,
 } from "react-icons/bs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   flip,
   offset,
@@ -80,16 +80,6 @@ const TaskItem = ({ todo, currentLocation }) => {
     }),
   ]);
 
-  useEffect(() => {
-    const handleClick = () => {
-      setIsClicked(false);
-    };
-    document.addEventListener("click", handleClick);
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, []);
-
   return (
     <div
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
@@ -128,7 +118,7 @@ const TaskItem = ({ todo, currentLocation }) => {
         style={{ color: "#292827" }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setIsClicked(true);
+          setIsClicked(true); 
           dispatch(addActiveTask(todo.id));
         }}
       >
@@ -186,6 +176,12 @@ const TaskItem = ({ todo, currentLocation }) => {
 };
 
 export default TaskItem;
+
+
+
+
+
+
 
 const TaskContextMenu = ({ todo, isClicked, setIsClicked }) => {
   const dispatch = useDispatch();
@@ -296,7 +292,10 @@ const TaskContextMenu = ({ todo, isClicked, setIsClicked }) => {
 
       <MenuSeparator />
 
-      <MenuItem onClick={() => dispatch(removeTodo(todo.id))}>
+      <MenuItem onClick={() => {
+        dispatch(closeDetail())
+        dispatch(removeTodo(todo.id))
+      }}>
         <div className="mx-1 text-red-700">
           <BsTrash3 size="16px" />
         </div>

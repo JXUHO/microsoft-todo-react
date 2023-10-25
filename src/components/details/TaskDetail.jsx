@@ -32,7 +32,6 @@ const TaskDetail = () => {
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
   const [removeTooltipOpen, setRemoveTooltipOpen] = useState(false);
 
-
   const closeDetailHandler = () => {
     dispatch(closeDetail());
   };
@@ -127,8 +126,6 @@ const TaskDetail = () => {
     }),
   ]);
 
-
-
   return (
     <div
       className="flex flex-row min-w-[360px] max-w-[700px] box-border"
@@ -152,13 +149,15 @@ const TaskDetail = () => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-      
         <Details taskId={detailId} />
-
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
-            <button onClick={closeDetailHandler} ref={closeTooltipRefs.setReference} {...getCloseTooltipReferenceProps()}>
+            <button
+              onClick={closeDetailHandler}
+              ref={closeTooltipRefs.setReference}
+              {...getCloseTooltipReferenceProps()}
+            >
               <LuPanelRightClose size="16px" />
             </button>
 
@@ -166,7 +165,11 @@ const TaskDetail = () => {
               Created {createdTime}
             </p>
 
-            <button onClick={() => removeTaskHandler(detailId)} ref={removeTooltipRefs.setReference} {...getRemoveTooltipReferenceProps()}>
+            <button
+              onClick={() => removeTaskHandler(detailId)}
+              ref={removeTooltipRefs.setReference}
+              {...getRemoveTooltipReferenceProps()}
+            >
               <BsTrash3 size="16px" />
             </button>
           </div>

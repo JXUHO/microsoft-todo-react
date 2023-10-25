@@ -16,7 +16,7 @@ export function isDateToday (dateToCheck) {
 
 // return "Mon, September 18" format string
 export function getCustomFormatDateString(input, option) {
-  const today = new Date();
+  const today = new Date(); 
   const tomorrow = new Date();
   const yesterday = new Date();
   tomorrow.setDate(today.getDate() + 1);
