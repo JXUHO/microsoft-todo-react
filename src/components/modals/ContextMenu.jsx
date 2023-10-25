@@ -21,6 +21,8 @@ import {
   FloatingPortal,
   FloatingFocusManager,
 } from "@floating-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { closeContextMenu } from "../../store/uiSlice";
 
 export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
   return (
@@ -42,9 +44,11 @@ export const MenuSeparator = forwardRef((props, ref) => {
 });
 
 export const Menu = forwardRef(
-  ({ children, isClicked, setIsClicked }, forwardedRef) => {
+  ({ children }, forwardedRef) => {
+    const dispatch = useDispatch()
     const [activeIndex, setActiveIndex] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const isRightClicked = useSelector(state => state.ui.contextMenu)
 
     const listItemsRef = useRef([]);
     const listContentRef = useRef(
@@ -91,7 +95,7 @@ export const Menu = forwardRef(
 
     useEffect(() => {
       function onContextMenu(e) {
-        if (isClicked) {
+        if (isRightClicked) {
           e.preventDefault();
           refs.setPositionReference({
             getBoundingClientRect() {
@@ -109,7 +113,8 @@ export const Menu = forwardRef(
           });
 
           setIsOpen(true);
-          setIsClicked(false);
+          // setIsClicked(false);
+          dispatch(closeContextMenu)
         }
       }
 
@@ -117,7 +122,7 @@ export const Menu = forwardRef(
       return () => {
         document.removeEventListener("contextmenu", onContextMenu);
       };
-    }, [refs, isClicked]);
+    }, [refs]);
 
     return (
       <FloatingPortal>

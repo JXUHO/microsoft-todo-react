@@ -13,6 +13,11 @@ const activeSlice = createSlice({
       //dispatch(addActive(taskId))
       state.activeStep = action.payload
     },
+    removeActiveTask: (state, action) => {
+      // dispatch(removeActiveTask(taskId))
+      state.activeTasks = state.activeTasks.filter(task => task !== action.payload)
+    },
+
     initializeActiveTasks: (state) => {
       // dispatch(initializeActiveTask())
       state.activeTasks = []
@@ -24,6 +29,6 @@ const activeSlice = createSlice({
   },
 });
 
-export const { addActiveTasks, addActiveStep, initializeActiveTasks, initializeActiveStep } = activeSlice.actions;
+export const { addActiveTasks, addActiveStep, removeActiveTask, initializeActiveTasks, initializeActiveStep } = activeSlice.actions;
 
 export default activeSlice.reducer;

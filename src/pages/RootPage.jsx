@@ -8,6 +8,7 @@ import { initializeActiveStep, initializeActiveTasks } from "../store/activeSlic
 import { closeDetail } from "../store/uiSlice";
 import { updateMydayTodo } from "../store/todoSlice";
 import { setCtrl, setShift } from "../store/modifierSlice";
+import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -54,6 +55,8 @@ const RootPage = () => {
   }, [])
 
   
+  const activeTasks = useSelector(state=>state.active.activeTasks)
+
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden"> {/**root */}
 
@@ -67,6 +70,7 @@ const RootPage = () => {
         {isDetailOpen && <TaskDetail/>}   {/**right column */}
       </div>
 
+      {activeTasks.length!== 0 && <TaskItemContextMenu/>}
     </div>
   );
 };
