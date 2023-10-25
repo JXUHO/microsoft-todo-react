@@ -18,7 +18,7 @@ import {
 
 const TaskDetail = () => {
   // const detailId = useSelector((state) => state.ui.id);
-  const detailId = useSelector((state) => state.active.activeTask);
+  const activeTasks = useSelector((state) => state.active.activeTasks);
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todo.todos);
 
@@ -40,6 +40,19 @@ const TaskDetail = () => {
     dispatch(removeTodo(id));
     dispatch(closeDetail());
   };
+
+
+  const detailId = activeTasks[0]
+  // const [detailId, setDetailId] = useState(activeTasks[0])
+
+  // useEffect(() => {
+  //   if (activeTasks.length === 1) {
+  //     setDetailId(activeTasks[0])
+  //   } else {
+  //     setDetailId("")
+  //     dispatch(closeDetail());
+  //   }
+  // }, [activeTasks])
 
   useEffect(() => {
     const todoDetail = todos.find((todo) => todo.id === detailId);
@@ -149,7 +162,7 @@ const TaskDetail = () => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        <Details taskId={detailId} />
+        {detailId && <Details taskId={detailId} />}
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">

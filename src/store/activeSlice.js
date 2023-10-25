@@ -2,20 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const activeSlice = createSlice({
   name: "active",
-  initialState: {activeTask: "", activeStep: ""},
+  initialState: {activeTasks: [], activeStep: ""},
 
   reducers: {
-    addActiveTask: (state, action) => {
+    addActiveTasks: (state, action) => {
       //dispatch(addActive(taskId))
-      state.activeTask = action.payload;  
+      state.activeTasks.push(action.payload);  
     },
     addActiveStep: (state, action) => {
       //dispatch(addActive(taskId))
       state.activeStep = action.payload
     },
-    initializeActiveTask: (state) => {
+    initializeActiveTasks: (state) => {
       // dispatch(initializeActiveTask())
-      state.activeTask = ""
+      state.activeTasks = []
     },
     initializeActiveStep: (state) => {
       // dispatch(initializeActiveStep())
@@ -24,6 +24,6 @@ const activeSlice = createSlice({
   },
 });
 
-export const { addActiveTask, addActiveStep, initializeActiveTask, initializeActiveStep } = activeSlice.actions;
+export const { addActiveTasks, addActiveStep, initializeActiveTasks, initializeActiveStep } = activeSlice.actions;
 
 export default activeSlice.reducer;

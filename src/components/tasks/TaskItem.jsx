@@ -33,7 +33,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
-import { addActiveTask, initializeActiveStep } from "../../store/activeSlice";
+import { addActiveTasks, initializeActiveStep, initializeActiveTasks } from "../../store/activeSlice";
 import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import TaskItemOptions from "./TaskItemOptions";
 import { GoCheckCircle } from "react-icons/go";
@@ -43,7 +43,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const isActive = useSelector((state) => state.active.activeTask); //#eff6fc
+  const activeTasks = useSelector((state) => state.active.activeTasks); //#eff6fc
 
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
@@ -54,8 +54,9 @@ const TaskItem = ({ todo, currentLocation }) => {
   };
 
   const taskClickHandler = (id) => {
+    dispatch(initializeActiveTasks())
     dispatch(openDetail());
-    dispatch(addActiveTask(id));
+    dispatch(addActiveTasks(id));
     dispatch(initializeActiveStep());
   };
 
@@ -83,7 +84,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   return (
     <div
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
-        isActive === todo.id
+        activeTasks.includes(todo.id)
           ? "bg-ms-active-blue"
           : "bg-white hover:bg-ms-white-hover"
       }`}
@@ -119,7 +120,7 @@ const TaskItem = ({ todo, currentLocation }) => {
         onContextMenu={(e) => {
           e.preventDefault();
           setIsClicked(true); 
-          dispatch(addActiveTask(todo.id));
+          dispatch(addActiveTasks(todo.id));
         }}
       >
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>

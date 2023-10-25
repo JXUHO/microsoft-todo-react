@@ -4,7 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { initializeActiveStep, initializeActiveTask } from "../store/activeSlice";
+import { initializeActiveStep, initializeActiveTasks } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
 import { updateMydayTodo } from "../store/todoSlice";
 
@@ -17,7 +17,7 @@ const RootPage = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeActiveTask())
+    dispatch(initializeActiveTasks())
     dispatch(initializeActiveStep())
     dispatch(closeDetail());
   }, [location])
