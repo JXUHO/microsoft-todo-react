@@ -43,16 +43,6 @@ const TaskDetail = () => {
 
 
   const detailId = activeTasks[0]
-  // const [detailId, setDetailId] = useState(activeTasks[0])
-
-  // useEffect(() => {
-  //   if (activeTasks.length === 1) {
-  //     setDetailId(activeTasks[0])
-  //   } else {
-  //     setDetailId("")
-  //     dispatch(closeDetail());
-  //   }
-  // }, [activeTasks])
 
   useEffect(() => {
     const todoDetail = todos.find((todo) => todo.id === detailId);

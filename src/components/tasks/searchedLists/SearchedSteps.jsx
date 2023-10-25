@@ -3,7 +3,7 @@ import TaskItemHeader from "../TaskItemHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { openDetail } from "../../../store/uiSlice";
 import { BsCircle, BsCheckCircle, BsCheckCircleFill } from "react-icons/bs";
-import { addActiveStep, addActiveTasks } from "../../../store/activeSlice";
+import { addActiveStep, addActiveTasks, initializeActiveTasks } from "../../../store/activeSlice";
 import { completeStep } from "../../../store/todoSlice";
 
 const SearchedSteps = ({ todoArr }) => {
@@ -62,6 +62,7 @@ const StepItem = ({ todo, step }) => {
   };
 
   const taskClickHandler = (taskId, stepId) => {
+    dispatch(initializeActiveTasks())
     dispatch(openDetail());
     dispatch(addActiveStep(stepId));
     dispatch(addActiveTasks(taskId));

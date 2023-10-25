@@ -22,7 +22,7 @@ import {
   BsSunset,
   BsStarHalf,
 } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   flip,
   offset,
@@ -33,7 +33,11 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import TaskItemCategories from "./TaskItemCategories";
-import { addActiveTasks, initializeActiveStep, initializeActiveTasks } from "../../store/activeSlice";
+import {
+  addActiveTasks,
+  initializeActiveStep,
+  initializeActiveTasks,
+} from "../../store/activeSlice";
 import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import TaskItemOptions from "./TaskItemOptions";
 import { GoCheckCircle } from "react-icons/go";
@@ -43,7 +47,9 @@ const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const activeTasks = useSelector((state) => state.active.activeTasks); //#eff6fc
+  const activeTasks = useSelector((state) => state.active.activeTasks);
+  const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
+  const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
   const completedHandler = () => {
     dispatch(completeTodo(todo.id));
@@ -54,10 +60,27 @@ const TaskItem = ({ todo, currentLocation }) => {
   };
 
   const taskClickHandler = (id) => {
-    dispatch(initializeActiveTasks())
-    dispatch(openDetail());
-    dispatch(addActiveTasks(id));
+    // 여기에서 ctrl이나 shift keydown에 대한 분기처리해야 함.
+    // ctrl이나 shift가 눌리지 않았다면 초기화.
     dispatch(initializeActiveStep());
+
+    if (!isCtrlKeyDown && !isShiftKeyDown) {
+      dispatch(initializeActiveTasks());
+      dispatch(openDetail());
+    } else {
+      dispatch(closeDetail());
+    }
+    dispatch(addActiveTasks(id));
+  };
+
+  const contextMenuHandler = (e) => {
+    e.preventDefault();
+    setIsClicked(true);
+    if (!activeTasks.includes(todo.id)) {
+      // active가 아닌 task가 클릭되면 -> 초기화, add
+      dispatch(initializeActiveTasks());
+      dispatch(addActiveTasks(todo.id));
+    }
   };
 
   const {
@@ -117,11 +140,7 @@ const TaskItem = ({ todo, currentLocation }) => {
         onClick={() => taskClickHandler(todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
         style={{ color: "#292827" }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setIsClicked(true); 
-          dispatch(addActiveTasks(todo.id));
-        }}
+        onContextMenu={contextMenuHandler}
       >
         <span style={todo.complete ? { textDecoration: "line-through" } : null}>
           {todo.task}
@@ -178,14 +197,25 @@ const TaskItem = ({ todo, currentLocation }) => {
 
 export default TaskItem;
 
-
-
-
-
-
-
+// todo를 activeTasks로 변경해야함. 복수 옵션 선택 가능하도록 변경.
 const TaskContextMenu = ({ todo, isClicked, setIsClicked }) => {
+  // TaskItem 개수만큼 실행됨... 최적화 필요
+  const todos = useSelector((state) => state.todo.todos);
+  const activeTasks = useSelector((state) => state.active.activeTasks);
   const dispatch = useDispatch();
+
+  // const selectedTasks = []
+  // todos.forEach(todo => {
+  //   activeTasks.forEach(activeTask => {
+  //     if (todo.id === activeTask) {
+  //       selectedTasks.push(todo)
+  //     }
+  //   })
+  // })
+
+  // console.log(selectedTasks);
+
+  console.log("context");
 
   return (
     <Menu isClicked={isClicked} setIsClicked={setIsClicked}>
@@ -293,10 +323,12 @@ const TaskContextMenu = ({ todo, isClicked, setIsClicked }) => {
 
       <MenuSeparator />
 
-      <MenuItem onClick={() => {
-        dispatch(closeDetail())
-        dispatch(removeTodo(todo.id))
-      }}>
+      <MenuItem
+        onClick={() => {
+          dispatch(closeDetail());
+          dispatch(removeTodo(todo.id));
+        }}
+      >
         <div className="mx-1 text-red-700">
           <BsTrash3 size="16px" />
         </div>

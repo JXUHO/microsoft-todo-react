@@ -7,11 +7,11 @@ import { useEffect } from "react";
 import { initializeActiveStep, initializeActiveTasks } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
 import { updateMydayTodo } from "../store/todoSlice";
+import { setCtrl, setShift } from "../store/modifierSlice";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
-  const todoArr = useSelector((state) => state.todo.todos);
 
   const location = useLocation()
   const dispatch = useDispatch()
@@ -26,6 +26,32 @@ const RootPage = () => {
     // reload될 때, 날짜 변경됐으면 myday변경
     updateMydayTodo()
   }, [dispatch])
+
+  
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.repeat) return;
+      if (e.key === "Control" ) {
+        dispatch(setCtrl(true))
+      } else if (e.key === 'Shift') {
+        dispatch(setShift(true))
+      }
+    }
+    const onKeyUp = (e) => {
+      if (e.key ===  "Shift" ) {
+        dispatch(setShift(false))
+      }
+      if (e.key === "Control") {
+        dispatch(setCtrl(false))
+      }
+    }
+    document.addEventListener("keydown",onKeyDown)
+    document.addEventListener("keyup",onKeyUp)
+    return () => {
+      document.removeEventListener("keydown",onKeyDown)
+      document.removeEventListener("keyup",onKeyUp)
+    }
+  }, [])
 
   
   return (
