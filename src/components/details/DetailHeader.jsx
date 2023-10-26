@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeTaskTodo,
-  completeTodo,
-  importanceTodo,
+  setCompleteTodo,
+  setImportanceTodo,
 } from "../../store/todoSlice";
 import {
   BsCircle,
@@ -37,11 +37,19 @@ const DetailHeader = ({ taskId }) => {
   const inputRef = useRef();
 
   const completedHandler = () => {
-    dispatch(completeTodo(todo.id));
+    if (todo.complete) {
+      dispatch(setCompleteTodo({id:todo.id, value:false}))
+    } else {
+      dispatch(setCompleteTodo({id:todo.id, value: true}))
+    }
   };
 
   const importanceHandler = () => {
-    dispatch(importanceTodo(todo.id));
+    if (todo.importance) {
+      dispatch(setImportanceTodo({id:todo.id, value:false}))
+    } else {
+      dispatch(setImportanceTodo({id:todo.id, value:true}))
+    }
   };
 
   const taskEditHandler = (event) => {

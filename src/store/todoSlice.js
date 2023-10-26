@@ -25,12 +25,14 @@ const todoSlice = createSlice({
         state.todos.push(action.payload);
       }
     },
-
-    completeTodo: (state, action) => {
+    removeTodo: (state, action) => {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+    },
+    setCompleteTodo: (state, action) => {
       const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload
+        (todo) => todo.id === action.payload.id
       );
-      if (todoToChange.complete) {
+      if (!action.payload.value) {
         todoToChange.complete = "";
       } else {
         todoToChange.complete = new Date().toISOString();
@@ -41,15 +43,11 @@ const todoSlice = createSlice({
         }
       }
     },
-
-    removeTodo: (state, action) => {
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-    },
-    importanceTodo: (state, action) => {
+    setImportanceTodo: (state, action) => {
       const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload
+        (todo) => todo.id === action.payload.id
       );
-      todoToChange.importance = !todoToChange.importance;
+      todoToChange.importance = action.payload.value;
 
       const index = state.todos.indexOf(todoToChange);
       if (index !== -1 && todoToChange.importance) {
@@ -69,11 +67,11 @@ const todoSlice = createSlice({
       );
       todoToChange.task = action.payload.task;
     },
-    changeMydayTodo: (state, action) => {
+    setMydayTodo: (state, action) => {
       const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload
+        (todo) => todo.id === action.payload.id
       );
-      todoToChange.myday = !todoToChange.myday;
+      todoToChange.myday = action.payload.value;
     },
 
     changeOptionTodo: (state, action) => {
@@ -179,11 +177,11 @@ const todoSlice = createSlice({
 export const {
   addTodo,
   removeTodo,
-  completeTodo,
-  importanceTodo,
+  setCompleteTodo,
+  setImportanceTodo,
   changeDueDateTodo,
   changeTaskTodo,
-  changeMydayTodo,
+  setMydayTodo,
   changeOptionTodo,
   addCategoryTodo,
   removeCategoryTodo,

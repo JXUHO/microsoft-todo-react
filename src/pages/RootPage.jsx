@@ -55,7 +55,7 @@ const RootPage = () => {
   }, [])
 
   
-  const activeTasks = useSelector(state=>state.active.activeTasks)
+  //const activeTasks = useSelector(state=>state.active.activeTasks)
 
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden"> {/**root */}
@@ -70,7 +70,7 @@ const RootPage = () => {
         {isDetailOpen && <TaskDetail/>}   {/**right column */}
       </div>
 
-      {activeTasks.length!== 0 && <TaskItemContextMenu/>}
+      <TaskItemContextMenu/>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  completeTodo,
-  importanceTodo,
+  setCompleteTodo,
+  setImportanceTodo,
 } from "../../store/todoSlice";
 import { closeDetail, openContextMenu, openDetail } from "../../store/uiSlice";
 import {
@@ -39,12 +39,20 @@ const TaskItem = ({ todo, currentLocation }) => {
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
-  const completedHandler = () => {
-    dispatch(completeTodo(todo.id));
+  const completeHandler = () => {
+    if (todo.complete) {
+      dispatch(setCompleteTodo({id:todo.id, value: false})) 
+    } else {
+      dispatch(setCompleteTodo({id:todo.id, value: true}))
+    }
   };
 
   const importanceHandler = () => {
-    dispatch(importanceTodo(todo.id));
+    if (todo.importance) {
+      dispatch(setImportanceTodo({id:todo.id, value:false}))
+    } else {
+      dispatch(setImportanceTodo({id:todo.id, value: true}))
+    }
   };
 
   const taskClickHandler = (id) => {
@@ -113,7 +121,7 @@ const TaskItem = ({ todo, currentLocation }) => {
       }}
     >
       <span
-        onClick={completedHandler}
+        onClick={completeHandler}
         className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
       >
         {todo.complete ? (

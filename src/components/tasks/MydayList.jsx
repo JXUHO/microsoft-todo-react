@@ -26,6 +26,12 @@ const MydayList = ({ currentLocation }) => {
     }
   }, [todos, sortBy, sortOrder]);
 
+  // TODO
+  // redux에 Boolean state 정의하고, TaskItem taskClickHandler내부에서 shift keydown일때 Boolean state true로 변경함
+  // useEffect 정의하고, 내부에서 Boolean state true일 경우에, 선택된 양 끝점을 todoArr의 순서에 따라 activeTasks에 추가함
+  // 이후 Boolean state를 false로 변경.
+
+
   return (
     <>
       <div className="overflow-y-auto">

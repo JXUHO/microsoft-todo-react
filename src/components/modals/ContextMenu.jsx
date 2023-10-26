@@ -113,8 +113,7 @@ export const Menu = forwardRef(
           });
 
           setIsOpen(true);
-          // setIsClicked(false);
-          dispatch(closeContextMenu)
+          dispatch(closeContextMenu())
         }
       }
 
@@ -122,7 +121,7 @@ export const Menu = forwardRef(
       return () => {
         document.removeEventListener("contextmenu", onContextMenu);
       };
-    }, [refs]);
+    }, [refs, isRightClicked]);
 
     return (
       <FloatingPortal>
