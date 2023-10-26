@@ -82,7 +82,7 @@ const todoSlice = createSlice({
       todoToChange[action.payload.option] = action.payload.content;
       const modifiedDue = repeatDueSynchronizer(todoToChange);
       if (modifiedDue) {
-        todoToChange.dueDate = modifiedDue.toISOString()
+        todoToChange.dueDate = modifiedDue.toISOString();
       }
     },
 
@@ -134,6 +134,12 @@ const todoSlice = createSlice({
           isDateToday(new Date(todo.dueDate))
         ) {
           todo.myday = true;
+        } else if (
+          !todo.dueDate &&
+          !isDateToday(new Date(todo.created)) &&
+          todo.myday
+        ) {
+          todo.myday = false;
         }
       });
     },

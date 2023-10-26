@@ -13,9 +13,11 @@ import BasicList from "./tasks/BasicList";
 import { useEffect, useState } from "react";
 import sortTasks from "../utils/sortTasks";
 import CompleteList from "./tasks/CompleteList";
+import { addActiveTasks } from "../store/activeSlice";
 
 const Inbox = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
+  const activeRange = useSelector((state) => state.active.activeRange);
   const isSortOptionSelected = useSelector((state) => state.sort.tasks.sortBy);
   const isGroupOptionSelected = useSelector(
     (state) => state.group.tasks.groupBy
@@ -40,6 +42,27 @@ const Inbox = () => {
       setTodoArr(allTasks);
     }
   }, [todos, sortBy, sortOrder]);
+
+
+  useEffect(() => {
+    // 정렬된 task를 shift keydown activeRange에 따라 active 설정
+    if (activeRange.length !== 0) {
+      const [startId, endId] = activeRange.map((taskId) =>
+        todoArr.findIndex((todo) => todo.id === taskId)
+      );
+      if (startId !== -1 && endId !== -1) {
+        const [minIndex, maxIndex] = [startId, endId].sort((a, b) => a - b);
+        const activeTasksArr = todoArr.slice(minIndex, maxIndex + 1);
+
+        activeTasksArr.forEach((task) => {
+          dispatch(addActiveTasks(task.id));
+        });
+      }
+    }
+  }, [activeRange, todoArr, dispatch]);
+
+  
+
 
   return (
     <>

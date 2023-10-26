@@ -1,9 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
+import { addActiveTasks } from "../../store/activeSlice";
 
 const PlannedList = () => {
+  const dispatch = useDispatch()
+  const activeRange = useSelector((state) => state.active.activeRange);
   const todoArr = useSelector((state) => state.todo.todos);
   const [isOpen, setIsOpen] = useState({
     earlier: false,
@@ -61,6 +64,24 @@ const PlannedList = () => {
     setSortedArr(tempSortedArr);
     setCount(listCount);
   }, [todoArr]);
+
+
+  useEffect(() => {
+    // 정렬된 task를 shift keydown activeRange에 따라 active 설정
+    if (activeRange.length !== 0) {
+      const [startId, endId] = activeRange.map((taskId) =>
+        todoArr.findIndex((todo) => todo.id === taskId)
+      );
+      if (startId !== -1 && endId !== -1) {
+        const [minIndex, maxIndex] = [startId, endId].sort((a, b) => a - b);
+        const activeTasksArr = todoArr.slice(minIndex, maxIndex + 1);
+
+        activeTasksArr.forEach((task) => {
+          dispatch(addActiveTasks(task.id));
+        });
+      }
+    }
+  }, [activeRange, todoArr, dispatch]);
 
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">

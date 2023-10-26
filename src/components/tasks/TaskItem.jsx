@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCompleteTodo,
-  setImportanceTodo,
-} from "../../store/todoSlice";
+import { setCompleteTodo, setImportanceTodo } from "../../store/todoSlice";
 import { closeDetail, openContextMenu, openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -24,67 +21,69 @@ import {
 import TaskItemCategories from "./TaskItemCategories";
 import {
   addActiveTasks,
+  initializeActiveRange,
   initializeActiveStep,
   initializeActiveTasks,
   removeActiveTask,
+  setActiveRange,
 } from "../../store/activeSlice";
 import TaskItemOptions from "./TaskItemOptions";
-
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
-  const activeTasks = useSelector((state) => state.active.activeTasks);
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
   const completeHandler = () => {
     if (todo.complete) {
-      dispatch(setCompleteTodo({id:todo.id, value: false})) 
+      dispatch(setCompleteTodo({ id: todo.id, value: false }));
     } else {
-      dispatch(setCompleteTodo({id:todo.id, value: true}))
+      dispatch(setCompleteTodo({ id: todo.id, value: true }));
     }
   };
 
   const importanceHandler = () => {
     if (todo.importance) {
-      dispatch(setImportanceTodo({id:todo.id, value:false}))
+      dispatch(setImportanceTodo({ id: todo.id, value: false }));
     } else {
-      dispatch(setImportanceTodo({id:todo.id, value: true}))
+      dispatch(setImportanceTodo({ id: todo.id, value: true }));
     }
   };
 
   const taskClickHandler = (id) => {
-    // shift keydown 상태에서 TaskItem 클릭하면 어떻게할지 처리해야함.
     dispatch(initializeActiveStep());
 
     if (!isCtrlKeyDown && !isShiftKeyDown) {
-      // ctrl이나 shift가 눌리지 않았을 때
       dispatch(initializeActiveTasks());
+      dispatch(initializeActiveRange());
+      dispatch(addActiveTasks(id));
       dispatch(openDetail());
     } else {
       dispatch(closeDetail());
     }
-
-    // shift key누르고 다른 TaskItem 클릭하는 경우 구현해야함
-    if (isCtrlKeyDown && activeTasks.includes(todo.id)) {
-      // ctrl눌리고 + active 선택된 task를 클릭했을때 - active 제거
-      dispatch(removeActiveTask(todo.id))
-    } else {
-      // ctrl눌리지 않고 아무 task나 클릭했을때
-      dispatch(addActiveTasks(id));
+    if (isCtrlKeyDown) {
+      if (activeTasksId.includes(todo.id)) {
+        dispatch(removeActiveTask(todo.id));
+      } else {
+        dispatch(addActiveTasks(id));
+      }
+    }
+    if (isShiftKeyDown && activeTasksId.length !== 0) {
+      dispatch(setActiveRange(id));
+      dispatch(initializeActiveTasks());
     }
   };
 
   const contextMenuHandler = (e) => {
     e.preventDefault();
-    if (!activeTasks.includes(todo.id)) {
+    if (!activeTasksId.includes(todo.id)) {
       // active가 아닌 task가 클릭되면 -> 초기화, add
       dispatch(initializeActiveTasks());
       dispatch(addActiveTasks(todo.id));
     }
-    dispatch(openContextMenu())
+    dispatch(openContextMenu());
   };
 
   const {
@@ -111,7 +110,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   return (
     <div
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
-        activeTasks.includes(todo.id)
+        activeTasksId.includes(todo.id)
           ? "bg-ms-active-blue"
           : "bg-white hover:bg-ms-white-hover"
       }`}
@@ -182,7 +181,6 @@ const TaskItem = ({ todo, currentLocation }) => {
             ...tooltipFloatingStyles,
             boxShadow:
               "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
-            zIndex: 50,
           }}
           className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >

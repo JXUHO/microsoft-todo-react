@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import TaskItem from "./TaskItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import sortTasks from "../../utils/sortTasks";
 import TaskItemHeader from "./TaskItemHeader";
+import { addActiveTasks } from "../../store/activeSlice";
 
 const CompleteList = ({ currentLocation }) => {
+  const dispatch = useDispatch()
+  const activeRange = useSelector((state) => state.active.activeRange);
   const todos = useSelector((state) => state.todo.todos);
   const sortOrder = useSelector((state) => state.sort[currentLocation].order);
   const sortBy = useSelector((state) => state.sort[currentLocation].sortBy);
@@ -36,6 +39,26 @@ const CompleteList = ({ currentLocation }) => {
       setTodoArr(todoTemp);
     }
   }, [todos, sortBy, sortOrder]);
+
+  useEffect(() => {
+    // 정렬된 task를 shift keydown activeRange에 따라 active 설정
+    if (activeRange.length !== 0) {
+      const [startId, endId] = activeRange.map((taskId) =>
+        todoArr.findIndex((todo) => todo.id === taskId)
+      );
+      if (startId !== -1 && endId !== -1) {
+        const [minIndex, maxIndex] = [startId, endId].sort((a, b) => a - b);
+        const activeTasksArr = todoArr.slice(minIndex, maxIndex + 1);
+
+        activeTasksArr.forEach((task) => {
+          dispatch(addActiveTasks(task.id));
+        });
+      }
+    }
+  }, [activeRange, todoArr, dispatch]);
+
+
+
 
   const completeCount = todoArr.reduce(
     (acc, todo) => (todo.complete ? acc + 1 : acc),

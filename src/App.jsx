@@ -79,16 +79,24 @@ export default App;
  * (complete) taskList component scroll 가능하게 만들기
  * (complete) repeat완료됐을 때 다음 repeat task생성 로직 백엔드에서 구현하기(RootPage로 이동)
  * (complete) myday처리
+ * (complete)task context menu 기능 구현하기
+ * (complete) dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * 
  * 
  * 
- * 
- * make task context menu 기능 구현하기
+ * <필수>
  * 삭제 모달
+ * 
+ * 반응형으로 만들기(사이즈 따라 다르게)
+ * 
+ * react datepicker styling
+ * 
+ * backend 연결
+ * 
+ * 
  * 
  * AddTask component retracted
  * 
- * dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * 
  * 
  * floating ui -> useListNavigation 사용, 방향키로 선택 가능하도록 설정하기

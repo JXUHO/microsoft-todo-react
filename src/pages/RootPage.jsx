@@ -45,6 +45,10 @@ const RootPage = () => {
       if (e.key === "Control") {
         dispatch(setCtrl(false))
       }
+      if (e.key === "Escape") {
+        dispatch(setCtrl(false))
+        dispatch(setShift(false))
+      }
     }
     document.addEventListener("keydown",onKeyDown)
     document.addEventListener("keyup",onKeyUp)
