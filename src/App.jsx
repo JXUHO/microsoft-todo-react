@@ -81,6 +81,7 @@ export default App;
  * (complete) myday처리
  * (complete)task context menu 기능 구현하기
  * (complete) dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
+ * (complete) Task Item multi selection (shift, ctrl키)
  * 
  * 
  * 
@@ -117,7 +118,6 @@ export default App;
  * Refactor -> GroupLists -> TaskHeader & TaskItemHeader 동일한 컴포넌트로 만들기
  * 
  * 
- * Task Item multi selection (shift, ctrl키)
  * 
  * PlannedList component next week text 변경하기
  * 

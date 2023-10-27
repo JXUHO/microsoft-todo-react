@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
+import { getCustomFormatDateString } from "../../utils/getDates";
 
 const PlannedList = () => {
   const dispatch = useDispatch();
@@ -91,6 +92,14 @@ const PlannedList = () => {
     }
   }, [activeRange, activeArr, dispatch]);
 
+let startDate = new Date();
+startDate.setDate(startDate.getDate() + 2);
+startDate = getCustomFormatDateString(startDate, "short")
+let endDate = new Date();
+endDate.setDate(endDate.getDate() + 6);
+endDate = getCustomFormatDateString(endDate, "short")
+
+
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">
       {count.earlier !== 0 && (
@@ -151,7 +160,7 @@ const PlannedList = () => {
       )}
       {count.next5Days !== 0 && (
         <TaskItemHeader
-          title="Next Week Text"
+          title={`${startDate} to ${endDate}`}
           isOpen={isOpen.next5Days}
           openHandler={() => toggleListHandler("next5Days")}
           count={count.next5Days}

@@ -67,6 +67,21 @@ export function getCustomFormatDateString(input, option) {
     "December",
   ];
 
+  const abbreviatedMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
   const dayOfWeek = daysOfWeek[input.getDay()];
   const month = months[input.getMonth()];
   const dayOfMonth = input.getDate();
@@ -81,6 +96,11 @@ export function getCustomFormatDateString(input, option) {
     } else {
       return `Due ${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`
     }
+  }
+
+  if (option === "short") {
+    const shortMonth = abbreviatedMonths[input.getMonth()];
+    return `${dayOfWeek}, ${shortMonth} ${dayOfMonth}${yearString}`
   }
 
   return `${dayOfWeek}, ${month} ${dayOfMonth}${yearString}`;
