@@ -7,6 +7,7 @@ const todoSlice = createSlice({
   initialState: { todos: [] },
   reducers: {
     addTodo: (state, action) => {
+      console.log('trigger');
       const modifiedDue = repeatDueSynchronizer(action.payload);
       if (modifiedDue) {
         action.payload = {
@@ -110,6 +111,10 @@ const todoSlice = createSlice({
         updated: new Date().toISOString(),
       };
     },
+
+    
+
+
     plannedAddTodo: (state, action) => {
       if (!action.payload.dueDate) {
         state.todos.push({
@@ -120,6 +125,10 @@ const todoSlice = createSlice({
         state.todos.push(action.payload);
       }
     },
+
+
+
+
 
     updateMydayTodo: (state) => {
       state.todos.map((todo) => {

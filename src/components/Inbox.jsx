@@ -35,12 +35,25 @@ const Inbox = () => {
 
   useEffect(() => {
     //  todoArr 생성.
-    const allTasks = todos.slice().reverse()
+    let allTasks = todos.slice().reverse()
     if (sortBy) {
-      setTodoArr(sortTasks(sortBy, sortOrder, allTasks));
-    } else {
-      setTodoArr(allTasks);
-    }
+      allTasks = sortTasks(sortBy, sortOrder, allTasks);
+    } 
+
+    let incompleteTemp = []
+    let completeTemp = []
+    allTasks.forEach(todo => {
+      if (!todo.complete) {
+        incompleteTemp.push(todo)
+      } else {
+        completeTemp.push(todo)
+      }
+    })
+    allTasks = [...incompleteTemp, ...completeTemp]
+    setTodoArr(allTasks)
+
+
+
   }, [todos, sortBy, sortOrder]);
 
 
@@ -62,7 +75,6 @@ const Inbox = () => {
   }, [activeRange, todoArr, dispatch]);
 
   
-
 
   return (
     <>
@@ -108,7 +120,7 @@ const Inbox = () => {
           ) : (
             <BasicList todoArr={todoArr} currentLocation={"tasks"} />
           )}
-          <CompleteList currentLocation={"tasks"} />
+          <CompleteList todoArr={todoArr} currentLocation={"tasks"} />
         </div>
       </div>
     </>

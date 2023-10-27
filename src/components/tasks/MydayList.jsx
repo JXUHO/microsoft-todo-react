@@ -17,17 +17,29 @@ const MydayList = ({ currentLocation }) => {
 
   useEffect(() => {
     //  todoArr 생성.
-    const mydayTodos = todos
+    let mydayTodos = todos
       .slice()
       .reverse()
       .filter((todo) => todo.myday);
 
     if (sortBy) {
-      setTodoArr(sortTasks(sortBy, sortOrder, mydayTodos));
-    } else {
-      setTodoArr(mydayTodos);
-    }
+      mydayTodos = sortTasks(sortBy, sortOrder, mydayTodos)
+    } 
+
+    let incompleteTemp = []
+    let completeTemp = []
+    mydayTodos.forEach(todo => {
+      if (!todo.complete) {
+        incompleteTemp.push(todo)
+      } else {
+        completeTemp.push(todo)
+      }
+    })
+    mydayTodos = [...incompleteTemp, ...completeTemp]
+    setTodoArr(mydayTodos)
+
   }, [todos, sortBy, sortOrder]);
+
 
   useEffect(() => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정
@@ -54,7 +66,7 @@ const MydayList = ({ currentLocation }) => {
         ) : (
           <BasicList todoArr={todoArr} currentLocation={currentLocation} />
         )}
-        <CompleteList currentLocation={currentLocation} />
+        <CompleteList todoArr={todoArr} currentLocation={currentLocation} />
       </div>
     </>
   );
@@ -66,28 +78,4 @@ export default MydayList;
  * TODO
  * drag-drop을 통해 task끼리 순서 변경 가능함
  *
- *  // TODO
-  // redux에 Boolean state 정의하고, TaskItem taskClickHandler내부에서 shift keydown일때 Boolean state true로 변경함
-  // useEffect 정의하고, 내부에서 Boolean state true일 경우에, 선택된 양 끝점을 todoArr의 순서에 따라 activeTasks에 추가함
-  // 이후 Boolean state를 false로 변경.
  */
-
-// if (activeRange.length !== 0) {
-//   let activeTasksArr = [];
-//   const indexA = todoArr.indexOf(
-//     todoArr.find((todo) => todo.id === activeRange[0])
-//   );
-//   const indexB = todoArr.indexOf(
-//     todoArr.find((todo) => todo.id === activeRange[1])
-//   );
-
-//   if (indexA < indexB) {
-//     activeTasksArr = todoArr.slice(indexA, indexB + 1);
-//   } else {
-//     activeTasksArr = todoArr.slice(indexB, indexA + 1);
-//   }
-
-//   activeTasksArr.forEach((task) => {
-//     dispatch(addActiveTasks(task.id));
-//   });
-// }

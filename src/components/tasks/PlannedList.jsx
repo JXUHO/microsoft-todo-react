@@ -5,9 +5,10 @@ import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
 
 const PlannedList = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
   const todoArr = useSelector((state) => state.todo.todos);
+  const [activeArr, setActiveArr] = useState([]);
   const [isOpen, setIsOpen] = useState({
     earlier: false,
     today: true,
@@ -54,13 +55,20 @@ const PlannedList = () => {
       next5Days: [],
       later: [],
     };
+
     todoArr.forEach((todo) => {
       if (!todo.dueDate || todo.complete) return;
       const category = classifyDate(todo);
       tempSortedArr[category].push(todo);
       listCount[category]++;
     });
-
+    setActiveArr([
+      ...tempSortedArr.earlier.slice().reverse(),
+      ...tempSortedArr.today.slice().reverse(),
+      ...tempSortedArr.tomorrow.slice().reverse(),
+      ...tempSortedArr.next5Days.slice().reverse(),
+      ...tempSortedArr.later.slice().reverse(),
+    ]);
     setSortedArr(tempSortedArr);
     setCount(listCount);
   }, [todoArr]);
@@ -70,18 +78,18 @@ const PlannedList = () => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정
     if (activeRange.length !== 0) {
       const [startId, endId] = activeRange.map((taskId) =>
-        todoArr.findIndex((todo) => todo.id === taskId)
+        activeArr.findIndex((todo) => todo.id === taskId)
       );
       if (startId !== -1 && endId !== -1) {
         const [minIndex, maxIndex] = [startId, endId].sort((a, b) => a - b);
-        const activeTasksArr = todoArr.slice(minIndex, maxIndex + 1);
+        const activeTasksArr = activeArr.slice(minIndex, maxIndex + 1);
 
         activeTasksArr.forEach((task) => {
           dispatch(addActiveTasks(task.id));
         });
       }
     }
-  }, [activeRange, todoArr, dispatch]);
+  }, [activeRange, activeArr, dispatch]);
 
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">
@@ -95,9 +103,12 @@ const PlannedList = () => {
       )}
       {count.earlier !== 0 && isOpen.earlier && (
         <div>
-          {sortedArr.earlier.slice().reverse().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+          {sortedArr.earlier
+            .slice()
+            .reverse()
+            .map((todo) => (
+              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+            ))}
         </div>
       )}
 
@@ -111,9 +122,12 @@ const PlannedList = () => {
       )}
       {count.today !== 0 && isOpen.today && (
         <div>
-          {sortedArr.today.slice().reverse().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+          {sortedArr.today
+            .slice()
+            .reverse()
+            .map((todo) => (
+              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+            ))}
         </div>
       )}
 
@@ -127,9 +141,12 @@ const PlannedList = () => {
       )}
       {count.tomorrow !== 0 && isOpen.tomorrow && (
         <div>
-          {sortedArr.tomorrow.slice().reverse().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+          {sortedArr.tomorrow
+            .slice()
+            .reverse()
+            .map((todo) => (
+              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+            ))}
         </div>
       )}
       {count.next5Days !== 0 && (
@@ -142,9 +159,12 @@ const PlannedList = () => {
       )}
       {count.next5Days !== 0 && isOpen.next5Days && (
         <div>
-          {sortedArr.next5Days.slice().reverse().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+          {sortedArr.next5Days
+            .slice()
+            .reverse()
+            .map((todo) => (
+              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+            ))}
         </div>
       )}
 
@@ -158,9 +178,12 @@ const PlannedList = () => {
       )}
       {count.later !== 0 && isOpen.later && (
         <div>
-          {sortedArr.later.slice().reverse().map((todo) => (
-            <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
-          ))}
+          {sortedArr.later
+            .slice()
+            .reverse()
+            .map((todo) => (
+              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+            ))}
         </div>
       )}
     </div>
@@ -168,9 +191,6 @@ const PlannedList = () => {
 };
 
 export default PlannedList;
-
-
-
 
 const classifyDate = (task) => {
   if (!task.dueDate) return;
@@ -195,5 +215,3 @@ const classifyDate = (task) => {
     return "later";
   }
 };
-
-

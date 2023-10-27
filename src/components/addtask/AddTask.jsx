@@ -71,6 +71,12 @@ const AddTask = ({ currentLocation }) => {
 
   const addTaskHandler = () => {
     const trimmedTaskInput = {...taskInput, task: taskInput.task.trim()}
+    // planned tab에서 plannedAddTodo를 따로 정의하는게 아니라, 해당 로직을 여기로 가지고와야함(today로 등록될때, myday로 등록 안되는 문제)
+
+
+
+
+    
     if (currentLocation === "planned") {
       dispatch(plannedAddTodo(trimmedTaskInput))
     } else {

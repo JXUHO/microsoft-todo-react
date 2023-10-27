@@ -8,13 +8,19 @@ import { useEffect } from "react";
 import { setSortBy } from "../store/sortSlice";
 import { GoCheckCircle } from "react-icons/go";
 import CompleteList from "./tasks/CompleteList";
+import { useState } from "react";
+import sortTasks from "../utils/sortTasks";
 
 const Completed = () => {
+  const dispatch = useDispatch();
+  const [todoArr, setTodoArr] = useState([]);
+  const todos = useSelector((state) => state.todo.todos);
+  const sortOrder = useSelector((state) => state.sort.completed.order);
+  const sortBy = useSelector((state) => state.sort.completed.sortBy);
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isSortOptionSelected = useSelector(
     (state) => state.sort.completed.sortBy
   );
-  const dispatch = useDispatch();
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());
@@ -23,6 +29,21 @@ const Completed = () => {
   useEffect(() => {
     dispatch(setSortBy({ option: "completed", location: "completed" }));
   }, []);
+
+
+  useEffect(() => {
+    // myday, complete, sortBy 순서대로 적용해야함
+    let todoTemp = todos.slice().reverse().filter((todo) => todo.complete);
+
+    // sort옵션 적용
+    if (sortBy) {
+      setTodoArr(sortTasks(sortBy, sortOrder, todoTemp));
+    } else {
+      setTodoArr(todoTemp);
+    }
+  }, [todos, sortBy, sortOrder]);
+
+
 
   return (
     <>
@@ -61,7 +82,7 @@ const Completed = () => {
             <SortIndicator currentLocation="completed" />
           )}
         </div>
-        <CompleteList currentLocation={"completed"}/>
+        <CompleteList todoArr={todoArr} currentLocation={"completed"}/>
       </div>
     </>
   );
