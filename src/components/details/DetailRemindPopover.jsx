@@ -20,8 +20,10 @@ import RemindCalendar from "../addtask/RemindCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOptionTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
+import { useLocation } from "react-router-dom";
 
 const DetailRemindPopover = ({ taskId }) => {
+  const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [remindText, setRemindText] = useState({ date: "", time: "" });
@@ -103,13 +105,27 @@ const DetailRemindPopover = ({ taskId }) => {
   const addRemindHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    dispatch(changeOptionTodo({ id: taskId, option: "remind", content }));
+    dispatch(
+      changeOptionTodo({
+        id: taskId,
+        option: "remind",
+        content,
+        currentLocation: location.pathname,
+      })
+    );
     setPopoverOpen(false);
   };
 
   const resetRemindHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    dispatch(changeOptionTodo({ id: taskId, option: "remind", content: "" }));
+    dispatch(
+      changeOptionTodo({
+        id: taskId,
+        option: "remind",
+        content: "",
+        currentLocation: location.pathname,
+      })
+    );
     setPopoverOpen(false);
   };
 

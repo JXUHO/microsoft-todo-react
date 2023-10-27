@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeDueDateTodo,
   changeOptionTodo,
   removeTodo,
   setCompleteTodo,
@@ -22,8 +21,10 @@ import {
 import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import { GoCheckCircle } from "react-icons/go";
 import getLastTimeOfDay from "../../utils/getDates";
+import { useLocation } from "react-router-dom";
 
 const TaskItemContextMenu = () => {
+  const location = useLocation();
   const todos = useSelector((state) => state.todo.todos);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
   const dispatch = useDispatch();
@@ -67,23 +68,34 @@ const TaskItemContextMenu = () => {
       removeComplete: (taskId) =>
         dispatch(setCompleteTodo({ id: taskId, value: false })),
 
-      dueToday: (taskId) =>
+      dueToday: (taskId) => {
         dispatch(
-          changeDueDateTodo({ id: taskId, dueDate: new Date().toISOString() })
-        ),
-
+          changeOptionTodo({
+            id: taskId,
+            content: new Date().toISOString(),
+            option: "dueDate",
+            currentLocation: location.pathname,
+          })
+        );
+      },
       dueTomorrow: (taskId) =>
         dispatch(
           changeOptionTodo({
             id: taskId,
             option: "dueDate",
             content: getLastTimeOfDay(1).toISOString(),
+            currentLocation: location.pathname,
           })
         ),
 
       removeDuedate: (taskId) =>
         dispatch(
-          changeOptionTodo({ id: taskId, option: "dueDate", content: "" })
+          changeOptionTodo({
+            id: taskId,
+            option: "dueDate",
+            content: "",
+            currentLocation: location.pathname,
+          })
         ),
 
       deleteTask: (taskId) => {
@@ -191,4 +203,3 @@ const TaskItemContextMenu = () => {
 };
 
 export default TaskItemContextMenu;
-

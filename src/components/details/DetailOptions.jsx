@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BsSun, BsXLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { changeOptionTodo, setMydayTodo } from "../../store/todoSlice";
+import { setMydayTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";
 import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";
@@ -9,7 +9,7 @@ import DetailRepeatPopover from "./DetailRepeatPopover";
 const DetailOptions = ({ taskId }) => {
   const [isMyday, setIsMyday] = useState(false);
   const dispatch = useDispatch();
-  const [isMydayHover, setIsMydayHover] = useState(false)
+  const [isMydayHover, setIsMydayHover] = useState(false);
 
   const todo = useSelector((state) =>
     state.todo.todos.find((todo) => todo.id === taskId)
@@ -21,13 +21,13 @@ const DetailOptions = ({ taskId }) => {
 
   const addMydayHandler = () => {
     if (!todo.myday) {
-      dispatch(setMydayTodo({id:taskId, value:true}))
+      dispatch(setMydayTodo({ id: taskId, value: true }));
     }
   };
 
   const removeMydayHandler = () => {
     if (todo.myday) {
-      dispatch(setMydayTodo({id:taskId, value:false}))
+      dispatch(setMydayTodo({ id: taskId, value: false }));
     }
   };
 

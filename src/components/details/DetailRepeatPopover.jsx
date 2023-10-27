@@ -18,8 +18,10 @@ import RepeatCustom from "../addtask/RepeatCustom";
 import RepeatItems from "../addtask/RepeatItems";
 
 import { getRepeatButtonText } from "../addtask/RepeatPopover";
+import { useLocation } from "react-router-dom";
 
 const DetailRepeatPopover = ({ taskId }) => {
+  const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
   const [repeatText, setRepeatText] = useState({ title: "", description: "" });
@@ -106,6 +108,7 @@ const DetailRepeatPopover = ({ taskId }) => {
             id: taskId,
             content: "1-day",
             option: "repeatRule",
+            currentLocation: location.pathname,
           })
         );
         break;
@@ -115,6 +118,7 @@ const DetailRepeatPopover = ({ taskId }) => {
             id: taskId,
             content: "1-week-mon-tue-wed-thu-fri",
             option: "repeatRule",
+            currentLocation: location.pathname,
           })
         );
         break;
@@ -125,6 +129,7 @@ const DetailRepeatPopover = ({ taskId }) => {
             id: taskId,
             content: "1-week-" + currentDay,
             option: "repeatRule",
+            currentLocation: location.pathname,
           })
         );
         break;
@@ -134,6 +139,7 @@ const DetailRepeatPopover = ({ taskId }) => {
             id: taskId,
             content: "1-month",
             option: "repeatRule",
+            currentLocation: location.pathname,
           })
         );
         break;
@@ -143,6 +149,7 @@ const DetailRepeatPopover = ({ taskId }) => {
             id: taskId,
             content: "1-year",
             option: "repeatRule",
+            currentLocation: location.pathname,
           })
         );
         break;
@@ -154,7 +161,12 @@ const DetailRepeatPopover = ({ taskId }) => {
 
   const resetRepeatHandler = () => {
     dispatch(
-      changeOptionTodo({ id: taskId, option: "repeatRule", content: "" })
+      changeOptionTodo({
+        id: taskId,
+        option: "repeatRule",
+        content: "",
+        currentLocation: location.pathname,
+      })
     );
     setPopoverOpen(false);
   };
@@ -164,7 +176,14 @@ const DetailRepeatPopover = ({ taskId }) => {
   };
 
   const setRepeatRule = (content, option) => {
-    dispatch(changeOptionTodo({ id: taskId, option, content }));
+    dispatch(
+      changeOptionTodo({
+        id: taskId,
+        option,
+        content,
+        currentLocation: location.pathname,
+      })
+    );
   };
 
   useEffect(() => {
@@ -184,7 +203,12 @@ const DetailRepeatPopover = ({ taskId }) => {
         onMouseLeave={() => setIsHover(false)}
       >
         {todo.repeatRule ? (
-          <div className={`flex w-full ${repeatText.description ? "px-4 py-2" : "p-4"}`} style={{ color: "#2564cf"}}>
+          <div
+            className={`flex w-full ${
+              repeatText.description ? "px-4 py-2" : "p-4"
+            }`}
+            style={{ color: "#2564cf" }}
+          >
             <div
               className="flex items-center flex-auto"
               ref={floatingRef}
@@ -193,7 +217,9 @@ const DetailRepeatPopover = ({ taskId }) => {
               <BsRepeat size="17px" color="#2564cf" />
               <div className="mx-4">
                 <div>{repeatText.title}</div>
-                <div style={{fontSize:"11px", color:"#292827"}}>{repeatText.description}</div>
+                <div style={{ fontSize: "11px", color: "#292827" }}>
+                  {repeatText.description}
+                </div>
               </div>
             </div>
             {isHover && (

@@ -10,17 +10,17 @@ import {
   useMergeRefs,
 } from "@floating-ui/react";
 import { useEffect, useState } from "react";
-import {
-  getCustomFormatDateString,
-} from "../../utils/getDates";
+import { getCustomFormatDateString } from "../../utils/getDates";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOptionTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
 import { IoCalendarOutline } from "react-icons/io5";
 import DueCalendar from "../addtask/DueCalendar";
 import DueItems from "../addtask/DueItems";
+import { useLocation } from "react-router-dom";
 
 const DetailDuePopover = ({ taskId }) => {
+  const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [dueText, setDueText] = useState("");
@@ -102,13 +102,27 @@ const DetailDuePopover = ({ taskId }) => {
   const addDueHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    dispatch(changeOptionTodo({ id: taskId, option: "dueDate", content }));
+    dispatch(
+      changeOptionTodo({
+        id: taskId,
+        option: "dueDate",
+        content,
+        currentLocation: location.pathname,
+      })
+    );
     setPopoverOpen(false);
   };
 
   const resetDueHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    dispatch(changeOptionTodo({ id: taskId, option: "dueDate", content: "" }));
+    dispatch(
+      changeOptionTodo({
+        id: taskId,
+        option: "dueDate",
+        content: "",
+        currentLocation: location.pathname,
+      })
+    );
     setPopoverOpen(false);
   };
 
@@ -135,14 +149,17 @@ const DetailDuePopover = ({ taskId }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.dueDate ? (  // 외곽 클릭해도 popover 켜질 수 있는 방법 생각하기
-          <div className="flex justify-between w-full p-4" style={{ color: "#2564cf" }}>
+        {todo.dueDate ? ( // 외곽 클릭해도 popover 켜질 수 있는 방법 생각하기
+          <div
+            className="flex justify-between w-full p-4"
+            style={{ color: "#2564cf" }}
+          >
             <div
               className="flex items-center flex-auto"
               ref={floatingRef}
               {...dueButtonProps}
             >
-              <IoCalendarOutline size="17px" color="#2564cf" />  
+              <IoCalendarOutline size="17px" color="#2564cf" />
               <div className="mx-4">
                 <div>{dueText}</div>
               </div>

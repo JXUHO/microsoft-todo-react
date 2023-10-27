@@ -56,16 +56,6 @@ const todoSlice = createSlice({
       }
     },
 
-
-
-    changeDueDateTodo: (state, action) => {
-      const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload.id
-      );
-      todoToChange.dueDate = action.payload.dueDate;
-    },
-
-
     changeTaskTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
@@ -80,7 +70,7 @@ const todoSlice = createSlice({
     },
 
     changeOptionTodo: (state, action) => {
-      //{ id: taskId, option: "dueDate", content }
+      //{ id: taskId, option: "dueDate", content, currentLocation: "/myday" }
       let todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
@@ -88,6 +78,17 @@ const todoSlice = createSlice({
       const modifiedDue = repeatDueSynchronizer(todoToChange);
       if (modifiedDue) {
         todoToChange.dueDate = modifiedDue.toISOString();
+      }
+      if (
+        action.payload.currentLocation !== "/myday" &&
+        isDateToday(new Date(todoToChange.dueDate))
+      ) {
+        todoToChange.myday = true;
+      } else if (
+        action.payload.currentLocation !== "/myday" &&
+        !isDateToday(new Date(todoToChange.dueDate))
+      ) {
+        todoToChange.myday = false;
       }
     },
 
@@ -180,7 +181,6 @@ export const {
   removeTodo,
   setCompleteTodo,
   setImportanceTodo,
-  changeDueDateTodo,
   changeTaskTodo,
   setMydayTodo,
   changeOptionTodo,
