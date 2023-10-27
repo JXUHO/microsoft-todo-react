@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo, plannedAddTodo } from "../../store/todoSlice";
+import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
-  getNextClosestDayOfWeekFromDate, isDateToday,
+  getNextClosestDayOfWeekFromDate,
+  isDateToday,
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
 
@@ -21,7 +22,7 @@ const initialTask = {
   repeated: false,
   category: [],
   file: null, // db 주소?
-  note: {content:"", updated:""},
+  note: { content: "", updated: "" },
   importance: false,
   created: "", // isoString
   complete: "", // isoString
@@ -34,17 +35,16 @@ const AddTask = ({ currentLocation }) => {
   const remindRef = useRef();
   const repeatRef = useRef();
 
-  
-  let isMyday = false
-  let isImportant = false
+  let isMyday = false;
+  let isImportant = false;
   switch (currentLocation) {
     case "myday":
-      isMyday = true
+      isMyday = true;
       break;
     case "important":
-      isImportant = true
+      isImportant = true;
       break;
-  
+
     default:
       break;
   }
@@ -58,7 +58,7 @@ const AddTask = ({ currentLocation }) => {
       created: createdTime,
       id: uuid(),
       myday: isMyday,
-      importance: isImportant
+      importance: isImportant,
     }));
   };
 
@@ -68,23 +68,13 @@ const AddTask = ({ currentLocation }) => {
     repeatRef.current.resetRepeat();
   };
 
-
   const addTaskHandler = () => {
-    const trimmedTaskInput = {...taskInput, task: taskInput.task.trim()}
-    // planned tab에서 plannedAddTodo를 따로 정의하는게 아니라, 해당 로직을 여기로 가지고와야함(today로 등록될때, myday로 등록 안되는 문제)
-
-
-
-
-    
-    if (currentLocation === "planned") {
-      dispatch(plannedAddTodo(trimmedTaskInput))
-    } else {
-      // thunk사용
-      // dispatch(checkMyday(taskInput))
-      dispatch(addTodo(trimmedTaskInput));
+    const trimmedTaskInput = { ...taskInput, task: taskInput.task.trim() };
+    if (currentLocation === "planned" && !trimmedTaskInput.dueDate) {
+      trimmedTaskInput.dueDate = new Date().toISOString();
     }
-    setTaskInput(initialTask); 
+    dispatch(addTodo(trimmedTaskInput));
+    setTaskInput(initialTask);
     initializeButtons();
   };
 
@@ -93,7 +83,7 @@ const AddTask = ({ currentLocation }) => {
       addTaskHandler();
     }
     if (event.key === "Escape") {
-      setTaskInput(initialTask)
+      setTaskInput(initialTask);
     }
   };
 
@@ -160,7 +150,10 @@ const AddTask = ({ currentLocation }) => {
         />
       </div>
 
-      <div className="flex justify-between h-11 items-center bg-ms-background shrink-0 px-4" style={{color: '#323130'}}>
+      <div
+        className="flex justify-between h-11 items-center bg-ms-background shrink-0 px-4"
+        style={{ color: "#323130" }}
+      >
         <div className="flex items-center justify-center">
           <div className="flex px-1">
             <DuePopover
@@ -187,7 +180,7 @@ const AddTask = ({ currentLocation }) => {
 
         <button
           className="h-8 border-solid px-2 text-xs font-medium text-ms-blue bg-white disabled:cursor-not-allowed disabled:text-gray-400"
-          style={{borderWidth: '1px'}}
+          style={{ borderWidth: "1px" }}
           disabled={!taskInput.task.trim()}
           onClick={addTaskHandler}
         >
