@@ -54,7 +54,7 @@ const DueCalendar = ({ onCalendarSaveClick, dueDateValue }) => {
           }}
         >
           <button
-            className="w-44 h-8 bg-ms-blue text-white rounded-md mb-2 hover:bg-ms-blue-hover animate-fillAnimation"
+            className="w-44 h-8 bg-ms-blue text-white rounded-md mb-2 hover:bg-ms-blue-hover"
             style={{transition: "background-color 0.1s"}}
             onClick={() => {
               onCalendarSaveClick(dueSelectedDate);

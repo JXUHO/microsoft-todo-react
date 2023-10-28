@@ -149,7 +149,7 @@ const DetailDuePopover = ({ taskId }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.dueDate ? ( // 외곽 클릭해도 popover 켜질 수 있는 방법 생각하기
+        {todo.dueDate ? (
           <div
             className="flex justify-between w-full p-4"
             style={{ color: "#2564cf" }}

@@ -65,12 +65,8 @@ const RemindCalendar = ({ onCalendarSaveClick, remindValue }) => {
             fontWeight: "bold",
           }}
         >
-          <div className="flex">
-            <div></div>
-            <div></div>
-          </div>
           <button
-            className="w-44 h-8 bg-ms-blue text-white rounded-md mb-2 hover:bg-ms-blue-hover animate-fillAnimation"
+            className="w-44 h-8 bg-ms-blue text-white rounded-md mb-2 hover:bg-ms-blue-hover"
             style={{ transition: "background-color 0.1s" }}
             onClick={() => {
               onCalendarSaveClick(remindSelectedDate);
@@ -115,11 +111,10 @@ const CustomTimeInput = ({ date, value, onChange }) => {
   };
 
   const hourChangeHandler = (e) => {
-    console.log(e.target.id);
     const value = e.target.value;
     if (!isNaN(value)) {
       const numberValue = parseInt(value, 10);
-      if (numberValue >= 0 && numberValue <= 23 && value.length < 3) {
+      if (numberValue >= 0 && numberValue <= 23 && value.length <= 2) {
         setHourValue(value);
       } else if (value === "") {
         setHourValue("");
@@ -130,7 +125,7 @@ const CustomTimeInput = ({ date, value, onChange }) => {
     const value = e.target.value;
     if (!isNaN(value)) {
       const numberValue = parseInt(value, 10);
-      if (numberValue >= 0 && numberValue <= 59 && value.length < 3) {
+      if (numberValue >= 0 && numberValue <= 59 && value.length <= 2) {
         setMinuteValue(value);
       } else if (value === "") {
         setMinuteValue("");
@@ -148,7 +143,6 @@ const CustomTimeInput = ({ date, value, onChange }) => {
         <div className="flex">
           <div className="flex justify-center">
             <input
-              id="hourInput"
               className="max-w-[20px] text-center"
               type="text"
               value={hourValue}
@@ -159,7 +153,6 @@ const CustomTimeInput = ({ date, value, onChange }) => {
           <p className="px-1">:</p>
           <div>
             <input
-              id="minuteInput"
               className="max-w-[20px] text-center"
               type="text"
               value={minuteValue}

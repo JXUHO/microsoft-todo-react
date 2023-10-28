@@ -63,6 +63,7 @@ export default getNextRepeatTask;
 
 
 export function repeatDueSynchronizer (taskItem) {
+  if (!taskItem.dueDate) return;
   if (
     // week에서 선택한 요일과 due에 설정된 요일이 다를때, imperative하게 due를 변경
     taskItem.repeatRule &&

@@ -47,7 +47,8 @@ const RootPage = () => {
       if (e.key === "Control") {
         dispatch(setCtrl(false));
       }
-      if (e.key === "Escape") {
+      if (e.key === "Escape" || e.key === "Tab") {
+        console.log("tirgger");
         dispatch(setCtrl(false));
         dispatch(setShift(false));
       }
@@ -62,11 +63,10 @@ const RootPage = () => {
 
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden">
-      {" "}
       {/**root */}
       <Header />
+
       <div className="flex flex-1 overflow-hidden">
-        {" "}
         {/**app */}
         {isSidebarOpen && <Sidebar />} {/**left column */}
         <div className="flex flex-1 flex-col bg-ms-background ">
@@ -74,6 +74,7 @@ const RootPage = () => {
         </div>
         {isDetailOpen && <TaskDetail />} {/**right column */}
       </div>
+
       <TaskItemContextMenu />
     </div>
   );
