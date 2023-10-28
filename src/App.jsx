@@ -82,6 +82,7 @@ export default App;
  * (complete)task context menu 기능 구현하기
  * (complete) dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * (complete) Task Item multi selection (shift, ctrl키)
+ * (complete) PlannedList component next week text 변경하기
  * 
  * 
  * 
@@ -119,7 +120,6 @@ export default App;
  * 
  * 
  * 
- * PlannedList component next week text 변경하기
  * 
  * UI -> TaskItem myday sun icon 정렬 수정하기
  * UI -> searchbar hover cursor pointer

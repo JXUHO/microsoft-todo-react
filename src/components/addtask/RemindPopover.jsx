@@ -175,7 +175,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
           {...getCalendarFloatingProps()}
           style={{ ...calendarFloatingStyles, zIndex: 40 }}
         >
-          <RemindCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+          <RemindCalendar onCalendarSaveClick={calendarSaveButtonHander} remindValue={remindValue}/>
         </div>
       )}
 

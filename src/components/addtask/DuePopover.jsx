@@ -168,7 +168,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
           {...getCalendarFloatingProps()}
           style={{ ...calendarFloatingStyles, zIndex: 40 }}
         >
-          <DueCalendar onCalendarSaveClick={calendarSaveButtonHander} />
+          <DueCalendar onCalendarSaveClick={calendarSaveButtonHander} dueDateValue={dueDateValue}/>
         </div>
       )}
 
@@ -198,8 +198,3 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
 
 export default DuePopover;
 
-/**
- * TODO
- * floating ui 화면 밖으로 나가는것 처리하기
- *
- */
