@@ -48,17 +48,23 @@ const RootPage = () => {
       if (e.key === "Control") {
         dispatch(setCtrl(false));
       }
-      if (e.key === "Escape" || e.key === "Tab") {
-        console.log("tirgger");
-        dispatch(setCtrl(false));
-        dispatch(setShift(false));
-      }
     };
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("keyup", onKeyUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onBlur = () => {
+      dispatch(setCtrl(false));
+      dispatch(setShift(false));
+    };
+    window.addEventListener("blur", onBlur);
+    return () => {
+      window.removeEventListener("blur", onBlur);
     };
   }, []);
 
@@ -77,7 +83,7 @@ const RootPage = () => {
       </div>
 
       <TaskItemContextMenu />
-      <DeleteTaskDialog/>
+      <DeleteTaskDialog />
     </div>
   );
 };
