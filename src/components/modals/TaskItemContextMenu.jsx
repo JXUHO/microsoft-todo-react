@@ -6,7 +6,7 @@ import {
   setImportanceTodo,
   setMydayTodo,
 } from "../../store/todoSlice";
-import { closeDetail } from "../../store/uiSlice";
+import { closeDetail, setDialog } from "../../store/uiSlice";
 import {
   BsCircle,
   BsStar,
@@ -99,8 +99,7 @@ const TaskItemContextMenu = () => {
         ),
 
       deleteTask: (taskId) => {
-        dispatch(closeDetail());
-        dispatch(removeTodo(taskId));
+        dispatch(setDialog(true))
       },
     };
 

@@ -124,7 +124,7 @@ export const Menu = forwardRef(
     }, [refs, isRightClicked]);
 
     return (
-      <FloatingPortal>
+      <FloatingPortal id="root">
         {isOpen && (
           <FloatingFocusManager context={context} initialFocus={refs.floating}>
             <div

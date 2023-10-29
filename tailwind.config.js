@@ -19,7 +19,8 @@ export default {
         "ms-scrollbar": "#8a8886",
         "ms-light-text": "#605E5C",
         "ms-input-hover": "#edebe9",
-        "ms-active-tertiary" :"#f3f2f1"
+        "ms-active-tertiary" :"#f3f2f1",
+        "ms-warning": "#a80000"
       },
       height: {
         18: "4.5rem",

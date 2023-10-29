@@ -12,6 +12,7 @@ import { closeDetail } from "../store/uiSlice";
 import { updateMydayTodo } from "../store/todoSlice";
 import { setCtrl, setShift } from "../store/modifierSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
+import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -76,6 +77,7 @@ const RootPage = () => {
       </div>
 
       <TaskItemContextMenu />
+      <DeleteTaskDialog/>
     </div>
   );
 };

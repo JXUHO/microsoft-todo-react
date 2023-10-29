@@ -83,21 +83,21 @@ export default App;
  * (complete) dueDate가 설정되지 않더라도, 날짜 지나면 myday=false로 변경됨
  * (complete) Task Item multi selection (shift, ctrl키)
  * (complete) PlannedList component next week text 변경하기
+ * (complete) react datepicker styling
+ * (complete) 삭제 모달
  * 
  * 
  * 
  * <필수>
- * 삭제 모달
  * 
  * 반응형으로 만들기(사이즈 따라 다르게)
- * 
- * react datepicker styling
  * 
  * backend 연결
  * 
  * 
  * 
- * AddTask component retracted
+ * 
+ * AddTask component retraction
  * 
  * 
  * 

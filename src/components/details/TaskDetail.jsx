@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeTodo } from "../../store/todoSlice";
-import { closeDetail } from "../../store/uiSlice";
+import { closeDetail, setDialog } from "../../store/uiSlice";
 import { LuPanelRightClose } from "react-icons/lu";
 import { BsTrash3 } from "react-icons/bs";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -37,8 +37,7 @@ const TaskDetail = () => {
   };
 
   const removeTaskHandler = (id) => {
-    dispatch(removeTodo(id));
-    dispatch(closeDetail());
+    dispatch(setDialog(true))
   };
 
 
