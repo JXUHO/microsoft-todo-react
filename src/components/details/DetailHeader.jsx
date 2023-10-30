@@ -22,38 +22,40 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 
+import TextareaAutosize from "react-textarea-autosize";
+
 const DetailHeader = ({ taskId }) => {
   const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
+  state.todo.todos.find((todo) => todo.id === taskId)
   );
-
+  
   const dispatch = useDispatch();
+  const textAreaRef = useRef();
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [newTask, setNewTask] = useState("");
   const [isEscaped, setIsEscaped] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  
 
-  const inputRef = useRef();
+  const taskEditHandler = (event) => {
+    setNewTask(event.target.value);
+  };
 
   const completedHandler = () => {
     if (todo.complete) {
-      dispatch(setCompleteTodo({id:todo.id, value:false}))
+      dispatch(setCompleteTodo({ id: todo.id, value: false }));
     } else {
-      dispatch(setCompleteTodo({id:todo.id, value: true}))
+      dispatch(setCompleteTodo({ id: todo.id, value: true }));
     }
   };
 
   const importanceHandler = () => {
     if (todo.importance) {
-      dispatch(setImportanceTodo({id:todo.id, value:false}))
+      dispatch(setImportanceTodo({ id: todo.id, value: false }));
     } else {
-      dispatch(setImportanceTodo({id:todo.id, value:true}))
+      dispatch(setImportanceTodo({ id: todo.id, value: true }));
     }
-  };
-
-  const taskEditHandler = (event) => {
-    setNewTask(event.target.value);
   };
 
   const blurHandler = () => {
@@ -87,7 +89,7 @@ const DetailHeader = ({ taskId }) => {
 
   useEffect(() => {
     if (isEscaped) {
-      inputRef.current.blur();
+      textAreaRef.current.blur();
       setNewTask(todo.task); // 초기화
     }
   }, [isEscaped]);
@@ -112,6 +114,7 @@ const DetailHeader = ({ taskId }) => {
       referencePress: true,
     }),
   ]);
+
 
   return (
     <div
@@ -141,20 +144,23 @@ const DetailHeader = ({ taskId }) => {
         </span>
 
         <div className="w-full text-base font-semibold px-4">
-          <input
-            ref={inputRef}
+          <TextareaAutosize
+            ref={textAreaRef}
             rows="1"
             value={newTask}
             onChange={taskEditHandler}
             onBlur={blurHandler}
             onFocus={focusHandler}
             onKeyDown={keyDownHandler}
+            maxLength="255"
+            maxRows={12}
             style={{
-              height: "21px",
-              outline: "none",
+              resize:"none",
               backgroundColor: isHover ? "#f5f4f4" : "white",
               textDecoration: todo.complete && !isFocused ? "line-through" : "",
               color: todo.complete && !isFocused ? "#767678" : "",
+              wordBreak :"break-all",
+              lineHeight: "20px"
             }}
           />
         </div>
@@ -167,7 +173,9 @@ const DetailHeader = ({ taskId }) => {
         {...getTooltipReferenceProps()}
       >
         {todo.importance ? (
-          <div className="animate-fillAnimation"><BsStarFill size="18px" style={{ color: "#2564cf" }} /></div>
+          <div className="animate-fillAnimation">
+            <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+          </div>
         ) : (
           <BsStar size="18px" style={{ color: "#2564cf" }} />
         )}

@@ -144,6 +144,7 @@ const AddTask = ({ currentLocation }) => {
             outline: "none",
           }}
           placeholder="Add a task"
+          maxLength="255"
           onChange={taskInputHandler}
           value={taskInput.task}
           onKeyDown={handleEnterKeyPress}

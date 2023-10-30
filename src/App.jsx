@@ -94,6 +94,9 @@ export default App;
  * 
  * backend 연결
  * 
+ * remind functionality
+ * complete sound
+ * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기
  * 
  * 
  * 

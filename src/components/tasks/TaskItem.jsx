@@ -109,7 +109,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   return (
     <div
-      className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 ${
+      className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 break-all ${
         activeTasksId.includes(todo.id)
           ? "bg-ms-active-blue"
           : "bg-white hover:bg-ms-white-hover"
@@ -145,7 +145,7 @@ const TaskItem = ({ todo, currentLocation }) => {
         style={{ color: "#292827" }}
         onContextMenu={contextMenuHandler}
       >
-        <span style={todo.complete ? { textDecoration: "line-through" } : null}>
+        <span style={todo.complete ? { textDecoration: "line-through" } : null} className="">
           {todo.task}
         </span>
 
