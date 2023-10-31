@@ -7,7 +7,6 @@ import RemindPopover from "./RemindPopover";
 import RepeatPopover from "./RepeatPopover";
 import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
-  isDateToday,
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
 
@@ -18,6 +17,7 @@ const initialTask = {
   myday: false,
   dueDate: "", // isoString
   remind: "", // isoString
+  reminded: false,
   repeatRule: "",
   repeated: false,
   category: [],

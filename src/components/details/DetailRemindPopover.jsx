@@ -18,7 +18,7 @@ import {
 } from "../../utils/getDates";
 import RemindCalendar from "../addtask/RemindCalendar";
 import { useDispatch, useSelector } from "react-redux";
-import { changeOptionTodo } from "../../store/todoSlice";
+import { changeOptionTodo, setRemindedTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 
@@ -113,6 +113,7 @@ const DetailRemindPopover = ({ taskId }) => {
         currentLocation: location.pathname,
       })
     );
+    dispatch(setRemindedTodo({id:taskId, value:false}))
     setPopoverOpen(false);
   };
 
@@ -126,6 +127,7 @@ const DetailRemindPopover = ({ taskId }) => {
         currentLocation: location.pathname,
       })
     );
+    dispatch(setRemindedTodo({id:taskId, value:false}))
     setPopoverOpen(false);
   };
 
@@ -157,16 +159,16 @@ const DetailRemindPopover = ({ taskId }) => {
         onMouseLeave={() => setIsHover(false)}
       >
         {todo.remind ? (
-          <div className="flex w-full px-4 py-2" style={{ color: "#2564cf" }}>
+          <div className={`flex w-full px-4 py-2 ${todo.reminded ? "text-ms-light-text" : "text-ms-blue"}`}>
             <div
               className="flex items-center flex-auto"
               ref={floatingRef}
               {...remindButtonProps}
             >
-              <VscBell size="17px" color="#2564cf" />
+              <VscBell size="17px"/>
               <div className="mx-4">
                 <div>Remind me at {remindText.time}</div>
-                <div className="text-xs" style={{ color: "#605E5C" }}>
+                <div className="text-xs text-ms-light-text">
                   {remindText.date}
                 </div>
               </div>

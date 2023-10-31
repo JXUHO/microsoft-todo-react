@@ -20,7 +20,7 @@ export default {
         "ms-light-text": "#605E5C",
         "ms-input-hover": "#edebe9",
         "ms-active-tertiary" :"#f3f2f1",
-        "ms-warning": "#a80000"
+        "ms-warning": "#a80000",
       },
       height: {
         18: "4.5rem",

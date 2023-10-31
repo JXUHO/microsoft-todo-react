@@ -9,7 +9,7 @@ import {
   initializeActiveTasks,
 } from "../store/activeSlice";
 import { closeDetail } from "../store/uiSlice";
-import { updateMydayTodo } from "../store/todoSlice";
+import { setRemindedTodo, updateMydayTodo } from "../store/todoSlice";
 import { setCtrl, setShift } from "../store/modifierSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
@@ -17,6 +17,7 @@ import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
+  const todos = useSelector(state => state.todo.todos)
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -67,6 +68,52 @@ const RootPage = () => {
       window.removeEventListener("blur", onBlur);
     };
   }, []);
+
+
+  useEffect(() => {
+    if (todos.some(todo => todo.remind)) {
+      if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission()
+        };
+      }
+    
+    const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      console.log("interval");
+      for (const todo of todos) {
+        if (todo.remind && !todo.reminded && new Date(todo.remind) <= currentTime) {
+          console.log(todo.task);
+          notifyMe(todo)
+          dispatch(setRemindedTodo({id:todo.id, value:true}))
+        }
+      }
+    }, 1000); 
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [todos]);
+  
+
+  function notifyMe(todo) {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+      const notification = new Notification("To do", {body:todo.task});
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          const notification = new Notification("To do", {body:todo.task});
+        }
+      });
+    }
+  }
+
+
+
+
 
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden">

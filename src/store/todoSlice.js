@@ -70,6 +70,7 @@ const todoSlice = createSlice({
     },
 
     changeOptionTodo: (state, action) => {
+      // using for dueDate, remind, repeat
       //{ id: taskId, option: "dueDate", content, currentLocation: "/myday" }
       let todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
@@ -90,6 +91,14 @@ const todoSlice = createSlice({
       ) {
         todoToChange.myday = false;
       }
+    },
+
+
+    setRemindedTodo: (state, action) => {
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.id
+      );
+      todoToChange.reminded = action.payload.value
     },
 
     addCategoryTodo: (state, action) => {
@@ -188,6 +197,7 @@ export const {
   removeCategoryTodo,
   addNoteTodo,
   updateMydayTodo,
+  setRemindedTodo,
 
   addStep,
   completeStep,

@@ -155,11 +155,11 @@ const DetailDuePopover = ({ taskId }) => {
             style={{ color: "#2564cf" }}
           >
             <div
-              className="flex items-center flex-auto"
+              className={`flex items-center flex-auto ${dueText.includes("Overdue") ? "text-ms-warning" : "text-ms-blue"}`}
               ref={floatingRef}
               {...dueButtonProps}
             >
-              <IoCalendarOutline size="17px" color="#2564cf" />
+              <IoCalendarOutline size="17px" />
               <div className="mx-4">
                 <div>{dueText}</div>
               </div>
