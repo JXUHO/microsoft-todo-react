@@ -85,7 +85,7 @@ export default App;
  * (complete) PlannedList component next week text 변경하기
  * (complete) react datepicker styling
  * (complete) 삭제 모달
- * 
+ * (complete) remind functionality
  * 
  * 
  * <필수>
@@ -94,7 +94,6 @@ export default App;
  * 
  * backend 연결
  * 
- * remind functionality
  * complete sound
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기
  * 

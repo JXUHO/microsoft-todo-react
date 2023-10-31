@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { isDateToday } from "../utils/getDates";
 import getNextRepeatTask, { repeatDueSynchronizer } from "../utils/repeatTask";
+import popSound from "../../public/popSound.mp3"
 
 const todoSlice = createSlice({
   name: "todos",
@@ -35,6 +36,7 @@ const todoSlice = createSlice({
       if (!action.payload.value) {
         todoToChange.complete = "";
       } else {
+        new Audio(popSound).play()
         todoToChange.complete = new Date().toISOString();
         if (todoToChange.repeatRule && !todoToChange.repeated) {
           // repeatRule존재하면, 새로운 repeat task 생성
