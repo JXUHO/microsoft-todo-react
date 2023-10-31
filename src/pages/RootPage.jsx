@@ -8,17 +8,16 @@ import {
   initializeActiveStep,
   initializeActiveTasks,
 } from "../store/activeSlice";
-import { closeDetail } from "../store/uiSlice";
-import { setRemindedTodo, updateMydayTodo } from "../store/todoSlice";
-import { setCtrl, setShift } from "../store/modifierSlice";
+import { closeDetail, } from "../store/uiSlice";
+import { updateMydayTodo } from "../store/todoSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
+import useRemindNotification from "../hooks/useRemindNotification";
+import useKeyDown from "../hooks/useKeydown";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
-  const todos = useSelector(state => state.todo.todos)
-
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -31,88 +30,10 @@ const RootPage = () => {
   useEffect(() => {
     // reload될 때, 날짜 변경됐으면 myday변경
     updateMydayTodo();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.repeat) return;
-      if (e.key === "Control") {
-        dispatch(setCtrl(true));
-      } else if (e.key === "Shift") {
-        dispatch(setShift(true));
-      }
-    };
-    const onKeyUp = (e) => {
-      if (e.key === "Shift") {
-        dispatch(setShift(false));
-      }
-      if (e.key === "Control") {
-        dispatch(setCtrl(false));
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    document.addEventListener("keyup", onKeyUp);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("keyup", onKeyUp);
-    };
   }, []);
 
-  useEffect(() => {
-    const onBlur = () => {
-      dispatch(setCtrl(false));
-      dispatch(setShift(false));
-    };
-    window.addEventListener("blur", onBlur);
-    return () => {
-      window.removeEventListener("blur", onBlur);
-    };
-  }, []);
-
-
-  useEffect(() => {
-    if (todos.some(todo => todo.remind)) {
-      if (!("Notification" in window)) {
-        alert("This browser does not support desktop notification");
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission()
-        };
-      }
-    
-    const intervalId = setInterval(() => {
-      const currentTime = new Date();
-      console.log("interval");
-      for (const todo of todos) {
-        if (todo.remind && !todo.reminded && new Date(todo.remind) <= currentTime) {
-          console.log(todo.task);
-          notifyMe(todo)
-          dispatch(setRemindedTodo({id:todo.id, value:true}))
-        }
-      }
-    }, 1000); 
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [todos]);
-  
-
-  function notifyMe(todo) {
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notification");
-    } else if (Notification.permission === "granted") {
-      const notification = new Notification("To do", {body:todo.task});
-    } else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          const notification = new Notification("To do", {body:todo.task});
-        }
-      });
-    }
-  }
-
-
-
+  useKeyDown()
+  useRemindNotification()
 
 
   return (
