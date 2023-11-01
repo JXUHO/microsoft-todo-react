@@ -86,6 +86,7 @@ export default App;
  * (complete) react datepicker styling
  * (complete) 삭제 모달
  * (complete) remind functionality
+ * (complete) complete sound
  * 
  * 
  * <필수>
@@ -94,8 +95,8 @@ export default App;
  * 
  * backend 연결
  * 
- * complete sound
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기
+ * 
  * 
  * 
  * 

@@ -37,11 +37,10 @@ const TaskDetail = () => {
   };
 
   const removeTaskHandler = (id) => {
-    dispatch(setDialog(true))
+    dispatch(setDialog(true));
   };
 
-
-  const detailId = activeTasks[0]
+  const detailId = activeTasks[0];
 
   useEffect(() => {
     const todoDetail = todos.find((todo) => todo.id === detailId);

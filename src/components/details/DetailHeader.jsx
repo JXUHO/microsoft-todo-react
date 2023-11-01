@@ -26,9 +26,9 @@ import TextareaAutosize from "react-textarea-autosize";
 
 const DetailHeader = ({ taskId }) => {
   const todo = useSelector((state) =>
-  state.todo.todos.find((todo) => todo.id === taskId)
+    state.todo.todos.find((todo) => todo.id === taskId)
   );
-  
+
   const dispatch = useDispatch();
   const textAreaRef = useRef();
   const [isHover, setIsHover] = useState(false);
@@ -36,7 +36,7 @@ const DetailHeader = ({ taskId }) => {
   const [newTask, setNewTask] = useState("");
   const [isEscaped, setIsEscaped] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  
+  const [isActive, setIsActive] = useState(false);
 
   const taskEditHandler = (event) => {
     setNewTask(event.target.value);
@@ -47,6 +47,8 @@ const DetailHeader = ({ taskId }) => {
       dispatch(setCompleteTodo({ id: todo.id, value: false }));
     } else {
       dispatch(setCompleteTodo({ id: todo.id, value: true }));
+      setIsFocused(false);
+      setIsActive(false);
     }
   };
 
@@ -61,12 +63,26 @@ const DetailHeader = ({ taskId }) => {
   const blurHandler = () => {
     if (!isEscaped) {
       if (!newTask) {
+        // task가 비어있으면 초기화
         setNewTask(todo.task);
         return;
       }
       dispatch(changeTaskTodo({ id: todo.id, task: newTask }));
     }
     setIsFocused(false);
+    setIsActive(false);
+  };
+
+  const clickHandler = () => {
+    setIsActive(true);
+    setIsFocused(true);
+    setIsEscaped(false);
+    setTimeout(() => {
+      // click하면 focus하고, cursor을 맨 뒤로 이동시킨다
+      textAreaRef.current.focus();
+      const end = textAreaRef.current.value.length;
+      textAreaRef.current.setSelectionRange(end, end);
+    }, 0);
   };
 
   const focusHandler = () => {
@@ -115,14 +131,13 @@ const DetailHeader = ({ taskId }) => {
     }),
   ]);
 
-
   return (
     <div
-      className="flex items-center justify-between p-4 bg-white rounded-t z-10 hover:bg-ms-white-hover"
+      className="flex items-center p-4 bg-white rounded-t z-10 hover:bg-ms-white-hover w-full"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="flex flex-1 items-center">
+      <div className="flex flex-1 items-center justify-between w-full">
         <span
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completedHandler}
@@ -143,42 +158,58 @@ const DetailHeader = ({ taskId }) => {
           )}
         </span>
 
-        <div className="w-full text-base font-semibold px-4">
-          <TextareaAutosize
-            ref={textAreaRef}
-            rows="1"
-            value={newTask}
-            onChange={taskEditHandler}
-            onBlur={blurHandler}
-            onFocus={focusHandler}
-            onKeyDown={keyDownHandler}
-            maxLength="255"
-            maxRows={12}
-            style={{
-              resize:"none",
-              backgroundColor: isHover ? "#f5f4f4" : "white",
-              textDecoration: todo.complete && !isFocused ? "line-through" : "",
-              color: todo.complete && !isFocused ? "#767678" : "",
-              wordBreak :"break-all",
-              lineHeight: "20px"
-            }}
-          />
+        <div className="w-full text-base font-semibold px-4 ">
+          {isActive ? (
+            <TextareaAutosize
+              ref={textAreaRef}
+              rows="1"
+              value={newTask}
+              onChange={taskEditHandler}
+              onBlur={blurHandler}
+              onFocus={focusHandler}
+              onKeyDown={keyDownHandler}
+              maxLength="255"
+              maxRows={12}
+              style={{
+                resize: "none",
+                backgroundColor: isHover ? "#f5f4f4" : "white",
+                textDecoration:
+                  todo.complete && !isFocused ? "line-through" : "",
+                color: todo.complete && !isFocused ? "#767678" : "",
+                wordBreak: "break-all",
+                lineHeight: "20px",
+              }}
+            />
+          ) : (
+            <div
+              className="break-all leading-5 max-h-60 overflow-y-auto hover:cursor-text"
+              onClick={clickHandler}
+              style={{
+                backgroundColor: isHover ? "#f5f4f4" : "white",
+                textDecoration:
+                  todo.complete && !isFocused ? "line-through" : "",
+                color: todo.complete && !isFocused ? "#767678" : "",
+              }}
+            >
+              {newTask}
+            </div>
+          )}
         </div>
-      </div>
 
-      <div
-        className="hover:cursor-pointer"
-        onClick={importanceHandler}
-        ref={tooltipRefs.setReference}
-        {...getTooltipReferenceProps()}
-      >
-        {todo.importance ? (
-          <div className="animate-fillAnimation">
-            <BsStarFill size="18px" style={{ color: "#2564cf" }} />
-          </div>
-        ) : (
-          <BsStar size="18px" style={{ color: "#2564cf" }} />
-        )}
+        <div
+          className="hover:cursor-pointer"
+          onClick={importanceHandler}
+          ref={tooltipRefs.setReference}
+          {...getTooltipReferenceProps()}
+        >
+          {todo.importance ? (
+            <div className="animate-fillAnimation">
+              <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+            </div>
+          ) : (
+            <BsStar size="18px" style={{ color: "#2564cf" }} />
+          )}
+        </div>
       </div>
 
       {tooltipOpen && (
