@@ -14,6 +14,7 @@ import { PiArrowsDownUpThin } from "react-icons/pi";
 import MydaySortItems from "./MydaySortItems";
 import ImportantSortItems from "./ImportantSortItems";
 import CompletedSortItems from "./CompletedSortItems";
+import useViewport from "../../hooks/useViewPort";
 
 const SortPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -89,6 +90,10 @@ const SortPopover = ({currentLocation}) => {
       break;
   }
 
+
+  const { width } = useViewport();
+
+
   return (
     <>
       <div
@@ -100,7 +105,7 @@ const SortPopover = ({currentLocation}) => {
       >
         <div className="flex items-center">
           <PiArrowsDownUpThin size="20px" />
-          <span className="ml-1 text-sm">Sort</span>
+          {width > 900 && <span className="ml-1 text-sm">Sort</span>}
         </div>
       </div>
       {popoverOpen && (

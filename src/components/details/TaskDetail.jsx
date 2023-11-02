@@ -61,6 +61,19 @@ const TaskDetail = () => {
     }
   }, [isResizing, resizerPosition]);
 
+    // // 만약 sidebarWidth가 resizerPosition과 일치하지 않는다면, resizerPosition을 sidebarWidth에 맞출것
+    // // 
+    // setTimeout(() => {
+    //   if (!isResizing && (resizerPosition !== sidebarWidth)) {
+    //     console.log(resizerPosition);
+    //     console.log(sidebarWidth);
+    //     console.log('trigger');
+    //   }
+    // }, 1000)
+  // console.log(sidebarRef.current.getBoundingClientRect().width);
+
+
+
   const resizeHandler = useCallback(
     (event) => {
       if (!isResizing) return;
@@ -127,9 +140,14 @@ const TaskDetail = () => {
     }),
   ]);
 
+
+
+
+  
+
   return (
     <div
-      className="flex flex-row min-w-[360px] max-w-[700px] box-border"
+      className="flex flex-row min-w-[360px] max-w-[700px] box-border z-30"
       ref={sidebarRef}
       style={{ width: sidebarWidth, transition: "width 180ms ease" }}
     >
@@ -144,7 +162,7 @@ const TaskDetail = () => {
       ></div>
 
       <div
-        className="flex flex-col w-full h-full relative flex-1 box-border"
+        className="flex flex-col w-full h-full relative flex-1 box-border bg-ms-background"
         style={{
           boxShadow:
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",

@@ -9,6 +9,7 @@ import SortPopover from "./toolbar/SortPopover";
 import GroupPopover from "./toolbar/GroupPopover";
 import SortIndicator from "./toolbar/SortIndicator";
 import GroupIndicator from "./toolbar/GroupIndicator";
+import useViewport from "../hooks/useViewPort";
 
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -26,9 +27,11 @@ const Myday = () => {
     day: "numeric",
   });
 
+  const { width } = useViewport();
+
   return (
     <>
-      <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 mt-4 mb-10 ">
+      <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 mt-4 mb-10">
         <div className="flex items-center flex-1 min-w-100 mr-5 pt-4 ml-1">
           <div className="flex flex-col pt-1">
             <div className="flex items-center">
@@ -44,7 +47,7 @@ const Myday = () => {
                 )}
               </div>
               <div>
-                <h2 className="text-xl font-medium">My Day</h2>
+                <h2 className="text-xl font-medium text-ellipsis overflow-hidden">My Day</h2>
               </div>
               <div className="px-3">
                 <PiDotsThreeBold />
@@ -52,7 +55,7 @@ const Myday = () => {
             </div>
             <div
               className={`text-xs font-extralight text-gray-500 mt-1 ${
-                !isSidebarOpen ? "mx-8" : "mx-2"
+                !isSidebarOpen ? "ml-8" : "ml-2"
               }`}
             >
               {todayString}
@@ -65,7 +68,7 @@ const Myday = () => {
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
-              <span className="ml-1 text-sm">Suggestions</span>
+              {width > 900 && <span className="ml-1 text-sm">Suggestions</span>}
             </div>
           </div>
         </div>
