@@ -13,6 +13,7 @@ import { useState } from "react";
 import { PiFolderSimpleThin } from "react-icons/pi";
 import GroupItems from "./GroupItems";
 import useViewport from "../../hooks/useViewPort";
+import { useSelector } from "react-redux";
 
 const GroupPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -71,7 +72,8 @@ const GroupPopover = ({currentLocation}) => {
   }
 
 
-  const { width } = useViewport();
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
 
   return (
     <>
@@ -84,7 +86,7 @@ const GroupPopover = ({currentLocation}) => {
       >
         <div className="flex items-center">
           <PiFolderSimpleThin size="20px" />
-          {width > 900 && <span className="ml-1 text-sm">Group</span>}
+          {viewportWidth - detailWidth > 700 && <span className="ml-1 text-sm">Group</span>}
         </div>
       </div>
       {popoverOpen && (

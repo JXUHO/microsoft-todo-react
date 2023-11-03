@@ -27,7 +27,9 @@ const Myday = () => {
     day: "numeric",
   });
 
-  const { width } = useViewport();
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
 
   return (
     <>
@@ -68,7 +70,7 @@ const Myday = () => {
           <div className="shrink-0 cursor-pointer px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
-              {width > 900 && <span className="ml-1 text-sm">Suggestions</span>}
+              {viewportWidth - detailWidth > 700 && <span className="ml-1 text-sm">Suggestions</span>}
             </div>
           </div>
         </div>

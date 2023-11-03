@@ -15,6 +15,7 @@ import MydaySortItems from "./MydaySortItems";
 import ImportantSortItems from "./ImportantSortItems";
 import CompletedSortItems from "./CompletedSortItems";
 import useViewport from "../../hooks/useViewPort";
+import { useSelector } from "react-redux";
 
 const SortPopover = ({currentLocation}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -91,7 +92,8 @@ const SortPopover = ({currentLocation}) => {
   }
 
 
-  const { width } = useViewport();
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
 
 
   return (
@@ -105,7 +107,7 @@ const SortPopover = ({currentLocation}) => {
       >
         <div className="flex items-center">
           <PiArrowsDownUpThin size="20px" />
-          {width > 900 && <span className="ml-1 text-sm">Sort</span>}
+          {viewportWidth - detailWidth > 700 && <span className="ml-1 text-sm">Sort</span>}
         </div>
       </div>
       {popoverOpen && (

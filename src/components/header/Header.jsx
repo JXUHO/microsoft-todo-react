@@ -12,7 +12,7 @@ const Header = () => {
         <li className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100">
           <TbGridDots size="20px" />
         </li>
-        <li className="pl-2 pr-3 hover:underline text-base font-semibold">
+        <li className="pl-2 pr-3 hover:underline text-base font-semibold whitespace-nowrap">
           <Link to="/">To Do</Link>
         </li>
       </ul>

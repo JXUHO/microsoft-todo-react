@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice = createSlice({
   name: "ui",
-  initialState: { sidebar: false, detail: false, contextMenu: false, dialog: false },
+  initialState: { sidebar: false, detail: false, contextMenu: false, dialog: false, detailWidth: 360},
   reducers: {
     openSidebar: (state) => ({ ...state, sidebar: true }),
     closeSidebar: (state) => ({ ...state, sidebar: false }),
@@ -16,7 +16,10 @@ const uiSlice = createSlice({
     },
     setDialog: (state, action) => {
       state.dialog = action.payload
-    }
+    },
+    setDetailWidth: (state, action) => {
+      state.detailWidth = action.payload
+    },
   },
 });
 
@@ -27,6 +30,7 @@ export const {
   closeDetail,
   openContextMenu,
   closeContextMenu,
-  setDialog
+  setDialog,
+  setDetailWidth,
 } = uiSlice.actions;
 export default uiSlice.reducer;

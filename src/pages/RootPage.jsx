@@ -3,7 +3,7 @@ import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   initializeActiveStep,
   initializeActiveTasks,
@@ -36,7 +36,7 @@ const RootPage = () => {
   useKeyDown();
   useRemindNotification();
 
-  const { width } = useViewport();
+
   /**
    * 1. width가 1024픽셀보다 작아지면 isSidebarOpen를 false로 변경한다
    * 2. 1024 - 920픽셀까지 isSidebarOpen가 true이면 isDetailOpen를 false로, 역도 성립하도록 한다
@@ -51,16 +51,35 @@ const RootPage = () => {
    * 1. responsive 기준을 바꾸거나
    * 2. resizer와 detail bar width가 일치하지 않을 경우에, resizer의 위치를 변경하거나
    * 
+   * viewport width - uiSlice detailWidth 길이에 따라 responsive 적용
+   * viewport width - uiSlice detailWidth가 500px보다 작아지면
+   * viewport - uiSlice detailWidth - 290px가 500px보다 작아지면, 버튼 글씨 제거하고, sidebar 200px로 변경
+   * 
+   * 
+   * sidebar는 viewport width 1010px을 기준으로, 200px과 290px로 전환한다(CSS사용. 독립적)
+   * 
+   * viewport - detailWidth가 920-360 = 560px이면 sidebar를 접는다 1260 - 700
+   * 550px
+   * 
+   * 
+   * TODO
+   * viewport width가 450px보다 클때 detailbar의 최대 width가 viewport width - 50px이 된다.
+   * 450px보다 같거나 작아질 때는, detailbar가 viewport width가 된다.
+   * 
+   * header searchbar
+   *  
    * 
    */
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
 
   useEffect(() => {
-    if (width < 1024 && isSidebarOpen && isDetailOpen) {
-      console.log('trigger');
-      dispatch(closeSidebar())
-    }
-
-  }, [width, isSidebarOpen,isDetailOpen])
+    if (viewportWidth - detailWidth < 560) {
+      // console.log('trigger'); 
+      dispatch(closeSidebar());
+    } 
+  }, [viewportWidth, detailWidth])
 
   const overlayClickHandler = () => {
     dispatch(closeDetail());
@@ -71,10 +90,10 @@ const RootPage = () => {
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden">
       <Header />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
 
 
-        {width < 1024 && (isSidebarOpen || isDetailOpen) && (
+        {viewportWidth - detailWidth < 560 && (isSidebarOpen || isDetailOpen) && (
           <div
             className="absolute w-full h-full z-20 opacity-40 animate-fadeFill"
             style={{backgroundColor:"#333"}}
@@ -85,7 +104,7 @@ const RootPage = () => {
 
 
         {isSidebarOpen && <Sidebar />}
-        <div className="flex flex-1 flex-col bg-ms-background ">
+        <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
           <Outlet />
         </div>
         {isDetailOpen && <TaskDetail />}

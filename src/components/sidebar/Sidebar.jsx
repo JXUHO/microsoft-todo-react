@@ -21,15 +21,15 @@ const Sidebar = () => {
     planned: 0,
     tasks: 0,
   });
-
+  
   const closeSidebarHandler = () => {
     dispatch(closeSidebar());
   };
-
+  
   useEffect(() => {
     setCurrentLocation(location.pathname);
   }, [location]);
-
+  
   useEffect(() => {
     const countTemp = { myday: 0, important: 0, planned: 0, tasks: 0 };
     todos.forEach((todo) => {
@@ -53,15 +53,21 @@ const Sidebar = () => {
     }
     setCount(countTemp);
   }, [todos]);
+  
+
+
+  
+  const sidebarWidth = useSelector(state => state.ui.sidebarWidth)
+
+  // min-w-[200px] xl:min-w-[290px]
 
   return (
     <div
-      className="flex flex-col bg-white z-30 min-w-[200px] xl:min-w-[290px]"
+      className="flex flex-col bg-white z-30 min-w-[200px] min-[1010px]:min-w-[290px]"
       style={{
         boxShadow:
           "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
-        // width: "290px",
-        // transition: "width 180ms ease"
+        // width: sidebarWidth
       }}
     >
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
