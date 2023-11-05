@@ -9,6 +9,7 @@ import { BsSun, BsStar } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoHome } from "react-icons/go";
 import { useEffect, useState } from "react";
+import useViewport from "../../hooks/useViewPort";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,15 @@ const Sidebar = () => {
     planned: 0,
     tasks: 0,
   });
-  
+
   const closeSidebarHandler = () => {
     dispatch(closeSidebar());
   };
-  
+
   useEffect(() => {
     setCurrentLocation(location.pathname);
   }, [location]);
-  
+
   useEffect(() => {
     const countTemp = { myday: 0, important: 0, planned: 0, tasks: 0 };
     todos.forEach((todo) => {
@@ -48,26 +49,27 @@ const Sidebar = () => {
     });
     for (const element in countTemp) {
       if (countTemp[element] === 0) {
-        countTemp[element] = ""
+        countTemp[element] = "";
       }
     }
     setCount(countTemp);
   }, [todos]);
-  
 
-
-  
-  const sidebarWidth = useSelector(state => state.ui.sidebarWidth)
-
-  // min-w-[200px] xl:min-w-[290px]
+  const { width: viewportWidth } = useViewport();
+  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
 
   return (
     <div
-      className="flex flex-col bg-white z-30 min-w-[200px] min-[1010px]:min-w-[290px]"
+      className={`flex flex-col bg-white z-30 min-w-[200px] min-[1010px]:min-w-[290px] transition-all duration-200  
+                ease-out ${
+                  viewportWidth - detailWidth < 560 &&
+                  isSidebarOpen &&
+                  "absolute h-full"
+                }`}
       style={{
         boxShadow:
           "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
-        // width: sidebarWidth
       }}
     >
       <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">

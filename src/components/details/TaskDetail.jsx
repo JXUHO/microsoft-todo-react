@@ -144,17 +144,16 @@ const TaskDetail = () => {
     if (viewportWidth - detailWidth < 50 && viewportWidth > 450) {
       setResizerPosition(viewportWidth - 50);
     } else if (viewportWidth <= 450) {
-      // dispatch(setDetailWidth(viewportWidth));
       setResizerPosition(viewportWidth);
     }
   }, [viewportWidth, detailWidth]);
 
   return (
     <div
-      className="flex flex-row min-w-[360px] max-w-[700px] box-border z-30 h-full"
+      className="flex flex-row max-w-[700px] box-border z-30 h-full"
       ref={detailRef}
       style={
-        viewportWidth - detailWidth < 560 && (isSidebarOpen || isDetailOpen)
+        viewportWidth - detailWidth < 560 && isDetailOpen
           ? {
               width: detailWidth,
               transition: "width 180ms ease",

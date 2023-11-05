@@ -87,6 +87,7 @@ export default App;
  * (complete) 삭제 모달
  * (complete) remind functionality
  * (complete) complete sound
+ * (complete) UI -> searchbar hover cursor pointer
  * 
  * 
  * <필수>
@@ -125,7 +126,6 @@ export default App;
  * 
  * 
  * UI -> TaskItem myday sun icon 정렬 수정하기
- * UI -> searchbar hover cursor pointer
  * 
- */
+*/
 

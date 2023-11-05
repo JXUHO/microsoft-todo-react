@@ -1,22 +1,22 @@
 import { useEffect } from "react";
 import { useRef } from "react";
-import { useState } from "react";
 import { BsX } from "react-icons/bs";
 import { VscSearch } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addQuery, initializeQuery } from "../../store/searchSlice";
+import useViewport from "../../hooks/useViewPort";
+import { setSearchbarActive } from "../../store/uiSlice";
 
 const Searchbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef();
-  const [isActive, setIsActive] = useState(false);
-  const searchQuery = useSelector(state => state.search.query)
-  const dispatch = useDispatch()
+  const searchQuery = useSelector((state) => state.search.query);
+  const dispatch = useDispatch();
+  const isSearchbarActive = useSelector((state) => state.ui.isSearchbarActive);
 
   const searchHandler = (event) => {
-    // setUserInput(event.target.value);
     dispatch(addQuery(event.target.value));
     if (location.pathname !== "/search") {
       navigate("/search");
@@ -24,28 +24,29 @@ const Searchbar = () => {
   };
 
   const clickHandler = () => {
-    if (!isActive) {
-      setIsActive(true);
+    if (!isSearchbarActive) {
+      dispatch(setSearchbarActive(true));
       dispatch(initializeQuery());
     }
   };
+
   useEffect(() => {
-    if (isActive) {
+    if (isSearchbarActive) {
       inputRef.current.focus();
     }
-  }, [isActive]);
+  }, [isSearchbarActive]);
 
   const blurHandler = () => {
     if (location.pathname === "/search" && searchQuery === "") {
       navigate("/myday");
     }
     if (location.pathname !== "/search") {
-      setIsActive(false);
+      dispatch(setSearchbarActive(false));
     }
   };
 
   const clearButtonHandler = () => {
-    setIsActive(false);
+    dispatch(setSearchbarActive(false));
     dispatch(initializeQuery());
     if (location.pathname === "/search") {
       navigate("/myday");
@@ -54,21 +55,46 @@ const Searchbar = () => {
 
   useEffect(() => {
     if (location.pathname !== "/search") {
-      setIsActive(false);
+      dispatch(setSearchbarActive(false));
     }
   }, [location]);
 
+  const { width: viewportWidth } = useViewport();
+  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
+  const isDetailOpen = useSelector((state) => state.ui.detail);
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
+  const commonClasses =
+    "flex grow shrink-0 basis-auto items-center my-2 ml-0 mr-auto h-8 rounded-md bg-white z-10 hover:bg-ms-white-hover hover:h-2.1 hover:cursor-pointer text-black";
+
+  const searchNarrowingCondition =
+    (!isDetailOpen && !isSidebarOpen && viewportWidth < 910) ||
+    viewportWidth - detailWidth < 560;
+
+  const classes = `
+    ${
+      searchNarrowingCondition
+        ? `${
+            isSearchbarActive
+              ? commonClasses
+              : `${commonClasses} flex grow-0 shrink-0`
+          }`
+        : "flex grow shrink-0 basis-auto items-center my-2 mx-auto h-8 max-w-[400px] rounded-md bg-white z-10 hover:bg-ms-white-hover hover:h-2.1 hover:cursor-pointer text-black"
+    }
+  `;
+
   return (
-    <div
-      className="flex items-center h-8 w-100 rounded-md bg-white z-10 hover:bg-ms-white-hover hover:h-2.1 text-black"
-      onClick={clickHandler}
-    >
+    <div className={classes} onClick={clickHandler}>
       <button className="z-20 text-ms-blue mx-2">
         <VscSearch size="16px" />
       </button>
 
-      {isActive && (
-        <div className="flex flex-1 items-center h-full rounded-md">
+      {isSearchbarActive && (
+        <div
+          className={`flex flex-1 items-center h-full rounded-md ${
+            viewportWidth < 350 && "w-24"
+          }`}
+        >
           <input
             className="flex-1 rounded-r-md outline-none bg-transparent"
             onChange={searchHandler}
@@ -90,10 +116,3 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
-
-/**
- * TODO
- * seachbar active된 상태에서 clear버튼 누르면 searchbar clear -> isActive==false에 따른 flickering 발생
- * location 변화에 따라 useEffect hook trigger되므로, 성능에 악영향
- */
-
