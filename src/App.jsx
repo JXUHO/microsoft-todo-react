@@ -89,11 +89,11 @@ export default App;
  * (complete) complete sound
  * (complete) UI -> searchbar hover cursor pointer
  * (complete) 반응형으로 만들기(사이즈 따라 다르게)
+ * (complete) Detailbar zIndex floating ui zIndex 조정해야함
  * 
  * 
  * <필수>
  * 
- * Detailbar zIndex floating ui zIndex 조정해야함
  * 
  * backend 연결
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기

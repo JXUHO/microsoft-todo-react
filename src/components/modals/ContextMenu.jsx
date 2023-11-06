@@ -128,7 +128,7 @@ export const Menu = forwardRef(
         {isOpen && (
           <FloatingFocusManager context={context} initialFocus={refs.floating}>
             <div
-              className="min-w-[250px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5"
+              className="min-w-[250px] max-w-[290px] rounded bg-white flex flex-col overflow-hidden py-1.5 z-50"
               ref={refs.setFloating}
               style={{
                 ...floatingStyles,
