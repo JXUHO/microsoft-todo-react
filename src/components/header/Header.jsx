@@ -7,11 +7,18 @@ import { TbSpeakerphone } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import useViewport from "../../hooks/useViewPort";
-import { setAppLauncherActive } from "../../store/uiSlice";
+import {
+  setAccountManagerActive,
+  setAppLauncherActive,
+  switchAccountManagerActive,
+} from "../../store/uiSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const isSearchbarActive = useSelector((state) => state.ui.isSearchbarActive);
+  const isSearchbarActive = useSelector((state) => state.ui.searchbarActive);
+  const isAccountManagerActive = useSelector(
+    (state) => state.ui.accountManagerActive
+  );
   const { width: viewportWidth } = useViewport();
 
   return (
@@ -31,23 +38,37 @@ const Header = () => {
         <Searchbar />
 
         {!(isSearchbarActive && viewportWidth < 430) && (
-          <div className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100" title="Settings">
+          <div
+            className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100"
+            title="Settings"
+          >
             <AiOutlineSetting size="20px" />
           </div>
         )}
         {!(isSearchbarActive && viewportWidth < 478) && (
-          <div className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100" title="Help">
+          <div
+            className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100"
+            title="Help"
+          >
             <RxQuestionMark size="20px" />
           </div>
         )}
         {!(isSearchbarActive && viewportWidth < 525) && (
-          <div className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100" title="What's new">
+          <div
+            className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100"
+            title="What's new"
+          >
             <TbSpeakerphone size="20px" />
           </div>
         )}
       </div>
       {!(isSearchbarActive && viewportWidth < 400) ? (
-        <div className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100" title="Account manager">
+        <div
+          id="accountManagerButton"
+          className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100"
+          onClick={() => dispatch(switchAccountManagerActive())}
+          title="Account manager"
+        >
           <CgProfile size="20px" />
         </div>
       ) : (

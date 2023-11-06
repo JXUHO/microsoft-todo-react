@@ -17,6 +17,7 @@ import useKeyDown from "../hooks/useKeydown";
 import useViewport from "../hooks/useViewPort";
 import AppLauncher from "../panels/AppLauncher";
 import SidebarOverlay from "../components/ui/SidebarOverlay";
+import AccountManager from "../panels/AccountManager";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -51,7 +52,12 @@ const RootPage = () => {
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden">
       <Header />
       <AppLauncher />
+        <AccountManager/>
       <div className="flex flex-1 overflow-hidden relative">
+        
+          
+
+
         <SidebarOverlay />
         {isSidebarOpen && <Sidebar />}
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">

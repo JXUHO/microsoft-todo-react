@@ -8,8 +8,9 @@ const uiSlice = createSlice({
     contextMenu: false,
     dialog: false,
     detailWidth: 360,
-    isSearchbarActive: false,
-    appLauncherActive: false
+    searchbarActive: false,
+    appLauncherActive: false,
+    accountManagerActive: false
   },
   reducers: {
     openSidebar: (state) => ({ ...state, sidebar: true }),
@@ -29,11 +30,17 @@ const uiSlice = createSlice({
       state.detailWidth = action.payload;
     },
     setSearchbarActive: (state, action) => {
-      state.isSearchbarActive = action.payload;
+      state.searchbarActive = action.payload;
     },
     setAppLauncherActive: (state, action) => {
       state.appLauncherActive = action.payload;
-    }
+    },
+    setAccountManagerActive: (state, action) => {
+      state.accountManagerActive = action.payload;
+    },
+    switchAccountManagerActive: (state) => {
+      state.accountManagerActive = !state.accountManagerActive;
+    },
   },
 });
 
@@ -47,6 +54,8 @@ export const {
   setDialog,
   setDetailWidth,
   setSearchbarActive,
-  setAppLauncherActive  
+  setAppLauncherActive,
+  setAccountManagerActive,
+  switchAccountManagerActive
 } = uiSlice.actions;
 export default uiSlice.reducer;

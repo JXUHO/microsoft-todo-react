@@ -14,7 +14,7 @@ const Searchbar = () => {
   const inputRef = useRef();
   const searchQuery = useSelector((state) => state.search.query);
   const dispatch = useDispatch();
-  const isSearchbarActive = useSelector((state) => state.ui.isSearchbarActive);
+  const isSearchbarActive = useSelector((state) => state.ui.searchbarActive);
 
   const searchHandler = (event) => {
     dispatch(addQuery(event.target.value));

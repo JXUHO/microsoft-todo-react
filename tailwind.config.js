@@ -40,6 +40,7 @@ export default {
         checkAnimationBase: "checkAnimationBase 100ms",
         fillAnimation: "fillAnimation 100ms",
         fadeFill: "fadeFill 180ms",
+        fadeFillSlow: "fadeFill 90ms",
         slideInFrames: "slideInFrames 180ms"
       },
       keyframes: {
