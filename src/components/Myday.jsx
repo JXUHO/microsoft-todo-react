@@ -67,7 +67,7 @@ const Myday = () => {
         <div className="flex">
           <SortPopover currentLocation="myday" />
           <GroupPopover currentLocation="myday"/>
-          <div className="shrink-0 cursor-pointer px-3 ml-0.5">
+          <div className="shrink-0 cursor-not-allowed px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
               {viewportWidth - detailWidth > 700 && <span className="ml-1 text-sm">Suggestions</span>}

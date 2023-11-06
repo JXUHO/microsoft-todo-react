@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const ClickOutsideHandler  = ({ onOutsideClick, children }) => {
+const useClickOutside  = ({ onOutsideClick, children }) => {
   const elementRef = useRef(null);
 
   useEffect(() => {
@@ -20,11 +20,4 @@ const ClickOutsideHandler  = ({ onOutsideClick, children }) => {
   return <div ref={elementRef}>{children}</div>;
 };
 
-export default ClickOutsideHandler ;
-
-
-/**
- * title
- * list 
- * divider
- */
+export default useClickOutside ;

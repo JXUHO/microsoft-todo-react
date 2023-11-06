@@ -88,16 +88,17 @@ export default App;
  * (complete) remind functionality
  * (complete) complete sound
  * (complete) UI -> searchbar hover cursor pointer
+ * (complete) 반응형으로 만들기(사이즈 따라 다르게)
  * 
  * 
  * <필수>
  * 
- * 반응형으로 만들기(사이즈 따라 다르게)
+ * Detailbar zIndex floating ui zIndex 조정해야함
  * 
  * backend 연결
- * 
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기
  * 
+ * Notion 개발일지 가지고와서 list로 render하기
  * 
  * 
  * 

@@ -39,7 +39,8 @@ export default {
         slideFadeDown5: "slideFadeDown5 200ms forwards",
         checkAnimationBase: "checkAnimationBase 100ms",
         fillAnimation: "fillAnimation 100ms",
-        fadeFill: "fadeFill 180ms"
+        fadeFill: "fadeFill 180ms",
+        slideInFrames: "slideInFrames 180ms"
       },
       keyframes: {
         clock90: {
@@ -110,6 +111,16 @@ export default {
             opacity: "0.4"
           },
         },
+        slideInFrames: {
+          "0%": {
+            opacity: "0",
+            transform:"scale(.95)"
+          },
+          "100%": {
+            opacity: "1",
+            transform:"scale(1)"
+          }
+        }
       },
       width: {
         divider: "calc(100% - 25px)",
