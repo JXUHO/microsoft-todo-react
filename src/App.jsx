@@ -96,10 +96,11 @@ export default App;
  * 
  * 
  * backend 연결
- * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기
+ * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기)
  * 
  * Notion 개발일지 가지고와서 list로 render하기
- * 
+ * searchbar esc버튼
+ * dark theme
  * 
  * 
  * AddTask component retraction

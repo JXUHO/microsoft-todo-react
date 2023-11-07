@@ -59,7 +59,11 @@ const Searchbar = () => {
     }
   }, [location]);
 
-  // esc버튼 초기화 구현
+  const keyDownHandler = (event) => {
+    if (event.key === "Escape") {
+      clearButtonHandler()
+    }
+  }
 
 
   const { width: viewportWidth } = useViewport();
@@ -105,6 +109,7 @@ const Searchbar = () => {
             ref={inputRef}
             onBlur={blurHandler}
             value={searchQuery}
+            onKeyDown={keyDownHandler}
           />
           <button
             className="flex items-center justify-center w-8 h-full"
