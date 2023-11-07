@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAccountManagerActive } from "../store/uiSlice";
 import { useEffect } from "react";
+import { setHeaderButton } from "../store/uiSlice";
 
 const AccountManager = () => {
   const dispatch = useDispatch()
@@ -19,7 +19,7 @@ const AccountManager = () => {
         if (event.target.closest("#accountManagerButton")) {
           return;
         }
-        dispatch(setAccountManagerActive(false));
+        dispatch(setHeaderButton({property:"accountManagerActive", value:false}));
       }
     };
     if (isAccountManagerActive) {

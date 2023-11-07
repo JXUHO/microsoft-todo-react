@@ -59,6 +59,9 @@ const Searchbar = () => {
     }
   }, [location]);
 
+  // esc버튼 초기화 구현
+
+
   const { width: viewportWidth } = useViewport();
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);

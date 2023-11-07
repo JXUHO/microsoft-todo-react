@@ -21,6 +21,7 @@ export default {
         "ms-input-hover": "#edebe9",
         "ms-active-tertiary": "#f3f2f1",
         "ms-warning": "#a80000",
+        "ms-button-hover": "#E1DFDD"
       },
       height: {
         18: "4.5rem",
@@ -41,7 +42,8 @@ export default {
         fillAnimation: "fillAnimation 100ms",
         fadeFill: "fadeFill 180ms",
         fadeFillSlow: "fadeFill 90ms",
-        slideInFrames: "slideInFrames 180ms"
+        slideInFrames: "slideInFrames 180ms",
+        slideContentIn: "slideContentIn 280ms"
       },
       keyframes: {
         clock90: {
@@ -120,6 +122,16 @@ export default {
           "100%": {
             opacity: "1",
             transform:"scale(1)"
+          }
+        },
+        slideContentIn: {
+          "0%": {
+            opacity: "0",
+            transform:"translate3d(80px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform:"translate3d(0)"
           }
         }
       },
