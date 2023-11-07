@@ -3,6 +3,61 @@
 @tailwind utilities;
 
 
+@layer base {
+  :root {
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-ms-text-dark: #292827;
+    --color-ms-blue: #2564cf;
+    --color-ms-blue-hover: #215aba;
+    --color-ms-background: #faf9f8;
+    --color-ms-white-hover: #f5f4f4;
+    --color-ms-font-blue: #2564cf;
+    --color-ms-active-blue: #eff6fc;
+    --color-ms-bg-border: #e1dfdd;
+    --color-ms-scrollbar: #8a8886;
+    --color-ms-light-text: #605E5C;
+    --color-ms-input-hover: #edebe9;
+    --color-ms-active-tertiary: #f3f2f1;
+    --color-ms-warning: #a80000;
+    --color-ms-button-hover: #E1DFDD
+  }
+  @media (prefers-color-scheme:dark) {
+    :root {
+      --color-white: #252423;
+      --color-black: #ffffff;
+      --color-ms-text-dark: #f5f4f4;
+      --color-ms-blue: #78BAFD;
+      --color-ms-blue-hover: #78BAFD;
+      --color-ms-background: #11100f;
+      --color-ms-white-hover: #292827;
+      --color-ms-font-blue: #78BAFD;
+      --color-ms-active-blue: #3b3a39;
+      --color-ms-bg-border: #e1dfdd;
+      --color-ms-scrollbar: #8a8886;
+      --color-ms-light-text: #A19F9D;
+      --color-ms-input-hover: #edebe9;
+      --color-ms-active-tertiary: #292827;
+      --color-ms-warning: #F1707B;
+      --color-ms-button-hover: #E1DFDD
+    }
+  }
+}
+
+/**
+
+#323130
+#11100f
+#292827
+#e1dfdd
+#8a8886
+#605E5C
+#edebe9
+#f3f2f1
+
+*/
+
+
 *,*:focus{
   outline:none;
 }

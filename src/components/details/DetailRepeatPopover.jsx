@@ -204,20 +204,20 @@ const DetailRepeatPopover = ({ taskId }) => {
       >
         {todo.repeatRule ? (
           <div
-            className={`flex w-full ${
+            className={`flex w-full text-ms-blue ${
               repeatText.description ? "px-4 py-2" : "p-4"
             }`}
-            style={{ color: "#2564cf" }}
+            // style={{ color: "#2564cf" }}
           >
             <div
-              className="flex items-center flex-auto"
+              className="flex items-center flex-auto text-ms-blue"
               ref={floatingRef}
               {...repeatButtonProps}
             >
-              <BsRepeat size="17px" color="#2564cf" />
-              <div className="mx-4">
+              <BsRepeat size="17px" />
+              <div className="mx-4 ">
                 <div>{repeatText.title}</div>
-                <div style={{ fontSize: "11px", color: "#292827" }}>
+                <div className="text-ms-light-text" style={{ fontSize: "11px" }}>
                   {repeatText.description}
                 </div>
               </div>

@@ -23,8 +23,7 @@ const DueCalendar = ({ onCalendarSaveClick, dueDateValue }) => {
         inline
         renderCustomHeader={({ decreaseMonth, increaseMonth, date }) => (
           <div
-            className="flex items-center justify-between py-1 bg-white"
-            style={{ color: "#292827" }}
+            className="flex items-center justify-between py-1 bg-white text-ms-text-dark"
           >
             <p className="text-sm font-semibold px-4 ml-2">
               {date.toLocaleDateString(undefined, options)}

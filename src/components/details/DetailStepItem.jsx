@@ -103,7 +103,6 @@ const DetailStepItem = ({ step, taskId }) => {
     }),
   ]);
 
-
   return (
     <div
       className={`flex flex-col w-full after:block after:content-[''] after:w-divider after:border-b after:ml-auto `}
@@ -111,22 +110,29 @@ const DetailStepItem = ({ step, taskId }) => {
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className="flex items-center justify-between p-4 w-full bg-white hover:bg-ms-white-hover"
-        style={{backgroundColor:  isActive === step.id ? "#f3f2f1" : (isHover ? "#f5f4f4" : "white")}}
+        className={`flex items-center justify-between p-4 w-full hover:bg-ms-white-hover 
+        ${
+          isActive === step.id
+            ? "bg-ms-active-tertiary"
+            : isHover
+            ? "bg-ms-white-hover"
+            : "bg-white"
+        }
+        `}
         onClick={activeStepHandler}
       >
-        <span 
-          className="flex items-center justify-center hover:cursor-pointer px-0.5"
+        <span
+          className="flex items-center justify-center hover:cursor-pointer px-0.5 text-ms-blue dark:text-ms-blue-hover"
           onClick={completeStepHandler}
           onMouseEnter={() => setIsCheckHover(true)}
           onMouseLeave={() => setIsCheckHover(false)}
         >
           {step.complete ? (
-            <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+            <BsCheckCircleFill size="16px" />
           ) : isCheckHover ? (
-            <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+            <BsCheckCircle size="16px" />
           ) : (
-            <BsCircle size="16px" style={{ color: "#2564cf" }} />
+            <BsCircle size="16px" />
           )}
         </span>
 
@@ -139,12 +145,18 @@ const DetailStepItem = ({ step, taskId }) => {
             onBlur={blurHandler}
             onFocus={focusHandler}
             onKeyDown={keyDownHandler}
+            className={`${
+              isActive === step.id
+                ? "bg-ms-active-tertiary"
+                : isHover
+                ? "bg-ms-white-hover"
+                : "bg-white"
+            }`}
             style={{
               height: "21px",
               border: "none",
               outline: "none",
               resize: "none",
-              backgroundColor:  isActive === step.id ? "#f3f2f1" : (isHover ? "#f5f4f4" : "white"),
               textDecoration: step.complete && !isFocused ? "line-through" : "",
             }}
           />

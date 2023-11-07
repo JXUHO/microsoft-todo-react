@@ -45,7 +45,7 @@ const RemindItems = ({
 
   return (
     <div
-      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5"
+      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5 dark:text-[#ffffff]"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
@@ -120,7 +120,7 @@ const RemindItems = ({
         />
           <li className="text-left min-h-[38px] flex relative items-center font-normal text-sm hover:bg-ms-white-hover">
             <button onClick={onRemoveReminderButtonClick} className="py-0 pr-4 pl-3 w-full h-9 cursor-pointer text-left">
-              <div className="flex items-center max-w-full text-red-600">
+              <div className="flex items-center max-w-full text-ms-warning">
                 <BsTrash3 style={{ marginLeft: "4px", marginRight: "14px" }} />
                 <span className="px-1 py-0 grow">Remove reiminder</span>
               </div>

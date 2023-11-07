@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -8,20 +9,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        "ms-blue": "#2564cf",
-        "ms-blue-hover": "#215aba",
-        "ms-background": "#faf9f8",
-        "ms-white-hover": "#f5f4f4",
+        'white': 'var(--color-white)',
+        'black': 'var(--color-black)',
+        'ms-text-dark': 'var(--color-ms-text-dark)',
+        "ms-blue": "var(--color-ms-blue)",
+        "ms-blue-hover": "var(--color-ms-blue-hover)",
+        "ms-background": "var(--color-ms-background)",
+        "ms-white-hover": "var(--color-ms-white-hover)",
         "ms-bg-shadow": "box-shadow: 0px 0.3px 0.9px rgba(0,0,0,0.1)",
-        "ms-font-blue": "#2564cf",
-        "ms-active-blue": "#eff6fc",
-        "ms-bg-border": "#e1dfdd",
-        "ms-scrollbar": "#8a8886",
-        "ms-light-text": "#605E5C",
-        "ms-input-hover": "#edebe9",
-        "ms-active-tertiary": "#f3f2f1",
-        "ms-warning": "#a80000",
-        "ms-button-hover": "#E1DFDD"
+        "ms-font-blue": "var(--color-ms-font-blue)",
+        "ms-active-blue": "var(--color-ms-active-blue)",
+        "ms-bg-border": "var(--color-ms-bg-border)",
+        "ms-scrollbar": "var(--color-ms-scrollbar)",
+        "ms-light-text": "var(--color-ms-light-text)",
+        "ms-input-hover": "var(--color-ms-input-hover)",
+        "ms-active-tertiary": "var(--color-ms-active-tertiary)",
+        "ms-warning": "var(--color-ms-warning)",
+        "ms-button-hover": "var(--color-ms-button-hover)"
       },
       height: {
         18: "4.5rem",
@@ -146,3 +150,24 @@ export default {
     },
   },
 };
+
+
+
+/**
+ * colors: {
+        "ms-blue": "#2564cf",
+        "ms-blue-hover": "#215aba",
+        "ms-background": "#faf9f8",
+        "ms-white-hover": "#f5f4f4",
+        "ms-bg-shadow": "box-shadow: 0px 0.3px 0.9px rgba(0,0,0,0.1)",
+        "ms-font-blue": "#2564cf",
+        "ms-active-blue": "#eff6fc",
+        "ms-bg-border": "#e1dfdd",
+        "ms-scrollbar": "#8a8886",
+        "ms-light-text": "#605E5C",
+        "ms-input-hover": "#edebe9",
+        "ms-active-tertiary": "#f3f2f1",
+        "ms-warning": "#a80000",
+        "ms-button-hover": "#E1DFDD"
+      },
+ */

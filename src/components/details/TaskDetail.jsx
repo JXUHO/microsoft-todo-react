@@ -174,7 +174,7 @@ const TaskDetail = () => {
       ></div>
 
       <div
-        className="flex flex-col w-full h-full relative flex-1 box-border bg-ms-background"
+        className="flex flex-col w-full h-full relative flex-1 box-border bg-ms-background dark:bg-[#323130]"
         style={{
           boxShadow:
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
@@ -192,7 +192,7 @@ const TaskDetail = () => {
               <LuPanelRightClose size="16px" />
             </button>
 
-            <p className="text-xs leading-5" style={{ color: "#605E5C" }}>
+            <p className="text-xs leading-5 text-ms-light-text" >
               Created {createdTime}
             </p>
 

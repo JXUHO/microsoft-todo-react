@@ -133,8 +133,8 @@ const AddTask = ({ currentLocation }) => {
         className="flex items-center min-h-[52px] bg-white px-4 w-full"
         style={{ borderBottom: "1px solid #e1dfdd" }}
       >
-        <div className="ml-2 cursor-pointer">
-          <GoCircle color="#2564cf" size="18px" />
+        <div className="ml-2 cursor-pointer text-ms-blue">
+          <GoCircle size="18px" />
         </div>
         <input
           className="px-4 placeholder:text-ms-blue focus:placeholder:text-gray-500"

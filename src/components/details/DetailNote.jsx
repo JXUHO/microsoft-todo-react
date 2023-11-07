@@ -44,7 +44,7 @@ const DetailNote = ({ taskId }) => {
         ref={inputRef}
         type="text"
         placeholder="Add note"
-        className="placeholder:text-gray-500"
+        className="placeholder:text-gray-500 bg-white"
         style={{ outline: "none", resize: "none" }}
         onChange={noteInputHandler}
         value={note}

@@ -137,7 +137,7 @@ const RemindPopover = forwardRef(({ setRemindValue, remindValue }, ref) => {
         <button
           ref={floatingRef}
           {...remindButtonProps}
-          className="flex items-center bg-white px-2 py-px"
+          className="flex items-center bg-white px-2 py-px text-ms-text-dark"
           style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
         >
           <VscBell size="17px" color="#797775" />

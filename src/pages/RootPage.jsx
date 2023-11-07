@@ -48,7 +48,7 @@ const RootPage = () => {
   }, [viewportWidth, detailWidth]);
 
   return (
-    <div className="flex flex-col bg-ms-background h-screen overflow-hidden">
+    <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
       <Header />
       <HeaderPanels/>
       <div className="flex flex-1 overflow-hidden relative">

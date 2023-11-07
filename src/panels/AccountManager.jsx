@@ -45,7 +45,7 @@ const AccountManager = () => {
             transition: "visibility 0s linear 120ms,opacity 120ms ease",
           }}
         >
-          <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_3fr] leading-normal items-stretch h-full">
+          <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_3fr] leading-normal items-stretch h-full text-black">
             <div className="col-start-1 col-end-2 self-center text-sm px-4">
               Welcome!
             </div>

@@ -16,7 +16,6 @@ import { IoCalendarOutline } from "react-icons/io5";
 import DueItems from "./DueItems";
 import { getCustomFormatDateString } from "../../utils/getDates";
 import DueCalendar from "./DueCalendar";
-import { useRef } from "react";
 
 const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -134,7 +133,7 @@ const DuePopover = forwardRef(({ setDueDateValue, dueDateValue }, ref) => {
         <button
           ref={floatingRef}
           {...dueButtonProps}
-          className="flex items-center bg-white px-2 py-px"
+          className="flex items-center bg-white px-2 py-px text-ms-text-dark"
           style={{ border: "1px solid #edebe9", borderRadius: "4px" }}
         >
           <IoCalendarOutline size="17px" color="#797775" />

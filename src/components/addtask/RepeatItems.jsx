@@ -17,7 +17,7 @@ const RepeatItems = ({
 }) => {
   return (
     <div
-      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] overflow-auto max-h-[15%] animate-slideFadeDown5"
+      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] overflow-auto max-h-[15%] animate-slideFadeDown5 dark:text-[#ffffff]"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
@@ -131,7 +131,7 @@ const RepeatItems = ({
                 onClick={onNeverRepeatClick}
                 className="py-0 pr-4 pl-3 w-full h-9 cursor-pointer text-left"
               >
-                <div className="flex items-center max-w-full text-red-600">
+                <div className="flex items-center max-w-full text-ms-warning">
                   <BsTrash3 style={{ marginLeft: "6px", marginRight: "6px" }} />
                   <span className="px-1">Never Repeat</span>
                 </div>

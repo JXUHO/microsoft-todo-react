@@ -9,10 +9,10 @@ const HeaderPanels = () => {
   return (
     <>
       <AppLauncher />
-      <AccountManager />
       <Settings/>
       <Help/>
       <WhatsNew/>
+      <AccountManager />
     </>
   )
 }

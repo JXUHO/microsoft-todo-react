@@ -59,18 +59,18 @@ const DetailSteps = ({ taskId }) => {
             
 
       <div className="flex items-center bg-white w-full p-4">
-        <div className="flex items-center cursor-pointer px-0.5">
+        <div className="flex items-center cursor-pointer px-0.5 text-ms-blue dark:text-ms-blue-hover">
           {isFocused ? (
-          <BsCircle color="#2564cf" size="16px" />
+          <BsCircle size="16px" />
           ) : (
             <button onClick={focusHandler}>
-              <TfiPlus size="16px" style={{ color: "#2564cf" }} />
+              <TfiPlus size="16px"  />
             </button>
           )}
         </div>
         <input
           ref={inputRef}
-          className="px-4 placeholder:text-ms-blue focus:placeholder:text-gray-500"
+          className="px-4 placeholder:text-ms-blue dark:placeholder:text-ms-blue-hover focus:placeholder:text-gray-500"
           style={{
             border: "none",
             backgroundColor: "transparent",

@@ -69,7 +69,7 @@ const DetailCategories = ({ taskId }) => {
                 "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
             }}
           >
-            <ul style={{ color: "#292827" }}>
+            <ul className="text-black">
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
                   todo.category.includes("blue")

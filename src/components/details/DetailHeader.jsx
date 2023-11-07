@@ -143,22 +143,22 @@ const DetailHeader = ({ taskId }) => {
           onClick={completedHandler}
         >
           {todo.complete ? (
-            <div className="animate-checkAnimationBase">
-              <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+            <div className="animate-checkAnimationBase text-ms-font-blue">
+              <BsCheckCircleFill size="16px"/>
             </div>
           ) : (
             <div className="flex items-center">
-              <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20">
-                <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+              <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20 text-ms-font-blue">
+                <BsCheckCircle size="16px"/>
               </div>
-              <div className="z-10">
-                <BsCircle size="16px" style={{ color: "#2564cf" }} />
+              <div className="z-10 text-ms-font-blue">
+                <BsCircle size="16px" />
               </div>
             </div>
           )}
         </span>
 
-        <div className="w-full text-base font-semibold px-4 ">
+        <div className={`w-full text-base font-semibold px-4 ${isHover ? "bg-ms-white-hover" : "bg-white"}`}>
           {isActive ? (
             <TextareaAutosize
               ref={textAreaRef}
@@ -170,9 +170,9 @@ const DetailHeader = ({ taskId }) => {
               onKeyDown={keyDownHandler}
               maxLength="255"
               maxRows={12}
+              className={`dark:bg-[#292827] ${isHover ? "bg-ms-white-hover" : "bg-white"}`}
               style={{
                 resize: "none",
-                backgroundColor: isHover ? "#f5f4f4" : "white",
                 textDecoration:
                   todo.complete && !isFocused ? "line-through" : "",
                 color: todo.complete && !isFocused ? "#767678" : "",
@@ -185,7 +185,6 @@ const DetailHeader = ({ taskId }) => {
               className="break-all leading-5 max-h-60 overflow-y-auto hover:cursor-text"
               onClick={clickHandler}
               style={{
-                backgroundColor: isHover ? "#f5f4f4" : "white",
                 textDecoration:
                   todo.complete && !isFocused ? "line-through" : "",
                 color: todo.complete && !isFocused ? "#767678" : "",
@@ -197,17 +196,17 @@ const DetailHeader = ({ taskId }) => {
         </div>
 
         <div
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer text-ms-font-blue"
           onClick={importanceHandler}
           ref={tooltipRefs.setReference}
           {...getTooltipReferenceProps()}
         >
           {todo.importance ? (
-            <div className="animate-fillAnimation">
-              <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+            <div className="animate-fillAnimation ">
+              <BsStarFill size="18px" />
             </div>
           ) : (
-            <BsStar size="18px" style={{ color: "#2564cf" }} />
+            <BsStar size="18px" />
           )}
         </div>
       </div>

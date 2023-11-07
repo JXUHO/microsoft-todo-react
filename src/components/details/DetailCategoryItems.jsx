@@ -41,7 +41,7 @@ const DetailCategoryItems = ({
                 Blue category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-blue-600 text-blue-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-blue-600 text-blue-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "blue")}
               >
                 <BsXLg />
@@ -61,7 +61,7 @@ const DetailCategoryItems = ({
                 Green category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-green-600 text-green-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-green-600 text-green-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "green")}
               >
                 <BsXLg />
@@ -81,7 +81,7 @@ const DetailCategoryItems = ({
                 Orange category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-orange-600 text-orange-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-orange-600 text-orange-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "orange")}
               >
                 <BsXLg />
@@ -101,7 +101,7 @@ const DetailCategoryItems = ({
                 Purple category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-purple-600 text-purple-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-purple-600 text-purple-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "purple")}
               >
                 <BsXLg />
@@ -121,7 +121,7 @@ const DetailCategoryItems = ({
                 Red category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-red-600 text-red-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-red-600 text-red-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "red")}
               >
                 <BsXLg />
@@ -141,7 +141,7 @@ const DetailCategoryItems = ({
                 Yellow category
               </div>
               <div
-                className="flex items-center px-1 h-full rounded-r hover:bg-yellow-600 text-yellow-500 hover:text-ms-white-hover"
+                className="flex items-center px-1 h-full hover:bg-yellow-600 text-yellow-500 hover:text-ms-white-hover"
                 onClick={(event) => removeCategoryHandler(event, "yellow")}
               >
                 <BsXLg />

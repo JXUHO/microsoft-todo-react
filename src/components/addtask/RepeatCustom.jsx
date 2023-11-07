@@ -85,25 +85,16 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
             min={1}
             value={repeatCustomInterval}
             onChange={repeatCustomIntervalHandler}
-            style={{
-              padding: "3px",
-              boxSizing: "border-box",
-              background: "white",
-              border: "solid 1px #edebe9",
-            }}
+            className="bg-white text-black border border-solid border-ms-input-hover box-border"
+            style={{ padding: "3px" }}
           />
         </div>
         <div className="flex m-1.5 items-center" style={{ flex: "2" }}>
           <select
             value={repeatCustomOption}
             onChange={repeatCustomOptionHandler}
-            className="w-full"
-            style={{
-              padding: "3px",
-              boxSizing: "border-box",
-              background: "white",
-              border: "solid 1px #edebe9",
-            }}
+            className="w-full bg-white text-black border border-solid border-ms-input-hover box-border"
+            style={{ padding: "3px" }}
           >
             <option value="day">days</option>
             <option value="week">weeks</option>
@@ -114,138 +105,74 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
       </div>
 
       {isWeek && (
-        <div className="flex justify-center rounded w-full m-1.5 text-xs">
+        <div className="flex justify-center rounded w-full m-1.5 text-xs text-black">
           <button
             onClick={() => repeatCustomWeekdaysHandler("sun")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.sun
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             Su
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("mon")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.mon
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             Mo
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("tue")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.tue
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             Tu
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("wed")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.wed
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             We
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("thu")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.thu
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             Th
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("fri")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.fri
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover border-r-0"
+            }`}
           >
             Fr
           </button>
           <button
             onClick={() => repeatCustomWeekdaysHandler("sat")}
-            className="shrink-0 h-9 w-9 text-center"
-            style={
+            className={`shrink-0 h-9 w-9 text-center ${
               repeatCustomWeekdays.sat
-                ? {
-                    color: "white",
-                    borderColor: "#2564cf",
-                    background: "#2564cf",
-                  }
-                : {
-                    borderBottom: "1px solid #edebe9",
-                    borderTop: "1px solid #edebe9",
-                    borderLeft: "1px solid #edebe9",
-                    borderRight: "1px solid #edebe9",
-                  }
-            }
+                ? "text-white border-ms-blue bg-ms-blue"
+                : "border-solid border border-ms-input-hover"
+            }`}
           >
             Sa
           </button>
@@ -264,7 +191,3 @@ const RepeatCustom = ({ setRepeatRule, closeCustom }) => {
 };
 
 export default RepeatCustom;
-
-/**
- * day, month, year 2 이상 custom 됐을때 오류 발생.
- */

@@ -164,6 +164,7 @@ const todoSlice = createSlice({
       const stepToChange = todoToChange.steps.find(
         (step) => step.id === action.payload.stepId
       );
+      if(!stepToChange.complete) new Audio(popSound).play()
       stepToChange.complete = !stepToChange.complete;
     },
     removeStep: (state, action) => {

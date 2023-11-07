@@ -40,8 +40,7 @@ const DetailOptions = ({ taskId }) => {
         onMouseLeave={() => setIsMydayHover(false)}
       >
         <div
-          className="flex w-full items-center"
-          style={{ color: isMyday ? "#2564cf" : "" }}
+          className={`flex w-full items-center ${isMyday ? "text-ms-font-blue": ""}`}
         >
           <BsSun size="16px" />
           <span className="mx-4">
