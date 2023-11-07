@@ -90,6 +90,7 @@ export default App;
  * (complete) UI -> searchbar hover cursor pointer
  * (complete) 반응형으로 만들기(사이즈 따라 다르게)
  * (complete) Detailbar zIndex floating ui zIndex 조정해야함
+ * (complete) searchbar esc버튼
  * 
  * 
  * <필수>
@@ -99,7 +100,6 @@ export default App;
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기)
  * 
  * Notion 개발일지 가지고와서 list로 render하기
- * searchbar esc버튼
  * dark theme
  * 
  * 

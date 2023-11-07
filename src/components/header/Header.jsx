@@ -22,28 +22,54 @@ const Header = () => {
   );
 
   const headerButtonsClickHandler = (option) => {
-    dispatch(
-      setHeaderButton({ property: "accountManagerActive", value: false })
-    );
-    dispatch(setHeaderButton({ property: "settingsActive", value: false }));
-    dispatch(setHeaderButton({ property: "helpActive", value: false }));
-    dispatch(setHeaderButton({ property: "whatsNewActive", value: false }));
     switch (option) {
       case "settings":
-        dispatch(setHeaderButton({ property: "settingsActive", value: true }));
+        dispatch(
+          setHeaderButton({
+            property: "settingsActive",
+            value: !isSettingsActive,
+          })
+        );
+        dispatch(setHeaderButton({ property: "helpActive", value: false }));
+        dispatch(setHeaderButton({ property: "whatsNewActive", value: false }));
+        dispatch(
+          setHeaderButton({ property: "accountManagerActive", value: false })
+        );
         break;
       case "help":
-        dispatch(setHeaderButton({ property: "helpActive", value: true }));
+        dispatch(
+          setHeaderButton({ property: "helpActive", value: !isHelpActive })
+        );
+        dispatch(setHeaderButton({ property: "settingsActive", value: false }));
+        dispatch(setHeaderButton({ property: "whatsNewActive", value: false }));
+        dispatch(
+          setHeaderButton({ property: "accountManagerActive", value: false })
+        );
         break;
       case "whatsNew":
-        dispatch(setHeaderButton({ property: "whatsNewActive", value: true }));
+        dispatch(
+          setHeaderButton({
+            property: "whatsNewActive",
+            value: !isWhatsNewActive,
+          })
+        );
+        dispatch(setHeaderButton({ property: "settingsActive", value: false }));
+        dispatch(setHeaderButton({ property: "helpActive", value: false }));
+        dispatch(
+          setHeaderButton({ property: "accountManagerActive", value: false })
+        );
         break;
       case "accountManager":
         dispatch(
-          setHeaderButton({ property: "accountManagerActive", value: true })
+          setHeaderButton({
+            property: "accountManagerActive",
+            value: !isAccountManagerActive,
+          })
         );
+        dispatch(setHeaderButton({ property: "settingsActive", value: false }));
+        dispatch(setHeaderButton({ property: "helpActive", value: false }));
+        dispatch(setHeaderButton({ property: "whatsNewActive", value: false }));
         break;
-
       default:
         break;
     }
