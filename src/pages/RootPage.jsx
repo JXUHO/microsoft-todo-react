@@ -17,6 +17,7 @@ import useKeyDown from "../hooks/useKeydown";
 import useViewport from "../hooks/useViewPort";
 import SidebarOverlay from "../components/ui/SidebarOverlay";
 import HeaderPanels from "../panels/HeaderPanels";
+import useTheme from "../hooks/useTheme";
 
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -37,6 +38,7 @@ const RootPage = () => {
 
   useKeyDown();
   useRemindNotification();
+  useTheme();
 
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);

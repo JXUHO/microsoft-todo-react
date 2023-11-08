@@ -2,12 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
+    --color-white-text: #ffffff;
     --color-white: #ffffff;
     --color-black: #000000;
     --color-ms-text-dark: #292827;
+    --color-ms-header: #2564cf;
     --color-ms-blue: #2564cf;
     --color-ms-blue-hover: #215aba;
     --color-ms-background: #faf9f8;
@@ -16,50 +17,79 @@
     --color-ms-active-blue: #eff6fc;
     --color-ms-bg-border: #e1dfdd;
     --color-ms-scrollbar: #8a8886;
-    --color-ms-light-text: #605E5C;
+    --color-ms-light-text: #605e5c;
     --color-ms-input-hover: #edebe9;
     --color-ms-active-tertiary: #f3f2f1;
     --color-ms-warning: #a80000;
-    --color-ms-button-hover: #E1DFDD
+    --color-ms-button-hover: #e1dfdd;
   }
-  @media (prefers-color-scheme:dark) {
+  @media (prefers-color-scheme: dark) {
     :root {
+      --color-white-text: #ffffff;
       --color-white: #252423;
       --color-black: #ffffff;
       --color-ms-text-dark: #f5f4f4;
-      --color-ms-blue: #78BAFD;
-      --color-ms-blue-hover: #78BAFD;
+      --color-ms-header: #11100f;
+      --color-ms-blue: #78bafd;
+      --color-ms-blue-hover: #78bafd;
       --color-ms-background: #11100f;
       --color-ms-white-hover: #292827;
-      --color-ms-font-blue: #78BAFD;
+      --color-ms-font-blue: #78bafd;
       --color-ms-active-blue: #3b3a39;
       --color-ms-bg-border: #e1dfdd;
       --color-ms-scrollbar: #8a8886;
-      --color-ms-light-text: #A19F9D;
+      --color-ms-light-text: #a19f9d;
       --color-ms-input-hover: #edebe9;
       --color-ms-active-tertiary: #292827;
-      --color-ms-warning: #F1707B;
-      --color-ms-button-hover: #E1DFDD
+      --color-ms-warning: #f1707b;
+      --color-ms-button-hover: #e1dfdd;
     }
+  }
+  :root[data-theme="dark"] {
+    --color-white-text: #ffffff;
+    --color-white: #252423;
+    --color-black: #ffffff;
+    --color-ms-text-dark: #f5f4f4;
+    --color-ms-header: #11100f;
+    --color-ms-blue: #78bafd;
+    --color-ms-blue-hover: #78bafd;
+    --color-ms-background: #11100f;
+    --color-ms-white-hover: #292827;
+    --color-ms-font-blue: #78bafd;
+    --color-ms-active-blue: #3b3a39;
+    --color-ms-bg-border: #e1dfdd;
+    --color-ms-scrollbar: #8a8886;
+    --color-ms-light-text: #a19f9d;
+    --color-ms-input-hover: #edebe9;
+    --color-ms-active-tertiary: #292827;
+    --color-ms-warning: #f1707b;
+    --color-ms-button-hover: #e1dfdd;
+  }
+  :root[data-theme="light"] {
+    --color-white-text: #ffffff;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-ms-text-dark: #292827;
+    --color-ms-header: #2564cf;
+    --color-ms-blue: #2564cf;
+    --color-ms-blue-hover: #215aba;
+    --color-ms-background: #faf9f8;
+    --color-ms-white-hover: #f5f4f4;
+    --color-ms-font-blue: #2564cf;
+    --color-ms-active-blue: #eff6fc;
+    --color-ms-bg-border: #e1dfdd;
+    --color-ms-scrollbar: #8a8886;
+    --color-ms-light-text: #605e5c;
+    --color-ms-input-hover: #edebe9;
+    --color-ms-active-tertiary: #f3f2f1;
+    --color-ms-warning: #a80000;
+    --color-ms-button-hover: #e1dfdd;
   }
 }
 
-/**
-
-#323130
-#11100f
-#292827
-#e1dfdd
-#8a8886
-#605E5C
-#edebe9
-#f3f2f1
-
-*/
-
-
-*,*:focus{
-  outline:none;
+*,
+*:focus {
+  outline: none;
 }
 
 body {
@@ -89,23 +119,19 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #A19F9D;
+  background: #a19f9d;
   border-radius: 10px;
 }
 
-
-
-
-
-.react-datepicker{
- display: flex;
- flex-direction: column;
- font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
- font-size: 1em;
- border-radius: 0;
- border: none;
- background-color: var(--color-white);
- color: var(--color-black);
+.react-datepicker {
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe", "Segoe UI", "Arial", "sans-serif";
+  font-size: 1em;
+  border-radius: 0;
+  border: none;
+  background-color: var(--color-white);
+  color: var(--color-black);
 }
 
 .react-datepicker__header {
@@ -120,28 +146,28 @@ textarea {
   margin-top: 0;
 }
 
-.react-datepicker__day{
+.react-datepicker__day {
   color: var(--color-black);
-  margin:0;
+  margin: 0;
 }
 .react-datepicker__day-name {
   color: var(--color-black);
 }
 .react-datepicker__day--selected {
-  background-color: var(--color-ms-bg-border); 
+  background-color: var(--color-ms-bg-border);
   color: var(--color-black);
   border-radius: 0;
   /* padding: 1px 1px; */
 }
 .react-datepicker__day--today {
   background-color: var(--color-ms-blue);
-  color:var(--color-white);
+  color: var(--color-white);
   font-weight: 400;
 }
 
 .react-datepicker__day--today:hover {
   background-color: var(--color-ms-blue);
-  color:var(--color-white);
+  color: var(--color-white);
   font-weight: 400;
   border-radius: 0;
 }
@@ -177,7 +203,7 @@ textarea {
   font-size: small;
 }
 
-.react-datepicker__day-name{
+.react-datepicker__day-name {
   width: 1.6em;
   line-height: 1.6em;
 }
@@ -216,7 +242,9 @@ textarea {
   align-items: center;
   justify-content: center;
 }
-.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input {
+.react-datepicker__input-time-container
+  .react-datepicker-time__input-container
+  .react-datepicker-time__input {
   margin-left: 0;
 }
 
@@ -227,11 +255,6 @@ textarea {
   padding-left: 0;
   padding-right: 0;
 }
-
-
-
-
-
 
 /* input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

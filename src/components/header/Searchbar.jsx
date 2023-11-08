@@ -92,7 +92,7 @@ const Searchbar = () => {
 
   return (
     <div className={classes} onClick={clickHandler}>
-      <button className="z-20 text-ms-blue dark:text-[#ffffff] mx-2">
+      <button className="z-20 text-ms-blue text-[#ffffff] mx-2">
         <VscSearch size="16px" />
       </button>
 

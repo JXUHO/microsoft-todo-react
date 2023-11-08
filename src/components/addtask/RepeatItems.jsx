@@ -17,7 +17,7 @@ const RepeatItems = ({
 }) => {
   return (
     <div
-      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] overflow-auto max-h-[15%] animate-slideFadeDown5 dark:text-[#ffffff]"
+      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] overflow-auto max-h-[15%] animate-slideFadeDown5 text-black"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",

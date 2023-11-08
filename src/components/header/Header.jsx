@@ -76,16 +76,16 @@ const Header = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between items-center h-12 text-white bg-ms-blue dark:bg-ms-background">
+    <div className="flex flex-row justify-between items-center h-12 text-white-text bg-ms-header">
       <div
-        className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100 hover:cursor-pointer dark:text-[#ffffff]"
+        className="flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover transition ease-in-out duration-100 hover:cursor-pointer"
         onClick={() => dispatch(setAppLauncherActive(true))}
         title="App launcher"
       >
         <TbGridDots size="20px" />
       </div>
 
-      <div className="flex flex-1 justify-start items-center dark:text-[#ffffff]">
+      <div className="flex flex-1 justify-start items-center">
         <div className="pl-2 pr-3 hover:underline text-base font-semibold whitespace-nowrap">
           <Link to="/">To Do</Link>
         </div>
@@ -128,7 +128,7 @@ const Header = () => {
       {!(isSearchbarActive && viewportWidth < 400) ? (
         <div
           id="accountManagerButton"
-          className={`flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover hover:text-white dark:text-[#ffffff] transition ease-in-out duration-100 hover:cursor-pointer ${
+          className={`flex justify-center items-center h-12 w-12 hover:bg-ms-blue-hover hover:text-white transition ease-in-out duration-100 hover:cursor-pointer ${
             isAccountManagerActive ? "bg-ms-blue-hover" : ""
           }`}
           onClick={() => headerButtonsClickHandler("accountManager")}

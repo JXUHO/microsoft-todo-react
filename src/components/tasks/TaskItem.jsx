@@ -121,19 +121,19 @@ const TaskItem = ({ todo, currentLocation }) => {
     >
       <span
         onClick={completeHandler}
-        className="flex items-center justify-center w-8 h-8 hover:cursor-pointer"
+        className="flex items-center justify-center w-8 h-8 hover:cursor-pointer text-ms-font-blue"
       >
         {todo.complete ? (
           <div className="animate-checkAnimationBase">
-            <BsCheckCircleFill size="16px" style={{ color: "#2564cf" }} />
+            <BsCheckCircleFill size="16px"/>
           </div>
         ) : (
           <div className="flex items-center">
             <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20">
-              <BsCheckCircle size="16px" style={{ color: "#2564cf" }} />
+              <BsCheckCircle size="16px"/>
             </div>
             <div className="z-10">
-              <BsCircle size="16px" style={{ color: "#2564cf" }} />
+              <BsCircle size="16px"/>
             </div>
           </div>
         )}
@@ -158,17 +158,17 @@ const TaskItem = ({ todo, currentLocation }) => {
       </button>
 
       <div
-        className="pr-2 hover:cursor-pointer"
+        className="pr-2 hover:cursor-pointer text-ms-font-blue"
         onClick={importanceHandler}
         ref={tooltipRefs.setReference}
         {...getTooltipReferenceProps()}
       >
         {todo.importance ? (
           <div className="animate-fillAnimation">
-            <BsStarFill size="18px" style={{ color: "#2564cf" }} />
+            <BsStarFill size="18px" />
           </div>
         ) : (
-          <BsStar size="18px" style={{ color: "#2564cf" }} />
+          <BsStar size="18px" />
         )}
       </div>
 

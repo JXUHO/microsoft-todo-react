@@ -59,7 +59,7 @@ const DetailSteps = ({ taskId }) => {
             
 
       <div className="flex items-center bg-white w-full p-4">
-        <div className="flex items-center cursor-pointer px-0.5 text-ms-blue dark:text-ms-blue-hover">
+        <div className="flex items-center cursor-pointer px-0.5 text-ms-blue">
           {isFocused ? (
           <BsCircle size="16px" />
           ) : (
