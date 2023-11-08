@@ -27,10 +27,10 @@ const Search = () => {
   const showCompleted = useSelector((state) => state.search.showCompleted);
   const searchQuery = useSelector((state) => state.search.query);
   const todoArr = useSelector((state) => state.todo.todos);
-  const [searchedTasks, setSearchedTasks] = useState([]); 
-  const [searchedNotes, setSearchedNotes] = useState([]); 
-  const [searchedSteps, setSearchedSteps] = useState([]); 
-  const [searchedCategories, setSearchedCategories] = useState([]); 
+  const [searchedTasks, setSearchedTasks] = useState([]);
+  const [searchedNotes, setSearchedNotes] = useState([]);
+  const [searchedSteps, setSearchedSteps] = useState([]);
+  const [searchedCategories, setSearchedCategories] = useState([]);
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());
@@ -85,6 +85,27 @@ const Search = () => {
       searchedCategories.length === 0) ||
     searchQuery.length === 0;
 
+
+
+
+  const [isDark, setIsDark] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+
+  useEffect(() => {
+    const darkModeListener = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleDarkModeChange = (event) => {
+      setIsDark(event.matches);
+    };
+    darkModeListener.addEventListener("change", handleDarkModeChange);
+    return () => {
+      darkModeListener.removeEventListener("change", handleDarkModeChange);
+    };
+  }, []);
+
+
+
+  
   return (
     <>
       <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 my-4 ">
@@ -114,6 +135,7 @@ const Search = () => {
         {isEmpty ? (
           <div className="flex flex-col items-center justify-center text-xl h-full">
             <img
+              className={`${isDark ? "invert" : "invert-0"}`}
               src="public\error-404.png"
               alt="not found icon"
               style={{ width: "50px", paddingBottom: "4px" }}
@@ -140,8 +162,6 @@ const Search = () => {
 };
 
 export default Search;
-
-
 
 const OptionPopover = () => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -224,11 +244,10 @@ const OptionPopover = () => {
           {...getPopoverFloatingProps()}
         >
           <div
-            className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5"
+            className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5 text-ms-text-dark"
             style={{
               boxShadow:
                 "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
-              color: "#323130",
             }}
           >
             <div

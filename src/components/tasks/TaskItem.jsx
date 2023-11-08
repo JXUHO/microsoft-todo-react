@@ -141,8 +141,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
       <button
         onClick={() => taskClickHandler(todo.id)}
-        className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
-        style={{ color: "#292827" }}
+        className="hover:cursor-pointer px-3 py-2 flex-1 text-left text-ms-text-dark"
         onContextMenu={contextMenuHandler}
       >
         <span style={todo.complete ? { textDecoration: "line-through" } : null} className="">

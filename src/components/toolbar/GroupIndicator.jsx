@@ -59,12 +59,10 @@ const GroupIndicator = ({ currentLocation }) => {
 
   return (
     <>
-      <div className="h-10">
+      <div className="h-10 text-ms-text-dark">
         <div
           className="flex items-center justify-end py-2.5 pr-0.5 pl-7 font-semibold text-xs"
-          style={{ color: "#323130" }}
         >
-
           <div className="flex items-center">
             {groupIndicatorText}
           </div>

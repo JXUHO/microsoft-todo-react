@@ -142,7 +142,7 @@ const CustomTimeInput = ({ date, value, onChange }) => {
         <div className="flex">
           <div className="flex justify-center">
             <input
-              className="max-w-[20px] text-center"
+              className="max-w-[20px] text-center bg-white"
               type="text"
               value={hourValue}
               onChange={hourChangeHandler}
@@ -152,7 +152,7 @@ const CustomTimeInput = ({ date, value, onChange }) => {
           <p className="px-1">:</p>
           <div>
             <input
-              className="max-w-[20px] text-center"
+              className="max-w-[20px] text-center bg-white"
               type="text"
               value={minuteValue}
               onChange={minuteChangeHandler}
@@ -217,11 +217,10 @@ const RemindTimeItems = ({
 
   return (
     <div
-      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5"
+      className="bg-white py-1.5 rounded-sm min-w-[200px] max-w-[290px] animate-slideFadeDown5 text-ms-text-dark"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
-        color: "#323130",
       }}
     >
       <ul>

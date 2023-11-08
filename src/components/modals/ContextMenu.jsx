@@ -28,8 +28,7 @@ export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
   return (
     <button
       {...props}
-      className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4"
-      style={{ color: "#292827" }}
+      className="flex text-sm hover:bg-ms-white-hover items-center min-h-[38px] pl-3 pr-4 text-ms-text-dark"
       ref={ref}
       role="menuitem"
       disabled={disabled}
@@ -40,7 +39,7 @@ export const MenuItem = forwardRef(({ children, disabled, ...props }, ref) => {
 });
 
 export const MenuSeparator = forwardRef((props, ref) => {
-  return <div style={{ borderBottom: "1px solid #edebe9", margin: "6px 0" }} />;
+  return <div className="border-b border-solid border-ms-input-hover my-1.5 mx-0" />;
 });
 
 export const Menu = forwardRef(

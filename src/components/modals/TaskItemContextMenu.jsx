@@ -192,10 +192,10 @@ const TaskItemContextMenu = () => {
       <MenuSeparator />
 
       <MenuItem onClick={() => clickHandler("deleteTask")}>
-        <div className="mx-1 text-red-700">
+        <div className="mx-1 text-ms-warning">
           <BsTrash3 size="16px" />
         </div>
-        <div className="px-1 mx-1 text-red-700">Delete task</div>
+        <div className="px-1 mx-1 text-ms-warning">Delete task</div>
       </MenuItem>
     </Menu>
   );

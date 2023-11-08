@@ -12,7 +12,7 @@ const SortAlphabeticallyItem = ({alphabeticallyHandler}) => {
         <div className="flex items-center max-w-full">
           <PiArrowsDownUpThin
             size="20px"
-            style={{ marginLeft: "2px", marginRight: "10px", color: "black" }}
+            style={{ marginLeft: "2px", marginRight: "10px" }}
           />
           <span className="px-1 py-0 grow">Alphabetically</span>
         </div>

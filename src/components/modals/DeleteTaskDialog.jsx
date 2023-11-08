@@ -65,14 +65,14 @@ function DeleteTaskDialog() {
                 <div className="p-4">
                   <div className="font-semibold mb-3">
                     {activeTasksId.length === 1 ? (
-                      <>
+                      <div className="text-black">
                         <span>{`"${truncateString(
                           todos.find((todo) => todo.id === activeTasksId[0])
                             .task,
                           20
                         )}"`}</span>
                         <span> will be permanently deleted.</span>
-                      </>
+                      </div>
                     ) : (
                       <span>
                         Are you sure you want to permanently delete these tasks?
