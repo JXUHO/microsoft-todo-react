@@ -69,7 +69,7 @@ const AppLauncher = () => {
                 </a>
               </div>
               <div className="pb-6 text-lg">
-                <h3 className="pr-4 font-semibold">Technologies</h3>
+                <h3 className="pr-4 pb-2 font-semibold">Technologies</h3>
                 <ul className="pl-1 text-base">
                   <li>#HTML</li>
                   <li>#CSS</li>

@@ -23,7 +23,9 @@ export default {
         "ms-input-hover": "var(--color-ms-input-hover)",
         "ms-active-tertiary": "var(--color-ms-active-tertiary)",
         "ms-warning": "var(--color-ms-warning)",
-        "ms-button-hover": "var(--color-ms-button-hover)"
+        "ms-button-hover": "var(--color-ms-button-hover)",
+        "ms-white-button-hover": "var(--color-ms-white-button-hover)",
+        "ms-gray-button-hover": "var(--color-ms-gray-button-hover)",
       },
       height: {
         18: "4.5rem",

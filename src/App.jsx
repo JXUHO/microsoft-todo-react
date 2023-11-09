@@ -10,6 +10,8 @@ import PlannedPage from "./pages/PlannedPage";
 import CompletedPage from "./pages/CompletedPage";
 import SearchPage from "./pages/SearchPage";
 import InboxPage from "./pages/InboxPage";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 
 const router = createBrowserRouter([
   {
@@ -47,9 +49,21 @@ const router = createBrowserRouter([
       {
         path: "search",
         element: <SearchPage/>
-      }
+      },
+      // {
+      //   path: "login",
+      //   element: <LogInPage/>
+      // }
     ],
   },
+  {
+    path: "signin",
+    element: <SignInPage/>
+  },
+  {
+    path: "signup",
+    element: <SignUpPage/>
+  }
 ]);
 
 function App() {
