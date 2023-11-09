@@ -91,6 +91,7 @@ export default App;
  * (complete) 반응형으로 만들기(사이즈 따라 다르게)
  * (complete) Detailbar zIndex floating ui zIndex 조정해야함
  * (complete) searchbar esc버튼
+ * (complete) dark theme -> toggle switch 만들기
  * 
  * 
  * 
@@ -98,10 +99,12 @@ export default App;
  * <할것>
  * backend 연결
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기)
+ * sign-in, sign-up, OAuth
  * 
- * Notion 개발일지 가지고와서 list로 render하기
- * dark theme -> toggle switch 만들기
+ * print 설정하기
  * 
+ * 
+ * Notion 개발일지 가지고와서 list로 render하기(보류)
  * 
  * 
  * 
