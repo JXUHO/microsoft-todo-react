@@ -26,6 +26,7 @@ export default {
         "ms-button-hover": "var(--color-ms-button-hover)",
         "ms-white-button-hover": "var(--color-ms-white-button-hover)",
         "ms-gray-button-hover": "var(--color-ms-gray-button-hover)",
+        "ms-alert-error": "var(--color-ms-alert-error)",
       },
       height: {
         18: "4.5rem",

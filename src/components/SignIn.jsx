@@ -2,16 +2,11 @@ import { BsKey } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-  const createOneButtonHandler = () => {
-    navigate("/signup")
-  }
-
-  const backButtonClickHandler = () => {
-    navigate("/")
-  }
+  const signUpButtonClickHandler = () => {
+    navigate("/signup");
+  };
 
 
   return (
@@ -25,15 +20,18 @@ const SignIn = () => {
             Welcome!
           </h2>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-semibold">Sign in</h1>
+            <h1 className="text-2xl font-semibold mb-2">Sign in</h1>
             <input
               type="email"
               placeholder="Email"
-              className="pt-4 pb-1.5 border-b border-ms-scrollbar text-base pr-2.5 mb-4 focus:border-ms-blue"
+              className="pt-2 pb-1.5 border-b border-ms-scrollbar text-base pr-2.5 mb-4 focus:border-ms-blue"
             />
             <div className="flex text-sm text-ms-light-text mb-4">
               <span>No account?</span>
-              <span className="text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer pl-1" onClick={createOneButtonHandler}>
+              <span
+                className="text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer pl-1"
+                onClick={signUpButtonClickHandler}
+              >
                 Create one!
               </span>
             </div>
@@ -42,7 +40,10 @@ const SignIn = () => {
             </span>
           </div>
           <div className="flex justify-end pt-6">
-            <button className="py-1 px-3 bg-ms-bg-border min-w-[108px] min-h-[32px] mr-2 hover:bg-ms-gray-button-hover" onClick={backButtonClickHandler}>
+            <button
+              className="py-1 px-3 bg-ms-bg-border min-w-[108px] min-h-[32px] mr-2 hover:bg-ms-gray-button-hover"
+              onClick={() => navigate(-1)}
+            >
               Back
             </button>
             <button className="py-1 px-3 bg-ms-blue min-w-[108px] min-h-[32px] text-white hover:bg-ms-blue-hover">
