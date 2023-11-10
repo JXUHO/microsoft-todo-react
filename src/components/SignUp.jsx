@@ -1,9 +1,18 @@
+
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {auth} from '../firebase'
+
+
 import { useEffect } from "react";
 import { useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  
+  console.log(auth);
+  
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -66,14 +75,31 @@ const SignUp = () => {
       setShowPasswordTab(true);
     } else {
       const passwordRegex =
-        /^(?=(?:.*[A-Z]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*\d){2,})(?=(?:.*[!@#$%^&*()_+={}[\]:;<>,.?~\\/-]){2,}).{8,}$/;
-      if (!passwordRegex.test(email)) {
+      /^(?=(?:.*[A-Z]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*\d){2,})(?=(?:.*[!@#$%^&*()_+={}[\]:;<>,.?~\\/-]){2,}).{8,}$/;
+      if (!passwordRegex.test(password)) {
         setShowPasswordAlert(true);
         return;
       }
+      console.log('password ok');
+
 
       // firebase에 id, pwd 전달.
       // 성공하면 성공 페이지 render.
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log('valid');
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error);
+          // ..
+        });
+
+
     }
   };
 
