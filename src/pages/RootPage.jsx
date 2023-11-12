@@ -19,6 +19,10 @@ import SidebarOverlay from "../components/ui/SidebarOverlay";
 import HeaderPanels from "../panels/HeaderPanels";
 import useTheme from "../hooks/useTheme";
 
+import {auth} from '../firebase'
+import { onAuthStateChanged } from "firebase/auth";
+
+
 const RootPage = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);

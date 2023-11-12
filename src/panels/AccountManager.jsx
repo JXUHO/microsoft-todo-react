@@ -3,14 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setHeaderButton } from "../store/uiSlice";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 const AccountManager = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const accountManagerRef = useRef();
   const isAccountManagerActive = useSelector(
     (state) => state.ui.accountManagerActive
   );
+
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const closeModalOnClickOutside = (event) => {
@@ -34,6 +39,15 @@ const AccountManager = () => {
     };
   }, [isAccountManagerActive]);
 
+  const signOutHandler =() => {
+    signOut(auth).then(() => {
+      navigate('/signin')
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+
   return (
     <>
       {isAccountManagerActive && (
@@ -48,32 +62,44 @@ const AccountManager = () => {
             transition: "visibility 0s linear 120ms,opacity 120ms ease",
           }}
         >
-          {/* <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_3fr] leading-normal items-stretch h-full text-black">
-            <div className="col-start-1 col-end-2 self-center text-sm px-4">
-              Welcome!
-            </div>
-            <div className="col-start-1 col-end-4 min-h-[132px self-center] flex">
-              <div className="w-20 h-20 m-5  overflow-hidden">
-                <img src="public\profile_image.svg" alt="profile image" />
+          {user ? (
+            <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[1fr_3fr] leading-normal items-stretch h-full text-black">
+              <div className="col-start-1 col-end-2 self-center text-sm px-4">
+                Welcome!
               </div>
-              <div className="flex-grow pr-3 mt-4">
-                <div className="font-semibold text-lg">Juho Lee</div>
-                <div className="mt-1 font-semibold">jxuholee@gmail.com</div>
+              <div className="col-start-1 col-end-4 min-h-[132px self-center] flex">
+                <div className="w-20 h-20 m-5  overflow-hidden">
+                  <img src="public\profile_image.svg" alt="profile image" />
+                </div>
+                <div className="flex-grow pr-3 mt-4">
+                  <div className="font-semibold text-lg">{user.email}</div>
+                  <div className="mt-1 font-semibold">{user.email}</div>
+                </div>
+              </div>
+              <div
+                className="col-start-3 col-end-4 row-start-1 p-3 text-sm self-center font-semibold hover:bg-ms-white-hover hover:underline hover:cursor-pointer"
+                onClick={signOutHandler}
+              >
+                sign out
               </div>
             </div>
-            <div className="col-start-3 col-end-4 row-start-1 p-3 text-sm self-center font-semibold hover:bg-ms-white-hover hover:underline hover:cursor-pointer">
-              sign out
+          ) : (
+            <div className="p-8 h-full w-full flex flex-col justify-center items-center text-ms-light-text">
+              <h2>You're not logged in</h2>
+              <button
+                className="text-2xl border rounded-md my-4 w-full pb-1 bg-ms-blue text-white hover:bg-ms-blue-hover duration-100"
+                onClick={() => navigate("/signup")}
+              >
+                Sign up
+              </button>
+              <button
+                className="text-lg border rounded-md w-[80%] border-ms-light-text hover:bg-ms-white-hover duration-75"
+                onClick={() => navigate("/signin")}
+              >
+                Sign in
+              </button>
             </div>
-          </div> */}
-          <div className="p-8 h-full w-full flex flex-col justify-center items-center text-ms-light-text">
-            <h2>You're not logged in</h2>
-            <button className="text-2xl border rounded-md my-4 w-full pb-1 bg-ms-blue text-white hover:bg-ms-blue-hover duration-100" onClick={()=>navigate("/signup")}>
-              Sign up
-            </button>
-            <button className="text-lg border rounded-md w-[80%] border-ms-light-text hover:bg-ms-white-hover duration-75" onClick={()=>navigate("/signin")}>
-              Sign in
-            </button>
-          </div>
+          )}
         </div>
       )}
     </>
