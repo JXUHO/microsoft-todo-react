@@ -8,18 +8,17 @@ const useAuth = () => {
   useEffect(() => {
     const auth = getAuth();
 
-    // Set up an observer to watch for changes in authentication state
+    // error handling 추가하기
+
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
         setUser(authUser);
         setLoading(false);
-        console.log(authUser.email);
-      } else {
-        return {}
-      }
+        console.log(authUser.uid);
+      } 
     });
 
-    // Clean up the observer when the component unmounts
+
     return () => unsubscribe();
   }, []);
 

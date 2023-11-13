@@ -7,8 +7,14 @@ import activeSliceReducer from "./activeSlice"
 import searchSliceReducer from "./searchSlice";
 import modifierSliceReducer from "./modifierSlice";
 
-export default configureStore({
+import { apiSlice } from "../api/apiSlice";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
+
+
+// export default configureStore({
+export const store =  configureStore({
   reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
     todo: todoSliceReducer,
     ui: uiSliceReducer,
     sort: sortSliceReducer,
@@ -17,4 +23,11 @@ export default configureStore({
     search: searchSliceReducer,
     modifier: modifierSliceReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware), 
 });
+
+
+setupListeners(store.dispatch)
+
+export default store

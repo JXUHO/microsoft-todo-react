@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -24,6 +19,17 @@ const SignIn = () => {
   const [isShowPasswordChecked, setIsShowPasswordChecked] = useState(false);
 
   const checkboxRef = useRef();
+
+  useEffect(() => {
+    const getData = async () => {
+      const querySnapshot = await getDocs(collection(db, `users`));
+      querySnapshot?.forEach((doc) => {console.log(doc.data())})
+    }
+    getData()
+  }, [])
+
+
+
 
   useEffect(() => {
     const handleEnterKeyPress = (event) => {
@@ -53,8 +59,10 @@ const SignIn = () => {
       try {
         const querySnapshot = await getDocs(emailQuery);
         if (querySnapshot.size === 0) {
-          setEmailAlertContent("We couldn't find an account with that username. Try another, or get a new Microsoft account.")
-          setShowEmailAlert(true)
+          setEmailAlertContent(
+            "We couldn't find an account with that username. Try another, or get a new Microsoft account."
+          );
+          setShowEmailAlert(true);
         } else {
           setShowPasswordTab(true);
         }
@@ -69,20 +77,19 @@ const SignIn = () => {
           email,
           password
         );
-        const user = userCredential.user;
-        console.log(user);
 
-        
         navigate("/");
       } catch (error) {
         if (error.code === "auth/invalid-login-credentials") {
-          setShowPasswordAlert(true)
-          setPasswordAlertContent("Your account or password is incorrect.")
+          setShowPasswordAlert(true);
+          setPasswordAlertContent("Your account or password is incorrect.");
           // If you don't remember your password, reset it now.
-        } else if(error.code === "auth/missing-password") {
-          setShowPasswordAlert(true)
-          setPasswordAlertContent("Please enter the password for your Microsoft account.")
-        } else {  
+        } else if (error.code === "auth/missing-password") {
+          setShowPasswordAlert(true);
+          setPasswordAlertContent(
+            "Please enter the password for your Microsoft account."
+          );
+        } else {
           console.log(error.code);
           console.log(error.message);
         }
@@ -136,7 +143,7 @@ const SignIn = () => {
               <h1 className="text-2xl font-semibold mb-2">Enter password</h1>
               {showPasswordAlert && (
                 <p className="text-ms-alert-error">{passwordAlertContent}</p>
-              ) }
+              )}
               <input
                 className={`pt-2 pb-1.5 border-b  text-base pr-2.5 mb-4  ${
                   showPasswordAlert && passwordAlertContent !== ""
@@ -186,18 +193,20 @@ const SignIn = () => {
         </div>
       </div>
 
-      {!showPasswordTab && <div
-        className="max-[599px]:hidden min-[600px]:w-[440px] min-[600px]:h-[48px] min-[600px]:relative bg-white text-ms-text-dark mt-5 flex items-center hover:bg-ms-white-button-hover hover:bg-opacity-20 hover:cursor-pointer text-base"
-        style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}
-      >
-        <div className="flex items-center ml-12">
-          <BsKey
-            size="30px"
-            style={{ transform: "rotate(45deg)", paddingTop: "5px" }}
-          />
-          <span className="ml-2">Sign-in options</span>
+      {!showPasswordTab && (
+        <div
+          className="max-[599px]:hidden min-[600px]:w-[440px] min-[600px]:h-[48px] min-[600px]:relative bg-white text-ms-text-dark mt-5 flex items-center hover:bg-ms-white-button-hover hover:bg-opacity-20 hover:cursor-pointer text-base"
+          style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}
+        >
+          <div className="flex items-center ml-12">
+            <BsKey
+              size="30px"
+              style={{ transform: "rotate(45deg)", paddingTop: "5px" }}
+            />
+            <span className="ml-2">Sign-in options</span>
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   );
 };

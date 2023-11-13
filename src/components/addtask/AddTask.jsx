@@ -9,6 +9,12 @@ import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
+import { useAddTodoApiMutation } from "../../api/apiSlice";
+import useAuth from "../../hooks/useAuth";
+
+
+
+
 
 const initialTask = {
   id: "", // uuid
@@ -34,6 +40,11 @@ const AddTask = ({ currentLocation }) => {
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
+
+
+  const [addTodoApi] = useAddTodoApiMutation()
+  const { user, loading } = useAuth();
+
 
   let isMyday = false;
   let isImportant = false;
@@ -73,7 +84,13 @@ const AddTask = ({ currentLocation }) => {
     if (currentLocation === "planned" && !trimmedTaskInput.dueDate) {
       trimmedTaskInput.dueDate = new Date().toISOString();
     }
-    dispatch(addTodo(trimmedTaskInput));
+
+    if (user) {
+      addTodoApi({todo:trimmedTaskInput, user})
+    } else {
+      dispatch(addTodo(trimmedTaskInput));
+    }
+    
     setTaskInput(initialTask);
     initializeButtons();
   };
