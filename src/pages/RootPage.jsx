@@ -18,9 +18,11 @@ import useViewport from "../hooks/useViewPort";
 import SidebarOverlay from "../components/ui/SidebarOverlay";
 import HeaderPanels from "../panels/HeaderPanels";
 import useTheme from "../hooks/useTheme";
-
-import {auth} from '../firebase'
-import { onAuthStateChanged } from "firebase/auth";
+import useGetTodos from "../hooks/useGetTodos";
+import useAuth from "../hooks/useAuth";
+import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
+import { isDateToday } from "../utils/getDates";
+import useUpdateMyday from "../hooks/useUpdateMyday";
 
 
 const RootPage = () => {
@@ -35,10 +37,13 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
-  useEffect(() => {
-    // reload될 때, 날짜 변경됐으면 myday변경
-    updateMydayTodo();
-  }, []);
+
+  const {todos, isApiData, isLoading} = useGetTodos();
+  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
+  const {user, loading:isAuthLoading} = useAuth()
+
+
+  useUpdateMyday({todos, isApiData, setMydayTodoApi, user})
 
   useKeyDown();
   useRemindNotification();
@@ -59,14 +64,14 @@ const RootPage = () => {
       <HeaderPanels/>
       <div className="flex flex-1 overflow-hidden relative">
         <SidebarOverlay />
-        {isSidebarOpen && <Sidebar />}
+        {isSidebarOpen && <Sidebar todos={todos} isApiData={isApiData} isLoading={isLoading}/>}
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
-          <Outlet />
+          <Outlet context={[todos, isApiData, isLoading]}/>
         </div>
-        {isDetailOpen && <TaskDetail />}
+        {isDetailOpen && <TaskDetail todos={todos} isApiData={isApiData} isLoading={isLoading}/>}
       </div>
-      <TaskItemContextMenu />
-      <DeleteTaskDialog />
+      <TaskItemContextMenu todos={todos} isApiData={isApiData} isLoading={isLoading}/>
+      <DeleteTaskDialog todos={todos} isApiData={isApiData} isLoading={isLoading}/>
     </div>
   );
 };
@@ -76,4 +81,37 @@ export default RootPage;
 /**
  * open/close state에 따라 우측 scrollbar conditional style 적용하기
  *
+ * 
+ * 
  */
+
+
+  // useEffect(() => {
+  //   // reload될 때, 날짜 변경됐으면 myday변경
+  //   if (isApiData) {
+  //     todos.map((todo) => {
+  //       if (
+  //         !isDateToday(new Date(todo.created)) &&
+  //         todo.myday &&
+  //         !isDateToday(new Date(todo.dueDate))
+  //       ) {
+  //         setMydayTodoApi({todoId:todo.id, user, value: false})
+  //       } else if (
+  //         !isDateToday(new Date(todo.created)) &&
+  //         isDateToday(new Date(todo.dueDate))
+  //       ) {
+  //         setMydayTodoApi({todoId:todo.id, user, value: true})
+  //       } else if (
+  //         !todo.dueDate &&
+  //         !isDateToday(new Date(todo.created)) &&
+  //         todo.myday
+  //       ) {
+  //         setMydayTodoApi({todoId:todo.id, user, value: false})
+  //       }
+  //     });
+  //   } else {
+  //     updateMydayTodo();
+  //   }
+
+  // }, []);
+

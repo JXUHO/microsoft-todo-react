@@ -28,6 +28,8 @@ import {
   setActiveRange,
 } from "../../store/activeSlice";
 import TaskItemOptions from "./TaskItemOptions";
+import useAuth from "../../hooks/useAuth";
+import { useSetCompleteTodoApiMutation, useSetImportanceTodoApiMutation } from "../../api/todoApiSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -36,21 +38,67 @@ const TaskItem = ({ todo, currentLocation }) => {
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
+
+
+  const {user, loading:isAuthLoading} = useAuth()
+  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation()
+  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation()
+
   const completeHandler = () => {
     if (todo.complete) {
-      dispatch(setCompleteTodo({ id: todo.id, value: false }));
+      if (user) {
+        setCompleteTodoApi({todoId:todo.id, user, value: false})
+      } else {
+        dispatch(setCompleteTodo({ id: todo.id, value: false }));
+      }
     } else {
-      dispatch(setCompleteTodo({ id: todo.id, value: true }));
+      if (user) {
+        setCompleteTodoApi({todoId:todo.id, user, value:true})
+      } else {
+        dispatch(setCompleteTodo({ id: todo.id, value: true }));
+      }
     }
   };
 
+
+
+  // const completeHandler = () => {
+  //   if (todo.complete) {
+  //     dispatch(setCompleteTodo({ id: todo.id, value: false }));
+  //   } else {
+  //     dispatch(setCompleteTodo({ id: todo.id, value: true }));
+  //   }
+  // };
+
+
+
+
+
   const importanceHandler = () => {
     if (todo.importance) {
-      dispatch(setImportanceTodo({ id: todo.id, value: false }));
+      if (user) {
+        setImportanceTodoApi({todoId: todo.id, user, value:""})
+      } else {
+        dispatch(setImportanceTodo({ id: todo.id, value: "" }));
+      }
     } else {
-      dispatch(setImportanceTodo({ id: todo.id, value: true }));
+      if (user) {
+        setImportanceTodoApi({todoId: todo.id, user, value:new Date().toISOString()})
+      } else {
+        dispatch(setImportanceTodo({ id: todo.id, value: new Date().toISOString() }));
+      }
     }
   };
+
+  // const importanceHandler = () => {
+  //   if (todo.importance) {
+  //     dispatch(setImportanceTodo({ id: todo.id, value: false }));
+  //   } else {
+  //     dispatch(setImportanceTodo({ id: todo.id, value: true }));
+  //   }
+  // };
+
+
 
   const taskClickHandler = (id) => {
     dispatch(initializeActiveStep());

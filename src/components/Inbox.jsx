@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import sortTasks from "../utils/sortTasks";
 import CompleteList from "./tasks/CompleteList";
 import { addActiveTasks } from "../store/activeSlice";
+import { useOutletContext } from "react-router-dom";
 
 const Inbox = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
@@ -23,7 +24,8 @@ const Inbox = () => {
     (state) => state.group.tasks.groupBy
   );
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
+  const [todos, isApiData, isLoading] = useOutletContext()
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.tasks.order);
   const sortBy = useSelector((state) => state.sort.tasks.sortBy);

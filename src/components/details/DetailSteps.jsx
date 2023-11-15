@@ -5,23 +5,31 @@ import { useEffect, useRef, useState } from "react";
 import { addStep } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DetailStepItem from "./DetailStepItem";
+import { useAddStepApiMutation } from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
 
-const DetailSteps = ({ taskId }) => {
+const DetailSteps = ({ taskId, todo, isApiData }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const addRef = useRef();
   const [newStep, setNewStep] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+  const [addStepApi] = useAddStepApiMutation()
+  const { user, loading: isAuthLoading } = useAuth();
 
   const inputHandler = (event) => {
     setNewStep(event.target.value);
   };
 
   const addStepHandler = () => {
-    dispatch(addStep({ id: taskId, step: { id: uuid(), content: newStep, complete: false } }));
+    if (isApiData) {
+      addStepApi({todoId: taskId, user, value: { id: uuid(), content: newStep, complete: false }})
+    } else {
+      dispatch(addStep({ id: taskId, step: { id: uuid(), content: newStep, complete: false } }));
+    }
     setNewStep("");
   };
 
@@ -54,7 +62,7 @@ const DetailSteps = ({ taskId }) => {
     <div className="flex flex-col items-center bg-white rounded-b border-y-0">
 
       {todo.steps.map((step) => (
-        <DetailStepItem key={step.id} step={step} taskId={taskId} />
+        <DetailStepItem key={step.id} step={step} taskId={taskId} isApiData={isApiData}/>
       ))}
             
 

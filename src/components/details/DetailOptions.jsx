@@ -5,15 +5,23 @@ import { setMydayTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";
 import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";
+import useAuth from "../../hooks/useAuth";
+import { useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailOptions = ({ taskId }) => {
+const DetailOptions = ({ taskId, todo, isApiData }) => {
   const [isMyday, setIsMyday] = useState(false);
   const dispatch = useDispatch();
   const [isMydayHover, setIsMydayHover] = useState(false);
 
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+
+
+  const {user, loading:isAuthLoading} = useAuth()
+  const[setMydayTodoApi] = useSetMydayTodoApiMutation()
+
+
 
   useEffect(() => {
     setIsMyday(todo.myday);
@@ -21,13 +29,21 @@ const DetailOptions = ({ taskId }) => {
 
   const addMydayHandler = () => {
     if (!todo.myday) {
-      dispatch(setMydayTodo({ id: taskId, value: true }));
+      if (user) {
+        setMydayTodoApi({todoId: taskId, user, value: true})
+      } else {
+        dispatch(setMydayTodo({ id: taskId, value: true }));
+      }
     }
   };
 
   const removeMydayHandler = () => {
     if (todo.myday) {
-      dispatch(setMydayTodo({ id: taskId, value: false }));
+      if (user) {
+        setMydayTodoApi({todoId: taskId, user, value: false})
+      } else {
+        dispatch(setMydayTodo({ id: taskId, value: false }));
+      }
     }
   };
 
@@ -55,9 +71,9 @@ const DetailOptions = ({ taskId }) => {
       </div>
 
       <div className="rounded my-2">
-        <DetailRemindPopover taskId={taskId} />
-        <DetailDuePopover taskId={taskId} />
-        <DetailRepeatPopover taskId={taskId} />
+        <DetailRemindPopover taskId={taskId} todo={todo} />
+        <DetailDuePopover taskId={taskId} todo={todo}/>
+        <DetailRepeatPopover taskId={taskId} todo={todo}/>
       </div>
     </>
   );

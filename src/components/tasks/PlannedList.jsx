@@ -4,11 +4,12 @@ import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
 import { getCustomFormatDateString } from "../../utils/getDates";
+import { useOutletContext } from "react-router-dom";
 
 const PlannedList = () => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
-  const todoArr = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
   const [activeArr, setActiveArr] = useState([]);
   const [isOpen, setIsOpen] = useState({
     earlier: false,
@@ -31,6 +32,9 @@ const PlannedList = () => {
     next5Days: 0,
     later: 0,
   });
+
+  const [todos, isApiData, isLoading] = useOutletContext()
+  
 
   const toggleListHandler = (title) => {
     setIsOpen((prevState) => {
@@ -57,7 +61,7 @@ const PlannedList = () => {
       later: [],
     };
 
-    todoArr.forEach((todo) => {
+    todos.forEach((todo) => {
       if (!todo.dueDate || todo.complete) return;
       const category = classifyDate(todo);
       tempSortedArr[category].push(todo);
@@ -72,8 +76,7 @@ const PlannedList = () => {
     ]);
     setSortedArr(tempSortedArr);
     setCount(listCount);
-  }, [todoArr]);
-
+  }, [todos]);
 
   useEffect(() => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정
@@ -92,13 +95,12 @@ const PlannedList = () => {
     }
   }, [activeRange, activeArr, dispatch]);
 
-let startDate = new Date();
-startDate.setDate(startDate.getDate() + 2);
-startDate = getCustomFormatDateString(startDate, "short")
-let endDate = new Date();
-endDate.setDate(endDate.getDate() + 6);
-endDate = getCustomFormatDateString(endDate, "short")
-
+  let startDate = new Date();
+  startDate.setDate(startDate.getDate() + 2);
+  startDate = getCustomFormatDateString(startDate, "short");
+  let endDate = new Date();
+  endDate.setDate(endDate.getDate() + 6);
+  endDate = getCustomFormatDateString(endDate, "short");
 
   return (
     <div className="flex flex-col overflow-y-auto pb-6 px-6">

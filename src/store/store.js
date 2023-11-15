@@ -7,14 +7,14 @@ import activeSliceReducer from "./activeSlice"
 import searchSliceReducer from "./searchSlice";
 import modifierSliceReducer from "./modifierSlice";
 
-import { apiSlice } from "../api/apiSlice";
+import { firestoreApi } from "../api/firestoreApi";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
 
 // export default configureStore({
 export const store =  configureStore({
   reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
+    [firestoreApi.reducerPath]: firestoreApi.reducer,
     todo: todoSliceReducer,
     ui: uiSliceReducer,
     sort: sortSliceReducer,
@@ -24,7 +24,7 @@ export const store =  configureStore({
     modifier: modifierSliceReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware), 
+    getDefaultMiddleware().concat(firestoreApi.middleware), 
 });
 
 

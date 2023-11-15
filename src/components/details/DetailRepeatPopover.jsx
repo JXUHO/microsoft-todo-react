@@ -19,8 +19,10 @@ import RepeatItems from "../addtask/RepeatItems";
 
 import { getRepeatButtonText } from "../addtask/RepeatPopover";
 import { useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailRepeatPopover = ({ taskId }) => {
+const DetailRepeatPopover = ({ taskId, todo }) => {
   const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
@@ -29,9 +31,12 @@ const DetailRepeatPopover = ({ taskId }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
   const {
     refs: popoverRefs,
@@ -103,55 +108,105 @@ const DetailRepeatPopover = ({ taskId }) => {
   const addRepeatHandler = (input) => {
     switch (input) {
       case "daily":
-        dispatch(
-          changeOptionTodo({
-            id: taskId,
-            content: "1-day",
+        if (user) {
+          changeOptionTodoApi({
+            todoId: taskId,
+            user,
             option: "repeatRule",
+            content: "1-day",
             currentLocation: location.pathname,
-          })
-        );
+          });
+        } else {
+          dispatch(
+            changeOptionTodo({
+              id: taskId,
+              content: "1-day",
+              option: "repeatRule",
+              currentLocation: location.pathname,
+            })
+          );
+        }
         break;
       case "weekdays":
-        dispatch(
-          changeOptionTodo({
-            id: taskId,
-            content: "1-week-mon-tue-wed-thu-fri",
+        if (user) {
+          changeOptionTodoApi({
+            todoId: taskId,
+            user,
             option: "repeatRule",
+            content: "1-week-mon-tue-wed-thu-fri",
             currentLocation: location.pathname,
-          })
-        );
+          });
+        } else {
+          dispatch(
+            changeOptionTodo({
+              id: taskId,
+              content: "1-week-mon-tue-wed-thu-fri",
+              option: "repeatRule",
+              currentLocation: location.pathname,
+            })
+          );
+        }
         break;
       case "weekly":
         const currentDay = getDayOfWeek(new Date());
-        dispatch(
-          changeOptionTodo({
-            id: taskId,
-            content: "1-week-" + currentDay,
+        if (user) {
+          changeOptionTodoApi({
+            todoId: taskId,
+            user,
             option: "repeatRule",
+            content: "1-week-" + currentDay,
             currentLocation: location.pathname,
-          })
-        );
+          });
+        } else {
+          dispatch(
+            changeOptionTodo({
+              id: taskId,
+              content: "1-week-" + currentDay,
+              option: "repeatRule",
+              currentLocation: location.pathname,
+            })
+          );
+        }
         break;
       case "monthly":
-        dispatch(
-          changeOptionTodo({
-            id: taskId,
-            content: "1-month",
+        if (user) {
+          changeOptionTodoApi({
+            todoId: taskId,
+            user,
             option: "repeatRule",
+            content: "1-month",
             currentLocation: location.pathname,
-          })
-        );
+          });
+        } else {
+          dispatch(
+            changeOptionTodo({
+              id: taskId,
+              content: "1-month",
+              option: "repeatRule",
+              currentLocation: location.pathname,
+            })
+          );
+        }
         break;
       case "yearly":
-        dispatch(
-          changeOptionTodo({
-            id: taskId,
-            content: "1-year",
+        if (user) {
+          changeOptionTodoApi({
+            todoId: taskId,
+            user,
             option: "repeatRule",
+            content: "1-year",
             currentLocation: location.pathname,
-          })
-        );
+          });
+        } else {
+          dispatch(
+            changeOptionTodo({
+              id: taskId,
+              content: "1-year",
+              option: "repeatRule",
+              currentLocation: location.pathname,
+            })
+          );
+        }
         break;
       default:
         break;
@@ -160,14 +215,25 @@ const DetailRepeatPopover = ({ taskId }) => {
   };
 
   const resetRepeatHandler = () => {
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option: "repeatRule",
         content: "",
         currentLocation: location.pathname,
-      })
-    );
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option: "repeatRule",
+          content: "",
+          currentLocation: location.pathname,
+        })
+      );
+    }
+
     setPopoverOpen(false);
   };
 
@@ -176,14 +242,24 @@ const DetailRepeatPopover = ({ taskId }) => {
   };
 
   const setRepeatRule = (content, option) => {
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option,
         content,
         currentLocation: location.pathname,
-      })
-    );
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option,
+          content,
+          currentLocation: location.pathname,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -217,7 +293,10 @@ const DetailRepeatPopover = ({ taskId }) => {
               <BsRepeat size="17px" />
               <div className="mx-4 ">
                 <div>{repeatText.title}</div>
-                <div className="text-ms-light-text" style={{ fontSize: "11px" }}>
+                <div
+                  className="text-ms-light-text"
+                  style={{ fontSize: "11px" }}
+                >
                   {repeatText.description}
                 </div>
               </div>

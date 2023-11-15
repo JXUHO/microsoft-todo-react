@@ -17,18 +17,28 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import { addActiveStep } from "../../store/activeSlice";
+import useAuth from "../../hooks/useAuth";
+import { useCompleteStepApiMutation } from "../../api/todoApiSlice";
 
-const DetailStepItem = ({ step, taskId }) => {
+const DetailStepItem = ({ step, taskId, isApiData }) => {
   const [isCheckHover, setIsCheckHover] = useState(false);
   const dispatch = useDispatch();
   const isActive = useSelector((state) => state.active.activeStep);
+  
+  
+  const { user, loading: isAuthLoading } = useAuth();
+  const [completeStepApi] = useCompleteStepApiMutation()
 
   const activeStepHandler = () => {
     dispatch(addActiveStep(step.id));
   };
 
   const completeStepHandler = () => {
-    dispatch(completeStep({ taskId, stepId: step.id }));
+    if (isApiData) {
+      // completeStepApi({todoId: taskId, user, stepId: step.id})
+    } else {
+      dispatch(completeStep({ taskId, stepId: step.id }));
+    }
   };
 
   const removeStepHandler = () => {

@@ -20,24 +20,27 @@ import SearchedTasks from "./tasks/searchedLists/SearchedTasks";
 import SearchedNotes from "./tasks/searchedLists/SearchedNotes";
 import SearchedCategories from "./tasks/searchedLists/SearchedCategories";
 import SearchedSteps from "./tasks/searchedLists/SearchedSteps";
+import { useOutletContext } from "react-router-dom";
 
 const Search = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const showCompleted = useSelector((state) => state.search.showCompleted);
   const searchQuery = useSelector((state) => state.search.query);
-  const todoArr = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
   const [searchedTasks, setSearchedTasks] = useState([]);
   const [searchedNotes, setSearchedNotes] = useState([]);
   const [searchedSteps, setSearchedSteps] = useState([]);
   const [searchedCategories, setSearchedCategories] = useState([]);
+  const [todos, isApiData, isLoading] = useOutletContext();
+
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());
   };
 
   useEffect(() => {
-    let sortedArr = sortTasks("alphabetically", "ascending", todoArr);
+    let sortedArr = sortTasks("alphabetically", "ascending", todos);
 
     if (!showCompleted) {
       sortedArr = sortedArr.filter((task) => !task.complete);
@@ -76,7 +79,7 @@ const Search = () => {
     });
     setSearchedSteps(stepsTemp);
     setSearchedCategories(categoriesTemp);
-  }, [searchQuery, todoArr, showCompleted]);
+  }, [searchQuery, todos, showCompleted]);
 
   const isEmpty =
     (searchedTasks.length === 0 &&

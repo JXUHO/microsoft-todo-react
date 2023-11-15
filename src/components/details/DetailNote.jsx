@@ -3,22 +3,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNoteTodo } from "../../store/todoSlice";
 import { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import useAuth from "../../hooks/useAuth";
+import { useAddNoteTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailNote = ({ taskId }) => {
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+const DetailNote = ({ taskId, todo, isApiData }) => {
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
   const inputRef = useRef();
   const dispatch = useDispatch();
   const [note, setNote] = useState("");
   const [updatedText, setUpdatedText] = useState("");
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [addNoteTodoApi] = useAddNoteTodoApiMutation()
 
   const noteInputHandler = (event) => {
     setNote(event.target.value);
   };
 
   const blurHandler = () => {
-    dispatch(addNoteTodo({ id: taskId, content: note }));
+    if (user) {
+      console.log('trigger');
+      addNoteTodoApi({todoId: taskId, user, content: note})
+    } else {
+      dispatch(addNoteTodo({ id: taskId, content: note }));
+    }
   };
 
   const noteSectionClickHandler = () => {

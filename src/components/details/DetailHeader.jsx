@@ -23,11 +23,17 @@ import {
 } from "@floating-ui/react";
 
 import TextareaAutosize from "react-textarea-autosize";
+import {
+  useChangeTaskTodoApiMutation,
+  useSetCompleteTodoApiMutation,
+  useSetImportanceTodoApiMutation,
+} from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
 
-const DetailHeader = ({ taskId }) => {
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+const DetailHeader = ({ taskId, todo, isApiData }) => {
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
 
   const dispatch = useDispatch();
   const textAreaRef = useRef();
@@ -38,15 +44,30 @@ const DetailHeader = ({ taskId }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
+  const [changeTaskTodoApi] = useChangeTaskTodoApiMutation();
+  const { user, loading: isAuthLoading } = useAuth();
+
+  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
+  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
+
   const taskEditHandler = (event) => {
     setNewTask(event.target.value);
   };
 
   const completedHandler = () => {
+    if (!todo) return;
     if (todo.complete) {
-      dispatch(setCompleteTodo({ id: todo.id, value: false }));
+      if (isApiData) {
+        setCompleteTodoApi({ todoId: todo.id, user, value: false });
+      } else {
+        dispatch(setCompleteTodo({ id: todo.id, value: false }));
+      }
     } else {
-      dispatch(setCompleteTodo({ id: todo.id, value: true }));
+      if (isApiData) {
+        setCompleteTodoApi({ todoId: todo.id, user, value: true });
+      } else {
+        dispatch(setCompleteTodo({ id: todo.id, value: true }));
+      }
       setIsFocused(false);
       setIsActive(false);
     }
@@ -54,9 +75,23 @@ const DetailHeader = ({ taskId }) => {
 
   const importanceHandler = () => {
     if (todo.importance) {
-      dispatch(setImportanceTodo({ id: todo.id, value: false }));
+      if (isApiData) {
+        setImportanceTodoApi({ todoId: todo.id, user, value: "" });
+      } else {
+        dispatch(setImportanceTodo({ id: todo.id, value: "" }));
+      }
     } else {
-      dispatch(setImportanceTodo({ id: todo.id, value: true }));
+      if (isApiData) {
+        setImportanceTodoApi({
+          todoId: todo.id,
+          user,
+          value: new Date().toISOString(),
+        });
+      } else {
+        dispatch(
+          setImportanceTodo({ id: todo.id, value: new Date().toISOString() })
+        );
+      }
     }
   };
 
@@ -67,7 +102,11 @@ const DetailHeader = ({ taskId }) => {
         setNewTask(todo.task);
         return;
       }
-      dispatch(changeTaskTodo({ id: todo.id, task: newTask }));
+      if (isApiData) {
+        changeTaskTodoApi({ todoId: todo.id, user, value: newTask });
+      } else {
+        dispatch(changeTaskTodo({ id: todo.id, task: newTask }));
+      }
     }
     setIsFocused(false);
     setIsActive(false);
@@ -91,6 +130,7 @@ const DetailHeader = ({ taskId }) => {
   };
 
   useEffect(() => {
+    if (!todo) return;
     setNewTask(todo.task);
   }, [todo]);
 
@@ -142,14 +182,14 @@ const DetailHeader = ({ taskId }) => {
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completedHandler}
         >
-          {todo.complete ? (
+          {todo?.complete ? (
             <div className="animate-checkAnimationBase text-ms-font-blue">
-              <BsCheckCircleFill size="16px"/>
+              <BsCheckCircleFill size="16px" />
             </div>
           ) : (
             <div className="flex items-center">
               <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20 text-ms-font-blue">
-                <BsCheckCircle size="16px"/>
+                <BsCheckCircle size="16px" />
               </div>
               <div className="z-10 text-ms-font-blue">
                 <BsCircle size="16px" />
@@ -158,7 +198,11 @@ const DetailHeader = ({ taskId }) => {
           )}
         </span>
 
-        <div className={`w-full text-base font-semibold px-4 ${isHover ? "bg-ms-white-hover" : "bg-white"}`}>
+        <div
+          className={`w-full text-base font-semibold px-4 ${
+            isHover ? "bg-ms-white-hover" : "bg-white"
+          }`}
+        >
           {isActive ? (
             <TextareaAutosize
               ref={textAreaRef}
@@ -170,12 +214,14 @@ const DetailHeader = ({ taskId }) => {
               onKeyDown={keyDownHandler}
               maxLength="255"
               maxRows={12}
-              className={`dark:bg-[#292827] ${isHover ? "bg-ms-white-hover" : "bg-white"}`}
+              className={`dark:bg-[#292827] ${
+                isHover ? "bg-ms-white-hover" : "bg-white"
+              }`}
               style={{
                 resize: "none",
                 textDecoration:
-                  todo.complete && !isFocused ? "line-through" : "",
-                color: todo.complete && !isFocused ? "#767678" : "",
+                  todo?.complete && !isFocused ? "line-through" : "",
+                color: todo?.complete && !isFocused ? "#767678" : "",
                 wordBreak: "break-all",
                 lineHeight: "20px",
               }}
@@ -186,8 +232,8 @@ const DetailHeader = ({ taskId }) => {
               onClick={clickHandler}
               style={{
                 textDecoration:
-                  todo.complete && !isFocused ? "line-through" : "",
-                color: todo.complete && !isFocused ? "#767678" : "",
+                  todo?.complete && !isFocused ? "line-through" : "",
+                color: todo?.complete && !isFocused ? "#767678" : "",
               }}
             >
               {newTask}
@@ -201,7 +247,7 @@ const DetailHeader = ({ taskId }) => {
           ref={tooltipRefs.setReference}
           {...getTooltipReferenceProps()}
         >
-          {todo.importance ? (
+          {todo?.importance ? (
             <div className="animate-fillAnimation ">
               <BsStarFill size="18px" />
             </div>
@@ -223,7 +269,7 @@ const DetailHeader = ({ taskId }) => {
           }}
           className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >
-          {todo.importance ? "Remove importance." : "Mark task as important."}
+          {todo?.importance ? "Remove importance." : "Mark task as important."}
         </div>
       )}
     </div>

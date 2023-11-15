@@ -21,8 +21,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeOptionTodo, setRemindedTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
+import { useChangeOptionTodoApiMutation, useSetRemindedTodoApiMutation } from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
 
-const DetailRemindPopover = ({ taskId }) => {
+const DetailRemindPopover = ({ taskId, todo }) => {
   const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -31,9 +33,13 @@ const DetailRemindPopover = ({ taskId }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
+  const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
   const {
     refs: popoverRefs,
@@ -105,29 +111,61 @@ const DetailRemindPopover = ({ taskId }) => {
   const addRemindHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option: "remind",
         content,
         currentLocation: location.pathname,
-      })
-    );
-    dispatch(setRemindedTodo({id:taskId, value:false}))
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option: "remind",
+          content,
+          currentLocation: location.pathname,
+        })
+      );
+    }
+
+    if (user) {
+      setRemindedTodoApi({ todoId: taskId, user, value: false });
+    } else {
+      dispatch(setRemindedTodo({ id: taskId, value: false }));
+    }
+
     setPopoverOpen(false);
   };
 
   const resetRemindHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option: "remind",
         content: "",
         currentLocation: location.pathname,
-      })
-    );
-    dispatch(setRemindedTodo({id:taskId, value:false}))
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option: "remind",
+          content: "",
+          currentLocation: location.pathname,
+        })
+      );
+    }
+
+    if (user) {
+      setRemindedTodoApi({ todoId: taskId, user, value: false });
+    } else {
+      dispatch(setRemindedTodo({ id: taskId, value: false }));
+    }
+
     setPopoverOpen(false);
   };
 
@@ -159,13 +197,17 @@ const DetailRemindPopover = ({ taskId }) => {
         onMouseLeave={() => setIsHover(false)}
       >
         {todo.remind ? (
-          <div className={`flex w-full px-4 py-2 ${todo.reminded ? "text-ms-light-text" : "text-ms-blue"}`}>
+          <div
+            className={`flex w-full px-4 py-2 ${
+              todo.reminded ? "text-ms-light-text" : "text-ms-blue"
+            }`}
+          >
             <div
               className="flex items-center flex-auto"
               ref={floatingRef}
               {...remindButtonProps}
             >
-              <VscBell size="17px"/>
+              <VscBell size="17px" />
               <div className="mx-4">
                 <div>Remind me at {remindText.time}</div>
                 <div className="text-xs text-ms-light-text">

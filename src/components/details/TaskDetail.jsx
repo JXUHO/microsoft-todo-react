@@ -15,11 +15,12 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import useViewport from "../../hooks/useViewPort";
+import useGetTodos from "../../hooks/useGetTodos";
 
-const TaskDetail = () => {
+const TaskDetail = ({todos, isApiData, isLoading}) => {
   const dispatch = useDispatch();
   const activeTasks = useSelector((state) => state.active.activeTasks);
-  const todos = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
   const [removeTooltipOpen, setRemoveTooltipOpen] = useState(false);
 
@@ -28,6 +29,10 @@ const TaskDetail = () => {
   const [resizerPosition, setResizerPosition] = useState(360);
   const [isHover, setIsHover] = useState(false);
   const [createdTime, setCreatedTime] = useState("");
+  const [firstRender, setFirstRender] = useState(true);
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
+  // const { todos, isApiData, isLoading } = useGetTodos();
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -40,13 +45,17 @@ const TaskDetail = () => {
   const detailId = activeTasks[0];
 
   useEffect(() => {
-    const todoDetail = todos.find((todo) => todo.id === detailId);
-    setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
-  }, [detailId, todos]);
-
-  const [firstRender, setFirstRender] = useState(true);
-
-  const detailWidth = useSelector((state) => state.ui.detailWidth);
+    if (isLoading) {
+      return;
+    }
+    if (isApiData) {
+      const todoDetail = todos.find((todo) => todo.id === detailId);
+      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
+    } else {
+      const todoDetail = todos.find((todo) => todo.id === detailId);
+      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
+    }
+  }, [detailId, todos, isLoading]);
 
   const resizerMouseDownHandler = () => {
     setIsResizing(true);
@@ -180,7 +189,9 @@ const TaskDetail = () => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        {detailId && <Details taskId={detailId} />}
+        {detailId && !isLoading && (
+          <Details taskId={detailId} todos={todos} isLoading={isLoading} isApiData={isApiData}/>
+        )}
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
@@ -192,7 +203,7 @@ const TaskDetail = () => {
               <LuPanelRightClose size="16px" />
             </button>
 
-            <p className="text-xs leading-5 text-ms-light-text" >
+            <p className="text-xs leading-5 text-ms-light-text">
               Created {createdTime}
             </p>
 

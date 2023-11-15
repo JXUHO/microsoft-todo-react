@@ -18,8 +18,10 @@ import { IoCalendarOutline } from "react-icons/io5";
 import DueCalendar from "../addtask/DueCalendar";
 import DueItems from "../addtask/DueItems";
 import { useLocation } from "react-router-dom";
+import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
 
-const DetailDuePopover = ({ taskId }) => {
+const DetailDuePopover = ({ taskId, todo }) => {
   const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -28,9 +30,12 @@ const DetailDuePopover = ({ taskId }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
   const {
     refs: popoverRefs,
@@ -102,27 +107,48 @@ const DetailDuePopover = ({ taskId }) => {
   const addDueHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option: "dueDate",
         content,
         currentLocation: location.pathname,
-      })
-    );
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option: "dueDate",
+          content,
+          currentLocation: location.pathname,
+        })
+      );
+    }
     setPopoverOpen(false);
   };
 
   const resetDueHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    dispatch(
-      changeOptionTodo({
-        id: taskId,
+    if (user) {
+      changeOptionTodoApi({
+        todoId: taskId,
+        user,
         option: "dueDate",
         content: "",
         currentLocation: location.pathname,
-      })
-    );
+      });
+    } else {
+      dispatch(
+        changeOptionTodo({
+          id: taskId,
+          option: "dueDate",
+          content: "",
+          currentLocation: location.pathname,
+        })
+      );
+    }
+
     setPopoverOpen(false);
   };
 
@@ -155,7 +181,9 @@ const DetailDuePopover = ({ taskId }) => {
             style={{ color: "#2564cf" }}
           >
             <div
-              className={`flex items-center flex-auto ${dueText.includes("Overdue") ? "text-ms-warning" : "text-ms-blue"}`}
+              className={`flex items-center flex-auto ${
+                dueText.includes("Overdue") ? "text-ms-warning" : "text-ms-blue"
+              }`}
               ref={floatingRef}
               {...dueButtonProps}
             >

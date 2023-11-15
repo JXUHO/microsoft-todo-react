@@ -11,12 +11,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { closeDetail, setDialog } from "../../store/uiSlice";
 import { removeTodo } from "../../store/todoSlice";
+import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
+import useGetTodos from "../../hooks/useGetTodos";
 
-function DeleteTaskDialog() {
+function DeleteTaskDialog({todos, isApiData, isLoading}) {
   const isOpen = useSelector((state) => state.ui.dialog);
   const dispatch = useDispatch();
   const activeTasksId = useSelector((state) => state.active.activeTasks);
-  const todos = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
 
   const { refs, context } = useFloating({
     open: isOpen,
@@ -27,9 +30,21 @@ function DeleteTaskDialog() {
   const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
   const { getFloatingProps } = useInteractions([click, role, dismiss]);
 
+
+  
+  // const {todos, isApiData, isLoading} = useGetTodos()
+  const [removeTodoApi] = useRemoveTodoApiMutation()
+  const {user, loading:isAuthLoading} = useAuth()
+
+
   const deleteTaskHandler = () => {
-    activeTasksId.forEach((taskId) => {
-      dispatch(removeTodo(taskId));
+    activeTasksId.forEach((todoId) => {
+      if (isApiData) {
+        removeTodoApi({todoId, user})
+      } else {
+        dispatch(removeTodo(todoId));
+      }
+
     });
     dispatch(closeDetail());
     dispatch(setDialog(false));

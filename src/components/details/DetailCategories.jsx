@@ -12,20 +12,35 @@ import { BsCheck2, BsFillCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategoryTodo, removeCategoryTodo } from "../../store/todoSlice";
 import DetailCategoryItems from "./DetailCategoryItems";
+import useAuth from "../../hooks/useAuth";
+import { useAddCategoryTodoApiMutation, useRemoveCategoryTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailCategories = ({ taskId }) => {
+const DetailCategories = ({ taskId, todo, isApiData }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [addCategoryTodoApi] = useAddCategoryTodoApiMutation()
+  const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation()
+
 
   const categoryHandler = (category) => {
     if (!todo.category.includes(category)) {
-      dispatch(addCategoryTodo({ id: taskId, category }));
+      if (user) {
+        addCategoryTodoApi({todoId:taskId, user, category})
+      } else {
+        dispatch(addCategoryTodo({ id: taskId, category }));
+      }
     } else {
-      dispatch(removeCategoryTodo({ id: taskId, category }));
+      if (user) {
+        removeCategoryTodoApi({todoId:taskId, user, category})
+      } else {
+        dispatch(removeCategoryTodo({ id: taskId, category }));
+      }
     }
   };
 
@@ -54,6 +69,7 @@ const DetailCategories = ({ taskId }) => {
         popoverRefs={popoverRefs}
         getPopoverReferenceProps={getPopoverReferenceProps}
         categoryHandler={categoryHandler}
+        todo={todo}
       />
 
       {popoverOpen && (

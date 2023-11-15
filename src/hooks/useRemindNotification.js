@@ -7,10 +7,18 @@ import {
 } from "../store/activeSlice";
 import { openDetail } from "../store/uiSlice";
 import { useEffect } from "react";
+import { useSetRemindedTodoApiMutation } from "../api/todoApiSlice";
+import useAuth from "./useAuth";
+import useGetTodos from "./useGetTodos";
+
 
 const useRemindNotification = () => {
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todo.todos);
+  const {todos, isApiData, isLoading} = useGetTodos();
+  // const todos = useSelector((state) => state.todo.todos);
+
+  const { user, loading: isAuthLoading } = useAuth();
+  const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
   useEffect(() => {
     if (todos.some((todo) => todo.remind)) {
@@ -30,7 +38,11 @@ const useRemindNotification = () => {
           new Date(todo.remind) <= currentTime
         ) {
           notifyMe(todo);
-          dispatch(setRemindedTodo({ id: todo.id, value: true }));
+          if (user) {
+            setRemindedTodoApi({todoId: todo.id, user, value: true})
+          } else {
+            dispatch(setRemindedTodo({ id: todo.id, value: true }));
+          }
         }
       }
     }, 1000);

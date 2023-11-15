@@ -5,41 +5,62 @@ import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 import { addActiveTasks } from "../../store/activeSlice";
+import { useGetTodosApiQuery } from "../../api/todoApiSlice";
+import useAuth from "../../hooks/useAuth";
+import useGetTodos from "../../hooks/useGetTodos";
+import { useOutletContext } from "react-router-dom";
 
 const MydayList = ({ currentLocation }) => {
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todo.todos);
+  // const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
   const groupBy = useSelector((state) => state.group.myday.groupBy);
   const activeRange = useSelector((state) => state.active.activeRange);
 
+  // const {user, loading:isAuthLoading} = useAuth()
+  // const {data:todoArrData, error, isLoading:isTodoLoading, refetch } = useGetTodosApiQuery(user?.uid, {skip:!user})
+
+  // const {todos, isApiData, isLoading} = useGetTodos()
+  const [todos, isApiData, isLoading] = useOutletContext();
+
   useEffect(() => {
-    //  todoArr 생성.
-    let mydayTodos = todos
-      .slice()
-      .reverse()
-      .filter((todo) => todo.myday);
+    // importance Boolean에서 Date Object string으로 변경함
+    // importanct 설정되면 상단으로 render하는 logic을 여기에 작성해야 함
+
+    let mydayTodos;
+    if (isApiData) {
+      // user exist
+      mydayTodos = todos
+        .slice()
+        .sort((a, b) => new Date(a.created) - new Date(b.created))
+        .reverse()
+        .filter((todo) => todo.myday);
+    } else {
+      // user not exist
+      mydayTodos = todos
+        .slice()
+        .reverse()
+        .filter((todo) => todo.myday);
+    }
 
     if (sortBy) {
-      mydayTodos = sortTasks(sortBy, sortOrder, mydayTodos)
-    } 
+      mydayTodos = sortTasks(sortBy, sortOrder, mydayTodos);
+    }
 
-    let incompleteTemp = []
-    let completeTemp = []
-    mydayTodos.forEach(todo => {
+    let incompleteTemp = [];
+    let completeTemp = [];
+    mydayTodos.forEach((todo) => {
       if (!todo.complete) {
-        incompleteTemp.push(todo)
+        incompleteTemp.push(todo);
       } else {
-        completeTemp.push(todo)
+        completeTemp.push(todo);
       }
-    })
-    mydayTodos = [...incompleteTemp, ...completeTemp]
-    setTodoArr(mydayTodos)
-
+    });
+    mydayTodos = [...incompleteTemp, ...completeTemp];
+    setTodoArr(mydayTodos);
   }, [todos, sortBy, sortOrder]);
-
 
   useEffect(() => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정

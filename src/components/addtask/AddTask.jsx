@@ -9,11 +9,8 @@ import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
-import { useAddTodoApiMutation } from "../../api/apiSlice";
+import { useAddTodoApiMutation } from "../../api/todoApiSlice";
 import useAuth from "../../hooks/useAuth";
-
-
-
 
 
 const initialTask = {

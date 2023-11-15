@@ -7,10 +7,11 @@ const DetailCategoryItems = ({
   popoverRefs,
   getPopoverReferenceProps,
   categoryHandler,
+  todo
 }) => {
-  const todo = useSelector((state) =>
-    state.todo.todos.find((todo) => todo.id === taskId)
-  );
+  // const todo = useSelector((state) =>
+  //   state.todo.todos.find((todo) => todo.id === taskId)
+  // );
 
   const removeCategoryHandler = (event, category) => {
     event.stopPropagation();

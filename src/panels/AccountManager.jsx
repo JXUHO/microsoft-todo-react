@@ -85,7 +85,7 @@ const AccountManager = () => {
             </div>
           ) : (
             <div className="p-8 h-full w-full flex flex-col justify-center items-center text-ms-light-text">
-              <h2>You're not logged in</h2>
+              <h2 className="text-center">You're not logged in.<br/>Changes will not be saved.</h2>
               <button
                 className="text-2xl border rounded-md my-4 w-full pb-1 bg-ms-blue text-white hover:bg-ms-blue-hover duration-100"
                 onClick={() => navigate("/signup")}
