@@ -16,37 +16,23 @@ import {
 } from "@floating-ui/react";
 import useViewport from "../../hooks/useViewPort";
 import useGetTodos from "../../hooks/useGetTodos";
-import {
-  useGetUiApiQuery,
-  useSetDetailWidthApiMutation,
-} from "../../api/uiSliceApi";
-import useAuth from "../../hooks/useAuth";
 
-const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
+const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
   const dispatch = useDispatch();
   const activeTasks = useSelector((state) => state.active.activeTasks);
+  // const todos = useSelector((state) => state.todo.todos);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
   const [removeTooltipOpen, setRemoveTooltipOpen] = useState(false);
+
   const detailRef = useRef();
   const [isResizing, setIsResizing] = useState(false);
   const [resizerPosition, setResizerPosition] = useState(360);
   const [isHover, setIsHover] = useState(false);
   const [createdTime, setCreatedTime] = useState("");
   const [firstRender, setFirstRender] = useState(true);
-  // const detailWidth = useSelector((state) => state.ui.detailWidth);
-  const detailWidthStatic = useSelector((state) => state.ui.detailWidth);
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
 
-
-  const { data: uiData, isLoading: isUiLoading } = useGetUiApiQuery(user?.uid);
-  const [setDetailWidthApi] = useSetDetailWidthApiMutation();
-
-  const [detailWidth, setDetailWidthData] = useState(360)
-
-  /**
-   * 현재 local
-   * 
-   */
-
+  // const { todos, isApiData, isLoading } = useGetTodos();
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -79,41 +65,18 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
     setIsResizing(false);
   }, []);
 
-
-  
-  useEffect(() => {
-    if (isApiData && !isUiLoading) {
-      setDetailWidthData(uiData.detailWidth)
-    } else {
-      setDetailWidthData(detailWidthStatic)
-    }
-  }, [uiData, detailWidthStatic, isApiData, isUiLoading])
-
-
-  useEffect(() => {
-    if (firstRender) {
-      if (isApiData && !isUiLoading) {
-        setResizerPosition(uiData.detailWidth);
-        setFirstRender(false);
-      } else if (!isApiData) {
-        setResizerPosition(detailWidth);
-        setFirstRender(false);
-      }
-    }
-  }, [firstRender, isLoading, isUiLoading, isApiData, uiData, detailWidth]);
+  if (firstRender) {
+    setResizerPosition(detailWidth);
+    setFirstRender(false);
+  }
 
   useEffect(() => {
     if (!isResizing) {
-      if (isApiData && !isLoading && !isUiLoading) {
-        setDetailWidthApi({ user, value: resizerPosition });
-      } else {
-        dispatch(setDetailWidth(resizerPosition));
-      }
+      // setTimeout(() => {
+      dispatch(setDetailWidth(resizerPosition));
+      // }, 0);
     }
-  }, [isResizing, resizerPosition, isLoading, isApiData, isUiLoading]);
-
-
-
+  }, [isResizing, resizerPosition]);
 
   const resizeHandler = useCallback(
     // resizer 이동
@@ -227,12 +190,7 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
         }}
       >
         {detailId && !isLoading && (
-          <Details
-            taskId={detailId}
-            todos={todos}
-            isLoading={isLoading}
-            isApiData={isApiData}
-          />
+          <Details taskId={detailId} todos={todos} isLoading={isLoading} isApiData={isApiData}/>
         )}
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
@@ -294,4 +252,4 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   );
 };
 
-export default TaskDetail;
+export default TaskDetailLocal;

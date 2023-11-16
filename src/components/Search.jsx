@@ -34,7 +34,6 @@ const Search = () => {
   const [searchedCategories, setSearchedCategories] = useState([]);
   const [todos, isApiData, isLoading] = useOutletContext();
 
-
   const openSidebarHandler = () => {
     dispatch(openSidebar());
   };
@@ -88,27 +87,46 @@ const Search = () => {
       searchedCategories.length === 0) ||
     searchQuery.length === 0;
 
+  // const [isDark, setIsDark] = useState(
+  //   window.matchMedia("(prefers-color-scheme: dark)").matches
+  // );
 
+  // useEffect(() => {
+  //   const darkModeListener = window.matchMedia("(prefers-color-scheme: dark)");
+  //   const handleDarkModeChange = (event) => {
+  //     setIsDark(event.matches);
+  //   };
+  //   darkModeListener.addEventListener("change", handleDarkModeChange);
+  //   return () => {
+  //     darkModeListener.removeEventListener("change", handleDarkModeChange);
+  //   };
+  // }, []);
 
-
-  const [isDark, setIsDark] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-
+  const [isDark, setIsDark] = useState(false);
+  
   useEffect(() => {
-    const darkModeListener = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleDarkModeChange = (event) => {
-      setIsDark(event.matches);
-    };
-    darkModeListener.addEventListener("change", handleDarkModeChange);
+    const rootElement = document.documentElement;
+    const dataThemeValue = rootElement.dataset.theme;
+    if (dataThemeValue) {
+      setIsDark(dataThemeValue === "dark");
+    } 
+    
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.attributeName === "data-theme") {
+          const newDataThemeValue = mutation.target.dataset.theme;
+          setIsDark(newDataThemeValue === "dark");
+        }
+      }
+    });
+    const observerConfig = { attributes: true };
+    observer.observe(rootElement, observerConfig);
+
     return () => {
-      darkModeListener.removeEventListener("change", handleDarkModeChange);
+      observer.disconnect();
     };
   }, []);
 
-
-
-  
   return (
     <>
       <div className="flex flex-shrink-0 relative items-center justify-center h-12 mx-6 my-4 ">

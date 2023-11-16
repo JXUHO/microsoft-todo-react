@@ -18,7 +18,7 @@ import {
 } from "@floating-ui/react";
 import { addActiveStep } from "../../store/activeSlice";
 import useAuth from "../../hooks/useAuth";
-import { useCompleteStepApiMutation } from "../../api/todoApiSlice";
+import { useChangeStepApiMutation, useCompleteStepApiMutation, useRemoveStepApiMutation } from "../../api/todoApiSlice";
 
 const DetailStepItem = ({ step, taskId, isApiData }) => {
   const [isCheckHover, setIsCheckHover] = useState(false);
@@ -28,6 +28,8 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
   
   const { user, loading: isAuthLoading } = useAuth();
   const [completeStepApi] = useCompleteStepApiMutation()
+  const [removeStepApi] = useRemoveStepApiMutation()
+  const [changeStepApi] = useChangeStepApiMutation()
 
   const activeStepHandler = () => {
     dispatch(addActiveStep(step.id));
@@ -35,14 +37,18 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
 
   const completeStepHandler = () => {
     if (isApiData) {
-      // completeStepApi({todoId: taskId, user, stepId: step.id})
+      completeStepApi({todoId: taskId, user, stepId: step.id})
     } else {
       dispatch(completeStep({ taskId, stepId: step.id }));
     }
   };
 
   const removeStepHandler = () => {
-    dispatch(removeStep({ taskId, stepId: step.id }));
+    if (isApiData) {
+      removeStepApi({todoId: taskId, user, stepId:step.id})
+    } else {
+      dispatch(removeStep({ taskId, stepId: step.id }));
+    }
   };
 
   const inputRef = useRef();
@@ -62,7 +68,12 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
         setNewStep(step.content);
         return;
       }
-      dispatch(changeStep({ taskId, stepId: step.id, content: newStep }));
+      // 변경점
+      if (isApiData) {
+        changeStepApi({todoId:taskId, user, stepId:step.id, value: newStep})
+      } else {
+        dispatch(changeStep({ taskId, stepId: step.id, content: newStep }));
+      }
     }
     setIsFocused(false);
   };

@@ -24,7 +24,7 @@ const useUpdateMyday = ({todos, isApiData, setMydayTodoApi, user}) => {
           !todo.dueDate &&
           !isDateToday(new Date(todo.created)) &&
           todo.myday
-        ) {
+        ) {          
           setMydayTodoApi({todoId:todo.id, user, value: false})
         }
       });
@@ -32,7 +32,7 @@ const useUpdateMyday = ({todos, isApiData, setMydayTodoApi, user}) => {
       updateMydayTodo();
     }
 
-  }, []);
+  }, [todos, isApiData, setMydayTodoApi, user]);
 
 }
 

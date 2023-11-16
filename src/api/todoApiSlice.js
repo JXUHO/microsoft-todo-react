@@ -17,11 +17,7 @@ import { isDateToday } from "../utils/getDates";
 import { firestoreApi } from "./firestoreApi";
 import popSound from "../../public/popSound.mp3";
 
-/**
- * TODO
- * injectEndpoints 이용해서 slice쪼개기
- * folder structure features로 변경하기
- */
+
 
 export const todoApiSlice = firestoreApi.injectEndpoints({
   baseQuery: fakeBaseQuery(),
@@ -101,22 +97,25 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           const docSnap = await getDoc(
             doc(db, `users/${user.uid}/todos`, todoId)
           );
-          const docData = docSnap.data()
-          if(!value){
+          const docData = docSnap.data();
+          if (!value) {
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            complete: ""
-          });
+              complete: "",
+            });
           } else {
             new Audio(popSound).play();
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
               complete: new Date().toISOString(),
             });
-            if(docData.repeatRule && !docData.repeated) {
+            if (docData.repeatRule && !docData.repeated) {
               await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
                 repeated: true,
               });
-              const newRepeatTask = getNextRepeatTask(docData)
-              await setDoc(doc(db, `users/${user.uid}/todos`, newRepeatTask.id), newRepeatTask);
+              const newRepeatTask = getNextRepeatTask(docData);
+              await setDoc(
+                doc(db, `users/${user.uid}/todos`, newRepeatTask.id),
+                newRepeatTask
+              );
             }
           }
           return { data: null };
@@ -128,90 +127,87 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
       invalidatesTags: ["todos"],
     }),
 
-
-
     setImportanceTodoApi: builder.mutation({
-      async queryFn({todoId, user, value}) {
+      async queryFn({ todoId, user, value }) {
         try {
           const docSnap = await getDoc(
             doc(db, `users/${user.uid}/todos`, todoId)
           );
-          const docData = docSnap.data()
-          
+          const docData = docSnap.data();
+
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            importance: value
-          }); 
+            importance: value,
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
 
     changeTaskTodoApi: builder.mutation({
-      async queryFn({todoId, user, value}) {
+      async queryFn({ todoId, user, value }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            task: value
-          }); 
+            task: value,
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
 
-
     setMydayTodoApi: builder.mutation({
-      async queryFn({todoId, user, value}) {
+      async queryFn({ todoId, user, value }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            myday: value
-          }); 
+            myday: value,
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
 
     changeOptionTodoApi: builder.mutation({
-      async queryFn({todoId, user, option, content, currentLocation}) {
+      async queryFn({ todoId, user, option, content, currentLocation }) {
         try {
           const docSnap = await getDoc(
             doc(db, `users/${user.uid}/todos`, todoId)
           );
-          const docData = docSnap.data()
+          const docData = docSnap.data();
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            [option]: content
-          }); 
+            [option]: content,
+          });
           const modifiedDue = repeatDueSynchronizer(docData);
 
           if (modifiedDue) {
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-              dueDate: modifiedDue.toISOString()
-            }); 
+              dueDate: modifiedDue.toISOString(),
+            });
           }
           if (
             currentLocation !== "/myday" &&
             isDateToday(new Date(docData.dueDate))
           ) {
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-              myday: true
-            }); 
+              myday: true,
+            });
           } else if (
             currentLocation !== "/myday" &&
             !isDateToday(new Date(docData.dueDate))
           ) {
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-              myday: false
-            }); 
+              myday: false,
+            });
           }
           return { data: null };
         } catch (error) {
@@ -219,119 +215,150 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
 
     setRemindedTodoApi: builder.mutation({
-      async queryFn({todoId, user, value}) {
+      async queryFn({ todoId, user, value }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            reminded: value
-          }); 
+            reminded: value,
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-
 
     addCategoryTodoApi: builder.mutation({
-      async queryFn({todoId, user, category}) {
+      async queryFn({ todoId, user, category }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            category: arrayUnion(category)
-          }); 
+            category: arrayUnion(category),
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-
-
 
     removeCategoryTodoApi: builder.mutation({
-      async queryFn({todoId, user, category}) {
+      async queryFn({ todoId, user, category }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            category: arrayRemove(category)
-          }); 
+            category: arrayRemove(category),
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-    
-    
-    
+
     addNoteTodoApi: builder.mutation({
-      async queryFn({todoId, user, content}) {
+      async queryFn({ todoId, user, content }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
             "note.content": content,
-            "note.updated": new Date().toISOString()
-          }); 
+            "note.updated": new Date().toISOString(),
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-  
-    
+
     addStepApi: builder.mutation({
-      async queryFn({todoId, user, value}) {
+      async queryFn({ todoId, user, value }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            steps: arrayUnion(value)
-          }); 
+            steps: arrayUnion(value),
+          });
           return { data: null };
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-
-
-
-    // completeStep: (state, action) => {
-    //   const todoToChange = state.todos.find(
-    //     (todo) => todo.id === action.payload.taskId
-    //   );
-    //   const stepToChange = todoToChange.steps.find(
-    //     (step) => step.id === action.payload.stepId
-    //   );
-    //   if(!stepToChange.complete) new Audio(popSound).play()
-    //   stepToChange.complete = !stepToChange.complete;
-    // },
-
 
     completeStepApi: builder.mutation({
-      async queryFn({todoId, user, stepId}) {
-        /**
-         * TODO
-         * DetailStepItem component의 completeStepHandler와 연결된 api 작성중
-         * todoId document / steps array field / 내부의 stepId와 일치하는 item의 complete를 변경해야함
-         */
-
+      async queryFn({ todoId, user, stepId }) {
         try {
-
-          // doc을 가지고와서 !complete값 구해야하나?
+          const docSnap = await getDoc(
+            doc(db, `users/${user.uid}/todos`, todoId)
+          );
+          const docData = docSnap.data();
+          const index = docData.steps.findIndex((step) => step.id === stepId);
+          docData.steps[index].complete = !docData.steps[index].complete;
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-            
-          }); 
+            steps: docData.steps,
+          });
+          return { data: null };
+        } catch (error) {
+          console.log(error.message);
+          return { error: error.message };
+        }
+      },
+      invalidatesTags: ["todos"],
+    }),
+
+    removeStepApi: builder.mutation({
+      async queryFn({ todoId, user, stepId }) {
+        try {
+          const docSnap = await getDoc(
+            doc(db, `users/${user.uid}/todos`, todoId)
+          );
+          const docData = docSnap.data();
+          const docToRemove = docData.steps.find((step) => step.id === stepId);
+
+          await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
+            steps: arrayRemove(docToRemove),
+          });
+          return { data: null };
+        } catch (error) {
+          console.log(error.message);
+          return { error: error.message };
+        }
+      },
+      invalidatesTags: ["todos"],
+    }),
+
+    changeStep: (state, action) => {
+      //dispatch(changeStep({taskId, stepId: step.id, content: ""}))
+      const todoToChange = state.todos.find(
+        (todo) => todo.id === action.payload.taskId
+      );
+      const stepToChange = todoToChange.steps.find(
+        (step) => step.id === action.payload.stepId
+      );
+      stepToChange.content = action.payload.content;
+    },
+
+    changeStepApi: builder.mutation({
+      async queryFn({ todoId, user, stepId, value }) {
+        try {
+          const docSnap = await getDoc(
+            doc(db, `users/${user.uid}/todos`, todoId)
+          );
+          const docData = docSnap.data();
+          const index = docData.steps.findIndex((step) => step.id === stepId);
+          docData.steps[index].content = value;
+          await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
+            steps: docData.steps,
+          });
 
           return { data: null };
         } catch (error) {
@@ -339,54 +366,8 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
-      invalidatesTags: ["todos"]
+      invalidatesTags: ["todos"],
     }),
-
-
-
-
-
-
-
-
-
-
-
-
-    // setMydayTodoApi: builder.mutation({
-    //   async queryFn({todoId, user, value}) {
-    //     try {
-          
-
-    //       return { data: null };
-    //     } catch (error) {
-    //       console.log(error.message);
-    //       return { error: error.message };
-    //     }
-    //   },
-    //   invalidatesTags: ["todos"]
-    // }),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }),
 });
 
@@ -405,9 +386,19 @@ export const {
   useAddNoteTodoApiMutation,
   useAddStepApiMutation,
   useCompleteStepApiMutation,
-
-  
-
-
-
+  useRemoveStepApiMutation,
+  useChangeStepApiMutation,
 } = todoApiSlice;
+
+// setMydayTodoApi: builder.mutation({
+//   async queryFn({todoId, user, value}) {
+//     try {
+
+//       return { data: null };
+//     } catch (error) {
+//       console.log(error.message);
+//       return { error: error.message };
+//     }
+//   },
+//   invalidatesTags: ["todos"]
+// }),

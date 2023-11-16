@@ -68,7 +68,7 @@ const RootPage = () => {
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
           <Outlet context={[todos, isApiData, isLoading]}/>
         </div>
-        {isDetailOpen && <TaskDetail todos={todos} isApiData={isApiData} isLoading={isLoading}/>}
+        {isDetailOpen && <TaskDetail todos={todos} isApiData={isApiData} isLoading={isLoading} user={user}/>}
       </div>
       <TaskItemContextMenu todos={todos} isApiData={isApiData} isLoading={isLoading}/>
       <DeleteTaskDialog todos={todos} isApiData={isApiData} isLoading={isLoading}/>
