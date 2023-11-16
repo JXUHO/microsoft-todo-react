@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeDetail, setDetailWidth, setDialog } from "../../store/uiSlice";
 import { LuPanelRightClose } from "react-icons/lu";
 import { BsTrash3 } from "react-icons/bs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, version } from "react";
 import { getCustomFormatDateString } from "../../utils/getDates";
 import Details from "./Details";
 import {
@@ -15,10 +15,12 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import useViewport from "../../hooks/useViewPort";
+import useGetTodos from "../../hooks/useGetTodos";
 import {
   useGetUiApiQuery,
   useSetDetailWidthApiMutation,
 } from "../../api/uiSliceApi";
+import useAuth from "../../hooks/useAuth";
 
 const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const dispatch = useDispatch();
@@ -31,33 +33,19 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const [isHover, setIsHover] = useState(false);
   const [createdTime, setCreatedTime] = useState("");
   const [firstRender, setFirstRender] = useState(true);
-  const detailWidth = useSelector((state) => state.ui.detailWidth);
+  // const detailWidth = useSelector((state) => state.ui.detailWidth);
+  const detailWidthStatic = useSelector((state) => state.ui.detailWidth);
 
 
   const { data: uiData, isLoading: isUiLoading } = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
 
+  const [detailWidth, setDetailWidthData] = useState(360)
 
-  useEffect(() => {
-    if (firstRender) {
-      if (isApiData && !isUiLoading) {
-        setResizerPosition(uiData.detailWidth);
-        setFirstRender(false);
-      } else if (!isApiData) {
-        setResizerPosition(detailWidth);
-        setFirstRender(false);
-      }
-    }
-  }, [firstRender, isLoading, isUiLoading, isApiData, uiData, detailWidth]);
-
-
-  useEffect(() => {
-    if (!isResizing && !firstRender) {
-      dispatch(setDetailWidth(resizerPosition));
-      setDetailWidthApi({ user, value: resizerPosition });
-    }
-  }, [isResizing, resizerPosition, firstRender, dispatch, user, setDetailWidthApi]);
-
+  /**
+   * 현재 local
+   * 
+   */
 
 
   const closeDetailHandler = () => {
@@ -81,7 +69,7 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
       const todoDetail = todos.find((todo) => todo.id === detailId);
       setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
     }
-  }, [detailId, todos, isLoading, isApiData]);
+  }, [detailId, todos, isLoading]);
 
   const resizerMouseDownHandler = () => {
     setIsResizing(true);
@@ -90,6 +78,42 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const finishResizeHandler = useCallback(() => {
     setIsResizing(false);
   }, []);
+
+
+  
+  useEffect(() => {
+    if (isApiData && !isUiLoading) {
+      setDetailWidthData(uiData.detailWidth)
+    } else {
+      setDetailWidthData(detailWidthStatic)
+    }
+  }, [uiData, detailWidthStatic, isApiData, isUiLoading])
+
+
+  useEffect(() => {
+    if (firstRender) {
+      if (isApiData && !isUiLoading) {
+        setResizerPosition(uiData.detailWidth);
+        setFirstRender(false);
+      } else if (!isApiData) {
+        setResizerPosition(detailWidth);
+        setFirstRender(false);
+      }
+    }
+  }, [firstRender, isLoading, isUiLoading, isApiData, uiData, detailWidth]);
+
+  useEffect(() => {
+    if (!isResizing) {
+      if (isApiData && !isLoading && !isUiLoading) {
+        setDetailWidthApi({ user, value: resizerPosition });
+      } else {
+        dispatch(setDetailWidth(resizerPosition));
+      }
+    }
+  }, [isResizing, resizerPosition, isLoading, isApiData, isUiLoading]);
+
+
+
 
   const resizeHandler = useCallback(
     // resizer 이동
