@@ -1,3 +1,6 @@
+
+
+
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { db } from "../firebase";
 import {
@@ -23,6 +26,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["todos"],
   endpoints: (builder) => ({
+
     getTodosApi: builder.query({
       async queryFn(userId) {
         if (!userId) {
@@ -44,6 +48,9 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
       },
       providesTags: ["todos"],
     }),
+
+
+
 
     addTodoApi: builder.mutation({
       async queryFn({ todo, user }) {
@@ -76,8 +83,27 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todo, user }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi', {todo, user}, (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
+
       invalidatesTags: ["todos"],
     }),
+
+
+
+
+    
+
     removeTodoApi: builder.mutation({
       async queryFn({ todoId, user }) {
         try {
@@ -88,6 +114,19 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi', {todoId, user}, (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
+
       invalidatesTags: ["todos"],
     }),
 
@@ -124,6 +163,17 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -144,6 +194,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -159,6 +221,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -174,6 +248,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -215,6 +301,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, option, content, currentLocation } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, option, content, currentLocation } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -230,6 +328,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -245,6 +355,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, category } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, category } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -258,6 +380,17 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         } catch (error) {
           console.log(error.message);
           return { error: error.message };
+        }
+      },
+
+      async onQueryStarted({ todoId, user, category } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, category } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
         }
       },
       invalidatesTags: ["todos"],
@@ -276,6 +409,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, content } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, content } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -291,6 +436,19 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
+
       invalidatesTags: ["todos"],
     }),
 
@@ -312,6 +470,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, stepId } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, stepId } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
 
@@ -333,19 +503,20 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, stepId } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, stepId } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
-
-    changeStep: (state, action) => {
-      //dispatch(changeStep({taskId, stepId: step.id, content: ""}))
-      const todoToChange = state.todos.find(
-        (todo) => todo.id === action.payload.taskId
-      );
-      const stepToChange = todoToChange.steps.find(
-        (step) => step.id === action.payload.stepId
-      );
-      stepToChange.content = action.payload.content;
-    },
 
     changeStepApi: builder.mutation({
       async queryFn({ todoId, user, stepId, value }) {
@@ -366,6 +537,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
+
+      async onQueryStarted({ todoId, user, stepId, value } , { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData('getTodosApi',{ todoId, user, stepId, value } , (draft) => {})
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: ["todos"],
     }),
   }),
@@ -389,3 +572,16 @@ export const {
   useRemoveStepApiMutation,
   useChangeStepApiMutation,
 } = todoApiSlice;
+
+// setMydayTodoApi: builder.mutation({
+//   async queryFn({todoId, user, value}) {
+//     try {
+
+//       return { data: null };
+//     } catch (error) {
+//       console.log(error.message);
+//       return { error: error.message };
+//     }
+//   },
+//   invalidatesTags: ["todos"]
+// }),

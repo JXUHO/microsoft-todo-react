@@ -40,7 +40,9 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
 
   useEffect(() => {
     if (firstRender) {
+      // first render일 때, 
       if (isApiData && !isUiLoading) {
+        // user가 login했다면, firestore에서 detailwidth를 가지고 온다
         setResizerPosition(uiData.detailWidth);
         setFirstRender(false);
       } else if (!isApiData) {

@@ -13,7 +13,7 @@ const useGetTodos = () => {
     refetch,
   } = useGetTodosApiQuery(user?.uid, { skip: !user });
 
-  return {
+   return {
     todos: todoArrData ? todoArrData : staticTodos,
     isApiData: !!todoArrData,
     isLoading: isAuthLoading || isTodoLoading,
@@ -22,3 +22,22 @@ const useGetTodos = () => {
 
 export default useGetTodos;
 
+
+
+
+// const useGetTodos = () => {
+//   const staticTodos = useSelector((state) => state.todo.todos);
+//   const { user, loading: isAuthLoading } = useAuth();
+//   const {
+//     data: todoArrData,
+//     error,
+//     isLoading: isTodoLoading,
+//     refetch,
+//   } = useGetTodosApiQuery(user?.uid, { skip: !user });
+
+//   return {
+//     todos: todoArrData ? todoArrData : staticTodos,
+//     isApiData: !!todoArrData,
+//     isLoading: isAuthLoading || isTodoLoading,
+//   };
+// };

@@ -9,7 +9,6 @@ import {
   initializeActiveTasks,
 } from "../store/activeSlice";
 import { closeDetail, closeSidebar } from "../store/uiSlice";
-import { updateMydayTodo } from "../store/todoSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
 import useRemindNotification from "../hooks/useRemindNotification";
@@ -21,7 +20,6 @@ import useTheme from "../hooks/useTheme";
 import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
 import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
-import { isDateToday } from "../utils/getDates";
 import useUpdateMyday from "../hooks/useUpdateMyday";
 
 

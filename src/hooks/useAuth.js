@@ -30,25 +30,5 @@ const useAuth = () => {
   return { user, loading, error };
 };
 
-// const useAuth = () => {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const auth = getAuth();
-
-//     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-//       if (authUser) {
-//         setUser(authUser);
-//         setLoading(false);
-//       } 
-//     });
-
-
-//     return () => unsubscribe();
-//   }, []);
-
-//   return { user, loading };
-// };
 
 export default useAuth;
