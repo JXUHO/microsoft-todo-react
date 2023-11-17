@@ -1,16 +1,9 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { db } from "../firebase";
 import {
-  addDoc,
-  arrayRemove,
-  arrayUnion,
-  collection,
-  deleteDoc,
   doc,
   getDoc,
-  getDocs,
   setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import { firestoreApi } from "./firestoreApi";
 
@@ -42,7 +35,6 @@ export const uiApiSlice = firestoreApi.injectEndpoints({
           await setDoc(doc(db, `users/${user.uid}/ui`, "uiDoc"), {
             detailWidth: value,
           });
-
           return { data: null };
         } catch (error) {
           console.log(error.message);
@@ -57,18 +49,3 @@ export const uiApiSlice = firestoreApi.injectEndpoints({
 export const { useGetUiApiQuery, useSetDetailWidthApiMutation } = uiApiSlice;
 
 
-/**
- * 
- *  try {
-          const userDocRef = doc(db, `users/${userId}/ui/uiDoc`);
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            console.log(userData);
-          } 
-          return { data: null };
-        } catch (error) {
-          console.error(error.message);
-          return { error: error.message };
-        }
- */

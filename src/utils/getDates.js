@@ -48,6 +48,9 @@ export function getCustomFormatDateString(input, option) {
   } else if (inputDate.toISOString() === tomorrowDate.toISOString()) {
     return "Tomorrow";
   } else if (inputDate.toISOString() === yesterdayDate.toISOString()) {
+    if (option === "plain") {
+      return "Yesterday"
+    }
     return "Overdue, Yesterday";
   }
 

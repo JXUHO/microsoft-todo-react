@@ -76,11 +76,13 @@ const AppLauncher = () => {
                   <li>#TailwindCSS</li>
                   <li>#JavaScript</li>
                   <li>#React</li>
+                  <li>#React Router</li>
                   <li>#Redux Toolkit</li>
                   <li>#Vite</li>
                   <li>#NPM</li>
                   <li>#react-icons</li>
                   <li>#react-datepicker</li>
+                  <li>#floating-ui</li>
                   <li>#react-uuid</li>
                   <li>#react-textarea-autosize</li>
                 </ul>

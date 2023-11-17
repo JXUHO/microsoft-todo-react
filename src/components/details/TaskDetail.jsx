@@ -18,7 +18,7 @@ import useViewport from "../../hooks/useViewPort";
 import {
   useGetUiApiQuery,
   useSetDetailWidthApiMutation,
-} from "../../api/uiSliceApi";
+} from "../../api/uiApiSlice";
 
 const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const dispatch = useDispatch();
@@ -54,7 +54,9 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   useEffect(() => {
     if (!isResizing && !firstRender) {
       dispatch(setDetailWidth(resizerPosition));
-      setDetailWidthApi({ user, value: resizerPosition });
+      if (isApiData) {
+        setDetailWidthApi({ user, value: resizerPosition });
+      }
     }
   }, [isResizing, resizerPosition, firstRender, dispatch, user, setDetailWidthApi]);
 
@@ -76,10 +78,10 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
     }
     if (isApiData) {
       const todoDetail = todos.find((todo) => todo.id === detailId);
-      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
+      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created), "plain"));
     } else {
       const todoDetail = todos.find((todo) => todo.id === detailId);
-      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
+      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created), "plain"));
     }
   }, [detailId, todos, isLoading, isApiData]);
 
@@ -159,7 +161,6 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   ]);
 
   const { width: viewportWidth } = useViewport();
-  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isDetailOpen = useSelector((state) => state.ui.detail);
 
   useEffect(() => {
