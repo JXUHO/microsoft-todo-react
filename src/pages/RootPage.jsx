@@ -24,10 +24,16 @@ import useUpdateMyday from "../hooks/useUpdateMyday";
 
 
 const RootPage = () => {
-  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
-  const isDetailOpen = useSelector((state) => state.ui.detail);
   const location = useLocation();
   const dispatch = useDispatch();
+  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
+  const isDetailOpen = useSelector((state) => state.ui.detail);
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
+
+  const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
+
 
   useEffect(() => {
     dispatch(initializeActiveTasks());
@@ -35,20 +41,21 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
+  console.log('rootpage');
 
-  const {todos, isApiData, isLoading} = useGetTodos();
-  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
   const {user, loading:isAuthLoading} = useAuth()
+  const {todos, isApiData, isLoading} = useGetTodos(user?.uid);
 
 
+  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
   useUpdateMyday({todos, isApiData, setMydayTodoApi, user})
 
+  
   useKeyDown();
-  useRemindNotification();
+  useRemindNotification(todos);
   useTheme();
 
-  const { width: viewportWidth } = useViewport();
-  const detailWidth = useSelector((state) => state.ui.detailWidth);
+
 
   useEffect(() => {
     if (viewportWidth - detailWidth < 560) {
@@ -69,7 +76,7 @@ const RootPage = () => {
         {isDetailOpen && <TaskDetail todos={todos} isApiData={isApiData} isLoading={isLoading} user={user}/>}
       </div>
       <TaskItemContextMenu todos={todos} isApiData={isApiData} isLoading={isLoading}/>
-      <DeleteTaskDialog todos={todos} isApiData={isApiData} isLoading={isLoading}/>
+      {isDeleteDialogOpen && <DeleteTaskDialog todos={todos} isApiData={isApiData} isLoading={isLoading} isOpen={isDeleteDialogOpen}/>}
     </div>
   );
 };

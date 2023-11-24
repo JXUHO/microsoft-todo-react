@@ -13,14 +13,10 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
-import useGetTodos from "../../hooks/useGetTodos";
 
 const Details = ({ taskId, todos, isLoading, isApiData }) => {
   const location = useLocation();
-  // const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();
-  
-  // const [todos, isApiData] = useGetTodos()
   const todo = todos.find((todo) => todo.id === taskId);
   const { user, loading: isAuthLoading } = useAuth();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();

@@ -15,12 +15,11 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import useViewport from "../../hooks/useViewPort";
-import useGetTodos from "../../hooks/useGetTodos";
+
 
 const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
   const dispatch = useDispatch();
   const activeTasks = useSelector((state) => state.active.activeTasks);
-  // const todos = useSelector((state) => state.todo.todos);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
   const [removeTooltipOpen, setRemoveTooltipOpen] = useState(false);
 
@@ -31,8 +30,6 @@ const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
   const [createdTime, setCreatedTime] = useState("");
   const [firstRender, setFirstRender] = useState(true);
   const detailWidth = useSelector((state) => state.ui.detailWidth);
-
-  // const { todos, isApiData, isLoading } = useGetTodos();
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());

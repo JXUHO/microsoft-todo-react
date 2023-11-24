@@ -3,41 +3,25 @@ import { useGetTodosApiQuery } from "../api/todoApiSlice";
 import useAuth from "./useAuth";
 
 
-const useGetTodos = () => {
+const useGetTodos = (userId) => {
   const staticTodos = useSelector((state) => state.todo.todos);
-  const { user, loading: isAuthLoading } = useAuth();
+  // const { user, loading: isAuthLoading } = useAuth();
   const {
     data: todoArrData,
     error,
     isLoading: isTodoLoading,
     refetch,
-  } = useGetTodosApiQuery(user?.uid, { skip: !user });
+  } = useGetTodosApiQuery(userId, { skip: !userId });
+
+  console.log('useGetTodos');
+  console.log(todoArrData);
 
    return {
     todos: todoArrData ? todoArrData : staticTodos,
     isApiData: !!todoArrData,
-    isLoading: isAuthLoading || isTodoLoading,
+    isLoading: isTodoLoading,
   };
 };
 
 export default useGetTodos;
 
-
-
-
-// const useGetTodos = () => {
-//   const staticTodos = useSelector((state) => state.todo.todos);
-//   const { user, loading: isAuthLoading } = useAuth();
-//   const {
-//     data: todoArrData,
-//     error,
-//     isLoading: isTodoLoading,
-//     refetch,
-//   } = useGetTodosApiQuery(user?.uid, { skip: !user });
-
-//   return {
-//     todos: todoArrData ? todoArrData : staticTodos,
-//     isApiData: !!todoArrData,
-//     isLoading: isAuthLoading || isTodoLoading,
-//   };
-// };

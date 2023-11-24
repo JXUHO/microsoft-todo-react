@@ -5,24 +5,15 @@ import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 import { addActiveTasks } from "../../store/activeSlice";
-import { useGetTodosApiQuery } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
-import useGetTodos from "../../hooks/useGetTodos";
 import { useOutletContext } from "react-router-dom";
 
 const MydayList = ({ currentLocation }) => {
   const dispatch = useDispatch();
-  // const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.myday.order);
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
   const groupBy = useSelector((state) => state.group.myday.groupBy);
   const activeRange = useSelector((state) => state.active.activeRange);
-
-  // const {user, loading:isAuthLoading} = useAuth()
-  // const {data:todoArrData, error, isLoading:isTodoLoading, refetch } = useGetTodosApiQuery(user?.uid, {skip:!user})
-
-  // const {todos, isApiData, isLoading} = useGetTodos()
   const [todos, isApiData, isLoading] = useOutletContext();
 
   useEffect(() => {

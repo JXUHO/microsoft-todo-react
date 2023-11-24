@@ -13,13 +13,10 @@ import { closeDetail, setDialog } from "../../store/uiSlice";
 import { removeTodo } from "../../store/todoSlice";
 import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
 import useAuth from "../../hooks/useAuth";
-import useGetTodos from "../../hooks/useGetTodos";
 
-function DeleteTaskDialog({todos, isApiData, isLoading}) {
-  const isOpen = useSelector((state) => state.ui.dialog);
+function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
   const dispatch = useDispatch();
   const activeTasksId = useSelector((state) => state.active.activeTasks);
-  // const todos = useSelector((state) => state.todo.todos);
 
   const { refs, context } = useFloating({
     open: isOpen,
@@ -32,7 +29,6 @@ function DeleteTaskDialog({todos, isApiData, isLoading}) {
 
 
   
-  // const {todos, isApiData, isLoading} = useGetTodos()
   const [removeTodoApi] = useRemoveTodoApiMutation()
   const {user, loading:isAuthLoading} = useAuth()
 
@@ -60,7 +56,7 @@ function DeleteTaskDialog({todos, isApiData, isLoading}) {
   return (
     <>
       <FloatingPortal id="root">
-        {isOpen && (
+        {/* {isOpen && ( */}
           <FloatingOverlay
             className="flex items-center justify-center z-50"
             lockScroll
@@ -116,7 +112,7 @@ function DeleteTaskDialog({todos, isApiData, isLoading}) {
               </div>
             </FloatingFocusManager>
           </FloatingOverlay>
-        )}
+        {/* )} */}
       </FloatingPortal>
     </>
   );
