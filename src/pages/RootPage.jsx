@@ -41,7 +41,7 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
-  console.log('rootpage');
+  // console.log('rootpage');
 
   const {user, loading:isAuthLoading} = useAuth()
   const {todos, isApiData, isLoading} = useGetTodos(user?.uid);

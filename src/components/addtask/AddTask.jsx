@@ -77,7 +77,7 @@ const AddTask = ({ currentLocation }) => {
   };
 
   const addTaskHandler = () => {
-    console.log('addTaskHandler');
+    // console.log('addTaskHandler');
     const trimmedTaskInput = { ...taskInput, task: taskInput.task.trim() };
     if (currentLocation === "planned" && !trimmedTaskInput.dueDate) {
       trimmedTaskInput.dueDate = new Date().toISOString();

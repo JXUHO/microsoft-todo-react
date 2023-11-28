@@ -17,8 +17,8 @@ const useGetTodos = (userId) => {
   // let todoArrData = []
   // let isTodoLoading = false
 
-  console.log('useGetTodos');
-  console.log(todoArrData);
+  // console.log('useGetTodos');
+  // console.log(todoArrData);
 
    return {
     todos: todoArrData ? todoArrData : staticTodos,

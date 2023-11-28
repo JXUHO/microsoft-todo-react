@@ -117,10 +117,9 @@ export default App;
  * OAuth
  * 
  * 
- * 
- * 
  * SignIn, SignUp page => 로그인 되어있으면 home으로 redirect
- * 
+ * search params로 검색값 전달해서 구현
+ * list 정렬 수정하기
  * 
  * 
  * 

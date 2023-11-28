@@ -19,7 +19,6 @@ export const uiApiSlice = firestoreApi.injectEndpoints({
         try {
           const docRef = doc(db, `users/${userId}/ui`, "uiDoc");
           const docSnap = await getDoc(docRef);
-
           return { data: docSnap.data() };
         } catch (error) {
           console.error(error.message);

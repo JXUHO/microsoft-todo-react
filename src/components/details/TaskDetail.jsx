@@ -34,16 +34,20 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const detailWidth = useSelector((state) => state.ui.detailWidth);
 
 
-  const { data: uiData, isLoading: isUiLoading } = useGetUiApiQuery(user?.uid);
+  const { data: uiData, isLoading: isUiLoading, isSuccess: isUiSuccess ,isError:isUiError, error: uiError} = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
 
 
   useEffect(() => {
     if (firstRender) {
       // first render일 때, 
-      if (isApiData && !isUiLoading) {
+      if (isApiData && !isUiLoading && isUiSuccess) {
         // user가 login했다면, firestore에서 detailwidth를 가지고 온다
-        setResizerPosition(uiData.detailWidth);
+        if(!uiData) {
+          setResizerPosition(360)
+        } else {
+          setResizerPosition(uiData?.detailWidth);
+        }
         setFirstRender(false);
       } else if (!isApiData) {
         setResizerPosition(detailWidth);
