@@ -27,9 +27,10 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
   const [addCategoryTodoApi] = useAddCategoryTodoApiMutation()
   const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation()
 
+  const todoCategory = todo.category ?? [];
 
   const categoryHandler = (category) => {
-    if (!todo.category.includes(category)) {
+    if (!todoCategory.includes(category)) {
       if (user) {
         addCategoryTodoApi({todoId:taskId, user, category})
       } else {
@@ -88,7 +89,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
             <ul className="text-black">
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("blue")
+                  todoCategory.includes("blue")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -104,7 +105,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Blue category</span>
-                {todo.category.includes("blue") && (
+                {todoCategory.includes("blue") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>
@@ -113,7 +114,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
 
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("green")
+                  todoCategory.includes("green")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -129,7 +130,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Green category</span>
-                {todo.category.includes("green") && (
+                {todoCategory.includes("green") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>
@@ -138,7 +139,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
 
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("orange")
+                  todoCategory.includes("orange")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -154,7 +155,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Orange category</span>
-                {todo.category.includes("orange") && (
+                {todoCategory.includes("orange") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>
@@ -163,7 +164,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
 
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("purple")
+                  todoCategory.includes("purple")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -179,7 +180,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Purple category</span>
-                {todo.category.includes("purple") && (
+                {todoCategory.includes("purple") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>
@@ -188,7 +189,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
 
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("red")
+                  todoCategory.includes("red")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -204,7 +205,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Red category</span>
-                {todo.category.includes("red") && (
+                {todoCategory.includes("red") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>
@@ -213,7 +214,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
 
               <li
                 className={`text-left min-h-[38px] flex relative items-center font-normal text-sm px-4 ${
-                  todo.category.includes("yellow")
+                  todoCategory.includes("yellow")
                     ? "bg-ms-white-hover"
                     : "hover:bg-ms-white-hover"
                 }`}
@@ -229,7 +230,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
                   }}
                 />
                 <span className="text-left px-2">Yellow category</span>
-                {todo.category.includes("yellow") && (
+                {todoCategory.includes("yellow") && (
                   <span className="ml-auto">
                     <BsCheck2 />
                   </span>

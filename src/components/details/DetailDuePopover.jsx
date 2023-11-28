@@ -37,6 +37,8 @@ const DetailDuePopover = ({ taskId, todo }) => {
   const { user, loading: isAuthLoading } = useAuth();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
+  const todoDuedate = todo?.dueDate;
+
   const {
     refs: popoverRefs,
     floatingStyles: popoverFloatingStyles,
@@ -162,10 +164,10 @@ const DetailDuePopover = ({ taskId, todo }) => {
   };
 
   useEffect(() => {
-    if (todo.dueDate) {
-      setDueText(getCustomFormatDateString(new Date(todo.dueDate), "dueDate"));
+    if (todoDuedate) {
+      setDueText(getCustomFormatDateString(new Date(todoDuedate), "dueDate"));
     }
-  }, [todo.dueDate]);
+  }, [todoDuedate]);
 
   return (
     <>
@@ -175,7 +177,7 @@ const DetailDuePopover = ({ taskId, todo }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.dueDate ? (
+        {todoDuedate ? (
           <div
             className="flex justify-between w-full p-4"
             style={{ color: "#2564cf" }}

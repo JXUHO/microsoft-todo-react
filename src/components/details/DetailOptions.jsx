@@ -22,13 +22,14 @@ const DetailOptions = ({ taskId, todo, isApiData }) => {
   const[setMydayTodoApi] = useSetMydayTodoApiMutation()
 
 
+  const todoMyday = todo?.myday
 
   useEffect(() => {
-    setIsMyday(todo.myday);
-  }, [todo.myday]);
+    setIsMyday(todoMyday);
+  }, [todoMyday]);
 
   const addMydayHandler = () => {
-    if (!todo.myday) {
+    if (!todoMyday) {
       if (user) {
         setMydayTodoApi({todoId: taskId, user, value: true})
       } else {
@@ -38,7 +39,7 @@ const DetailOptions = ({ taskId, todo, isApiData }) => {
   };
 
   const removeMydayHandler = () => {
-    if (todo.myday) {
+    if (todoMyday) {
       if (user) {
         setMydayTodoApi({todoId: taskId, user, value: false})
       } else {

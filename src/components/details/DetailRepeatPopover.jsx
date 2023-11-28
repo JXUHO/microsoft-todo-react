@@ -38,6 +38,8 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   const { user, loading: isAuthLoading } = useAuth();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
+  const todoRepeatRule = todo?.repeatRule
+
   const {
     refs: popoverRefs,
     floatingStyles: popoverFloatingStyles,
@@ -263,12 +265,12 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   };
 
   useEffect(() => {
-    const repeatButtonText = getRepeatButtonText(todo.repeatRule).split(",");
+    const repeatButtonText = getRepeatButtonText(todoRepeatRule).split(",");
     setRepeatText({
       title: repeatButtonText[0],
       description: repeatButtonText.slice(1).join(","),
     });
-  }, [todo.repeatRule]);
+  }, [todoRepeatRule]);
 
   return (
     <>
@@ -278,7 +280,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.repeatRule ? (
+        {todoRepeatRule ? (
           <div
             className={`flex w-full text-ms-blue ${
               repeatText.description ? "px-4 py-2" : "p-4"

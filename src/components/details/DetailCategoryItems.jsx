@@ -13,6 +13,8 @@ const DetailCategoryItems = ({
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
 
+  const todoCategory = todo.category ?? [];
+
   const removeCategoryHandler = (event, category) => {
     event.stopPropagation();
     categoryHandler(category);
@@ -30,7 +32,7 @@ const DetailCategoryItems = ({
         </div>
 
         <div className="flex flex-1 px-3 items-center flex-wrap">
-          {todo.category.includes("blue") && (
+          {todoCategory.includes("blue") && (
             <div
               className="flex m-1 h-6 items-center rounded box-border border border-transparent hover:border hover:border-blue-800"
               style={{
@@ -50,7 +52,7 @@ const DetailCategoryItems = ({
             </div>
           )}
 
-          {todo.category.includes("green") && (
+          {todoCategory.includes("green") && (
             <div
               className="flex m-1 h-6 items-center rounded border border-transparent hover:border hover:border-green-800"
               style={{
@@ -70,7 +72,7 @@ const DetailCategoryItems = ({
             </div>
           )}
 
-          {todo.category.includes("orange") && (
+          {todoCategory.includes("orange") && (
             <div
               className="flex m-1 h-6 items-center rounded border border-transparent hover:border hover:border-orange-800"
               style={{
@@ -90,7 +92,7 @@ const DetailCategoryItems = ({
             </div>
           )}
 
-          {todo.category.includes("purple") && (
+          {todoCategory.includes("purple") && (
             <div
               className="flex m-1 h-6 items-center rounded border border-transparent hover:border hover:border-purple-800"
               style={{
@@ -110,7 +112,7 @@ const DetailCategoryItems = ({
             </div>
           )}
 
-          {todo.category.includes("red") && (
+          {todoCategory.includes("red") && (
             <div
               className="flex m-1 h-6 items-center rounded border border-transparent hover:border hover:border-red-800"
               style={{
@@ -130,7 +132,7 @@ const DetailCategoryItems = ({
             </div>
           )}
 
-          {todo.category.includes("yellow") && (
+          {todoCategory.includes("yellow") && (
             <div
               className="flex m-1 h-6 items-center rounded border border-transparent hover:border hover:border-yellow-800"
               style={{

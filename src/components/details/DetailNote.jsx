@@ -18,6 +18,8 @@ const DetailNote = ({ taskId, todo, isApiData }) => {
   const { user, loading: isAuthLoading } = useAuth();
   const [addNoteTodoApi] = useAddNoteTodoApiMutation()
 
+  const todoNote = todo?.note;
+
   const noteInputHandler = (event) => {
     setNote(event.target.value);
   };
@@ -36,14 +38,14 @@ const DetailNote = ({ taskId, todo, isApiData }) => {
   };
 
   useEffect(() => {
-    setNote(todo.note.content);
-  }, [todo.note.content]);
+    setNote(todoNote?.content);
+  }, [todoNote?.content]);
 
   useEffect(() => {
-    if (todo.note.updated) {
-      setUpdatedText(timeAgo(new Date(todo.note.updated)));
+    if (todoNote?.updated) {
+      setUpdatedText(timeAgo(new Date(todoNote.updated)));
     }
-  }, [todo.note.updated]);
+  }, [todoNote?.updated]);
 
   return (
     <div
@@ -61,7 +63,7 @@ const DetailNote = ({ taskId, todo, isApiData }) => {
         onBlur={blurHandler}
       />
       <div className="flex mt-6 text-xs" style={{ color: "#767678" }}>
-        {todo.note.updated && <p>Updated {updatedText}</p>}
+        {todoNote?.updated && <p>Updated {updatedText}</p>}
       </div>
     </div>
   );

@@ -41,6 +41,11 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
+
+  const todoRemind = todo?.remind;
+  const todoReminded = todo?.reminded
+
+
   const {
     refs: popoverRefs,
     floatingStyles: popoverFloatingStyles,
@@ -179,14 +184,15 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   };
 
   useEffect(() => {
-    if (todo.remind) {
-      const dateObj = new Date(todo.remind);
+    if(!todo) return
+    if (todoRemind) {
+      const dateObj = new Date(todoRemind);
       setRemindText({
         date: getCustomFormatDateString(dateObj, "remind"),
         time: formatTimeToAMPM(dateObj),
       });
     }
-  }, [todo.remind]);
+  }, [todoRemind]);
 
   return (
     <>
@@ -196,10 +202,10 @@ const DetailRemindPopover = ({ taskId, todo }) => {
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        {todo.remind ? (
+        {todoRemind ? (
           <div
             className={`flex w-full px-4 py-2 ${
-              todo.reminded ? "text-ms-light-text" : "text-ms-blue"
+              todoReminded ? "text-ms-light-text" : "text-ms-blue"
             }`}
           >
             <div

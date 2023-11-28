@@ -20,6 +20,8 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
   const [addStepApi] = useAddStepApiMutation()
   const { user, loading: isAuthLoading } = useAuth();
 
+  const todoSteps = todo.steps ?? [];
+
   const inputHandler = (event) => {
     setNewStep(event.target.value);
   };
@@ -61,7 +63,7 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
   return (
     <div className="flex flex-col items-center bg-white rounded-b border-y-0">
 
-      {todo.steps.map((step) => (
+      {todoSteps?.map((step) => (
         <DetailStepItem key={step.id} step={step} taskId={taskId} isApiData={isApiData}/>
       ))}
             
@@ -84,7 +86,7 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
             backgroundColor: "transparent",
             outline: "none",
           }}
-          placeholder={todo.steps.length ? "Next step" : "Add step"}
+          placeholder={todoSteps?.length ? "Next step" : "Add step"}
           onChange={inputHandler}
           value={newStep}
           onKeyDown={keyDownHandler}

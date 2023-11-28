@@ -50,13 +50,17 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
+  const todoComplete = todo?.complete;
+  const todoImportance = todo?.importance;
+
+
   const taskEditHandler = (event) => {
     setNewTask(event.target.value);
   };
 
   const completedHandler = () => {
     if (!todo) return;
-    if (todo.complete) {
+    if (todoComplete) {
       if (isApiData) {
         setCompleteTodoApi({ todoId: todo.id, user, value: false });
       } else {
@@ -74,7 +78,8 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   };
 
   const importanceHandler = () => {
-    if (todo.importance) {
+    if (!todo) return;
+    if (todoImportance) {
       if (isApiData) {
         setImportanceTodoApi({ todoId: todo.id, user, value: "" });
       } else {
@@ -144,6 +149,7 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   };
 
   useEffect(() => {
+    if (!todo) return;
     if (isEscaped) {
       textAreaRef.current.blur();
       setNewTask(todo.task); // 초기화
@@ -182,7 +188,7 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
           className="flex items-center justify-center hover:cursor-pointer px-0.5"
           onClick={completedHandler}
         >
-          {todo?.complete ? (
+          {todoComplete ? (
             <div className="animate-checkAnimationBase text-ms-font-blue">
               <BsCheckCircleFill size="16px" />
             </div>
@@ -220,8 +226,8 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
               style={{
                 resize: "none",
                 textDecoration:
-                  todo?.complete && !isFocused ? "line-through" : "",
-                color: todo?.complete && !isFocused ? "#767678" : "",
+                  todoComplete && !isFocused ? "line-through" : "",
+                color: todoComplete && !isFocused ? "#767678" : "",
                 wordBreak: "break-all",
                 lineHeight: "20px",
               }}
@@ -232,8 +238,8 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
               onClick={clickHandler}
               style={{
                 textDecoration:
-                  todo?.complete && !isFocused ? "line-through" : "",
-                color: todo?.complete && !isFocused ? "#767678" : "",
+                  todoComplete && !isFocused ? "line-through" : "",
+                color: todoComplete && !isFocused ? "#767678" : "",
               }}
             >
               {newTask}
@@ -247,7 +253,7 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
           ref={tooltipRefs.setReference}
           {...getTooltipReferenceProps()}
         >
-          {todo?.importance ? (
+          {todoImportance ? (
             <div className="animate-fillAnimation ">
               <BsStarFill size="18px" />
             </div>
@@ -269,7 +275,7 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
           }}
           className="bg-white py-1.5 rounded-sm px-2 text-xs"
         >
-          {todo?.importance ? "Remove importance." : "Mark task as important."}
+          {todoImportance ? "Remove importance." : "Mark task as important."}
         </div>
       )}
     </div>
