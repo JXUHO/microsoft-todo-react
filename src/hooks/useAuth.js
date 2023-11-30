@@ -32,20 +32,6 @@ const useAuth = () => {
         setLoading(false);
       }
     });
-    // const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-    //   try {
-    //     if (authUser) {
-    //       setUser(authUser);
-    //       setLoading(false);
-    //     } else {
-    //       setUser(null);
-    //       setLoading(false);
-    //     }
-    //   } catch (error) {
-    //     setError(error);
-    //     setLoading(false);
-    //   }
-    // });
 
     return () => unsubscribe();
   }, []);

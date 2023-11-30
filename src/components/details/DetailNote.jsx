@@ -5,7 +5,7 @@ import { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAddNoteTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailNote = ({ taskId, todo, isApiData }) => {
+const DetailNote = ({ taskId, todo,  }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );

@@ -22,19 +22,24 @@ import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import { GoCheckCircle } from "react-icons/go";
 import getLastTimeOfDay from "../../utils/getDates";
 import { useLocation } from "react-router-dom";
-import { useChangeOptionTodoApiMutation, useSetCompleteTodoApiMutation, useSetImportanceTodoApiMutation, useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
+import {
+  useChangeOptionTodoApiMutation,
+  useSetCompleteTodoApiMutation,
+  useSetImportanceTodoApiMutation,
+  useSetMydayTodoApiMutation,
+} from "../../api/todoApiSlice";
 
-const TaskItemContextMenu = ({todos, isApiData, isLoading}) => {
+const TaskItemContextMenu = () => {
   const location = useLocation();
-  // const todos = useSelector((state) => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
   const dispatch = useDispatch();
 
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   const [setMydayTodoApi] = useSetMydayTodoApiMutation();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
-  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation()
-  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation()
+  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
+  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
 
   let addMyday = false;
   let removeMyday = false;
@@ -59,116 +64,60 @@ const TaskItemContextMenu = ({todos, isApiData, isLoading}) => {
   const clickHandler = (option) => {
     const actionMap = {
       addMyday: (taskId) => {
-        if (isApiData) {
-          setMydayTodoApi({ todoId: taskId, user, value: true });
-        } else {
-          dispatch(setMydayTodo({ id: taskId, value: true }));
-        }
+        setMydayTodoApi({ todoId: taskId, user, value: true });
       },
 
       removeMyday: (taskId) => {
-        if (isApiData) {
-          setMydayTodoApi({ todoId: taskId, user, value: false });
-        } else {
-          dispatch(setMydayTodo({ id: taskId, value: false }));
-        }
+        setMydayTodoApi({ todoId: taskId, user, value: false });
       },
 
       addImportance: (taskId) => {
-        if (isApiData) {
-          setImportanceTodoApi({todoId:taskId, user, value: new Date().toISOString()})
-        } else {
-          dispatch(
-            setImportanceTodo({ id: taskId, value: new Date().toISOString() })
-          )
-        }
+        setImportanceTodoApi({
+          todoId: taskId,
+          user,
+          value: new Date().toISOString(),
+        });
       },
-      
+
       removeImportance: (taskId) => {
-        if (isApiData) {
-          setImportanceTodoApi({todoId:taskId, user, value: ""})
-        } else {
-          dispatch(setImportanceTodo({ id: taskId, value: "" }))
-        }
+        setImportanceTodoApi({ todoId: taskId, user, value: "" });
       },
 
       addComplete: (taskId) => {
-        if (isApiData) {  
-          setCompleteTodoApi({todoId:taskId, user, value: true})
-        } else {
-          dispatch(setCompleteTodo({ id: taskId, value: true }))
-        }
+        setCompleteTodoApi({ todoId: taskId, user, value: true });
       },
 
       removeComplete: (taskId) => {
-        if (isApiData) {
-          setCompleteTodoApi({todoId:taskId, user, value: false})
-        } else {
-          dispatch(setCompleteTodo({ id: taskId, value: false }))
-        }
-
+        setCompleteTodoApi({ todoId: taskId, user, value: false });
       },
 
       dueToday: (taskId) => {
-        if (isApiData) {
-          changeOptionTodoApi({
-            todoId: taskId,
-            user,
-            option: "dueDate",
-            content: new Date().toISOString(),
-            currentLocation: location.pathname,
-          });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: new Date().toISOString(),
-              option: "dueDate",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+        changeOptionTodoApi({
+          todoId: taskId,
+          user,
+          option: "dueDate",
+          content: new Date().toISOString(),
+          currentLocation: location.pathname,
+        });
       },
       dueTomorrow: (taskId) => {
-        if (isApiData) {
-          changeOptionTodoApi({
-            todoId: taskId,
-            user,
-            option: "dueDate",
-            content: getLastTimeOfDay(1).toISOString(),
-            currentLocation: location.pathname,
-          });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              option: "dueDate",
-              content: getLastTimeOfDay(1).toISOString(),
-              currentLocation: location.pathname,
-            })
-          );
-        }
+        changeOptionTodoApi({
+          todoId: taskId,
+          user,
+          option: "dueDate",
+          content: getLastTimeOfDay(1).toISOString(),
+          currentLocation: location.pathname,
+        });
       },
 
       removeDuedate: (taskId) => {
-        if (isApiData) {
-          changeOptionTodoApi({
-            todoId: taskId,
-            user,
-            option: "dueDate",
-            content: "",
-            currentLocation: location.pathname,
-          });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              option: "dueDate",
-              content: "",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+        changeOptionTodoApi({
+          todoId: taskId,
+          user,
+          option: "dueDate",
+          content: "",
+          currentLocation: location.pathname,
+        });
       },
 
       deleteTask: (taskId) => {

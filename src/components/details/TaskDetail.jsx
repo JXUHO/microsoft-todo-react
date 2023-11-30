@@ -20,7 +20,7 @@ import {
   useSetDetailWidthApiMutation,
 } from "../../api/uiApiSlice";
 
-const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
+const TaskDetail = () => {
   const dispatch = useDispatch();
   const activeTasks = useSelector((state) => state.active.activeTasks);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
@@ -32,7 +32,8 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const [createdTime, setCreatedTime] = useState("");
   const [firstRender, setFirstRender] = useState(true);
   const detailWidth = useSelector((state) => state.ui.detailWidth);
-
+  const user = useSelector(state => state.auth.user)
+  const todos = useSelector(state => state.todo.todos)
 
   const { data: uiData, isLoading: isUiLoading, isSuccess: isUiSuccess ,isError:isUiError, error: uiError} = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
@@ -41,7 +42,7 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   useEffect(() => {
     if (firstRender) {
       // first render일 때, 
-      if (isApiData && !isUiLoading && isUiSuccess) {
+      if (!isUiLoading && isUiSuccess) {
         // user가 login했다면, firestore에서 detailwidth를 가지고 온다
         if(!uiData) {
           setResizerPosition(360)
@@ -49,20 +50,17 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
           setResizerPosition(uiData?.detailWidth);
         }
         setFirstRender(false);
-      } else if (!isApiData) {
-        setResizerPosition(detailWidth);
-        setFirstRender(false);
-      }
+      } 
     }
-  }, [firstRender, isLoading, isUiLoading, isApiData, uiData, detailWidth]);
+  }, [firstRender, isUiLoading, uiData, detailWidth]);
 
 
   useEffect(() => {
     if (!isResizing && !firstRender) {
       dispatch(setDetailWidth(resizerPosition));
-      if (isApiData) {
+
         setDetailWidthApi({ user, value: resizerPosition });
-      }
+      
     }
   }, [isResizing, resizerPosition, firstRender, dispatch, user, setDetailWidthApi]);
 
@@ -79,17 +77,12 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
   const detailId = activeTasks[0];
 
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-    if (isApiData) {
+
+
       const todoDetail = todos.find((todo) => todo.id === detailId);
       setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created), "plain"));
-    } else {
-      const todoDetail = todos.find((todo) => todo.id === detailId);
-      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created), "plain"));
-    }
-  }, [detailId, todos, isLoading, isApiData]);
+    
+  }, [detailId, todos, ]);
 
   const resizerMouseDownHandler = () => {
     setIsResizing(true);
@@ -209,12 +202,12 @@ const TaskDetail = ({ todos, isApiData, isLoading, user }) => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        {detailId && !isLoading && (
+        {detailId && (
           <Details
             taskId={detailId}
             todos={todos}
-            isLoading={isLoading}
-            isApiData={isApiData}
+      
+
           />
         )}
 

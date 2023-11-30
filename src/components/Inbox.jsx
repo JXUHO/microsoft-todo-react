@@ -24,8 +24,7 @@ const Inbox = () => {
     (state) => state.group.tasks.groupBy
   );
   const dispatch = useDispatch();
-  // const todos = useSelector((state) => state.todo.todos);
-  const [todos, isApiData, isLoading] = useOutletContext()
+  const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.tasks.order);
   const sortBy = useSelector((state) => state.sort.tasks.sortBy);

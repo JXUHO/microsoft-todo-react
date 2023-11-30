@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useGetTodosApiQuery } from "../api/todoApiSlice";
+import { setTodos } from "../store/todoSlice";
 
 
 const useGetTodos = (userId) => {
-  const staticTodos = useSelector((state) => state.todo.todos);
+  const dispatch = useDispatch()
 
   const {
     data: todoArrData,
@@ -12,14 +13,10 @@ const useGetTodos = (userId) => {
     refetch,
   } = useGetTodosApiQuery(userId, { skip: !userId });
 
+  dispatch(setTodos(todoArrData))
 
-  
 
-   return {
-    todos: todoArrData ? todoArrData : staticTodos,
-    isApiData: !!todoArrData,
-    isLoading: isTodoLoading,
-  };
+
 };
 
 export default useGetTodos;

@@ -27,12 +27,11 @@ const Search = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const showCompleted = useSelector((state) => state.search.showCompleted);
   const searchQuery = useSelector((state) => state.search.query);
-  // const todos = useSelector((state) => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
   const [searchedTasks, setSearchedTasks] = useState([]);
   const [searchedNotes, setSearchedNotes] = useState([]);
   const [searchedSteps, setSearchedSteps] = useState([]);
   const [searchedCategories, setSearchedCategories] = useState([]);
-  const [todos, isApiData, isLoading] = useOutletContext();
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());

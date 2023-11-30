@@ -23,7 +23,8 @@ const Completed = () => {
     (state) => state.sort.completed.sortBy
   );
 
-  const [todos, isApiData, isLoading] = useOutletContext()
+
+  const todos = useSelector(state => state.todo.todos)
 
 
   const openSidebarHandler = () => {

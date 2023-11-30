@@ -7,7 +7,7 @@ import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";
 import { useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailOptions = ({ taskId, todo, isApiData }) => {
+const DetailOptions = ({ taskId, todo,  }) => {
   const [isMyday, setIsMyday] = useState(false);
   const dispatch = useDispatch();
   const [isMydayHover, setIsMydayHover] = useState(false);

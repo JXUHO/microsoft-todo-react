@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
-const Details = ({ taskId, todos, isLoading, isApiData }) => {
+const Details = ({ taskId, todos }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const todo = todos.find((todo) => todo.id === taskId);
@@ -102,12 +102,12 @@ const Details = ({ taskId, todos, isLoading, isApiData }) => {
   
   return (
     <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto py-0 pr-4 pl-6 mt-4 h-20">
-      <DetailHeader taskId={taskId} todo={todo} isApiData={isApiData}/>
-      <DetailSteps taskId={taskId} todo={todo} isApiData={isApiData}/>
-      <DetailOptions taskId={taskId} todo={todo} isApiData={isApiData}/>
-      <DetailCategories taskId={taskId} todo={todo} isApiData={isApiData}/>
-      <DetailAddFile taskId={taskId} todo={todo} isApiData={isApiData}/>
-      <DetailNote taskId={taskId} todo={todo} isApiData={isApiData}/>
+      <DetailHeader taskId={taskId} todo={todo} />
+      <DetailSteps taskId={taskId} todo={todo} />
+      <DetailOptions taskId={taskId} todo={todo} />
+      <DetailCategories taskId={taskId} todo={todo} />
+      <DetailAddFile taskId={taskId} todo={todo} />
+      <DetailNote taskId={taskId} todo={todo} />
     </div>
   );
 };

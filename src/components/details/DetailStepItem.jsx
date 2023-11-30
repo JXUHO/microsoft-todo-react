@@ -19,7 +19,7 @@ import {
 import { addActiveStep } from "../../store/activeSlice";
 import { useChangeStepApiMutation, useCompleteStepApiMutation, useRemoveStepApiMutation } from "../../api/todoApiSlice";
 
-const DetailStepItem = ({ step, taskId, isApiData }) => {
+const DetailStepItem = ({ step, taskId,  }) => {
   const [isCheckHover, setIsCheckHover] = useState(false);
   const dispatch = useDispatch();
   const isActive = useSelector((state) => state.active.activeStep);
@@ -34,19 +34,15 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
   };
 
   const completeStepHandler = () => {
-    if (isApiData) {
+
       completeStepApi({todoId: taskId, user, stepId: step.id})
-    } else {
-      dispatch(completeStep({ taskId, stepId: step.id }));
-    }
+
   };
 
   const removeStepHandler = () => {
-    if (isApiData) {
+
       removeStepApi({todoId: taskId, user, stepId:step.id})
-    } else {
-      dispatch(removeStep({ taskId, stepId: step.id }));
-    }
+
   };
 
   const inputRef = useRef();
@@ -66,12 +62,9 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
         setNewStep(step.content);
         return;
       }
-      // 변경점
-      if (isApiData) {
+
         changeStepApi({todoId:taskId, user, stepId:step.id, value: newStep})
-      } else {
-        dispatch(changeStep({ taskId, stepId: step.id, content: newStep }));
-      }
+
     }
     setIsFocused(false);
   };

@@ -11,11 +11,11 @@ import { GoHome } from "react-icons/go";
 import { useEffect, useState } from "react";
 import useViewport from "../../hooks/useViewPort";
 
-const Sidebar = ({todos, isApiData, isLoading}) => {
+const Sidebar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [currentLocation, setCurrentLocation] = useState("");
-  // const todos = useSelector((state) => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
   const [count, setCount] = useState({
     myday: 0,
     important: 0,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiPaperclip } from "react-icons/Fi";
 
-const DetailAddFile = ({taskId, todo, isApiData}) => {
+const DetailAddFile = () => {
 
   const [inputFile, setInputFile] = useState()
   const inputRef = useRef()

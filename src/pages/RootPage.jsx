@@ -32,6 +32,8 @@ const RootPage = () => {
   const detailWidth = useSelector((state) => state.ui.detailWidth);
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
   const user = useSelector(state => state.auth.user)
+  const todos = useSelector(state => state.todo.todos)
+
 
   useEffect(() => {
     dispatch(initializeActiveTasks());
@@ -41,15 +43,14 @@ const RootPage = () => {
 
 
   useAuth()
-  const {todos, isApiData, isLoading} = useGetTodos(user?.uid);
+  useGetTodos(user?.uid)
 
-  
   const [setMydayTodoApi] = useSetMydayTodoApiMutation()
-  useUpdateMyday({todos, isApiData, setMydayTodoApi, user})
+  useUpdateMyday({setMydayTodoApi, user})
 
   
   useKeyDown();
-  useRemindNotification(todos);
+  useRemindNotification();
   useTheme();
 
 
@@ -60,20 +61,24 @@ const RootPage = () => {
     }
   }, [viewportWidth, detailWidth]);
 
+  if (!user || !todos) {
+    return <h1>loading...</h1>
+  }
+
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
       <Header />
       <HeaderPanels/>
       <div className="flex flex-1 overflow-hidden relative">
         <SidebarOverlay />
-        {isSidebarOpen && <Sidebar todos={todos} isApiData={isApiData} isLoading={isLoading}/>}
+        {isSidebarOpen && <Sidebar />}
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
-          <Outlet context={[todos, isApiData, isLoading]}/>
+          <Outlet />
         </div>
-        {isDetailOpen && <TaskDetail todos={todos} isApiData={isApiData} isLoading={isLoading} user={user}/>}
+        {isDetailOpen && <TaskDetail/>}
       </div>
-      <TaskItemContextMenu todos={todos} isApiData={isApiData} isLoading={isLoading}/>
-      {isDeleteDialogOpen && <DeleteTaskDialog todos={todos} isApiData={isApiData} isLoading={isLoading} isOpen={isDeleteDialogOpen}/>}
+      <TaskItemContextMenu />
+      {isDeleteDialogOpen && <DeleteTaskDialog  isOpen={isDeleteDialogOpen}/>}
     </div>
   );
 };

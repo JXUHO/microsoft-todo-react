@@ -13,7 +13,7 @@ import { closeDetail, setDialog } from "../../store/uiSlice";
 import { removeTodo } from "../../store/todoSlice";
 import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
 
-function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
+function DeleteTaskDialog({isOpen}) {
   const dispatch = useDispatch();
   const activeTasksId = useSelector((state) => state.active.activeTasks);
 
@@ -25,7 +25,7 @@ function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
   const role = useRole(context);
   const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
   const { getFloatingProps } = useInteractions([click, role, dismiss]);
-
+  const todos = useSelector(state => state.todo.todos)
 
   
   const [removeTodoApi] = useRemoveTodoApiMutation()
@@ -34,11 +34,9 @@ function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
 
   const deleteTaskHandler = () => {
     activeTasksId.forEach((todoId) => {
-      if (isApiData) {
+
         removeTodoApi({todoId, user})
-      } else {
-        dispatch(removeTodo(todoId));
-      }
+
 
     });
     dispatch(closeDetail());

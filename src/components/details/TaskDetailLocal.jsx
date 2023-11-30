@@ -17,7 +17,7 @@ import {
 import useViewport from "../../hooks/useViewPort";
 
 
-const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
+const TaskDetailLocal = ({todos}) => {
   const dispatch = useDispatch();
   const activeTasks = useSelector((state) => state.active.activeTasks);
   const [closeTooltipOpen, setCloseTooltipOpen] = useState(false);
@@ -42,17 +42,12 @@ const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
   const detailId = activeTasks[0];
 
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-    if (isApiData) {
+
+
       const todoDetail = todos.find((todo) => todo.id === detailId);
       setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
-    } else {
-      const todoDetail = todos.find((todo) => todo.id === detailId);
-      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created)));
-    }
-  }, [detailId, todos, isLoading]);
+  
+  }, [detailId, todos,]);
 
   const resizerMouseDownHandler = () => {
     setIsResizing(true);
@@ -186,8 +181,8 @@ const TaskDetailLocal = ({todos, isApiData, isLoading}) => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        {detailId && !isLoading && (
-          <Details taskId={detailId} todos={todos} isLoading={isLoading} isApiData={isApiData}/>
+        {detailId  && (
+          <Details taskId={detailId} todos={todos} />
         )}
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">

@@ -9,7 +9,7 @@ import { useOutletContext } from "react-router-dom";
 const PlannedList = () => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
-  // const todos = useSelector((state) => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
   const [activeArr, setActiveArr] = useState([]);
   const [isOpen, setIsOpen] = useState({
     earlier: false,
@@ -33,7 +33,6 @@ const PlannedList = () => {
     later: 0,
   });
 
-  const [todos, isApiData, isLoading] = useOutletContext()
   
 
   const toggleListHandler = (title) => {

@@ -7,6 +7,11 @@ const todoSlice = createSlice({
   name: "todos",
   initialState: { todos: [] },
   reducers: {
+    setTodos: (state, action) => {
+      state.todos = action.payload
+    }
+
+    ,
     addTodo: (state, action) => {
       const modifiedDue = repeatDueSynchronizer(action.payload);
       if (modifiedDue) {
@@ -189,6 +194,7 @@ const todoSlice = createSlice({
 });
 
 export const {
+  setTodos,
   addTodo,
   removeTodo,
   setCompleteTodo,

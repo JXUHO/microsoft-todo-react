@@ -8,7 +8,7 @@ import DetailStepItem from "./DetailStepItem";
 import { useAddStepApiMutation } from "../../api/todoApiSlice";
 
 
-const DetailSteps = ({ taskId, todo, isApiData }) => {
+const DetailSteps = ({ taskId, todo }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const addRef = useRef();
@@ -28,11 +28,9 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
   };
 
   const addStepHandler = () => {
-    if (isApiData) {
+
       addStepApi({todoId: taskId, user, value: { id: uuid(), content: newStep, complete: false }})
-    } else {
-      dispatch(addStep({ id: taskId, step: { id: uuid(), content: newStep, complete: false } }));
-    }
+
     setNewStep("");
   };
 
@@ -65,7 +63,7 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
     <div className="flex flex-col items-center bg-white rounded-b border-y-0">
 
       {todoSteps?.map((step) => (
-        <DetailStepItem key={step.id} step={step} taskId={taskId} isApiData={isApiData}/>
+        <DetailStepItem key={step.id} step={step} taskId={taskId} />
       ))}
             
 

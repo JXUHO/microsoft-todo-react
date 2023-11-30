@@ -15,7 +15,7 @@ import DetailCategoryItems from "./DetailCategoryItems";
 
 import { useAddCategoryTodoApiMutation, useRemoveCategoryTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailCategories = ({ taskId, todo, isApiData }) => {
+const DetailCategories = ({ taskId, todo}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const dispatch = useDispatch();
 

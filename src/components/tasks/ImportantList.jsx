@@ -8,14 +8,14 @@ import { useOutletContext } from "react-router-dom";
 
 const ImportantList = ({currentLocation}) => {
   const dispatch = useDispatch();
-  // const todos = useSelector((state) => state.todo.todos);
+  const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.important.order);
   const sortBy = useSelector((state) => state.sort.important.sortBy);
   const activeRange = useSelector((state) => state.active.activeRange);
 
 
-  const [todos, isApiData, isLoading] = useOutletContext()
+
 
 
   useEffect(() => {

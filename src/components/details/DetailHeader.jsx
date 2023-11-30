@@ -30,7 +30,7 @@ import {
 } from "../../api/todoApiSlice";
 
 
-const DetailHeader = ({ taskId, todo, isApiData }) => {
+const DetailHeader = ({ taskId, todo }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
@@ -62,17 +62,13 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   const completedHandler = () => {
     if (!todo) return;
     if (todoComplete) {
-      if (isApiData) {
+
         setCompleteTodoApi({ todoId: todo.id, user, value: false });
-      } else {
-        dispatch(setCompleteTodo({ id: todo.id, value: false }));
-      }
+
     } else {
-      if (isApiData) {
+
         setCompleteTodoApi({ todoId: todo.id, user, value: true });
-      } else {
-        dispatch(setCompleteTodo({ id: todo.id, value: true }));
-      }
+
       setIsFocused(false);
       setIsActive(false);
     }
@@ -81,23 +77,17 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   const importanceHandler = () => {
     if (!todo) return;
     if (todoImportance) {
-      if (isApiData) {
+
         setImportanceTodoApi({ todoId: todo.id, user, value: "" });
-      } else {
-        dispatch(setImportanceTodo({ id: todo.id, value: "" }));
-      }
+
     } else {
-      if (isApiData) {
+
         setImportanceTodoApi({
           todoId: todo.id,
           user,
           value: new Date().toISOString(),
         });
-      } else {
-        dispatch(
-          setImportanceTodo({ id: todo.id, value: new Date().toISOString() })
-        );
-      }
+
     }
   };
 
@@ -108,11 +98,9 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
         setNewTask(todo.task);
         return;
       }
-      if (isApiData) {
+
         changeTaskTodoApi({ todoId: todo.id, user, value: newTask });
-      } else {
-        dispatch(changeTaskTodo({ id: todo.id, task: newTask }));
-      }
+
     }
     setIsFocused(false);
     setIsActive(false);

@@ -10,12 +10,14 @@ import { useEffect } from "react";
 import { useSetRemindedTodoApiMutation } from "../api/todoApiSlice";
 
 
-const useRemindNotification = (todos) => {
+const useRemindNotification = () => {
   const dispatch = useDispatch();
+  const todos = useSelector(state => state.todo.todos)
   const user = useSelector(state => state.auth.user)
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
   useEffect(() => {
+    if (!todos) return;
     if (todos.some((todo) => todo.remind)) {
       if (!("Notification" in window)) {
         alert("This browser does not support desktop notification");
