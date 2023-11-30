@@ -8,6 +8,7 @@ const useAuth = () => {
 
   useEffect(() => {
     const auth = getAuth();
+    
 
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       try {

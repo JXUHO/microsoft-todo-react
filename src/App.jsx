@@ -50,10 +50,6 @@ const router = createBrowserRouter([
         path: "search",
         element: <SearchPage/>
       },
-      // {
-      //   path: "login",
-      //   element: <LogInPage/>
-      // }
     ],
   },
   {
@@ -107,12 +103,12 @@ export default App;
  * (complete) searchbar esc버튼
  * (complete) dark theme -> toggle switch 만들기
  * (complete) sign-in, sign-up, 
+ * (complete) backend 연결
  * 
  * 
  * 
  * 
  * <할것>
- * backend 연결
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기)
  * OAuth
  * 
@@ -121,7 +117,7 @@ export default App;
  * search params로 검색값 전달해서 구현
  * list 정렬 수정하기
  * 
- * 
+ * Myday tab 아닌 곳에서 detail bar - add to myday button 작동 안함
  * 
  * 
  * 
@@ -149,7 +145,6 @@ export default App;
  *
  * 
  * Popover, tooltip 독립된 component로 구현해서 코드 가독성 높이기
- * 
  * 
  * UI -> Sidebar mount될때, task 개수 0으로 표시됐다가 사라짐 -> flickering발생
  * 

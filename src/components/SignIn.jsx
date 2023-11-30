@@ -20,15 +20,6 @@ const SignIn = () => {
 
   const checkboxRef = useRef();
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const querySnapshot = await getDocs(collection(db, `users`));
-  //     querySnapshot?.forEach((doc) => {console.log(doc.data())})
-  //   }
-  //   getData()
-  // }, [])
-
-
 
 
   useEffect(() => {
@@ -77,6 +68,8 @@ const SignIn = () => {
           email,
           password
         );
+        
+
 
         navigate("/");
       } catch (error) {

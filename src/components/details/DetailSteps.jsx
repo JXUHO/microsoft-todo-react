@@ -20,7 +20,7 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
   const [addStepApi] = useAddStepApiMutation()
   const { user, loading: isAuthLoading } = useAuth();
 
-  const todoSteps = todo.steps ?? [];
+  const todoSteps = todo?.steps ?? [];
 
   const inputHandler = (event) => {
     setNewStep(event.target.value);

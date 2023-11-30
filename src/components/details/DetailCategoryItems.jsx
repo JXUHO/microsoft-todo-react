@@ -13,7 +13,7 @@ const DetailCategoryItems = ({
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
 
-  const todoCategory = todo.category ?? [];
+  const todoCategory = todo?.category ?? [];
 
   const removeCategoryHandler = (event, category) => {
     event.stopPropagation();

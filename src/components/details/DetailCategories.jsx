@@ -27,7 +27,7 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
   const [addCategoryTodoApi] = useAddCategoryTodoApiMutation()
   const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation()
 
-  const todoCategory = todo.category ?? [];
+  const todoCategory = todo?.category ?? [];
 
   const categoryHandler = (category) => {
     if (!todoCategory.includes(category)) {
