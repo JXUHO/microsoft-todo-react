@@ -19,7 +19,7 @@ import DueCalendar from "../addtask/DueCalendar";
 import DueItems from "../addtask/DueItems";
 import { useLocation } from "react-router-dom";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
+
 
 const DetailDuePopover = ({ taskId, todo }) => {
   const location = useLocation();
@@ -33,8 +33,8 @@ const DetailDuePopover = ({ taskId, todo }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
+  const user = useSelector(state => state.auth.user)
 
-  const { user, loading: isAuthLoading } = useAuth();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
   const todoDuedate = todo?.dueDate;

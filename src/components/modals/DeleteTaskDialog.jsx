@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeDetail, setDialog } from "../../store/uiSlice";
 import { removeTodo } from "../../store/todoSlice";
 import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
 
 function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
   const dispatch = useDispatch();
@@ -30,7 +29,7 @@ function DeleteTaskDialog({todos, isApiData, isLoading, isOpen}) {
 
   
   const [removeTodoApi] = useRemoveTodoApiMutation()
-  const {user, loading:isAuthLoading} = useAuth()
+  const user = useSelector(state => state.auth.user)
 
 
   const deleteTaskHandler = () => {

@@ -5,7 +5,6 @@ import { setMydayTodo } from "../../store/todoSlice";
 import DetailRemindPopover from "./DetailRemindPopover";
 import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";
-import useAuth from "../../hooks/useAuth";
 import { useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
 
 const DetailOptions = ({ taskId, todo, isApiData }) => {
@@ -17,8 +16,7 @@ const DetailOptions = ({ taskId, todo, isApiData }) => {
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
 
-
-  const {user, loading:isAuthLoading} = useAuth()
+  const user = useSelector(state => state.auth.user)
   const[setMydayTodoApi] = useSetMydayTodoApiMutation()
 
 

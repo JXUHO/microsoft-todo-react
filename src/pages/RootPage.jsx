@@ -30,10 +30,8 @@ const RootPage = () => {
   const isDetailOpen = useSelector((state) => state.ui.detail);
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);
-
-
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
-
+  const user = useSelector(state => state.auth.user)
 
   useEffect(() => {
     dispatch(initializeActiveTasks());
@@ -41,12 +39,11 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
-  // console.log('rootpage');
 
-  const {user, loading:isAuthLoading} = useAuth()
+  useAuth()
   const {todos, isApiData, isLoading} = useGetTodos(user?.uid);
 
-
+  
   const [setMydayTodoApi] = useSetMydayTodoApiMutation()
   useUpdateMyday({todos, isApiData, setMydayTodoApi, user})
 

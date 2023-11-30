@@ -17,7 +17,6 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import { addActiveStep } from "../../store/activeSlice";
-import useAuth from "../../hooks/useAuth";
 import { useChangeStepApiMutation, useCompleteStepApiMutation, useRemoveStepApiMutation } from "../../api/todoApiSlice";
 
 const DetailStepItem = ({ step, taskId, isApiData }) => {
@@ -25,8 +24,7 @@ const DetailStepItem = ({ step, taskId, isApiData }) => {
   const dispatch = useDispatch();
   const isActive = useSelector((state) => state.active.activeStep);
   
-  
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [completeStepApi] = useCompleteStepApiMutation()
   const [removeStepApi] = useRemoveStepApiMutation()
   const [changeStepApi] = useChangeStepApiMutation()

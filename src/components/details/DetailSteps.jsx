@@ -6,7 +6,7 @@ import { addStep } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DetailStepItem from "./DetailStepItem";
 import { useAddStepApiMutation } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
+
 
 const DetailSteps = ({ taskId, todo, isApiData }) => {
   const dispatch = useDispatch();
@@ -18,7 +18,8 @@ const DetailSteps = ({ taskId, todo, isApiData }) => {
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
   const [addStepApi] = useAddStepApiMutation()
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
+
 
   const todoSteps = todo?.steps ?? [];
 

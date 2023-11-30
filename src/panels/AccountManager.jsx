@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setHeaderButton } from "../store/uiSlice";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
+import { logout } from "../store/authSlice";
 
 const AccountManager = () => {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ const AccountManager = () => {
   const isAccountManagerActive = useSelector(
     (state) => state.ui.accountManagerActive
   );
+  const user = useSelector(state => state.auth.user)
 
-  const { user, loading } = useAuth();
 
   useEffect(() => {
     const closeModalOnClickOutside = (event) => {
@@ -41,6 +41,7 @@ const AccountManager = () => {
 
   const signOutHandler =() => {
     signOut(auth).then(() => {
+      dispatch(logout())
       navigate('/signin')
     }).catch((error) => {
       console.log(error);

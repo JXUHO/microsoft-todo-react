@@ -22,7 +22,6 @@ import { Menu, MenuItem, MenuSeparator } from "../modals/ContextMenu";
 import { GoCheckCircle } from "react-icons/go";
 import getLastTimeOfDay from "../../utils/getDates";
 import { useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useChangeOptionTodoApiMutation, useSetCompleteTodoApiMutation, useSetImportanceTodoApiMutation, useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
 
 const TaskItemContextMenu = ({todos, isApiData, isLoading}) => {
@@ -31,7 +30,7 @@ const TaskItemContextMenu = ({todos, isApiData, isLoading}) => {
   const activeTasksId = useSelector((state) => state.active.activeTasks);
   const dispatch = useDispatch();
 
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [setMydayTodoApi] = useSetMydayTodoApiMutation();
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation()

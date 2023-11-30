@@ -22,7 +22,7 @@ import { changeOptionTodo, setRemindedTodo } from "../../store/todoSlice";
 import { BsXLg } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { useChangeOptionTodoApiMutation, useSetRemindedTodoApiMutation } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
+
 
 const DetailRemindPopover = ({ taskId, todo }) => {
   const location = useLocation();
@@ -36,8 +36,7 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
-
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 

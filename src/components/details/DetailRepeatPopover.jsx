@@ -19,7 +19,6 @@ import RepeatItems from "../addtask/RepeatItems";
 
 import { getRepeatButtonText } from "../addtask/RepeatPopover";
 import { useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
 const DetailRepeatPopover = ({ taskId, todo }) => {
@@ -34,8 +33,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
-
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
   const todoRepeatRule = todo?.repeatRule

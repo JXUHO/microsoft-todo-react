@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNoteTodo } from "../../store/todoSlice";
 import { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import useAuth from "../../hooks/useAuth";
 import { useAddNoteTodoApiMutation } from "../../api/todoApiSlice";
 
 const DetailNote = ({ taskId, todo, isApiData }) => {
@@ -15,7 +14,7 @@ const DetailNote = ({ taskId, todo, isApiData }) => {
   const [note, setNote] = useState("");
   const [updatedText, setUpdatedText] = useState("");
 
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [addNoteTodoApi] = useAddNoteTodoApiMutation()
 
   const todoNote = todo?.note;

@@ -11,14 +11,13 @@ import getLastTimeOfDay, {
 } from "../../utils/getDates";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
 const Details = ({ taskId, todos, isLoading, isApiData }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const todo = todos.find((todo) => todo.id === taskId);
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
   

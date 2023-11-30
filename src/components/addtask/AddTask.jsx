@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "../../store/todoSlice";
 import uuid from "react-uuid";
 import DuePopover from "./DuePopover";
@@ -10,7 +10,6 @@ import getLastTimeOfDay, {
 } from "../../utils/getDates";
 import { GoCircle } from "react-icons/go";
 import { useAddTodoApiMutation } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
 
 
 const initialTask = {
@@ -37,10 +36,9 @@ const AddTask = ({ currentLocation }) => {
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
-
+  const user = useSelector(state => state.auth.user)
 
   const [addTodoApi] = useAddTodoApiMutation()
-  const { user, loading } = useAuth();
 
 
   let isMyday = false;

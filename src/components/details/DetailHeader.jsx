@@ -28,7 +28,7 @@ import {
   useSetCompleteTodoApiMutation,
   useSetImportanceTodoApiMutation,
 } from "../../api/todoApiSlice";
-import useAuth from "../../hooks/useAuth";
+
 
 const DetailHeader = ({ taskId, todo, isApiData }) => {
   // const todo = useSelector((state) =>
@@ -45,7 +45,8 @@ const DetailHeader = ({ taskId, todo, isApiData }) => {
   const [isActive, setIsActive] = useState(false);
 
   const [changeTaskTodoApi] = useChangeTaskTodoApiMutation();
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
+
 
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();

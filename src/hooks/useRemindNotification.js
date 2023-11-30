@@ -8,12 +8,11 @@ import {
 import { openDetail } from "../store/uiSlice";
 import { useEffect } from "react";
 import { useSetRemindedTodoApiMutation } from "../api/todoApiSlice";
-import useAuth from "./useAuth";
 
 
 const useRemindNotification = (todos) => {
   const dispatch = useDispatch();
-  const { user, loading: isAuthLoading } = useAuth();
+  const user = useSelector(state => state.auth.user)
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
   useEffect(() => {

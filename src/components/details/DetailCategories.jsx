@@ -12,7 +12,7 @@ import { BsCheck2, BsFillCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategoryTodo, removeCategoryTodo } from "../../store/todoSlice";
 import DetailCategoryItems from "./DetailCategoryItems";
-import useAuth from "../../hooks/useAuth";
+
 import { useAddCategoryTodoApiMutation, useRemoveCategoryTodoApiMutation } from "../../api/todoApiSlice";
 
 const DetailCategories = ({ taskId, todo, isApiData }) => {
@@ -22,8 +22,8 @@ const DetailCategories = ({ taskId, todo, isApiData }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
+  const user = useSelector(state => state.auth.user)
 
-  const { user, loading: isAuthLoading } = useAuth();
   const [addCategoryTodoApi] = useAddCategoryTodoApiMutation()
   const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation()
 

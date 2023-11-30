@@ -28,7 +28,6 @@ import {
   setActiveRange,
 } from "../../store/activeSlice";
 import TaskItemOptions from "./TaskItemOptions";
-import useAuth from "../../hooks/useAuth";
 import { useSetCompleteTodoApiMutation, useSetImportanceTodoApiMutation } from "../../api/todoApiSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
@@ -39,8 +38,7 @@ const TaskItem = ({ todo, currentLocation }) => {
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
 
-
-  const {user, loading:isAuthLoading} = useAuth()
+  const user = useSelector(state => state.auth.user)
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation()
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation()
 
