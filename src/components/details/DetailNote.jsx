@@ -24,12 +24,9 @@ const DetailNote = ({ taskId, todo,  }) => {
   };
 
   const blurHandler = () => {
-    if (user) {
-      console.log('trigger');
+
       addNoteTodoApi({todoId: taskId, user, content: note})
-    } else {
-      dispatch(addNoteTodo({ id: taskId, content: note }));
-    }
+
   };
 
   const noteSectionClickHandler = () => {

@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { isDateToday } from "../utils/getDates";
 import getNextRepeatTask, { repeatDueSynchronizer } from "../utils/repeatTask";
-import popSound from "../../public/popSound.mp3"
+import popSound from "../../public/popSound.mp3";
 
 const todoSlice = createSlice({
   name: "todos",
   initialState: { todos: [] },
   reducers: {
     setTodos: (state, action) => {
-      state.todos = action.payload
-    }
+      state.todos = action.payload;
+    },
 
-    ,
     addTodo: (state, action) => {
       const modifiedDue = repeatDueSynchronizer(action.payload);
       if (modifiedDue) {
@@ -41,7 +40,7 @@ const todoSlice = createSlice({
       if (!action.payload.value) {
         todoToChange.complete = "";
       } else {
-        new Audio(popSound).play()
+        new Audio(popSound).play();
         todoToChange.complete = new Date().toISOString();
         if (todoToChange.repeatRule && !todoToChange.repeated) {
           // repeatRule존재하면, 새로운 repeat task 생성
@@ -100,12 +99,11 @@ const todoSlice = createSlice({
       }
     },
 
-
     setRemindedTodo: (state, action) => {
       const todoToChange = state.todos.find(
         (todo) => todo.id === action.payload.id
       );
-      todoToChange.reminded = action.payload.value
+      todoToChange.reminded = action.payload.value;
     },
 
     addCategoryTodo: (state, action) => {
@@ -169,7 +167,7 @@ const todoSlice = createSlice({
       const stepToChange = todoToChange.steps.find(
         (step) => step.id === action.payload.stepId
       );
-      if(!stepToChange.complete) new Audio(popSound).play()
+      if (!stepToChange.complete) new Audio(popSound).play();
       stepToChange.complete = !stepToChange.complete;
     },
     removeStep: (state, action) => {
@@ -214,6 +212,3 @@ export const {
   changeStep,
 } = todoSlice.actions;
 export default todoSlice.reducer;
-
-
-

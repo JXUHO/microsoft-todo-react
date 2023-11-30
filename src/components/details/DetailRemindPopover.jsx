@@ -115,7 +115,7 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   const addRemindHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    if (user) {
+
       changeOptionTodoApi({
         todoId: taskId,
         user,
@@ -123,29 +123,18 @@ const DetailRemindPopover = ({ taskId, todo }) => {
         content,
         currentLocation: location.pathname,
       });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option: "remind",
-          content,
-          currentLocation: location.pathname,
-        })
-      );
-    }
 
-    if (user) {
+
+
       setRemindedTodoApi({ todoId: taskId, user, value: false });
-    } else {
-      dispatch(setRemindedTodo({ id: taskId, value: false }));
-    }
+
 
     setPopoverOpen(false);
   };
 
   const resetRemindHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    if (user) {
+
       changeOptionTodoApi({
         todoId: taskId,
         user,
@@ -153,22 +142,11 @@ const DetailRemindPopover = ({ taskId, todo }) => {
         content: "",
         currentLocation: location.pathname,
       });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option: "remind",
-          content: "",
-          currentLocation: location.pathname,
-        })
-      );
-    }
 
-    if (user) {
+
+
       setRemindedTodoApi({ todoId: taskId, user, value: false });
-    } else {
-      dispatch(setRemindedTodo({ id: taskId, value: false }));
-    }
+
 
     setPopoverOpen(false);
   };

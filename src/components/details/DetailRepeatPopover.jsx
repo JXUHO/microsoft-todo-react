@@ -108,7 +108,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   const addRepeatHandler = (input) => {
     switch (input) {
       case "daily":
-        if (user) {
+
           changeOptionTodoApi({
             todoId: taskId,
             user,
@@ -116,19 +116,10 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
             content: "1-day",
             currentLocation: location.pathname,
           });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: "1-day",
-              option: "repeatRule",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+
         break;
       case "weekdays":
-        if (user) {
+
           changeOptionTodoApi({
             todoId: taskId,
             user,
@@ -136,20 +127,11 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
             content: "1-week-mon-tue-wed-thu-fri",
             currentLocation: location.pathname,
           });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: "1-week-mon-tue-wed-thu-fri",
-              option: "repeatRule",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+
         break;
       case "weekly":
         const currentDay = getDayOfWeek(new Date());
-        if (user) {
+
           changeOptionTodoApi({
             todoId: taskId,
             user,
@@ -157,19 +139,9 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
             content: "1-week-" + currentDay,
             currentLocation: location.pathname,
           });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: "1-week-" + currentDay,
-              option: "repeatRule",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+
         break;
       case "monthly":
-        if (user) {
           changeOptionTodoApi({
             todoId: taskId,
             user,
@@ -177,19 +149,10 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
             content: "1-month",
             currentLocation: location.pathname,
           });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: "1-month",
-              option: "repeatRule",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+
         break;
       case "yearly":
-        if (user) {
+
           changeOptionTodoApi({
             todoId: taskId,
             user,
@@ -197,16 +160,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
             content: "1-year",
             currentLocation: location.pathname,
           });
-        } else {
-          dispatch(
-            changeOptionTodo({
-              id: taskId,
-              content: "1-year",
-              option: "repeatRule",
-              currentLocation: location.pathname,
-            })
-          );
-        }
+
         break;
       default:
         break;
@@ -215,7 +169,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   };
 
   const resetRepeatHandler = () => {
-    if (user) {
+
       changeOptionTodoApi({
         todoId: taskId,
         user,
@@ -223,16 +177,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
         content: "",
         currentLocation: location.pathname,
       });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option: "repeatRule",
-          content: "",
-          currentLocation: location.pathname,
-        })
-      );
-    }
+
 
     setPopoverOpen(false);
   };
@@ -242,7 +187,7 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
   };
 
   const setRepeatRule = (content, option) => {
-    if (user) {
+
       changeOptionTodoApi({
         todoId: taskId,
         user,
@@ -250,19 +195,11 @@ const DetailRepeatPopover = ({ taskId, todo }) => {
         content,
         currentLocation: location.pathname,
       });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option,
-          content,
-          currentLocation: location.pathname,
-        })
-      );
-    }
+
   };
 
   useEffect(() => {
+    if (!todoRepeatRule) return;
     const repeatButtonText = getRepeatButtonText(todoRepeatRule).split(",");
     setRepeatText({
       title: repeatButtonText[0],

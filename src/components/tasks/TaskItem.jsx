@@ -44,17 +44,13 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   const completeHandler = () => {
     if (todo.complete) {
-      if (user) {
+
         setCompleteTodoApi({todoId:todo.id, user, value: false})
-      } else {
-        dispatch(setCompleteTodo({ id: todo.id, value: false }));
-      }
+
     } else {
-      if (user) {
+
         setCompleteTodoApi({todoId:todo.id, user, value:true})
-      } else {
-        dispatch(setCompleteTodo({ id: todo.id, value: true }));
-      }
+
     }
   };
 
@@ -74,17 +70,13 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   const importanceHandler = () => {
     if (todo.importance) {
-      if (user) {
+
         setImportanceTodoApi({todoId: todo.id, user, value:""})
-      } else {
-        dispatch(setImportanceTodo({ id: todo.id, value: "" }));
-      }
+
     } else {
-      if (user) {
+
         setImportanceTodoApi({todoId: todo.id, user, value:new Date().toISOString()})
-      } else {
-        dispatch(setImportanceTodo({ id: todo.id, value: new Date().toISOString() }));
-      }
+
     }
   };
 

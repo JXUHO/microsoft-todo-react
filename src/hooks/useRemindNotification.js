@@ -35,11 +35,9 @@ const useRemindNotification = () => {
           new Date(todo.remind) <= currentTime
         ) {
           notifyMe(todo);
-          if (user) {
+
             setRemindedTodoApi({todoId: todo.id, user, value: true})
-          } else {
-            dispatch(setRemindedTodo({ id: todo.id, value: true }));
-          }
+
         }
       }
     }, 1000);

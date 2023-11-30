@@ -33,19 +33,12 @@ const RootPage = () => {
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
   const user = useSelector(state => state.auth.user)
   const todos = useSelector(state => state.todo.todos)
-
-
-  useEffect(() => {
-    dispatch(initializeActiveTasks());
-    dispatch(initializeActiveStep());
-    dispatch(closeDetail());
-  }, [location]);
+  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
 
 
   useAuth()
-  useGetTodos(user?.uid)
+  useGetTodos()
 
-  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
   useUpdateMyday({setMydayTodoApi, user})
 
   
@@ -53,13 +46,18 @@ const RootPage = () => {
   useRemindNotification();
   useTheme();
 
-
+  useEffect(() => {
+    dispatch(initializeActiveTasks());
+    dispatch(initializeActiveStep());
+    dispatch(closeDetail());
+  }, [location]);
 
   useEffect(() => {
     if (viewportWidth - detailWidth < 560) {
       dispatch(closeSidebar());
     }
   }, [viewportWidth, detailWidth]);
+
 
   if (!user || !todos) {
     return <h1>loading...</h1>
@@ -91,34 +89,3 @@ export default RootPage;
  * 
  * 
  */
-
-
-  // useEffect(() => {
-  //   // reload될 때, 날짜 변경됐으면 myday변경
-  //   if (isApiData) {
-  //     todos.map((todo) => {
-  //       if (
-  //         !isDateToday(new Date(todo.created)) &&
-  //         todo.myday &&
-  //         !isDateToday(new Date(todo.dueDate))
-  //       ) {
-  //         setMydayTodoApi({todoId:todo.id, user, value: false})
-  //       } else if (
-  //         !isDateToday(new Date(todo.created)) &&
-  //         isDateToday(new Date(todo.dueDate))
-  //       ) {
-  //         setMydayTodoApi({todoId:todo.id, user, value: true})
-  //       } else if (
-  //         !todo.dueDate &&
-  //         !isDateToday(new Date(todo.created)) &&
-  //         todo.myday
-  //       ) {
-  //         setMydayTodoApi({todoId:todo.id, user, value: false})
-  //       }
-  //     });
-  //   } else {
-  //     updateMydayTodo();
-  //   }
-
-  // }, []);
-

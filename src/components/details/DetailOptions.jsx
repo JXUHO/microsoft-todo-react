@@ -28,21 +28,17 @@ const DetailOptions = ({ taskId, todo,  }) => {
 
   const addMydayHandler = () => {
     if (!todoMyday) {
-      if (user) {
+
         setMydayTodoApi({todoId: taskId, user, value: true})
-      } else {
-        dispatch(setMydayTodo({ id: taskId, value: true }));
-      }
+
     }
   };
 
   const removeMydayHandler = () => {
     if (todoMyday) {
-      if (user) {
+
         setMydayTodoApi({todoId: taskId, user, value: false})
-      } else {
-        dispatch(setMydayTodo({ id: taskId, value: false }));
-      }
+
     }
   };
 

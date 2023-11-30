@@ -13,35 +13,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCategoryTodo, removeCategoryTodo } from "../../store/todoSlice";
 import DetailCategoryItems from "./DetailCategoryItems";
 
-import { useAddCategoryTodoApiMutation, useRemoveCategoryTodoApiMutation } from "../../api/todoApiSlice";
+import {
+  useAddCategoryTodoApiMutation,
+  useRemoveCategoryTodoApiMutation,
+} from "../../api/todoApiSlice";
 
-const DetailCategories = ({ taskId, todo}) => {
+const DetailCategories = ({ taskId, todo }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const dispatch = useDispatch();
 
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
-  const [addCategoryTodoApi] = useAddCategoryTodoApiMutation()
-  const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation()
+  const [addCategoryTodoApi] = useAddCategoryTodoApiMutation();
+  const [removeCategoryTodoApi] = useRemoveCategoryTodoApiMutation();
 
   const todoCategory = todo?.category ?? [];
 
   const categoryHandler = (category) => {
     if (!todoCategory.includes(category)) {
-      if (user) {
-        addCategoryTodoApi({todoId:taskId, user, category})
-      } else {
-        dispatch(addCategoryTodo({ id: taskId, category }));
-      }
+      addCategoryTodoApi({ todoId: taskId, user, category });
     } else {
-      if (user) {
-        removeCategoryTodoApi({todoId:taskId, user, category})
-      } else {
-        dispatch(removeCategoryTodo({ id: taskId, category }));
-      }
+      removeCategoryTodoApi({ todoId: taskId, user, category });
     }
   };
 
@@ -58,10 +53,7 @@ const DetailCategories = ({ taskId, todo}) => {
   const {
     getReferenceProps: getPopoverReferenceProps,
     getFloatingProps: getPopoverFloatingProps,
-  } = useInteractions([
-    useClick(popoverContext),
-    useDismiss(popoverContext),
-  ]);
+  } = useInteractions([useClick(popoverContext), useDismiss(popoverContext)]);
 
   return (
     <>

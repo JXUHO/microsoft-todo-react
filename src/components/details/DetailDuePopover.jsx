@@ -20,7 +20,6 @@ import DueItems from "../addtask/DueItems";
 import { useLocation } from "react-router-dom";
 import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
-
 const DetailDuePopover = ({ taskId, todo }) => {
   const location = useLocation();
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -33,7 +32,7 @@ const DetailDuePopover = ({ taskId, todo }) => {
   // const todo = useSelector((state) =>
   //   state.todo.todos.find((todo) => todo.id === taskId)
   // );
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
 
@@ -109,47 +108,28 @@ const DetailDuePopover = ({ taskId, todo }) => {
   const addDueHandler = (dateObj) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
-    if (user) {
-      changeOptionTodoApi({
-        todoId: taskId,
-        user,
-        option: "dueDate",
-        content,
-        currentLocation: location.pathname,
-      });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option: "dueDate",
-          content,
-          currentLocation: location.pathname,
-        })
-      );
-    }
+
+    changeOptionTodoApi({
+      todoId: taskId,
+      user,
+      option: "dueDate",
+      content,
+      currentLocation: location.pathname,
+    });
+
     setPopoverOpen(false);
   };
 
   const resetDueHandler = () => {
     // 해당 task remind를 empty string으로 변경함
-    if (user) {
-      changeOptionTodoApi({
-        todoId: taskId,
-        user,
-        option: "dueDate",
-        content: "",
-        currentLocation: location.pathname,
-      });
-    } else {
-      dispatch(
-        changeOptionTodo({
-          id: taskId,
-          option: "dueDate",
-          content: "",
-          currentLocation: location.pathname,
-        })
-      );
-    }
+
+    changeOptionTodoApi({
+      todoId: taskId,
+      user,
+      option: "dueDate",
+      content: "",
+      currentLocation: location.pathname,
+    });
 
     setPopoverOpen(false);
   };

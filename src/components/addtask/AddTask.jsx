@@ -11,7 +11,6 @@ import getLastTimeOfDay, {
 import { GoCircle } from "react-icons/go";
 import { useAddTodoApiMutation } from "../../api/todoApiSlice";
 
-
 const initialTask = {
   id: "", // uuid
   task: "", // user input
@@ -36,10 +35,9 @@ const AddTask = ({ currentLocation }) => {
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
-  const [addTodoApi] = useAddTodoApiMutation()
-
+  const [addTodoApi] = useAddTodoApiMutation();
 
   let isMyday = false;
   let isImportant = false;
@@ -81,12 +79,8 @@ const AddTask = ({ currentLocation }) => {
       trimmedTaskInput.dueDate = new Date().toISOString();
     }
 
-    if (user) {
-      addTodoApi({todo:trimmedTaskInput, user})
-    } else {
-      dispatch(addTodo(trimmedTaskInput));
-    }
-    
+    addTodoApi({ todo: trimmedTaskInput, user });
+
     setTaskInput(initialTask);
     initializeButtons();
   };

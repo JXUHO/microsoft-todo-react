@@ -32,39 +32,47 @@ const TaskDetail = () => {
   const [createdTime, setCreatedTime] = useState("");
   const [firstRender, setFirstRender] = useState(true);
   const detailWidth = useSelector((state) => state.ui.detailWidth);
-  const user = useSelector(state => state.auth.user)
-  const todos = useSelector(state => state.todo.todos)
+  const user = useSelector((state) => state.auth.user);
+  const todos = useSelector((state) => state.todo.todos);
 
-  const { data: uiData, isLoading: isUiLoading, isSuccess: isUiSuccess ,isError:isUiError, error: uiError} = useGetUiApiQuery(user?.uid);
+  const {
+    data: uiData,
+    isLoading: isUiLoading,
+    isSuccess: isUiSuccess,
+    isError: isUiError,
+    error: uiError,
+  } = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
-
 
   useEffect(() => {
     if (firstRender) {
-      // first render일 때, 
+      // first render일 때,
       if (!isUiLoading && isUiSuccess) {
         // user가 login했다면, firestore에서 detailwidth를 가지고 온다
-        if(!uiData) {
-          setResizerPosition(360)
+        if (!uiData) {
+          setResizerPosition(360);
         } else {
           setResizerPosition(uiData?.detailWidth);
         }
         setFirstRender(false);
-      } 
+      }
     }
   }, [firstRender, isUiLoading, uiData, detailWidth]);
-
 
   useEffect(() => {
     if (!isResizing && !firstRender) {
       dispatch(setDetailWidth(resizerPosition));
 
-        setDetailWidthApi({ user, value: resizerPosition });
-      
+      setDetailWidthApi({ user, value: resizerPosition });
     }
-  }, [isResizing, resizerPosition, firstRender, dispatch, user, setDetailWidthApi]);
-
-
+  }, [
+    isResizing,
+    resizerPosition,
+    firstRender,
+    dispatch,
+    user,
+    setDetailWidthApi,
+  ]);
 
   const closeDetailHandler = () => {
     dispatch(closeDetail());
@@ -77,12 +85,12 @@ const TaskDetail = () => {
   const detailId = activeTasks[0];
 
   useEffect(() => {
-
-
-      const todoDetail = todos.find((todo) => todo.id === detailId);
-      setCreatedTime(getCustomFormatDateString(new Date(todoDetail.created), "plain"));
-    
-  }, [detailId, todos, ]);
+    const todoDetail = todos.find((todo) => todo.id === detailId);
+    if(!todoDetail) return;
+    setCreatedTime(
+      getCustomFormatDateString(new Date(todoDetail.created), "plain")
+    );
+  }, [detailId, todos]);
 
   const resizerMouseDownHandler = () => {
     setIsResizing(true);
@@ -202,14 +210,7 @@ const TaskDetail = () => {
             "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
         }}
       >
-        {detailId && (
-          <Details
-            taskId={detailId}
-            todos={todos}
-      
-
-          />
-        )}
+        {detailId && <Details taskId={detailId} todos={todos} />}
 
         <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
           <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">

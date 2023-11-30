@@ -224,6 +224,7 @@ export default RepeatPopover;
 
 // button text helper function
 export const getRepeatButtonText = (repeatRule) => {
+  if(!repeatRule) return;
   let repeatButtonText = "Repeat";
   const repeatRuleArr = repeatRule.split("-");
 
