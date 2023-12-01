@@ -21,7 +21,7 @@ import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
 import useUpdateMyday from "../hooks/useUpdateMyday";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import LoadingSpinner from "../components/LoadingSpinner";
+import Loading from "../components/Loading";
 
 const RootPage = () => {
   const location = useLocation();
@@ -34,13 +34,8 @@ const RootPage = () => {
   const user = useSelector((state) => state.auth.user);
   const todos = useSelector((state) => state.todo.todos);
 
-
-  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
-  console.log('root');
-
-
-  useAuth();
-  const {isTodoLoading} = useGetTodos();
+  const { isLoading: isAuthLoading } = useAuth();
+  useGetTodos();
   useUpdateMyday();
 
   useKeyDown();
@@ -59,30 +54,27 @@ const RootPage = () => {
     }
   }, [viewportWidth, detailWidth, dispatch]);
 
-
-  if (!localStorageUser && !user) {
-    return <Navigate to={"/user/signin"}/>
-  }
-
-  if (!todos) {
-    return <LoadingSpinner/>
+  if (!todos || isAuthLoading) {
+    return <Loading />;
   }
 
   return (
-    <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
-      <Header />
-      <HeaderPanels />
-      <div className="flex flex-1 overflow-hidden relative">
-        <SidebarOverlay />
-        {isSidebarOpen && <Sidebar />}
-        <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
-          <Outlet />
+    <>
+      <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
+        <Header />
+        <HeaderPanels />
+        <div className="flex flex-1 overflow-hidden relative">
+          <SidebarOverlay />
+          {isSidebarOpen && <Sidebar />}
+          <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
+            <Outlet />
+          </div>
+          {isDetailOpen && <TaskDetail />}
         </div>
-        {isDetailOpen && <TaskDetail />}
+        <TaskItemContextMenu />
+        {isDeleteDialogOpen && <DeleteTaskDialog />}
       </div>
-      <TaskItemContextMenu />
-      {isDeleteDialogOpen && <DeleteTaskDialog />}
-    </div>
+    </>
   );
 };
 

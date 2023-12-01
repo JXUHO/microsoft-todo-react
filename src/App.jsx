@@ -54,7 +54,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "user",
+    path: "/user",
     element: <ProtectedLayout/>,
     children : [
       {
@@ -114,6 +114,7 @@ export default App;
  * (complete) sign-in, sign-up, 
  * (complete) backend 연결
  * (complete) Myday tab 아닌 곳에서 detail bar - add to myday button 작동 안함
+ * (complete) Loading component 구현
  * 
  * 
  * 
@@ -128,7 +129,6 @@ export default App;
  * list 정렬 수정하기
  * 
  * 
- * Loading component 구현
  * 
  * 
  * 

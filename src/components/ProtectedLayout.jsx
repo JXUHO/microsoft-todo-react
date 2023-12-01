@@ -5,12 +5,10 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const ProtectedLayout = () => {
   const user = useSelector((state) => state.auth.user);
-
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
   useAuth()
 
-  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
-
-  if ( localStorageUser || user ) {
+  if (localStorageUser || user) {
     return <Navigate to={"/"}/>  
   }
 

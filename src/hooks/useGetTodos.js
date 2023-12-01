@@ -18,7 +18,6 @@ const useGetTodos = () => {
     dispatch(setTodos(todoArrData));
   }, [todoArrData]);
 
-  return {isTodoLoading}
 };
 
 export default useGetTodos;

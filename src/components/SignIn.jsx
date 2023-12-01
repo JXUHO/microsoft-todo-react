@@ -26,7 +26,6 @@ const SignIn = () => {
 
 
   const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
-  // console.log('signin');
 
 
   useEffect(() => {

@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../store/authSlice";
 import { useLocalStorage } from "./useLocalStorage";
 
 const useAuth = () => {
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true)
 
+  const dispatch = useDispatch();
   const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
 
   useEffect(() => {
+    setIsLoading(true)
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
@@ -22,16 +24,17 @@ const useAuth = () => {
           })
         );
         setLocalStorageUser(authUser.email)
-        console.log('login dispatch');
+        setIsLoading(false)
       } else {
         setLocalStorageUser(null)
         dispatch(logout());
-        console.log('logout dispatch');
+        setIsLoading(false)
       }
     });
     return () => unsubscribe();
   }, []);
 
+  return {isLoading}
 
 };
 
