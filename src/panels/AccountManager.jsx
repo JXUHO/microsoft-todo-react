@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import { logout } from "../store/authSlice";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const AccountManager = () => {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ const AccountManager = () => {
     (state) => state.ui.accountManagerActive
   );
   const user = useSelector(state => state.auth.user)
+
+
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
 
 
   useEffect(() => {
@@ -42,7 +46,10 @@ const AccountManager = () => {
   const signOutHandler =() => {
     signOut(auth).then(() => {
       dispatch(logout())
-      navigate('/signin')
+
+      setLocalStorageUser(null)
+
+      navigate('/user/signin')
     }).catch((error) => {
       console.log(error);
     });

@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import {
-  addDoc,
   collection,
   doc,
   getDocs,
@@ -14,7 +13,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
 
 const SignUp = () => {
@@ -33,6 +32,14 @@ const SignUp = () => {
   const [isShowPasswordChecked, setIsShowPasswordChecked] = useState(false);
 
   const checkboxRef = useRef();
+
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/")
+    }
+  }, [user, navigate])
 
   useEffect(() => {
     const handleEnterKeyPress = (event) => {

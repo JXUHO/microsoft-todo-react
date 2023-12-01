@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { isDateToday } from "../utils/getDates";
-import { updateMydayTodo } from "../store/todoSlice";
 import { useSelector } from "react-redux";
+import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
 
-const useUpdateMyday = ({ setMydayTodoApi, user }) => {
+const useUpdateMyday = () => {
   const todos = useSelector((state) => state.todo.todos);
+  const user = useSelector(state => state.auth.user)
+  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
 
   useEffect(() => {
     // reload될 때, 날짜 변경됐으면 myday변경
     if (!todos || !user) return;
-
     todos.map((todo) => {
       if (
         !isDateToday(new Date(todo.created)) &&

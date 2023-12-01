@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage";
 import InboxPage from "./pages/InboxPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
+import ProtectedLayout from "./components/ProtectedLayout";
 
 const router = createBrowserRouter([
   {
@@ -53,13 +54,21 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "signin",
-    element: <SignInPage/>
+    path: "user",
+    element: <ProtectedLayout/>,
+    children : [
+      {
+        index: true,
+        path: "signin",
+        element: <SignInPage/>
+      },
+      {
+        path: "signup",
+        element: <SignUpPage/>
+      }
+    ]
   },
-  {
-    path: "signup",
-    element: <SignUpPage/>
-  }
+
 ]);
 
 function App() {
@@ -104,6 +113,7 @@ export default App;
  * (complete) dark theme -> toggle switch 만들기
  * (complete) sign-in, sign-up, 
  * (complete) backend 연결
+ * (complete) Myday tab 아닌 곳에서 detail bar - add to myday button 작동 안함
  * 
  * 
  * 
@@ -117,8 +127,8 @@ export default App;
  * search params로 검색값 전달해서 구현
  * list 정렬 수정하기
  * 
- * Myday tab 아닌 곳에서 detail bar - add to myday button 작동 안함
  * 
+ * Loading component 구현
  * 
  * 
  * 

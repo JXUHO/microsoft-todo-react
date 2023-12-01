@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ const SignIn = () => {
 
   const checkboxRef = useRef();
 
+
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
+  // console.log('signin');
 
 
   useEffect(() => {
@@ -71,13 +75,19 @@ const SignIn = () => {
           email,
           password
         );
+
+
+        console.log(userCredential.user)
+        setLocalStorageUser(userCredential.user.email)
+
+
         dispatch(login({
           email: userCredential.user.email,
           uid: userCredential.user.uid,
           displayName: userCredential.user.displayName,
           photoUrl: userCredential.user.photoURL
         }))
-
+        
 
         navigate("/");
       } catch (error) {

@@ -13,12 +13,13 @@ import { closeDetail, setDialog } from "../../store/uiSlice";
 import { removeTodo } from "../../store/todoSlice";
 import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
 
-function DeleteTaskDialog({isOpen}) {
+function DeleteTaskDialog() {
   const dispatch = useDispatch();
   const activeTasksId = useSelector((state) => state.active.activeTasks);
+  const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
 
   const { refs, context } = useFloating({
-    open: isOpen,
+    open: isDeleteDialogOpen,
     onOpenChange: (input) => dispatch(setDialog(input)),
   });
   const click = useClick(context);
@@ -53,7 +54,6 @@ function DeleteTaskDialog({isOpen}) {
   return (
     <>
       <FloatingPortal id="root">
-        {/* {isOpen && ( */}
           <FloatingOverlay
             className="flex items-center justify-center z-50"
             lockScroll
@@ -109,7 +109,6 @@ function DeleteTaskDialog({isOpen}) {
               </div>
             </FloatingFocusManager>
           </FloatingOverlay>
-        {/* )} */}
       </FloatingPortal>
     </>
   );

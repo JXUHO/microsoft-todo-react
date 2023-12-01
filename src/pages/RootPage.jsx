@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
@@ -19,9 +19,8 @@ import HeaderPanels from "../panels/HeaderPanels";
 import useTheme from "../hooks/useTheme";
 import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
-import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
 import useUpdateMyday from "../hooks/useUpdateMyday";
-
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const RootPage = () => {
   const location = useLocation();
@@ -31,17 +30,18 @@ const RootPage = () => {
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
-  const user = useSelector(state => state.auth.user)
-  const todos = useSelector(state => state.todo.todos)
-  const [setMydayTodoApi] = useSetMydayTodoApiMutation()
+  const user = useSelector((state) => state.auth.user);
+  const todos = useSelector((state) => state.todo.todos);
 
 
-  useAuth()
-  useGetTodos()
+  const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
+  console.log('root');
 
-  useUpdateMyday({setMydayTodoApi, user})
 
-  
+  useAuth();
+  const {isTodoLoading} = useGetTodos();
+  useUpdateMyday();
+
   useKeyDown();
   useRemindNotification();
   useTheme();
@@ -56,27 +56,31 @@ const RootPage = () => {
     if (viewportWidth - detailWidth < 560) {
       dispatch(closeSidebar());
     }
-  }, [viewportWidth, detailWidth]);
+  }, [viewportWidth, detailWidth, dispatch]);
 
 
-  if (!user || !todos) {
-    return <h1>loading...</h1>
+  if (!localStorageUser && !user) {
+    return <Navigate to={"/user/signin"}/>
+  }
+
+  if (!todos) {
+    return <h1>loading...</h1>;
   }
 
   return (
     <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
       <Header />
-      <HeaderPanels/>
+      <HeaderPanels />
       <div className="flex flex-1 overflow-hidden relative">
         <SidebarOverlay />
         {isSidebarOpen && <Sidebar />}
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
           <Outlet />
         </div>
-        {isDetailOpen && <TaskDetail/>}
+        {isDetailOpen && <TaskDetail />}
       </div>
       <TaskItemContextMenu />
-      {isDeleteDialogOpen && <DeleteTaskDialog  isOpen={isDeleteDialogOpen}/>}
+      {isDeleteDialogOpen && <DeleteTaskDialog />}
     </div>
   );
 };
@@ -86,6 +90,6 @@ export default RootPage;
 /**
  * open/close state에 따라 우측 scrollbar conditional style 적용하기
  *
- * 
- * 
+ *
+ *
  */

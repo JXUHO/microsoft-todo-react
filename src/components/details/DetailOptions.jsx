@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
 import { BsSun, BsXLg } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
-import { setMydayTodo } from "../../store/todoSlice";
+import { useSelector } from "react-redux";
 import DetailRemindPopover from "./DetailRemindPopover";
 import DetailDuePopover from "./DetailDuePopover";
 import DetailRepeatPopover from "./DetailRepeatPopover";
 import { useSetMydayTodoApiMutation } from "../../api/todoApiSlice";
 
-const DetailOptions = ({ taskId, todo,  }) => {
+const DetailOptions = ({ taskId, todo }) => {
   const [isMyday, setIsMyday] = useState(false);
-  const dispatch = useDispatch();
   const [isMydayHover, setIsMydayHover] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const [setMydayTodoApi] = useSetMydayTodoApiMutation();
 
-  // const todo = useSelector((state) =>
-  //   state.todo.todos.find((todo) => todo.id === taskId)
-  // );
-
-  const user = useSelector(state => state.auth.user)
-  const[setMydayTodoApi] = useSetMydayTodoApiMutation()
-
-
-  const todoMyday = todo?.myday
+  const todoMyday = todo?.myday;
 
   useEffect(() => {
     setIsMyday(todoMyday);
@@ -28,17 +20,13 @@ const DetailOptions = ({ taskId, todo,  }) => {
 
   const addMydayHandler = () => {
     if (!todoMyday) {
-
-        setMydayTodoApi({todoId: taskId, user, value: true})
-
+      setMydayTodoApi({ todoId: taskId, user, value: true });
     }
   };
 
   const removeMydayHandler = () => {
     if (todoMyday) {
-
-        setMydayTodoApi({todoId: taskId, user, value: false})
-
+      setMydayTodoApi({ todoId: taskId, user, value: false });
     }
   };
 
@@ -51,7 +39,9 @@ const DetailOptions = ({ taskId, todo,  }) => {
         onMouseLeave={() => setIsMydayHover(false)}
       >
         <div
-          className={`flex w-full items-center ${isMyday ? "text-ms-font-blue": ""}`}
+          className={`flex w-full items-center ${
+            isMyday ? "text-ms-font-blue" : ""
+          }`}
         >
           <BsSun size="16px" />
           <span className="mx-4">
@@ -67,8 +57,8 @@ const DetailOptions = ({ taskId, todo,  }) => {
 
       <div className="rounded my-2">
         <DetailRemindPopover taskId={taskId} todo={todo} />
-        <DetailDuePopover taskId={taskId} todo={todo}/>
-        <DetailRepeatPopover taskId={taskId} todo={todo}/>
+        <DetailDuePopover taskId={taskId} todo={todo} />
+        <DetailRepeatPopover taskId={taskId} todo={todo} />
       </div>
     </>
   );
