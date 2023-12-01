@@ -21,6 +21,7 @@ import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
 import useUpdateMyday from "../hooks/useUpdateMyday";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const RootPage = () => {
   const location = useLocation();
@@ -64,7 +65,7 @@ const RootPage = () => {
   }
 
   if (!todos) {
-    return <h1>loading...</h1>;
+    return <LoadingSpinner/>
   }
 
   return (
