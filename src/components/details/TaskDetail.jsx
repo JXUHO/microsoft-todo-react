@@ -61,11 +61,14 @@ const TaskDetail = () => {
 
   useEffect(() => {
     if (!isResizing && !firstRender) {
+
       dispatch(setDetailWidth(resizerPosition));
 
-
-      // 너무 자주 호출됨... 수정하기
-      setDetailWidthApi({ user, value: resizerPosition });
+      const setResizerPosition = setTimeout(() => {
+        setDetailWidthApi({ user, value: resizerPosition });
+      }, 300);
+      return () => clearTimeout(setResizerPosition)
+      
     }
   }, [
     isResizing,

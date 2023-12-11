@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setCompleteTodo, setImportanceTodo } from "../../store/todoSlice";
 import { closeDetail, openContextMenu, openDetail } from "../../store/uiSlice";
 import {
   BsCircle,
@@ -28,7 +27,10 @@ import {
   setActiveRange,
 } from "../../store/activeSlice";
 import TaskItemOptions from "./TaskItemOptions";
-import { useSetCompleteTodoApiMutation, useSetImportanceTodoApiMutation } from "../../api/todoApiSlice";
+import {
+  useSetCompleteTodoApiMutation,
+  useSetImportanceTodoApiMutation,
+} from "../../api/todoApiSlice";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -37,55 +39,30 @@ const TaskItem = ({ todo, currentLocation }) => {
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
 
-
-  const user = useSelector(state => state.auth.user)
-  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation()
-  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation()
+  const user = useSelector((state) => state.auth.user);
+  const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
+  const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
   const completeHandler = () => {
     if (todo.complete) {
-
-        setCompleteTodoApi({todoId:todo.id, user, value: false})
-
+      setCompleteTodoApi({ todoId: todo.id, user, value: false });
     } else {
-
-        setCompleteTodoApi({todoId:todo.id, user, value:true})
-
+      setCompleteTodoApi({ todoId: todo.id, user, value: true });
     }
   };
-
-
-
-  // const completeHandler = () => {
-  //   if (todo.complete) {
-  //     dispatch(setCompleteTodo({ id: todo.id, value: false }));
-  //   } else {
-  //     dispatch(setCompleteTodo({ id: todo.id, value: true }));
-  //   }
-  // };
-
-
-
-
 
   const importanceHandler = () => {
-    console.log('importance handler');
+    console.log("importance handler");
     if (todo.importance) {
-        setImportanceTodoApi({todoId: todo.id, user, value:""})
+      setImportanceTodoApi({ todoId: todo.id, user, value: "" });
     } else {
-        setImportanceTodoApi({todoId: todo.id, user, value:new Date().toISOString()})
+      setImportanceTodoApi({
+        todoId: todo.id,
+        user,
+        value: new Date().toISOString(),
+      });
     }
   };
-
-  // const importanceHandler = () => {
-  //   if (todo.importance) {
-  //     dispatch(setImportanceTodo({ id: todo.id, value: false }));
-  //   } else {
-  //     dispatch(setImportanceTodo({ id: todo.id, value: true }));
-  //   }
-  // };
-
-
 
   const taskClickHandler = (id) => {
     dispatch(initializeActiveStep());
@@ -160,15 +137,15 @@ const TaskItem = ({ todo, currentLocation }) => {
       >
         {todo.complete ? (
           <div className="animate-checkAnimationBase">
-            <BsCheckCircleFill size="16px"/>
+            <BsCheckCircleFill size="16px" />
           </div>
         ) : (
           <div className="flex items-center">
             <div className="absolute opacity-0 hover:opacity-100 transition-opacity duration-100 z-20">
-              <BsCheckCircle size="16px"/>
+              <BsCheckCircle size="16px" />
             </div>
             <div className="z-10">
-              <BsCircle size="16px"/>
+              <BsCircle size="16px" />
             </div>
           </div>
         )}
@@ -179,7 +156,10 @@ const TaskItem = ({ todo, currentLocation }) => {
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left text-ms-text-dark"
         onContextMenu={contextMenuHandler}
       >
-        <span style={todo.complete ? { textDecoration: "line-through" } : null} className="">
+        <span
+          style={todo.complete ? { textDecoration: "line-through" } : null}
+          className=""
+        >
           {todo.task}
         </span>
 
