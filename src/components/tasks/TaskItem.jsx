@@ -69,14 +69,11 @@ const TaskItem = ({ todo, currentLocation }) => {
 
 
   const importanceHandler = () => {
+    console.log('importance handler');
     if (todo.importance) {
-
         setImportanceTodoApi({todoId: todo.id, user, value:""})
-
     } else {
-
         setImportanceTodoApi({todoId: todo.id, user, value:new Date().toISOString()})
-
     }
   };
 

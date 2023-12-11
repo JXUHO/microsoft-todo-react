@@ -1,10 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeTaskTodo,
-  setCompleteTodo,
-  setImportanceTodo,
-} from "../../store/todoSlice";
-import {
   BsCircle,
   BsCheckCircle,
   BsCheckCircleFill,
@@ -29,13 +24,7 @@ import {
   useSetImportanceTodoApiMutation,
 } from "../../api/todoApiSlice";
 
-
 const DetailHeader = ({ taskId, todo }) => {
-  // const todo = useSelector((state) =>
-  //   state.todo.todos.find((todo) => todo.id === taskId)
-  // );
-
-  const dispatch = useDispatch();
   const textAreaRef = useRef();
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -45,15 +34,13 @@ const DetailHeader = ({ taskId, todo }) => {
   const [isActive, setIsActive] = useState(false);
 
   const [changeTaskTodoApi] = useChangeTaskTodoApiMutation();
-  const user = useSelector(state => state.auth.user)
-
+  const user = useSelector((state) => state.auth.user);
 
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
   const todoComplete = todo?.complete;
   const todoImportance = todo?.importance;
-
 
   const taskEditHandler = (event) => {
     setNewTask(event.target.value);
@@ -62,12 +49,9 @@ const DetailHeader = ({ taskId, todo }) => {
   const completedHandler = () => {
     if (!todo) return;
     if (todoComplete) {
-
-        setCompleteTodoApi({ todoId: todo.id, user, value: false });
-
+      setCompleteTodoApi({ todoId: todo.id, user, value: false });
     } else {
-
-        setCompleteTodoApi({ todoId: todo.id, user, value: true });
+      setCompleteTodoApi({ todoId: todo.id, user, value: true });
 
       setIsFocused(false);
       setIsActive(false);
@@ -77,17 +61,13 @@ const DetailHeader = ({ taskId, todo }) => {
   const importanceHandler = () => {
     if (!todo) return;
     if (todoImportance) {
-
-        setImportanceTodoApi({ todoId: todo.id, user, value: "" });
-
+      setImportanceTodoApi({ todoId: todo.id, user, value: "" });
     } else {
-
-        setImportanceTodoApi({
-          todoId: todo.id,
-          user,
-          value: new Date().toISOString(),
-        });
-
+      setImportanceTodoApi({
+        todoId: todo.id,
+        user,
+        value: new Date().toISOString(),
+      });
     }
   };
 
@@ -99,8 +79,7 @@ const DetailHeader = ({ taskId, todo }) => {
         return;
       }
 
-        changeTaskTodoApi({ todoId: todo.id, user, value: newTask });
-
+      changeTaskTodoApi({ todoId: todo.id, user, value: newTask });
     }
     setIsFocused(false);
     setIsActive(false);
@@ -218,12 +197,12 @@ const DetailHeader = ({ taskId, todo }) => {
                   todoComplete && !isFocused ? "line-through" : "",
                 color: todoComplete && !isFocused ? "#767678" : "",
                 wordBreak: "break-all",
-                lineHeight: "20px",
+                lineHeight: "1.5rem",
               }}
             />
           ) : (
             <div
-              className="break-all leading-5 max-h-60 overflow-y-auto hover:cursor-text"
+              className="break-all max-h-60 overflow-y-auto hover:cursor-text"
               onClick={clickHandler}
               style={{
                 textDecoration:
