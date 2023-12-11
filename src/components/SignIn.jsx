@@ -7,10 +7,11 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { Oval } from "react-loader-spinner";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [showEmailAlert, setShowEmailAlert] = useState(false);
@@ -24,9 +25,7 @@ const SignIn = () => {
 
   const checkboxRef = useRef();
 
-
   const [localStorageUser, setLocalStorageUser] = useLocalStorage("user", null);
-
 
   useEffect(() => {
     const handleEnterKeyPress = (event) => {
@@ -75,19 +74,16 @@ const SignIn = () => {
           password
         );
 
-
-        console.log(userCredential.user)
-        setLocalStorageUser(userCredential.user.email)
-
-
-        dispatch(login({
-          email: userCredential.user.email,
-          uid: userCredential.user.uid,
-          displayName: userCredential.user.displayName,
-          photoUrl: userCredential.user.photoURL
-        }))
-        
-
+        console.log(userCredential.user);
+        setLocalStorageUser(userCredential.user.email);
+        dispatch(
+          login({
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+            displayName: userCredential.user.displayName,
+            photoUrl: userCredential.user.photoURL,
+          })
+        );
         navigate("/");
       } catch (error) {
         if (error.code === "auth/invalid-login-credentials") {
@@ -110,7 +106,7 @@ const SignIn = () => {
   return (
     <div className="absolute h-full w-full flex flex-col items-center justify-center bg-ms-background">
       <div
-        className="w-full h-full min-[600px]:w-[440px] min-[600px]:h-[350px] bg-white text-ms-text-dark"
+        className={`w-full h-full min-[600px]:w-[440px] min-[600px]:h-[350px] bg-white text-ms-text-dark`}
         style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}
       >
         <div className="p-11 w-full h-full flex flex-col">
@@ -119,32 +115,34 @@ const SignIn = () => {
           </h2>
 
           {!showPasswordTab ? (
-            <div className="flex flex-col">
-              <h1 className="text-2xl font-semibold mb-2">Sign in</h1>
-              {showEmailAlert && (
-                <p className="text-ms-alert-error">{emailAlertContent}</p>
-              )}
-              <input
-                type="email"
-                placeholder="Email"
-                className="pt-2 pb-1.5 border-b border-ms-scrollbar text-base pr-2.5 mb-4 focus:border-ms-blue"
-                onChange={emailInputHandler}
-                value={email}
-                autoFocus
-              />
-              <div className="flex text-sm text-ms-light-text mb-4">
-                <span>No account?</span>
-                <span
-                  className="text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer pl-1"
-                  onClick={() => navigate("/signup")}
-                >
-                  Create one!
+            <>
+              <div className="flex flex-col">
+                <h1 className="text-2xl font-semibold mb-2">Sign in</h1>
+                {showEmailAlert && (
+                  <p className="text-ms-alert-error">{emailAlertContent}</p>
+                )}
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="pt-2 pb-1.5 border-b border-ms-scrollbar text-base pr-2.5 mb-4 focus:border-ms-blue"
+                  onChange={emailInputHandler}
+                  value={email}
+                  autoFocus
+                />
+                <div className="flex text-sm text-ms-light-text mb-4">
+                  <span>No account?</span>
+                  <span
+                    className="text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer pl-1"
+                    onClick={() => navigate("/user/signup")}
+                  >
+                    Create one!
+                  </span>
+                </div>
+                <span className="text-sm text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer">
+                  Can't access your account?
                 </span>
               </div>
-              <span className="text-sm text-ms-blue-hover hover:underline hover:text-ms-light-text hover:cursor-pointer">
-                Can't access your account?
-              </span>
-            </div>
+            </>
           ) : (
             <div className="flex flex-col">
               <div className="flex items-center">

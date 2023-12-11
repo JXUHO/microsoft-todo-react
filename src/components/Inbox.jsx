@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import sortTasks from "../utils/sortTasks";
 import CompleteList from "./tasks/CompleteList";
 import { addActiveTasks } from "../store/activeSlice";
-import { useOutletContext } from "react-router-dom";
 
 const Inbox = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);

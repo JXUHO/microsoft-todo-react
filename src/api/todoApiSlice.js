@@ -92,7 +92,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     removeTodoApi: builder.mutation({
@@ -122,7 +122,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     setCompleteTodoApi: builder.mutation({
@@ -180,7 +180,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           patchResult.undo();
         }
       },
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     setImportanceTodoApi: builder.mutation({
@@ -222,7 +222,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     changeTaskTodoApi: builder.mutation({
@@ -259,7 +259,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     setMydayTodoApi: builder.mutation({
@@ -296,7 +296,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     changeOptionTodoApi: builder.mutation({
@@ -361,7 +361,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     setRemindedTodoApi: builder.mutation({
@@ -398,7 +398,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     addCategoryTodoApi: builder.mutation({
@@ -434,7 +434,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     removeCategoryTodoApi: builder.mutation({
@@ -473,7 +473,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     addNoteTodoApi: builder.mutation({
@@ -548,7 +548,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     completeStepApi: builder.mutation({
@@ -595,7 +595,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     removeStepApi: builder.mutation({
@@ -639,7 +639,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           patchResult.undo();
         }
       },
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
 
     changeStepApi: builder.mutation({
@@ -686,7 +686,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         }
       },
 
-      invalidatesTags: ["todos"],
+      // invalidatesTags: ["todos"],
     }),
   }),
 });

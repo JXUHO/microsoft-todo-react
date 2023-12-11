@@ -40,7 +40,32 @@ export const uiApiSlice = firestoreApi.injectEndpoints({
           return { error: error.message };
         }
       },
-      invalidatesTags: ["ui"],
+
+
+
+      async onQueryStarted(
+        { user, value },
+        { dispatch, queryFulfilled }
+      ) {
+        const patchResult = dispatch(
+          firestoreApi.util.updateQueryData(
+            "getUiApi",
+            user.uid,
+            (draft) => {
+              // console.log(JSON.stringify(draft));
+              draft["detailWidth"] = value
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+
+
+      // invalidatesTags: ["ui"],
     }),
   }),
 });

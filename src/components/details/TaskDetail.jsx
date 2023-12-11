@@ -63,6 +63,8 @@ const TaskDetail = () => {
     if (!isResizing && !firstRender) {
       dispatch(setDetailWidth(resizerPosition));
 
+
+      // 너무 자주 호출됨... 수정하기
       setDetailWidthApi({ user, value: resizerPosition });
     }
   }, [

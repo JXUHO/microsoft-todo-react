@@ -115,6 +115,7 @@ export default App;
  * (complete) backend 연결
  * (complete) Myday tab 아닌 곳에서 detail bar - add to myday button 작동 안함
  * (complete) Loading component 구현
+ * (complete) SignIn, SignUp page => 로그인 되어있으면 home으로 redirect
  * 
  * 
  * 
@@ -124,11 +125,13 @@ export default App;
  * OAuth
  * 
  * 
- * SignIn, SignUp page => 로그인 되어있으면 home으로 redirect
  * search params로 검색값 전달해서 구현
  * list 정렬 수정하기
  * 
+ * 캐시사용 즉각적 피드백 구현하기(invalidateTags 제거했을때처럼)
+ * uiApiSlice error 수정하기
  * 
+ * viewport width 작아져서 detailbar 전체화면 설정할 때, taskDetail component useEffect hook에서 호출 너무 자주 발생함. 수정할것. debounce vs throttle
  * 
  * 
  * 
