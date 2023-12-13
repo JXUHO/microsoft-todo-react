@@ -5,6 +5,7 @@ import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 import { addActiveTasks } from "../../store/activeSlice";
+import useGetTodos from "../../hooks/useGetTodos";
 
 const MydayList = ({ currentLocation }) => {
   const dispatch = useDispatch();
@@ -15,9 +16,14 @@ const MydayList = ({ currentLocation }) => {
   const activeRange = useSelector((state) => state.active.activeRange);
   const todos = useSelector((state) => state.todo.todos);
 
+  useGetTodos();
+
   useEffect(() => {
     // importance Boolean에서 Date Object string으로 변경함
     // importanct 설정되면 상단으로 render하는 logic을 여기에 작성해야 함
+  
+    // console.log('mydaylist useEffect');
+    // console.log(todos);
 
     let mydayTodos;
 
@@ -43,6 +49,8 @@ const MydayList = ({ currentLocation }) => {
     });
     mydayTodos = [...incompleteTemp, ...completeTemp];
     setTodoArr(mydayTodos);
+
+    
   }, [todos, sortBy, sortOrder]);
 
   useEffect(() => {

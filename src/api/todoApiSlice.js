@@ -55,11 +55,15 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           }
           if (!todo.myday) {
             if (isDateToday(new Date(todo.dueDate))) {
+              console.log("addTodoApi myday to true");
+
               await setDoc(doc(db, `users/${user.uid}/todos`, todo.id), {
                 ...todo,
                 myday: true,
               });
             } else {
+              console.log("addTodoApi myday to false");
+
               await setDoc(doc(db, `users/${user.uid}/todos`, todo.id), {
                 ...todo,
                 myday: false,
@@ -81,6 +85,21 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
             "getTodosApi",
             user.uid,
             (draft) => {
+              const modifiedDue = repeatDueSynchronizer(todo);
+              if (modifiedDue) {
+                todo = {
+                  ...todo,
+                  dueDate: modifiedDue.toISOString(),
+                };
+              }
+              if (!todo.myday) {
+                if (isDateToday(new Date(todo.dueDate))) {
+                  todo.myday = true;
+                } else {
+                  todo.myday = false;
+                }
+              }
+
               draft.push(todo);
             }
           )
@@ -312,21 +331,44 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
               dueDate: modifiedDue.toISOString(),
             });
           }
+
           if (
             currentLocation !== "/myday" &&
-            isDateToday(new Date(docData.dueDate))
+            option === "dueDate" &&
+            isDateToday(new Date(content))
           ) {
+            console.log("changeoptiontodoApi myday to true");
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
               myday: true,
             });
           } else if (
             currentLocation !== "/myday" &&
-            !isDateToday(new Date(docData.dueDate))
+            option === "dueDate" &&
+            !isDateToday(new Date(content))
           ) {
+            console.log("changeoptiontodoApi myday to false");
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
               myday: false,
             });
           }
+
+          // if (
+          //   currentLocation !== "/myday" &&
+          //   isDateToday(new Date(docData.dueDate))
+          // ) {
+          //   console.log("changeoptiontodoapi myday to true");
+          //   await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
+          //     myday: true,
+          //   });
+          // } else if (
+          //   currentLocation !== "/myday" &&
+          //   !isDateToday(new Date(docData.dueDate))
+          // ) {
+          //   console.log("changeoptiontodoapi myday to false");
+          //   await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
+          //     myday: false,
+          //   });
+          // }
           return { data: null };
         } catch (error) {
           console.log(error.message);
@@ -338,15 +380,26 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         { todoId, user, option, content, currentLocation },
         { dispatch, queryFulfilled }
       ) {
-
         const patchResult = dispatch(
           firestoreApi.util.updateQueryData(
             "getTodosApi",
             user.uid,
             (draft) => {
               const taskToChange = draft.find((task) => task.id === todoId);
-              // 수정
               taskToChange[option] = content;
+              if (
+                currentLocation !== "/myday" &&
+                option === "dueDate" &&
+                isDateToday(new Date(content))
+              ) {
+                taskToChange.myday = true;
+              } else if (
+                currentLocation !== "/myday" &&
+                option === "dueDate" &&
+                !isDateToday(new Date(content))
+              ) {
+                taskToChange.myday = false;
+              }
             }
           )
         );

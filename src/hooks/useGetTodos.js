@@ -14,7 +14,10 @@ const useGetTodos = () => {
     refetch,
   } = useGetTodosApiQuery(user?.uid, { skip: !user?.uid });
 
+
   useEffect(() => {
+    // console.log('todoArrData');
+    // console.log(todoArrData);
     dispatch(setTodos(todoArrData));
   }, [todoArrData]);
 

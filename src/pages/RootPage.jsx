@@ -34,7 +34,9 @@ const RootPage = () => {
 
   const { isLoading: isAuthLoading } = useAuth();
   useGetTodos();
-  useUpdateMyday();
+  useUpdateMyday();  // 수정해야함
+
+  // console.log('rootpage render');
 
   useKeyDown();
   useRemindNotification();
