@@ -5,7 +5,6 @@ import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 import { addActiveTasks } from "../../store/activeSlice";
-import { useOutletContext } from "react-router-dom";
 
 const MydayList = ({ currentLocation }) => {
   const dispatch = useDispatch();
@@ -14,8 +13,7 @@ const MydayList = ({ currentLocation }) => {
   const sortBy = useSelector((state) => state.sort.myday.sortBy);
   const groupBy = useSelector((state) => state.group.myday.groupBy);
   const activeRange = useSelector((state) => state.active.activeRange);
-  const todos = useSelector(state => state.todo.todos)
-
+  const todos = useSelector((state) => state.todo.todos);
 
   useEffect(() => {
     // importance Boolean에서 Date Object string으로 변경함
@@ -23,13 +21,12 @@ const MydayList = ({ currentLocation }) => {
 
     let mydayTodos;
 
-      // user exist
-      mydayTodos = todos
-        .slice()
-        .sort((a, b) => new Date(a.created) - new Date(b.created))
-        .reverse()
-        .filter((todo) => todo.myday);
-
+    // user exist
+    mydayTodos = todos
+      .slice()
+      .sort((a, b) => new Date(a.created) - new Date(b.created))
+      .reverse()
+      .filter((todo) => todo.myday);
 
     if (sortBy) {
       mydayTodos = sortTasks(sortBy, sortOrder, mydayTodos);

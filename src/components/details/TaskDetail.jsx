@@ -44,6 +44,9 @@ const TaskDetail = () => {
   } = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
 
+
+  // console.log('taskDetail');
+
   useEffect(() => {
     if (firstRender) {
       // first render일 때,
@@ -68,7 +71,6 @@ const TaskDetail = () => {
         setDetailWidthApi({ user, value: resizerPosition });
       }, 300);
       return () => clearTimeout(setResizerPosition)
-      
     }
   }, [
     isResizing,
@@ -90,6 +92,7 @@ const TaskDetail = () => {
   const detailId = activeTasks[0];
 
   useEffect(() => {
+    // set created time text
     const todoDetail = todos.find((todo) => todo.id === detailId);
     if(!todoDetail) return;
     setCreatedTime(

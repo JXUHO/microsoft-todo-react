@@ -186,11 +186,6 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
     setImportanceTodoApi: builder.mutation({
       async queryFn({ todoId, user, value }) {
         try {
-          const docSnap = await getDoc(
-            doc(db, `users/${user.uid}/todos`, todoId)
-          );
-          const docData = docSnap.data();
-
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
             importance: value,
           });
@@ -343,6 +338,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
         { todoId, user, option, content, currentLocation },
         { dispatch, queryFulfilled }
       ) {
+
         const patchResult = dispatch(
           firestoreApi.util.updateQueryData(
             "getTodosApi",
@@ -365,6 +361,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
     }),
 
     setRemindedTodoApi: builder.mutation({
+      // change reminded value
       async queryFn({ todoId, user, value }) {
         try {
           await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {

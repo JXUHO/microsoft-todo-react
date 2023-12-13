@@ -11,6 +11,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";

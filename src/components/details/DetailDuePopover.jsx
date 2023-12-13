@@ -109,6 +109,8 @@ const DetailDuePopover = ({ taskId, todo }) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
 
+    console.log('addDueHandler');
+
     changeOptionTodoApi({
       todoId: taskId,
       user,

@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
@@ -20,7 +20,6 @@ import useTheme from "../hooks/useTheme";
 import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
 import useUpdateMyday from "../hooks/useUpdateMyday";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import Loading from "../components/Loading";
 
 const RootPage = () => {
@@ -31,7 +30,6 @@ const RootPage = () => {
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
-  const user = useSelector((state) => state.auth.user);
   const todos = useSelector((state) => state.todo.todos);
 
   const { isLoading: isAuthLoading } = useAuth();

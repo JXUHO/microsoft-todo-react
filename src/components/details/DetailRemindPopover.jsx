@@ -17,12 +17,13 @@ import {
   getCustomFormatDateString,
 } from "../../utils/getDates";
 import RemindCalendar from "../addtask/RemindCalendar";
-import { useDispatch, useSelector } from "react-redux";
-import { changeOptionTodo, setRemindedTodo } from "../../store/todoSlice";
+import { useSelector } from "react-redux";
 import { BsXLg } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
-import { useChangeOptionTodoApiMutation, useSetRemindedTodoApiMutation } from "../../api/todoApiSlice";
-
+import {
+  useChangeOptionTodoApiMutation,
+  useSetRemindedTodoApiMutation,
+} from "../../api/todoApiSlice";
 
 const DetailRemindPopover = ({ taskId, todo }) => {
   const location = useLocation();
@@ -32,18 +33,12 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   const [isHover, setIsHover] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const dispatch = useDispatch();
-  // const todo = useSelector((state) =>
-  //   state.todo.todos.find((todo) => todo.id === taskId)
-  // );
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
-
   const todoRemind = todo?.remind;
-  const todoReminded = todo?.reminded
-
+  const todoReminded = todo?.reminded;
 
   const {
     refs: popoverRefs,
@@ -116,18 +111,15 @@ const DetailRemindPopover = ({ taskId, todo }) => {
     const content = dateObj.toISOString();
     // 선택한 dateObj의 isoString을 해당 task remind에 저장함
 
-      changeOptionTodoApi({
-        todoId: taskId,
-        user,
-        option: "remind",
-        content,
-        currentLocation: location.pathname,
-      });
+    changeOptionTodoApi({
+      todoId: taskId,
+      user,
+      option: "remind",
+      content,
+      currentLocation: location.pathname,
+    });
 
-
-
-      setRemindedTodoApi({ todoId: taskId, user, value: false });
-
+    setRemindedTodoApi({ todoId: taskId, user, value: false });
 
     setPopoverOpen(false);
   };
@@ -135,18 +127,15 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   const resetRemindHandler = () => {
     // 해당 task remind를 empty string으로 변경함
 
-      changeOptionTodoApi({
-        todoId: taskId,
-        user,
-        option: "remind",
-        content: "",
-        currentLocation: location.pathname,
-      });
+    changeOptionTodoApi({
+      todoId: taskId,
+      user,
+      option: "remind",
+      content: "",
+      currentLocation: location.pathname,
+    });
 
-
-
-      setRemindedTodoApi({ todoId: taskId, user, value: false });
-
+    setRemindedTodoApi({ todoId: taskId, user, value: false });
 
     setPopoverOpen(false);
   };
@@ -161,7 +150,7 @@ const DetailRemindPopover = ({ taskId, todo }) => {
   };
 
   useEffect(() => {
-    if(!todo) return
+    if (!todo) return;
     if (todoRemind) {
       const dateObj = new Date(todoRemind);
       setRemindText({
