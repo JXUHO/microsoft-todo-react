@@ -31,6 +31,7 @@ import {
   useSetCompleteTodoApiMutation,
   useSetImportanceTodoApiMutation,
 } from "../../api/todoApiSlice";
+import uuid from "react-uuid";
 
 const TaskItem = ({ todo, currentLocation }) => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const TaskItem = ({ todo, currentLocation }) => {
     if (todo.complete) {
       setCompleteTodoApi({ todoId: todo.id, user, value: false });
     } else {
-      setCompleteTodoApi({ todoId: todo.id, user, value: true });
+      setCompleteTodoApi({ todoId: todo.id, user, value: true, newTaskId: uuid() });
     }
   };
 

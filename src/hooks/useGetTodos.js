@@ -16,8 +16,6 @@ const useGetTodos = () => {
 
 
   useEffect(() => {
-    // console.log('todoArrData');
-    // console.log(todoArrData);
     dispatch(setTodos(todoArrData));
   }, [todoArrData]);
 

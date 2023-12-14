@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
-import { useOutletContext } from "react-router-dom";
 
 
 const ImportantList = ({currentLocation}) => {
@@ -13,9 +12,6 @@ const ImportantList = ({currentLocation}) => {
   const sortOrder = useSelector((state) => state.sort.important.order);
   const sortBy = useSelector((state) => state.sort.important.sortBy);
   const activeRange = useSelector((state) => state.active.activeRange);
-
-
-
 
 
   useEffect(() => {

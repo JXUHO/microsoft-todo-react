@@ -127,7 +127,7 @@ export default App;
  * 
  * 
  * search params로 검색값 전달해서 구현
- * list 정렬 수정하기
+ * list 정렬 수정하기 (complete탭, importance탭 ...)
  * 
  * uiApiSlice error 수정하기
  * 

@@ -28,6 +28,7 @@ import {
   useSetImportanceTodoApiMutation,
   useSetMydayTodoApiMutation,
 } from "../../api/todoApiSlice";
+import uuid from "react-uuid";
 
 const TaskItemContextMenu = () => {
   const location = useLocation();
@@ -84,7 +85,7 @@ const TaskItemContextMenu = () => {
       },
 
       addComplete: (taskId) => {
-        setCompleteTodoApi({ todoId: taskId, user, value: true });
+        setCompleteTodoApi({ todoId: taskId, user, value: true, newTaskId: uuid() });
       },
 
       removeComplete: (taskId) => {

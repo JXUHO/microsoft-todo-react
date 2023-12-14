@@ -25,6 +25,7 @@ const useUpdateMyday = () => {
     if (!todos || !user || !updatedDate) return;
     if (updatedDate === new Date().toDateString()) return;
     todos.map((todo) => {
+      console.log('todoItem myday update');
       if (
         !isDateToday(new Date(todo.created)) &&
         todo.myday &&

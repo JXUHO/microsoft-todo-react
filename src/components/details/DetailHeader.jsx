@@ -23,6 +23,7 @@ import {
   useSetCompleteTodoApiMutation,
   useSetImportanceTodoApiMutation,
 } from "../../api/todoApiSlice";
+import uuid from "react-uuid";
 
 const DetailHeader = ({ taskId, todo }) => {
   const textAreaRef = useRef();
@@ -51,8 +52,8 @@ const DetailHeader = ({ taskId, todo }) => {
     if (todoComplete) {
       setCompleteTodoApi({ todoId: todo.id, user, value: false });
     } else {
-      setCompleteTodoApi({ todoId: todo.id, user, value: true });
-
+      setCompleteTodoApi({ todoId: todo.id, user, value: true, newTaskId: uuid() });
+      
       setIsFocused(false);
       setIsActive(false);
     }

@@ -55,15 +55,11 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           }
           if (!todo.myday) {
             if (isDateToday(new Date(todo.dueDate))) {
-              console.log("addTodoApi myday to true");
-
               await setDoc(doc(db, `users/${user.uid}/todos`, todo.id), {
                 ...todo,
                 myday: true,
               });
             } else {
-              console.log("addTodoApi myday to false");
-
               await setDoc(doc(db, `users/${user.uid}/todos`, todo.id), {
                 ...todo,
                 myday: false,
@@ -145,7 +141,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
     }),
 
     setCompleteTodoApi: builder.mutation({
-      async queryFn({ todoId, user, value }) {
+      async queryFn({ todoId, user, value, newTaskId }) {
         console.log("setCompleteTodo");
         try {
           const docSnap = await getDoc(
@@ -164,7 +160,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
               await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
                 repeated: true,
               });
-              const newRepeatTask = getNextRepeatTask(docData);
+              const newRepeatTask = getNextRepeatTask(docData, newTaskId);
               await setDoc(
                 doc(db, `users/${user.uid}/todos`, newRepeatTask.id),
                 newRepeatTask
@@ -179,7 +175,7 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
       },
 
       async onQueryStarted(
-        { todoId, user, value },
+        { todoId, user, value, newTaskId },
         { dispatch, queryFulfilled }
       ) {
         const patchResult = dispatch(
@@ -190,6 +186,18 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
               const taskToChange = draft.find((task) => task.id === todoId);
               if (value === true) new Audio(popSound).play();
               taskToChange.complete = value;
+
+              if (!value) {
+                taskToChange.complete = "";
+              } else {
+                taskToChange.complete = new Date().toISOString();
+
+                if (taskToChange.repeatRule && !taskToChange.repeated) {
+                  taskToChange.repeated = true;
+                }
+                const newRepeatTask = getNextRepeatTask(taskToChange, newTaskId);
+                draft.push(newRepeatTask);
+              }
             }
           )
         );
@@ -337,34 +345,15 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
             option === "dueDate" &&
             isDateToday(new Date(content))
           ) {
-            console.log("changeoptiontodoApi myday to true");
             await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
               myday: true,
             });
-          } else if (
-            currentLocation !== "/myday" &&
-            option === "dueDate" &&
-            !isDateToday(new Date(content))
-          ) {
-            console.log("changeoptiontodoApi myday to false");
-            await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-              myday: false,
-            });
           }
-
-          // if (
+          // else if (
           //   currentLocation !== "/myday" &&
-          //   isDateToday(new Date(docData.dueDate))
+          //   option === "dueDate" &&
+          //   !isDateToday(new Date(content))
           // ) {
-          //   console.log("changeoptiontodoapi myday to true");
-          //   await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
-          //     myday: true,
-          //   });
-          // } else if (
-          //   currentLocation !== "/myday" &&
-          //   !isDateToday(new Date(docData.dueDate))
-          // ) {
-          //   console.log("changeoptiontodoapi myday to false");
           //   await updateDoc(doc(db, `users/${user.uid}/todos`, todoId), {
           //     myday: false,
           //   });
@@ -393,13 +382,14 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
                 isDateToday(new Date(content))
               ) {
                 taskToChange.myday = true;
-              } else if (
-                currentLocation !== "/myday" &&
-                option === "dueDate" &&
-                !isDateToday(new Date(content))
-              ) {
-                taskToChange.myday = false;
               }
+              // else if (
+              //   currentLocation !== "/myday" &&
+              //   option === "dueDate" &&
+              //   !isDateToday(new Date(content))
+              // ) {
+              //   taskToChange.myday = false;
+              // }
             }
           )
         );
