@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { closeDetail, setDetailWidth, setDialog } from "../../store/uiSlice";
+import { closeDetail, closeSidebar, setDetailWidth, setDialog } from "../../store/uiSlice";
 import { LuPanelRightClose } from "react-icons/lu";
 import { BsTrash3 } from "react-icons/bs";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -183,6 +183,14 @@ const TaskDetail = () => {
       setResizerPosition(viewportWidth);
     }
   }, [viewportWidth, detailWidth]);
+
+
+  useEffect(() => {
+    if (viewportWidth - detailWidth < 560) {
+      dispatch(closeSidebar());
+    }
+  }, [viewportWidth, detailWidth, dispatch]);
+
 
   return (
     isDetailOpen && (

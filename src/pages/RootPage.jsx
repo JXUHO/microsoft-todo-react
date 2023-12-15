@@ -8,12 +8,11 @@ import {
   initializeActiveStep,
   initializeActiveTasks,
 } from "../store/activeSlice";
-import { closeDetail, closeSidebar } from "../store/uiSlice";
+import { closeDetail } from "../store/uiSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
 import useRemindNotification from "../hooks/useRemindNotification";
 import useKeyDown from "../hooks/useKeydown";
-import useViewport from "../hooks/useViewPort";
 import SidebarOverlay from "../components/ui/SidebarOverlay";
 import HeaderPanels from "../panels/HeaderPanels";
 import useTheme from "../hooks/useTheme";
@@ -25,8 +24,6 @@ import Loading from "../components/Loading";
 const RootPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { width: viewportWidth } = useViewport();
-  const detailWidth = useSelector((state) => state.ui.detailWidth);
   const todos = useSelector((state) => state.todo.todos);
   const { isLoading: isAuthLoading } = useAuth();
 
@@ -45,11 +42,6 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
-  useEffect(() => {
-    if (viewportWidth - detailWidth < 560) {
-      dispatch(closeSidebar());
-    }
-  }, [viewportWidth, detailWidth, dispatch]);
 
   if (!todos || isAuthLoading) {
     return <Loading />;
