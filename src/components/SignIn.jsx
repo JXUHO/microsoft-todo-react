@@ -74,7 +74,7 @@ const SignIn = () => {
           password
         );
 
-        console.log(userCredential.user);
+        // console.log(userCredential.user);
         setLocalStorageUser(userCredential.user.email);
         dispatch(
           login({

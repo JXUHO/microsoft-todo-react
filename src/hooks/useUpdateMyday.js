@@ -11,17 +11,23 @@ const useUpdateMyday = () => {
   const [setMydayTodoApi] = useSetMydayTodoApiMutation();
   const [updatedDate, setUpdatedDate] = useState("")
 
+
+  console.log('useUpdateMyday');
+
   useEffect(() => {
     // reload될 때, 날짜 변경됐으면 myday변경
     // db에 today가 오늘이면 pass, 일치하지 않으면 아래 코드 실행하고 today를 오늘로 설정.
     const fetchUpdatedDate = async () => {
       // get 'updated'
       if (!user) return;
+      console.log('fetch updated date trigger');
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       setUpdatedDate(docSnap.data().updated)
     }
     fetchUpdatedDate()
+
+
     if (!todos || !user || !updatedDate) return;
     if (updatedDate === new Date().toDateString()) return;
     todos.map((todo) => {
@@ -45,6 +51,8 @@ const useUpdateMyday = () => {
         setMydayTodoApi({ todoId: todo.id, user, value: false });
       }
     });
+
+
 
     // db, today를 추가.
     const addUpdatedDate = async () => {

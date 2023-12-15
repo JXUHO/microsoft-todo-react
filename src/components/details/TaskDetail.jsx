@@ -44,7 +44,6 @@ const TaskDetail = () => {
   } = useGetUiApiQuery(user?.uid);
   const [setDetailWidthApi] = useSetDetailWidthApiMutation();
 
-
   // console.log('taskDetail');
 
   useEffect(() => {
@@ -64,13 +63,12 @@ const TaskDetail = () => {
 
   useEffect(() => {
     if (!isResizing && !firstRender) {
-
       dispatch(setDetailWidth(resizerPosition));
 
       const setResizerPosition = setTimeout(() => {
         setDetailWidthApi({ user, value: resizerPosition });
       }, 300);
-      return () => clearTimeout(setResizerPosition)
+      return () => clearTimeout(setResizerPosition);
     }
   }, [
     isResizing,
@@ -94,7 +92,7 @@ const TaskDetail = () => {
   useEffect(() => {
     // set created time text
     const todoDetail = todos.find((todo) => todo.id === detailId);
-    if(!todoDetail) return;
+    if (!todoDetail) return;
     setCreatedTime(
       getCustomFormatDateString(new Date(todoDetail.created), "plain")
     );
@@ -187,95 +185,97 @@ const TaskDetail = () => {
   }, [viewportWidth, detailWidth]);
 
   return (
-    <div
-      className="flex flex-row max-w-[700px] box-border z-30 h-full"
-      ref={detailRef}
-      style={
-        viewportWidth - detailWidth < 560 && isDetailOpen
-          ? {
-              width: detailWidth,
-              transition: "width 180ms ease",
-              position: "absolute",
-              right: "0",
-            }
-          : { width: detailWidth, transition: "width 180ms ease" }
-      }
-    >
+    isDetailOpen && (
       <div
-        className={`w-1 absolute h-full m-0 p-0 box-border bg-ms-scrollbar opacity-0 translate-x-1 ${
-          (isHover || isResizing) && "opacity-40 cursor-ew-resize"
-        } `}
-        onMouseDown={resizerMouseDownHandler} // resize 시작조건
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        style={{ right: resizerPosition, zIndex: "200" }}
-      ></div>
-
-      <div
-        className="flex flex-col w-full h-full relative flex-1 box-border bg-ms-background"
-        style={{
-          boxShadow:
-            "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
-        }}
+        className="flex flex-row max-w-[700px] box-border z-30 h-full"
+        ref={detailRef}
+        style={
+          viewportWidth - detailWidth < 560 && isDetailOpen
+            ? {
+                width: detailWidth,
+                transition: "width 180ms ease",
+                position: "absolute",
+                right: "0",
+              }
+            : { width: detailWidth, transition: "width 180ms ease" }
+        }
       >
-        {detailId && <Details taskId={detailId} todos={todos} />}
+        <div
+          className={`w-1 absolute h-full m-0 p-0 box-border bg-ms-scrollbar opacity-0 translate-x-1 ${
+            (isHover || isResizing) && "opacity-40 cursor-ew-resize"
+          } `}
+          onMouseDown={resizerMouseDownHandler} // resize 시작조건
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          style={{ right: resizerPosition, zIndex: "200" }}
+        ></div>
 
-        <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
-          <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
-            <button
-              onClick={closeDetailHandler}
-              ref={closeTooltipRefs.setReference}
-              {...getCloseTooltipReferenceProps()}
-            >
-              <LuPanelRightClose size="16px" />
-            </button>
+        <div
+          className="flex flex-col w-full h-full relative flex-1 box-border bg-ms-background"
+          style={{
+            boxShadow:
+              "0px 1.2px 3.6px rgba(0,0,0,0.1), 0px 6.4px 14.4px rgba(0,0,0,0.1)",
+          }}
+        >
+          {detailId && <Details taskId={detailId} todos={todos} />}
 
-            <p className="text-xs leading-5 text-ms-light-text">
-              Created {createdTime}
-            </p>
+          <div className="flex flex-col before:content-[''] before:h-[0.5px] before:w-full before:bg-ms-bg-border before:top-0 before:left-0">
+            <div className="flex items-center justify-between py-4 px-0 my-0 mx-6">
+              <button
+                onClick={closeDetailHandler}
+                ref={closeTooltipRefs.setReference}
+                {...getCloseTooltipReferenceProps()}
+              >
+                <LuPanelRightClose size="16px" />
+              </button>
 
-            <button
-              onClick={removeTaskHandler}
-              ref={removeTooltipRefs.setReference}
-              {...getRemoveTooltipReferenceProps()}
-            >
-              <BsTrash3 size="16px" />
-            </button>
+              <p className="text-xs leading-5 text-ms-light-text">
+                Created {createdTime}
+              </p>
+
+              <button
+                onClick={removeTaskHandler}
+                ref={removeTooltipRefs.setReference}
+                {...getRemoveTooltipReferenceProps()}
+              >
+                <BsTrash3 size="16px" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {closeTooltipOpen && (
-        <div
-          ref={closeTooltipRefs.setFloating}
-          {...getCloseTooltipFloatingProps()}
-          style={{
-            ...closeTooltipFloatingStyles,
-            boxShadow:
-              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
-            zIndex: 50,
-          }}
-          className="bg-white py-1.5 rounded-sm px-2 text-xs"
-        >
-          Hide detail view
-        </div>
-      )}
-      {removeTooltipOpen && (
-        <div
-          ref={removeTooltipRefs.setFloating}
-          {...getRemoveTooltipFloatingProps()}
-          style={{
-            ...removeTooltipFloatingStyles,
-            boxShadow:
-              "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
-            zIndex: 50,
-          }}
-          className="bg-white py-1.5 rounded-sm px-2 text-xs"
-        >
-          Delete task
-        </div>
-      )}
-    </div>
+        {closeTooltipOpen && (
+          <div
+            ref={closeTooltipRefs.setFloating}
+            {...getCloseTooltipFloatingProps()}
+            style={{
+              ...closeTooltipFloatingStyles,
+              boxShadow:
+                "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+              zIndex: 50,
+            }}
+            className="bg-white py-1.5 rounded-sm px-2 text-xs"
+          >
+            Hide detail view
+          </div>
+        )}
+        {removeTooltipOpen && (
+          <div
+            ref={removeTooltipRefs.setFloating}
+            {...getRemoveTooltipFloatingProps()}
+            style={{
+              ...removeTooltipFloatingStyles,
+              boxShadow:
+                "rgba(0, 0, 0, 0.133) 0px 3.2px 7.2px 0px, rgba(0, 0, 0, 0.11) 0px 0.6px 1.8px 0px",
+              zIndex: 50,
+            }}
+            className="bg-white py-1.5 rounded-sm px-2 text-xs"
+          >
+            Delete task
+          </div>
+        )}
+      </div>
+    )
   );
 };
 

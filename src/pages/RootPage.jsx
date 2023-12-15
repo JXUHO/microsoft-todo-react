@@ -1,4 +1,4 @@
-import { Outlet, useLocation, } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
@@ -25,8 +25,6 @@ import Loading from "../components/Loading";
 const RootPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const isSidebarOpen = useSelector((state) => state.ui.sidebar);
-  const isDetailOpen = useSelector((state) => state.ui.detail);
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);
   const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
@@ -34,9 +32,7 @@ const RootPage = () => {
 
   const { isLoading: isAuthLoading } = useAuth();
   useGetTodos();
-  useUpdateMyday();  // 수정해야함
-
-  // console.log('rootpage render');
+  useUpdateMyday();
 
   useKeyDown();
   useRemindNotification();
@@ -65,11 +61,11 @@ const RootPage = () => {
         <HeaderPanels />
         <div className="flex flex-1 overflow-hidden relative">
           <SidebarOverlay />
-          {isSidebarOpen && <Sidebar />}
+          <Sidebar />
           <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
             <Outlet />
           </div>
-          {isDetailOpen && <TaskDetail />}
+          <TaskDetail />
         </div>
         <TaskItemContextMenu />
         {isDeleteDialogOpen && <DeleteTaskDialog />}

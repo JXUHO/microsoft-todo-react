@@ -194,9 +194,13 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
 
                 if (taskToChange.repeatRule && !taskToChange.repeated) {
                   taskToChange.repeated = true;
+
+                  const newRepeatTask = getNextRepeatTask(
+                    taskToChange,
+                    newTaskId
+                  );
+                  draft.push(newRepeatTask);
                 }
-                const newRepeatTask = getNextRepeatTask(taskToChange, newTaskId);
-                draft.push(newRepeatTask);
               }
             }
           )

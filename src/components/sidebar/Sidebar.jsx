@@ -60,71 +60,73 @@ const Sidebar = () => {
   const detailWidth = useSelector((state) => state.ui.detailWidth);
 
   return (
-    <div
-      className={`flex flex-col bg-white z-30 min-w-[200px] min-[1010px]:min-w-[290px] transition-all duration-200  
+    isSidebarOpen && (
+      <div
+        className={`flex flex-col bg-white z-30 min-w-[200px] min-[1010px]:min-w-[290px] transition-all duration-200  
                 ease-out ${
                   viewportWidth - detailWidth < 560 &&
                   isSidebarOpen &&
                   "absolute h-full"
                 }`}
-      style={{
-        boxShadow:
-          "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
-      }}
-    >
-      <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
-        <button onClick={closeSidebarHandler}>
-          <RxHamburgerMenu size="20px" />
-        </button>
-      </div>
-      <div className="flex flex-col flex-1 overflow-hidden pt-1">
-        <nav className="overflow-x-hidden overflow-y-auto relative text-sm">
-          <ul>
-            <MyDayListBar
-              currentLocation={currentLocation}
-              count={count.myday}
-            />
-            <ImportantListBar
-              currentLocation={currentLocation}
-              count={count.important}
-            />
-            <PlannedListBar
-              currentLocation={currentLocation}
-              count={count.planned}
-            />
-            <CompletedListBar currentLocation={currentLocation} />
-            <TasksListBar
-              currentLocation={currentLocation}
-              count={count.tasks}
-            />
-            <li>
-              <div
-                style={{
-                  height: "1px",
-                  backgroundColor: "#edebe9",
-                  margin: "9px 16px",
-                }}
+        style={{
+          boxShadow:
+            "0px 0.3px 0.9px rgba(0,0,0,0.1), 0px 1.6px 3.6px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div className="flex items-center flex-shrink-0 justify-between px-6 h-12 mt-4">
+          <button onClick={closeSidebarHandler}>
+            <RxHamburgerMenu size="20px" />
+          </button>
+        </div>
+        <div className="flex flex-col flex-1 overflow-hidden pt-1">
+          <nav className="overflow-x-hidden overflow-y-auto relative text-sm">
+            <ul>
+              <MyDayListBar
+                currentLocation={currentLocation}
+                count={count.myday}
               />
-            </li>
-          </ul>
-        </nav>
-        <div></div>
+              <ImportantListBar
+                currentLocation={currentLocation}
+                count={count.important}
+              />
+              <PlannedListBar
+                currentLocation={currentLocation}
+                count={count.planned}
+              />
+              <CompletedListBar currentLocation={currentLocation} />
+              <TasksListBar
+                currentLocation={currentLocation}
+                count={count.tasks}
+              />
+              <li>
+                <div
+                  style={{
+                    height: "1px",
+                    backgroundColor: "#edebe9",
+                    margin: "9px 16px",
+                  }}
+                />
+              </li>
+            </ul>
+          </nav>
+          <div></div>
+        </div>
+        <div className="flex flex-row justify-between w-full">
+          <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
+            <AiOutlineMail />
+          </div>
+          <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
+            <IoCalendarOutline />
+          </div>
+          <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
+            <GoPeople />
+          </div>
+          <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
+            <PiCheckFatLight />
+          </div>
+        </div>
       </div>
-      <div className="flex flex-row justify-between w-full">
-        <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
-          <AiOutlineMail />
-        </div>
-        <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
-          <IoCalendarOutline />
-        </div>
-        <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
-          <GoPeople />
-        </div>
-        <div className="flex items-center justify-center py-3 h-12 w-full hover:bg-ms-white-hover">
-          <PiCheckFatLight />
-        </div>
-      </div>
-    </div>
+    )
   );
 };
 

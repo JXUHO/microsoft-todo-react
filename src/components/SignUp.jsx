@@ -45,7 +45,6 @@ const SignUp = () => {
   useEffect(() => {
     const handleEnterKeyPress = (event) => {
       if (event.key === "Enter") {
-        console.log('enter pressed');
         nextButtonClickHandler()
       }
     };
