@@ -27,10 +27,11 @@ const RootPage = () => {
   const dispatch = useDispatch();
   const { width: viewportWidth } = useViewport();
   const detailWidth = useSelector((state) => state.ui.detailWidth);
-  const isDeleteDialogOpen = useSelector((state) => state.ui.dialog);
   const todos = useSelector((state) => state.todo.todos);
-
   const { isLoading: isAuthLoading } = useAuth();
+
+  console.log("rootpage render");
+
   useGetTodos();
   useUpdateMyday();
 
@@ -55,22 +56,20 @@ const RootPage = () => {
   }
 
   return (
-    <>
-      <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
-        <Header />
-        <HeaderPanels />
-        <div className="flex flex-1 overflow-hidden relative">
-          <SidebarOverlay />
-          <Sidebar />
-          <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
-            <Outlet />
-          </div>
-          <TaskDetail />
+    <div className="flex flex-col bg-ms-background h-screen overflow-hidden text-black">
+      <Header />
+      <HeaderPanels />
+      <div className="flex flex-1 overflow-hidden relative">
+        <SidebarOverlay />
+        <Sidebar />
+        <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
+          <Outlet />
         </div>
-        <TaskItemContextMenu />
-        {isDeleteDialogOpen && <DeleteTaskDialog />}
+        <TaskDetail />
       </div>
-    </>
+      <TaskItemContextMenu />
+      <DeleteTaskDialog />
+    </div>
   );
 };
 

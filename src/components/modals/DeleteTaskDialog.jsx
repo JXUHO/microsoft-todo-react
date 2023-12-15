@@ -52,7 +52,7 @@ function DeleteTaskDialog() {
   };
 
   return (
-    <>
+    isDeleteDialogOpen && <div>
       <FloatingPortal id="root">
           <FloatingOverlay
             className="flex items-center justify-center z-50"
@@ -110,7 +110,7 @@ function DeleteTaskDialog() {
             </FloatingFocusManager>
           </FloatingOverlay>
       </FloatingPortal>
-    </>
+    </div>
   );
 }
 
