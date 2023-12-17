@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { isDateToday } from "../utils/getDates";
 import { useSelector } from "react-redux";
 import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
 import { useGetUserApiQuery, useSetUpdatedApiMutation } from "../api/userApiSlice";
 
 const useUpdateMyday = () => {
@@ -16,17 +14,15 @@ const useUpdateMyday = () => {
 
   // console.log('useUpdateMyday');
 
-
-
   useEffect(() => {
     // reload될 때, 날짜 변경됐으면 myday변경
     // db에 today가 오늘이면 pass, 일치하지 않으면 아래 코드 실행하고 today를 오늘로 설정.
-    if (!todos || !user) return;
+    if (!todos || !user || !userData) return;
 
-    if (userData && userData.updated === new Date().toDateString()) return;
+    if (userData.updated === new Date().toDateString()) return;
     
     todos.map((todo) => {
-      console.log('todoItem myday update');
+      // console.log('todoItem myday update');
       if (
         !isDateToday(new Date(todo.created)) &&
         todo.myday &&
@@ -50,7 +46,7 @@ const useUpdateMyday = () => {
     setUpdatedApi({userId: user.uid, updated: new Date().toDateString()})
 
 
-  }, [todos, setMydayTodoApi, user]);
+  }, [todos, user, userData]);
 };
 
 export default useUpdateMyday;
