@@ -4,32 +4,27 @@ import { useSelector } from "react-redux";
 import { useSetMydayTodoApiMutation } from "../api/todoApiSlice";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useGetUserApiQuery, useSetUpdatedApiMutation } from "../api/userApiSlice";
 
 const useUpdateMyday = () => {
   const todos = useSelector((state) => state.todo.todos);
   const user = useSelector((state) => state.auth.user);
   const [setMydayTodoApi] = useSetMydayTodoApiMutation();
-  const [updatedDate, setUpdatedDate] = useState("")
+
+  const {data: userData} = useGetUserApiQuery(user?.uid)
+  const [setUpdatedApi] = useSetUpdatedApiMutation()
+
+  // console.log('useUpdateMyday');
 
 
-  console.log('useUpdateMyday');
 
   useEffect(() => {
     // reload될 때, 날짜 변경됐으면 myday변경
     // db에 today가 오늘이면 pass, 일치하지 않으면 아래 코드 실행하고 today를 오늘로 설정.
-    const fetchUpdatedDate = async () => {
-      // get 'updated'
-      if (!user) return;
-      console.log('fetch updated date trigger');
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      setUpdatedDate(docSnap.data().updated)
-    }
-    fetchUpdatedDate()
+    if (!todos || !user) return;
 
-
-    if (!todos || !user || !updatedDate) return;
-    if (updatedDate === new Date().toDateString()) return;
+    if (userData && userData.updated === new Date().toDateString()) return;
+    
     todos.map((todo) => {
       console.log('todoItem myday update');
       if (
@@ -52,19 +47,7 @@ const useUpdateMyday = () => {
       }
     });
 
-
-
-    // db, today를 추가.
-    const addUpdatedDate = async () => {
-    try {
-      await updateDoc(doc(db, "users", user.uid), { updated: new Date().toDateString()});
-    } catch (error) {
-      console.log(error.code);
-      console.log(error.message);
-    }
-  }
-
-  addUpdatedDate()
+    setUpdatedApi({userId: user.uid, updated: new Date().toDateString()})
 
 
   }, [todos, setMydayTodoApi, user]);

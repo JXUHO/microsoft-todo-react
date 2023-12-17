@@ -10,7 +10,6 @@ import {
 } from "@floating-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeDetail, setDialog } from "../../store/uiSlice";
-import { removeTodo } from "../../store/todoSlice";
 import { useRemoveTodoApiMutation } from "../../api/todoApiSlice";
 
 function DeleteTaskDialog() {

@@ -31,7 +31,6 @@ const RootPage = () => {
 
   useGetTodos();
   useUpdateMyday();
-
   useKeyDown();
   useRemindNotification();
   useTheme();
