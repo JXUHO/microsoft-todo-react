@@ -7,7 +7,7 @@ import {
   BsStar,
   BsStarFill,
 } from "react-icons/bs";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import {
   flip,
   offset,
@@ -33,8 +33,9 @@ import {
 } from "../../api/todoApiSlice";
 import uuid from "react-uuid";
 
-const TaskItem = ({ todo, currentLocation }) => {
-  const dispatch = useDispatch();
+// forwardRef 완성하기
+const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
+  const dispatch = useDispatch();    
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
@@ -125,6 +126,7 @@ const TaskItem = ({ todo, currentLocation }) => {
 
   return (
     <div
+      ref={ref}
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 break-all ${
         activeTasksId.includes(todo.id)
           ? "bg-ms-active-blue"
@@ -207,6 +209,6 @@ const TaskItem = ({ todo, currentLocation }) => {
       )}
     </div>
   );
-};
+});
 
 export default TaskItem;
