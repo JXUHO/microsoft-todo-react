@@ -27,7 +27,7 @@ const RootPage = () => {
   const todos = useSelector((state) => state.todo.todos);
   const { isLoading: isAuthLoading } = useAuth();
 
-  console.log("rootpage render");
+  // console.log("rootpage render");
 
   useGetTodos();
   useUpdateMyday();

@@ -121,7 +121,15 @@ export default App;
  * 
  * 
  * 
+ * 
  * <할것>
+ * TaskItem render 횟수 최적화하기
+ * Loading component render 위치 수정하기 - 네트워크 throttle걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
+ * 
+ * 
+ * 
+ * 
+ * 
  * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기) infinite scrolling
  * OAuth
  * 
@@ -130,6 +138,11 @@ export default App;
  * list 정렬 수정하기 (complete탭, importance탭 ...)
  * 
  * uiApiSlice error 수정하기
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 

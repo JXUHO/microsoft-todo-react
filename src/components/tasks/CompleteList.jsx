@@ -7,7 +7,7 @@ import { addActiveTasks } from "../../store/activeSlice";
 const CompleteList = ({ todoArr, currentLocation }) => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
-  const [isCompleteOpen, setIsCompleteOpen] = useState(true);
+  const [isCompleteOpen, setIsCompleteOpen] = useState(false);
 
   const toggleCompleteHandler = () => {
     setIsCompleteOpen((prevState) => !prevState);
@@ -36,6 +36,12 @@ const CompleteList = ({ todoArr, currentLocation }) => {
   );
 
   const title = currentLocation === "completed" ? "Tasks" : "Completed";
+
+
+  // completed탭에서는 초기값을 open으로 설정
+  if (currentLocation === "completed" && !isCompleteOpen) {
+    setIsCompleteOpen(true)
+  }
 
   return (
     <>

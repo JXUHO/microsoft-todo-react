@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setRemindedTodo } from "../store/todoSlice";
 import {
   addActiveTasks,
   initializeActiveRange,
@@ -9,11 +8,10 @@ import { openDetail } from "../store/uiSlice";
 import { useEffect } from "react";
 import { useSetRemindedTodoApiMutation } from "../api/todoApiSlice";
 
-
 const useRemindNotification = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todo.todos)
-  const user = useSelector(state => state.auth.user)
+  const todos = useSelector((state) => state.todo.todos);
+  const user = useSelector((state) => state.auth.user);
   const [setRemindedTodoApi] = useSetRemindedTodoApiMutation();
 
   useEffect(() => {
@@ -35,9 +33,7 @@ const useRemindNotification = () => {
           new Date(todo.remind) <= currentTime
         ) {
           notifyMe(todo);
-
-            setRemindedTodoApi({todoId: todo.id, user, value: true})
-
+          setRemindedTodoApi({ todoId: todo.id, user, value: true });
         }
       }
     }, 1000);

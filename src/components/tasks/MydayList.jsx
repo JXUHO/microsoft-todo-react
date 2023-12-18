@@ -85,9 +85,3 @@ const MydayList = ({ currentLocation }) => {
 };
 
 export default MydayList;
-
-/**
- * TODO
- * drag-drop을 통해 task끼리 순서 변경 가능함
- *
- */

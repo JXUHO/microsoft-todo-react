@@ -44,6 +44,9 @@ const TaskItem = ({ todo, currentLocation }) => {
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
+  console.log('taskItem');
+
+
   const completeHandler = () => {
     if (todo.complete) {
       setCompleteTodoApi({ todoId: todo.id, user, value: false });
