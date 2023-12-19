@@ -1,53 +1,62 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
 
 const BasicList = ({ todoArr, currentLocation }) => {
   const [tasksToShow, setTasksToShow] = useState(20);
 
   const loadMoreTasks = () => {
-    setTasksToShow((prev) => prev + 20);
+    setTasksToShow((prevState) => prevState + 20);
   };
 
-  // repeatRule 설정된 task가 완료됐을 때는 render되지 않더라도 complete task가 존재함... scrollbar 생성되는 문제.. 해결할것.
-  const noIncomplete = todoArr.every((todo) => todo.complete === "");
+  const observerRef = useRef();
 
-  const observer = useRef();
-  const lastTaskRef = useCallback((task) => {
-    // if (isLoading) return
+  const lastTaskRef = useCallback(
+    (node) => {
+      if (observerRef.current) observerRef.current.disconnect();
 
-    if (observer.current) observer.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
+          // console.log("load more");
+          loadMoreTasks();
+        }
+      });
 
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        // 'task가 더 남아있으면' 조건 추가
-        console.log("trigger");
-        loadMoreTasks();
-      }
-    });
+      if (node) observerRef.current.observe(node);
+    },
+    [tasksToShow, todoArr.length]
+  );
 
-    if (task) observer.current.observe(task);
-  }, []);
+  const incompleteTodoArr = todoArr.filter((task) => !task.complete);
+  const limitTodoArr = incompleteTodoArr.slice(0, tasksToShow);
 
-  const limitTodoArr = todoArr.slice(0, tasksToShow);
+  // useEffect(() => {
+  //   console.log(incompleteTodoArr.length);
+  //   // Check if all tasks are rendered
+  //   // if (limitTodoArr.length === incompleteTodoArr.length) {
+  //     if(tasksToShow >= todoArr.length) {
+  //     console.log("limit", limitTodoArr.length);
+  //     console.log("incomplete", incompleteTodoArr.length);
+  //     console.log("completed render");
+  //   }
+  // }, [limitTodoArr, incompleteTodoArr]);
+
   const content = limitTodoArr.map((todo, index) => {
-    if (!todo.complete) {
-      // if (limitTodoArr.length === index + 1) {
-      if (limitTodoArr.length === index + 10) {
-        // 로드된 마지막 task. ref 설정돼야 함.
-        return (
-          <TaskItem
-            ref={lastTaskRef}
-            key={todo.id}
-            todo={todo}
-            currentLocation={currentLocation}
-          />
-        );
-      }
+    if (limitTodoArr.length === index + 1) {
       return (
-        <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} />
+        <TaskItem
+          ref={lastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+        />
       );
     }
+    return (
+      <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} />
+    );
   });
+
+  const noIncomplete = todoArr.every((todo) => todo.complete === "");
 
   return (
     <div
@@ -57,41 +66,8 @@ const BasicList = ({ todoArr, currentLocation }) => {
       }
     >
       {content}
-      {/* {todoArr.slice(0, tasksToShow).map((todo, index) => {
-        if (!todo.complete) {
-          return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-        }
-      })} */}
-      {/* {tasksToShow < todoArr.length && (
-        <button onClick={loadMoreTasks}>Load More</button>
-      )} */}
     </div>
   );
 };
 
 export default BasicList;
-
-/**
- * 로드된 tasks중 마지막 task에 ref 설정
- *
- */
-
-// 수정전
-// import TaskItem from "./TaskItem";
-
-// const BasicList = ({ todoArr, currentLocation }) => {
-//   // repeatRule 설정된 task가 완료됐을 때는 render되지 않더라도 complete task가 존재함... scrollbar 생성되는 문제.. 해결할것.
-//   const noIncomplete = todoArr.every((todo) => todo.complete === "")
-
-//   return (
-//     <div className="flex flex-col px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px"}}>
-//       {todoArr.slice().map((todo) => {
-//         if (!todo.complete) {
-//           return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-//         }
-//       })}
-//     </div>
-//   );
-// };
-
-// export default BasicList;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
 import { useDispatch, useSelector } from "react-redux";
 import TaskItemHeader from "./TaskItemHeader";
@@ -37,11 +37,53 @@ const CompleteList = ({ todoArr, currentLocation }) => {
 
   const title = currentLocation === "completed" ? "Tasks" : "Completed";
 
-
-  // completed탭에서는 초기값을 open으로 설정
   if (currentLocation === "completed" && !isCompleteOpen) {
-    setIsCompleteOpen(true)
+    // completed탭에서는 초기값을 open으로 설정
+    setIsCompleteOpen(true);
   }
+
+  const [tasksToShow, setTasksToShow] = useState(20);
+
+  const loadMoreTasks = () => {
+    setTasksToShow((prevState) => prevState + 20);
+  };
+
+  const observerRef = useRef();
+
+  const lastTaskRef = useCallback(
+    (node) => {
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
+          // console.log("load more");
+          loadMoreTasks();
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [tasksToShow, todoArr.length]
+  );
+
+  const incompleteTodoArr = todoArr.filter((task) => task.complete);
+  const limitTodoArr = incompleteTodoArr.slice(0, tasksToShow);
+
+  const content = limitTodoArr.map((todo, index) => {
+    if (limitTodoArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+        />
+      );
+    }
+    return (
+      <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} />
+    );
+  });
 
   return (
     <>
@@ -54,21 +96,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
             count={completeCount}
           />
 
-          {isCompleteOpen && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {isCompleteOpen && <div>{content}</div>}
         </div>
       )}
     </>
