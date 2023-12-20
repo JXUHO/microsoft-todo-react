@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
 import { useDispatch, useSelector } from "react-redux";
 import TaskItemHeader from "./TaskItemHeader";
@@ -8,6 +8,8 @@ const CompleteList = ({ todoArr, currentLocation }) => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
+
+  console.log('complete list');
 
   const toggleCompleteHandler = () => {
     setIsCompleteOpen((prevState) => !prevState);
@@ -41,6 +43,9 @@ const CompleteList = ({ todoArr, currentLocation }) => {
     // completed탭에서는 초기값을 open으로 설정
     setIsCompleteOpen(true);
   }
+
+
+
 
   const [tasksToShow, setTasksToShow] = useState(20);
 
@@ -85,6 +90,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
     );
   });
 
+  
   return (
     <>
       {todoArr.some((todo) => todo.complete) && (
@@ -95,7 +101,17 @@ const CompleteList = ({ todoArr, currentLocation }) => {
             openHandler={toggleCompleteHandler}
             count={completeCount}
           />
-
+           {/* {isCompleteOpen && (
+             <div>
+               {todoArr.slice().map((todo) => (
+                 <TaskItem
+                   key={todo.id}
+                   todo={todo}
+                   currentLocation={currentLocation}
+                 />
+               ))}
+             </div>
+           )} */}
           {isCompleteOpen && <div>{content}</div>}
         </div>
       )}
@@ -103,7 +119,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
   );
 };
 
-export default CompleteList;
+export default React.memo(CompleteList);
 
 // import { useEffect, useState } from "react";
 // import TaskItem from "./TaskItem";

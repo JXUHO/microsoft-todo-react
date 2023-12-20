@@ -56,9 +56,9 @@ const Myday = () => {
               </div>
             </div>
             <div
-              className={`text-xs font-extralight text-gray-500 mt-1 ${
-                !isSidebarOpen ? "ml-8" : "ml-2"
-              }`}
+              className={`text-xs font-extralight text-gray-500 mt-1 
+              ${ !isSidebarOpen ? "ml-8" : "ml-2" }
+              `}
             >
               {todayString}
             </div>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
 
 const BasicList = ({ todoArr, currentLocation }) => {
@@ -16,7 +16,7 @@ const BasicList = ({ todoArr, currentLocation }) => {
 
       observerRef.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
-          // console.log("load more");
+          console.log("load more");
           loadMoreTasks();
         }
       });
@@ -70,4 +70,4 @@ const BasicList = ({ todoArr, currentLocation }) => {
   );
 };
 
-export default BasicList;
+export default React.memo(BasicList);

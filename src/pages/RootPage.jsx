@@ -27,7 +27,7 @@ const RootPage = () => {
   const todos = useSelector((state) => state.todo.todos);
   const { isLoading: isAuthLoading } = useAuth();
 
-  // console.log("rootpage render");
+  console.log("rootpage render");
 
   useGetTodos();
   useUpdateMyday();
@@ -65,10 +65,3 @@ const RootPage = () => {
 };
 
 export default RootPage;
-
-/**
- * open/close state에 따라 우측 scrollbar conditional style 적용하기
- *
- *
- *
- */

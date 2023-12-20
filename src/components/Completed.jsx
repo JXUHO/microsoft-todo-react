@@ -10,12 +10,10 @@ import { GoCheckCircle } from "react-icons/go";
 import CompleteList from "./tasks/CompleteList";
 import { useState } from "react";
 import sortTasks from "../utils/sortTasks";
-import { useOutletContext } from "react-router-dom";
 
 const Completed = () => {
   const dispatch = useDispatch();
   const [todoArr, setTodoArr] = useState([]);
-  // const todos = useSelector((state) => state.todo.todos);
   const sortOrder = useSelector((state) => state.sort.completed.order);
   const sortBy = useSelector((state) => state.sort.completed.sortBy);
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);

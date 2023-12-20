@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
 import GroupLists from "./GroupLists";
 import BasicList from "./BasicList";
 import CompleteList from "./CompleteList";
 import { addActiveTasks } from "../../store/activeSlice";
-import useGetTodos from "../../hooks/useGetTodos";
 
 const MydayList = ({ currentLocation }) => {
   const dispatch = useDispatch();
@@ -84,4 +83,4 @@ const MydayList = ({ currentLocation }) => {
   );
 };
 
-export default MydayList;
+export default React.memo(MydayList);

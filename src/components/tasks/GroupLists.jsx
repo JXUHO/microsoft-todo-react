@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
 
@@ -202,4 +202,4 @@ const GroupLists = ({ todoArr, currentLocation }) => {
   );
 };
 
-export default GroupLists;
+export default React.memo(GroupLists);

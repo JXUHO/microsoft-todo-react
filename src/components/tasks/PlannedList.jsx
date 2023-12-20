@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
@@ -200,7 +200,7 @@ const PlannedList = () => {
   );
 };
 
-export default PlannedList;
+export default React.memo(PlannedList);
 
 const classifyDate = (task) => {
   if (!task.dueDate) return;
