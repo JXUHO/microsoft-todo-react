@@ -8,6 +8,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
 
   console.log('complete list');
 
@@ -30,7 +31,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
         });
       }
     }
-  }, [activeRange, todoArr, dispatch]);
+  }, [activeRange]);
 
   const completeCount = todoArr.reduce(
     (acc, todo) => (todo.complete ? acc + 1 : acc),
@@ -82,11 +83,15 @@ const CompleteList = ({ todoArr, currentLocation }) => {
           key={todo.id}
           todo={todo}
           currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+          
         />
       );
     }
     return (
-      <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} />
+      <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} 
+          isTaskActive={activeTasksId.includes(todo.id)}
+      />
     );
   });
 

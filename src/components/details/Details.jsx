@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DetailHeader from "./DetailHeader";
 import DetailSteps from "./DetailSteps";
 import DetailOptions from "./DetailOptions";
 import DetailCategories from "./DetailCategories";
 import DetailAddFile from "./DetailAddFile";
 import DetailNote from "./DetailNote";
-import { changeOptionTodo } from "../../store/todoSlice";
 import getLastTimeOfDay, {
   getNextClosestDayOfWeekFromDate,
 } from "../../utils/getDates";
@@ -15,7 +14,6 @@ import { useChangeOptionTodoApiMutation } from "../../api/todoApiSlice";
 
 const Details = ({ taskId, todos }) => {
   const location = useLocation();
-  const dispatch = useDispatch();
   const todo = todos.find((todo) => todo.id === taskId);
   const user = useSelector(state => state.auth.user)
   const [changeOptionTodoApi] = useChangeOptionTodoApiMutation();

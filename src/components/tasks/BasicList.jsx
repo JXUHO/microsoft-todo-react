@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
+import { useSelector } from "react-redux";
 
 const BasicList = ({ todoArr, currentLocation }) => {
   const [tasksToShow, setTasksToShow] = useState(20);
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
 
   const loadMoreTasks = () => {
     setTasksToShow((prevState) => prevState + 20);
@@ -29,16 +31,8 @@ const BasicList = ({ todoArr, currentLocation }) => {
   const incompleteTodoArr = todoArr.filter((task) => !task.complete);
   const limitTodoArr = incompleteTodoArr.slice(0, tasksToShow);
 
-  // useEffect(() => {
-  //   console.log(incompleteTodoArr.length);
-  //   // Check if all tasks are rendered
-  //   // if (limitTodoArr.length === incompleteTodoArr.length) {
-  //     if(tasksToShow >= todoArr.length) {
-  //     console.log("limit", limitTodoArr.length);
-  //     console.log("incomplete", incompleteTodoArr.length);
-  //     console.log("completed render");
-  //   }
-  // }, [limitTodoArr, incompleteTodoArr]);
+  console.log("basic list");
+
 
   const content = limitTodoArr.map((todo, index) => {
     if (limitTodoArr.length === index + 1) {
@@ -48,11 +42,17 @@ const BasicList = ({ todoArr, currentLocation }) => {
           key={todo.id}
           todo={todo}
           currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
         />
       );
     }
     return (
-      <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation} />
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
     );
   });
 
@@ -71,3 +71,14 @@ const BasicList = ({ todoArr, currentLocation }) => {
 };
 
 export default React.memo(BasicList);
+
+// useEffect(() => {
+//   console.log(incompleteTodoArr.length);
+//   // Check if all tasks are rendered
+//   // if (limitTodoArr.length === incompleteTodoArr.length) {
+//     if(tasksToShow >= todoArr.length) {
+//     console.log("limit", limitTodoArr.length);
+//     console.log("incomplete", incompleteTodoArr.length);
+//     console.log("completed render");
+//   }
+// }, [limitTodoArr, incompleteTodoArr]);

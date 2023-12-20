@@ -14,8 +14,16 @@ import useViewport from "../hooks/useViewPort";
 const Myday = () => {
   const isSidebarOpen = useSelector((state) => state.ui.sidebar);
   const isSortOptionSelected = useSelector((state) => state.sort.myday.sortBy);
-  const isGroupOptionSelected = useSelector((state) => state.group.myday.groupBy);
+  const isGroupOptionSelected = useSelector(
+    (state) => state.group.myday.groupBy
+  );
+  const { width: viewportWidth } = useViewport();
+  const detailWidth = useSelector((state) => state.ui.detailWidth);
   const dispatch = useDispatch();
+
+
+  console.log('myday');
+
 
   const openSidebarHandler = () => {
     dispatch(openSidebar());
@@ -26,10 +34,6 @@ const Myday = () => {
     month: "long",
     day: "numeric",
   });
-
-  const { width: viewportWidth } = useViewport();
-  const detailWidth = useSelector((state) => state.ui.detailWidth);
-
 
   return (
     <>
@@ -49,7 +53,9 @@ const Myday = () => {
                 )}
               </div>
               <div>
-                <h2 className="text-xl font-medium text-ellipsis overflow-hidden">My Day</h2>
+                <h2 className="text-xl font-medium text-ellipsis overflow-hidden">
+                  My Day
+                </h2>
               </div>
               <div className="px-3">
                 <PiDotsThreeBold />
@@ -57,7 +63,7 @@ const Myday = () => {
             </div>
             <div
               className={`text-xs font-extralight text-gray-500 mt-1 
-              ${ !isSidebarOpen ? "ml-8" : "ml-2" }
+              ${!isSidebarOpen ? "ml-8" : "ml-2"}
               `}
             >
               {todayString}
@@ -66,11 +72,13 @@ const Myday = () => {
         </div>
         <div className="flex">
           <SortPopover currentLocation="myday" />
-          <GroupPopover currentLocation="myday"/>
+          <GroupPopover currentLocation="myday" />
           <div className="shrink-0 cursor-not-allowed px-3 ml-0.5">
             <div className="flex items-center">
               <PiLightbulbThin size="20px" />
-              {viewportWidth - detailWidth > 700 && <span className="ml-1 text-sm">Suggestions</span>}
+              {viewportWidth - detailWidth > 700 && (
+                <span className="ml-1 text-sm">Suggestions</span>
+              )}
             </div>
           </div>
         </div>
@@ -82,18 +90,10 @@ const Myday = () => {
           {isGroupOptionSelected && <GroupIndicator currentLocation="myday" />}
         </div>
         <AddTask currentLocation={"myday"} />
-        <MydayList currentLocation={"myday"}/>
+        <MydayList currentLocation={"myday"} />
       </div>
     </>
   );
 };
 
 export default Myday;
-
-/**
- * TODO
- * MyDayList 컴포넌트 만들기
- * CompletedMydayList를 분리하지 않음
- *
- *
- */

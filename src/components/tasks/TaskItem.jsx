@@ -7,7 +7,7 @@ import {
   BsStar,
   BsStarFill,
 } from "react-icons/bs";
-import { forwardRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import {
   flip,
   offset,
@@ -33,13 +33,16 @@ import {
 } from "../../api/todoApiSlice";
 import uuid from "react-uuid";
 
-// forwardRef 완성하기
-const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
+const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive}, ref ) => {
   const dispatch = useDispatch();    
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const activeTasksId = useSelector((state) => state.active.activeTasks);
+  // const activeTasksId = useSelector((state) => state.active.activeTasks);
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
+  
+  // const activeTasksId = ""
+  // const isCtrlKeyDown = ""
+  // const isShiftKeyDown = ""
 
   const user = useSelector((state) => state.auth.user);
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
@@ -57,7 +60,6 @@ const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
   };
 
   const importanceHandler = () => {
-    console.log("importance handler");
     if (todo.importance) {
       setImportanceTodoApi({ todoId: todo.id, user, value: "" });
     } else {
@@ -81,13 +83,16 @@ const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
       dispatch(closeDetail());
     }
     if (isCtrlKeyDown) {
-      if (activeTasksId.includes(todo.id)) {
+      if (isTaskActive) {
         dispatch(removeActiveTask(todo.id));
       } else {
         dispatch(addActiveTasks(id));
       }
     }
-    if (isShiftKeyDown && activeTasksId.length !== 0) {
+    if (isShiftKeyDown ) {
+    // activeTasksId를 분리하기 위해 제거함.
+    // if (isShiftKeyDown && activeTasksId.length !== 0) {
+      console.log('condition1');
       dispatch(setActiveRange(id));
       dispatch(initializeActiveTasks());
     }
@@ -95,7 +100,7 @@ const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
 
   const contextMenuHandler = (e) => {
     e.preventDefault();
-    if (!activeTasksId.includes(todo.id)) {
+    if (!isTaskActive) {
       // active가 아닌 task가 클릭되면 -> 초기화, add
       dispatch(initializeActiveTasks());
       dispatch(addActiveTasks(todo.id));
@@ -128,7 +133,7 @@ const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
     <div
       ref={ref}
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 break-all ${
-        activeTasksId.includes(todo.id)
+        isTaskActive
           ? "bg-ms-active-blue"
           : "bg-white hover:bg-ms-white-hover"
       }`}
@@ -211,4 +216,4 @@ const TaskItem = forwardRef(({ todo, currentLocation}, ref ) => {
   );
 });
 
-export default TaskItem;
+export default React.memo(TaskItem);

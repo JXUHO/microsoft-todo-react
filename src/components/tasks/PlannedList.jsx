@@ -4,11 +4,11 @@ import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
 import { getCustomFormatDateString } from "../../utils/getDates";
-import { useOutletContext } from "react-router-dom";
 
 const PlannedList = () => {
   const dispatch = useDispatch();
   const activeRange = useSelector((state) => state.active.activeRange);
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
   const todos = useSelector((state) => state.todo.todos);
   const [activeArr, setActiveArr] = useState([]);
   const [isOpen, setIsOpen] = useState({
@@ -32,8 +32,6 @@ const PlannedList = () => {
     next5Days: 0,
     later: 0,
   });
-
-  
 
   const toggleListHandler = (title) => {
     setIsOpen((prevState) => {
@@ -92,7 +90,7 @@ const PlannedList = () => {
         });
       }
     }
-  }, [activeRange, activeArr, dispatch]);
+  }, [activeRange]);
 
   let startDate = new Date();
   startDate.setDate(startDate.getDate() + 2);
@@ -117,7 +115,12 @@ const PlannedList = () => {
             .slice()
             .reverse()
             .map((todo) => (
-              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation="planned"
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
             ))}
         </div>
       )}
@@ -136,7 +139,12 @@ const PlannedList = () => {
             .slice()
             .reverse()
             .map((todo) => (
-              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation="planned"
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
             ))}
         </div>
       )}
@@ -155,7 +163,12 @@ const PlannedList = () => {
             .slice()
             .reverse()
             .map((todo) => (
-              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation="planned"
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
             ))}
         </div>
       )}
@@ -173,7 +186,12 @@ const PlannedList = () => {
             .slice()
             .reverse()
             .map((todo) => (
-              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation="planned"
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
             ))}
         </div>
       )}
@@ -192,7 +210,12 @@ const PlannedList = () => {
             .slice()
             .reverse()
             .map((todo) => (
-              <TaskItem key={todo.id} todo={todo} currentLocation="planned" />
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation="planned"
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
             ))}
         </div>
       )}

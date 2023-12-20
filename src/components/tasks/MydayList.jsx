@@ -17,6 +17,9 @@ const MydayList = ({ currentLocation }) => {
 
   // useGetTodos();
 
+  console.log('mydaylist');
+
+
   useEffect(() => {
     // importance Boolean에서 Date Object string으로 변경함
     // importanct 설정되면 상단으로 render하는 logic을 여기에 작성해야 함
@@ -52,6 +55,8 @@ const MydayList = ({ currentLocation }) => {
     
   }, [todos, sortBy, sortOrder]);
 
+  const noIncomplete = todoArr.every((todo) => todo.complete === "");
+
   useEffect(() => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정
     if (activeRange.length !== 0) {
@@ -67,7 +72,7 @@ const MydayList = ({ currentLocation }) => {
         });
       }
     }
-  }, [activeRange, todoArr, dispatch]);
+  }, [activeRange]);
 
   return (
     <>
@@ -77,7 +82,7 @@ const MydayList = ({ currentLocation }) => {
         ) : (
           <BasicList todoArr={todoArr} currentLocation={currentLocation} />
         )}
-        <CompleteList todoArr={todoArr} currentLocation={currentLocation} />
+        {!noIncomplete && <CompleteList todoArr={todoArr} currentLocation={currentLocation} />}
       </div>
     </>
   );

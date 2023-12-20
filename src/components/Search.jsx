@@ -20,7 +20,6 @@ import SearchedTasks from "./tasks/searchedLists/SearchedTasks";
 import SearchedNotes from "./tasks/searchedLists/SearchedNotes";
 import SearchedCategories from "./tasks/searchedLists/SearchedCategories";
 import SearchedSteps from "./tasks/searchedLists/SearchedSteps";
-import { useOutletContext } from "react-router-dom";
 
 const Search = () => {
   const dispatch = useDispatch();

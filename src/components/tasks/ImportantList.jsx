@@ -4,15 +4,14 @@ import sortTasks from "../../utils/sortTasks";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
 
-
-const ImportantList = ({currentLocation}) => {
+const ImportantList = ({ currentLocation }) => {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todo.todos);
   const [todoArr, setTodoArr] = useState([]);
   const sortOrder = useSelector((state) => state.sort.important.order);
   const sortBy = useSelector((state) => state.sort.important.sortBy);
   const activeRange = useSelector((state) => state.active.activeRange);
-
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
 
   useEffect(() => {
     //  todoArr 생성.
@@ -38,15 +37,21 @@ const ImportantList = ({currentLocation}) => {
         });
       }
     }
-  }, [activeRange, todoArr, dispatch]);
-
+  }, [activeRange]);
 
   return (
     <>
       <div className="flex flex-col overflow-y-auto pb-6 px-6">
         {todoArr.slice().map((todo) => {
           if (todo.importance && !todo.complete) {
-            return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
+            return (
+              <TaskItem
+                key={todo.id}
+                todo={todo}
+                currentLocation={currentLocation}
+                isTaskActive={activeTasksId.includes(todo.id)}
+              />
+            );
           }
         })}
       </div>

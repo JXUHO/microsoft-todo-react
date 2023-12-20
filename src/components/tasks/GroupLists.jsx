@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
+import { useSelector } from "react-redux";
 
 const GroupLists = ({ todoArr, currentLocation }) => {
+  const activeTasksId = useSelector((state) => state.active.activeTasks);
+
   const [categoryOpen, setCategoryOpen] = useState({
     blue: true,
     green: true,
@@ -10,7 +13,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
     purple: true,
     red: true,
     yellow: true,
-    uncategorized: true
+    uncategorized: true,
   });
 
   const categoryOpenHandler = (category) => {
@@ -27,27 +30,31 @@ const GroupLists = ({ todoArr, currentLocation }) => {
     purple: 0,
     red: 0,
     yellow: 0,
-    uncategorized: 0
+    uncategorized: 0,
   };
 
   todoArr.forEach((todo) => {
     if (todo.category.length) {
       todo.category.forEach((color) => {
-      if (!todo.complete) {
-        categoryCount[color] = categoryCount[color] + 1;
-      }
-    });
+        if (!todo.complete) {
+          categoryCount[color] = categoryCount[color] + 1;
+        }
+      });
     } else {
       if (!todo.complete) {
-        categoryCount.uncategorized++
+        categoryCount.uncategorized++;
       }
     }
-    
   });
 
-  const noIncomplete = todoArr.every((todo) => todo.complete === "")
+  const noIncomplete = todoArr.every((todo) => todo.complete === "");
   return (
-    <div className="flex flex-col px-6" style={noIncomplete ? {paddingBottom:"1.5rem"} : {paddingBottom:"5px"}}>
+    <div
+      className="flex flex-col px-6"
+      style={
+        noIncomplete ? { paddingBottom: "1.5rem" } : { paddingBottom: "5px" }
+      }
+    >
       {categoryCount.blue !== 0 && (
         <div>
           <TaskHeader
@@ -58,13 +65,17 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.blue && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("blue") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("blue") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
@@ -79,13 +90,17 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.green && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("green") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("green") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
@@ -100,13 +115,17 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.orange && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("orange") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("orange") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
@@ -121,13 +140,17 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.purple && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("purple") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("purple") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
@@ -142,13 +165,17 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.red && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("red") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("red") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
@@ -163,18 +190,21 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.yellow && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (todo.category.includes("yellow") && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (todo.category.includes("yellow") && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
       )}
-
 
       {categoryCount.uncategorized !== 0 && (
         <div>
@@ -186,18 +216,22 @@ const GroupLists = ({ todoArr, currentLocation }) => {
           />
           {categoryOpen.uncategorized && (
             <div>
-              {todoArr
-                .slice()
-                .map((todo) => {
-                  if (!todo.category.length && !todo.complete) {
-                    return <TaskItem key={todo.id} todo={todo} currentLocation={currentLocation}/>;
-                  }
-                })}
+              {todoArr.slice().map((todo) => {
+                if (!todo.category.length && !todo.complete) {
+                  return (
+                    <TaskItem
+                      key={todo.id}
+                      todo={todo}
+                      currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
+                    />
+                  );
+                }
+              })}
             </div>
           )}
         </div>
       )}
-
     </div>
   );
 };
