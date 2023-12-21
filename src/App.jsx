@@ -128,10 +128,12 @@ export default App;
  * Loading component render 위치 수정하기 - 네트워크 throttle걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
  * 
  * 
+ * Loading spinner render시점 수정하기
+ * 
+ * shift/ctrl keydown TaskItem component re-render 수정하기
  * 
  * 
- * 
- * OAuth
+ * OAuth & 로그인 페이지 기능 추가하기
  * 
  * 
  * search params로 검색값 전달해서 구현

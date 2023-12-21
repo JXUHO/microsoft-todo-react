@@ -36,8 +36,10 @@ import uuid from "react-uuid";
 const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
-  const isShiftKeyDown = useSelector((state) => state.modifier.shift);
+  // const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
+  // const isShiftKeyDown = useSelector((state) => state.modifier.shift);
+  const isCtrlKeyDown = ""
+  const isShiftKeyDown = ""
 
   const user = useSelector((state) => state.auth.user);
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
@@ -70,6 +72,9 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
     }
   };
 
+
+
+
   const taskClickHandler = (id) => {
     dispatch(initializeActiveStep());
 
@@ -95,6 +100,11 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
       dispatch(initializeActiveTasks());
     }
   };
+
+
+
+
+
 
   const contextMenuHandler = (e) => {
     e.preventDefault();
