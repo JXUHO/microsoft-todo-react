@@ -9,7 +9,7 @@ import {
   initializeActiveStep,
   initializeActiveTasks,
 } from "../../../store/activeSlice";
-import { completeStep } from "../../../store/todoSlice";
+import { useCompleteStepApiMutation } from "../../../api/todoApiSlice";
 
 const SearchedSteps = ({ todoArr }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -92,8 +92,11 @@ const StepItem = forwardRef(({ todo, step }, ref) => {
   const isActive = useSelector((state) => state.active.activeStep); //#eff6fc
   const showCompleted = useSelector((state) => state.search.showCompleted);
 
+  const user = useSelector((state) => state.auth.user);
+  const [completeStepApi] = useCompleteStepApiMutation()
+
   const completedHandler = () => {
-    dispatch(completeStep({ taskId: todo.id, stepId: step.id }));
+    completeStepApi({ todoId:todo.id, user, stepId:step.id })
   };
 
   const taskClickHandler = (taskId, stepId) => {
