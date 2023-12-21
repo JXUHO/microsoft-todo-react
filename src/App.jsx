@@ -117,20 +117,20 @@ export default App;
  * (complete) Loading component 구현
  * (complete) SignIn, SignUp page => 로그인 되어있으면 home으로 redirect
  * (complete) viewport width 작아져서 detailbar 전체화면 설정할 때, taskDetail component useEffect hook에서 호출 너무 자주 발생함. 수정할것. debounce vs throttle
+ * (complete) task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기) infinite scrolling
+ * (complete) TaskItem render 횟수 최적화하기
  * 
  * 
  * 
  * 
  * 
  * <할것>
- * TaskItem render 횟수 최적화하기
  * Loading component render 위치 수정하기 - 네트워크 throttle걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
  * 
  * 
  * 
  * 
  * 
- * task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기) infinite scrolling
  * OAuth
  * 
  * 

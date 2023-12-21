@@ -33,29 +33,28 @@ import {
 } from "../../api/todoApiSlice";
 import uuid from "react-uuid";
 
-const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive}, ref ) => {
-  const dispatch = useDispatch();    
+const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
+  const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  // const activeTasksId = useSelector((state) => state.active.activeTasks);
   const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
   const isShiftKeyDown = useSelector((state) => state.modifier.shift);
-  
-  // const activeTasksId = ""
-  // const isCtrlKeyDown = ""
-  // const isShiftKeyDown = ""
 
   const user = useSelector((state) => state.auth.user);
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
-  console.log('taskItem');
-
+  console.log("taskItem");
 
   const completeHandler = () => {
     if (todo.complete) {
       setCompleteTodoApi({ todoId: todo.id, user, value: false });
     } else {
-      setCompleteTodoApi({ todoId: todo.id, user, value: true, newTaskId: uuid() });
+      setCompleteTodoApi({
+        todoId: todo.id,
+        user,
+        value: true,
+        newTaskId: uuid(),
+      });
     }
   };
 
@@ -89,10 +88,9 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive}, ref ) => {
         dispatch(addActiveTasks(id));
       }
     }
-    if (isShiftKeyDown ) {
-    // activeTasksId를 분리하기 위해 제거함.
+    // && activeTasksId.length !== 0 조건을 activeTasksId를 부모로 분리하고, memo사용하기 위해 제거함
     // if (isShiftKeyDown && activeTasksId.length !== 0) {
-      console.log('condition1');
+    if (isShiftKeyDown) {
       dispatch(setActiveRange(id));
       dispatch(initializeActiveTasks());
     }
@@ -103,6 +101,7 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive}, ref ) => {
     if (!isTaskActive) {
       // active가 아닌 task가 클릭되면 -> 초기화, add
       dispatch(initializeActiveTasks());
+      dispatch(initializeActiveStep())
       dispatch(addActiveTasks(todo.id));
     }
     dispatch(openContextMenu());
@@ -133,9 +132,7 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive}, ref ) => {
     <div
       ref={ref}
       className={`flex items-center mt-2 min-h-52 px-4 py-0 rounded animate-slideFadeDown100 break-all ${
-        isTaskActive
-          ? "bg-ms-active-blue"
-          : "bg-white hover:bg-ms-white-hover"
+        isTaskActive ? "bg-ms-active-blue" : "bg-white hover:bg-ms-white-hover"
       }`}
       style={{
         boxShadow:

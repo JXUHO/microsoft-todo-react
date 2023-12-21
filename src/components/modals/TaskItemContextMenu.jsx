@@ -1,12 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeOptionTodo,
-  removeTodo,
-  setCompleteTodo,
-  setImportanceTodo,
-  setMydayTodo,
-} from "../../store/todoSlice";
-import { closeDetail, setDialog } from "../../store/uiSlice";
+import { setDialog } from "../../store/uiSlice";
 import {
   BsCircle,
   BsStar,
@@ -24,6 +17,8 @@ import getLastTimeOfDay from "../../utils/getDates";
 import { useLocation } from "react-router-dom";
 import {
   useChangeOptionTodoApiMutation,
+  useCompleteStepApiMutation,
+  useRemoveStepApiMutation,
   useSetCompleteTodoApiMutation,
   useSetImportanceTodoApiMutation,
   useSetMydayTodoApiMutation,
@@ -42,6 +37,11 @@ const TaskItemContextMenu = () => {
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
 
+  const activeStepId = useSelector((state) => state.active.activeStep);
+  const [completeStepApi] = useCompleteStepApiMutation();
+  const [removeStepApi] = useRemoveStepApiMutation();
+
+  
   let addMyday = false;
   let removeMyday = false;
   let addImportance = false;
@@ -49,6 +49,10 @@ const TaskItemContextMenu = () => {
   let addComplete = false;
   let removeComplete = false;
   let removeDuedate = false;
+  
+  let addStepComplete = false;
+  let removeStepComplete = false;
+
 
   todos.forEach((todo) => {
     if (activeTasksId.includes(todo.id)) {
@@ -61,6 +65,27 @@ const TaskItemContextMenu = () => {
       if (todo.dueDate) removeDuedate = true;
     }
   });
+
+  if (activeStepId) {
+    // context menu가 StepItem에서 trigger된 경우
+    addMyday = false;
+    removeMyday = false;
+    addImportance = false;
+    removeImportance = false;
+    addComplete = false;
+    removeComplete = false;
+    removeDuedate = false;
+
+    const activeTodo = todos.find((todo) => todo.id === activeTasksId[0]);
+    const activeStep = activeTodo.steps.find(
+      (step) => step.id === activeStepId
+    );
+    if (activeStep && activeStep.complete) {
+      removeStepComplete = true;
+    } else if (activeStep && !activeStep.complete) {
+      addStepComplete = true;
+    }
+  }
 
   const clickHandler = (option) => {
     const actionMap = {
@@ -85,7 +110,12 @@ const TaskItemContextMenu = () => {
       },
 
       addComplete: (taskId) => {
-        setCompleteTodoApi({ todoId: taskId, user, value: true, newTaskId: uuid() });
+        setCompleteTodoApi({
+          todoId: taskId,
+          user,
+          value: true,
+          newTaskId: uuid(),
+        });
       },
 
       removeComplete: (taskId) => {
@@ -101,6 +131,7 @@ const TaskItemContextMenu = () => {
           currentLocation: location.pathname,
         });
       },
+
       dueTomorrow: (taskId) => {
         changeOptionTodoApi({
           todoId: taskId,
@@ -124,11 +155,29 @@ const TaskItemContextMenu = () => {
       deleteTask: (taskId) => {
         dispatch(setDialog(true));
       },
+
+      // step 함수 추가
+      addStepComplete: (taskId, stepId) => {
+        completeStepApi({ todoId: taskId, user, stepId });
+      },
+
+      removeStepComplete: (taskId, stepId) => {
+        completeStepApi({ todoId: taskId, user, stepId });
+      },
+
+      deleteStep: (taskId, stepId) => {
+        removeStepApi({ todoId: taskId, user, stepId });
+      },
     };
 
     activeTasksId.forEach((taskId) => {
       const action = actionMap[option];
-      if (action) {
+
+      // step일때는 stepId를 인자로 전달해야 함
+      if (action && activeStepId) {
+        console.log("pass activeStepId too", activeStepId);
+        action(taskId, activeStepId);
+      } else if (action) {
         action(taskId);
       }
     });
@@ -187,21 +236,42 @@ const TaskItemContextMenu = () => {
         </MenuItem>
       )}
 
+      {addStepComplete && (
+        <MenuItem onClick={() => clickHandler("addStepComplete")}>
+          <div className="mx-1">
+            <GoCheckCircle size="16px" />
+          </div>
+          <div className="px-1 mx-1">Mark as completed</div>
+        </MenuItem>
+      )}
+      {removeStepComplete && (
+        <MenuItem onClick={() => clickHandler("removeStepComplete")}>
+          <div className="mx-1">
+            <BsCircle size="16px" />
+          </div>
+          <div className="px-1 mx-1">Mark as not completed</div>
+        </MenuItem>
+      )}
+
       <MenuSeparator />
 
-      <MenuItem onClick={() => clickHandler("dueToday")}>
-        <div className="mx-1">
-          <BsCalendarDate size="16px" />
-        </div>
-        <div className="px-1 mx-1">Due today</div>
-      </MenuItem>
+      {!activeStepId && (
+        <>
+          <MenuItem onClick={() => clickHandler("dueToday")}>
+            <div className="mx-1">
+              <BsCalendarDate size="16px" />
+            </div>
+            <div className="px-1 mx-1">Due today</div>
+          </MenuItem>
 
-      <MenuItem onClick={() => clickHandler("dueTomorrow")}>
-        <div className="mx-1">
-          <BsCalendarPlus size="16px" />
-        </div>
-        <div className="px-1 mx-1">Due tomorrow</div>
-      </MenuItem>
+          <MenuItem onClick={() => clickHandler("dueTomorrow")}>
+            <div className="mx-1">
+              <BsCalendarPlus size="16px" />
+            </div>
+            <div className="px-1 mx-1">Due tomorrow</div>
+          </MenuItem>
+        </>
+      )}
 
       {removeDuedate && (
         <MenuItem onClick={() => clickHandler("removeDuedate")}>
@@ -212,14 +282,27 @@ const TaskItemContextMenu = () => {
         </MenuItem>
       )}
 
-      <MenuSeparator />
+      {activeStepId && (
+        <MenuItem onClick={() => clickHandler("deleteStep")}>
+          <div className="mx-1 text-ms-warning">
+            <BsTrash3 size="16px" />
+          </div>
+          <div className="px-1 mx-1 text-ms-warning">Delete step</div>
+        </MenuItem>
+      )}
 
-      <MenuItem onClick={() => clickHandler("deleteTask")}>
-        <div className="mx-1 text-ms-warning">
-          <BsTrash3 size="16px" />
-        </div>
-        <div className="px-1 mx-1 text-ms-warning">Delete task</div>
-      </MenuItem>
+      {!activeStepId && (
+        <>
+          <MenuSeparator />
+
+          <MenuItem onClick={() => clickHandler("deleteTask")}>
+            <div className="mx-1 text-ms-warning">
+              <BsTrash3 size="16px" />
+            </div>
+            <div className="px-1 mx-1 text-ms-warning">Delete task</div>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 };

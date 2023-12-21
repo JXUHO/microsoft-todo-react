@@ -1,34 +1,32 @@
 import { forwardRef, useCallback, useRef, useState } from "react";
 import TaskItemHeader from "../TaskItemHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { openDetail } from "../../../store/uiSlice";
+import { openContextMenu, openDetail } from "../../../store/uiSlice";
 import { BsCircle, BsCheckCircle, BsCheckCircleFill } from "react-icons/bs";
 import {
   addActiveStep,
   addActiveTasks,
+  initializeActiveStep,
   initializeActiveTasks,
 } from "../../../store/activeSlice";
 import { completeStep } from "../../../store/todoSlice";
 
 const SearchedSteps = ({ todoArr }) => {
   const [isOpen, setIsOpen] = useState(true);
-  
+
   const openHandler = () => {
     setIsOpen((prevState) => !prevState);
   };
-  
+
   const count = todoArr.length;
-  
+
   const sortedArr = todoArr.sort((a, b) => {
     const contentA = a.step.content;
     const contentB = b.step.content;
-    
+
     return contentA.localeCompare(contentB);
   });
-  
 
-
-  
   const [tasksToShow, setTasksToShow] = useState(20);
 
   const loadMoreTasks = () => {
@@ -70,10 +68,6 @@ const SearchedSteps = ({ todoArr }) => {
     return <StepItem key={todo.step.id} todo={todo.todo} step={todo.step} />;
   });
 
-
-
-
-
   return (
     <>
       {count !== 0 && (
@@ -112,6 +106,18 @@ const StepItem = forwardRef(({ todo, step }, ref) => {
   if (!showCompleted && step.complete) {
     return;
   }
+
+  const contextMenuHandler = (e) => {
+    e.preventDefault();
+    if (step !== isActive) {
+      // active가 아닌 task가 클릭되면 -> 초기화, add
+      dispatch(initializeActiveTasks());
+      dispatch(initializeActiveStep());
+      dispatch(addActiveTasks(todo.id));
+      dispatch(addActiveStep(step.id));
+    }
+    dispatch(openContextMenu());
+  };
 
   return (
     <>
@@ -152,6 +158,7 @@ const StepItem = forwardRef(({ todo, step }, ref) => {
             onClick={() => taskClickHandler(todo.id, step.id)}
             className="hover:cursor-pointer px-3 py-2 flex-1 text-left"
             style={{ color: "#292827" }}
+            onContextMenu={contextMenuHandler}
           >
             <span
               style={step.complete ? { textDecoration: "line-through" } : null}
