@@ -54,11 +54,14 @@ const Search = () => {
     );
 
     const stepsTemp = [];
-    //dispatch(addStep({ id: taskId, step: { id: uuid(), content: newStep, complete: false } }));
     sortedArr.forEach((todo) => {
       todo.steps.forEach((step) => {
         if (step.content.toLowerCase().includes(query)) {
-          stepsTemp.push({ todo, step });
+          if (!showCompleted && !step.complete) {
+            stepsTemp.push({ todo, step });
+          } else if (showCompleted) {
+            stepsTemp.push({ todo, step });
+          }
         }
       });
     });
@@ -101,14 +104,14 @@ const Search = () => {
   // }, []);
 
   const [isDark, setIsDark] = useState(false);
-  
+
   useEffect(() => {
     const rootElement = document.documentElement;
     const dataThemeValue = rootElement.dataset.theme;
     if (dataThemeValue) {
       setIsDark(dataThemeValue === "dark");
-    } 
-    
+    }
+
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.attributeName === "data-theme") {

@@ -175,7 +175,6 @@ const TaskItemContextMenu = () => {
 
       // step일때는 stepId를 인자로 전달해야 함
       if (action && activeStepId) {
-        console.log("pass activeStepId too", activeStepId);
         action(taskId, activeStepId);
       } else if (action) {
         action(taskId);

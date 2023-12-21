@@ -25,19 +25,14 @@ function DeleteTaskDialog() {
   const role = useRole(context);
   const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
   const { getFloatingProps } = useInteractions([click, role, dismiss]);
-  const todos = useSelector(state => state.todo.todos)
+  const todos = useSelector((state) => state.todo.todos);
 
-  
-  const [removeTodoApi] = useRemoveTodoApiMutation()
-  const user = useSelector(state => state.auth.user)
-
+  const [removeTodoApi] = useRemoveTodoApiMutation();
+  const user = useSelector((state) => state.auth.user);
 
   const deleteTaskHandler = () => {
     activeTasksId.forEach((todoId) => {
-
-        removeTodoApi({todoId, user})
-
-
+      removeTodoApi({ todoId, user });
     });
     dispatch(closeDetail());
     dispatch(setDialog(false));
@@ -51,8 +46,9 @@ function DeleteTaskDialog() {
   };
 
   return (
-    isDeleteDialogOpen && <div>
-      <FloatingPortal id="root">
+    isDeleteDialogOpen && (
+      <div>
+        <FloatingPortal id="root">
           <FloatingOverlay
             className="flex items-center justify-center z-50"
             lockScroll
@@ -108,8 +104,9 @@ function DeleteTaskDialog() {
               </div>
             </FloatingFocusManager>
           </FloatingOverlay>
-      </FloatingPortal>
-    </div>
+        </FloatingPortal>
+      </div>
+    )
   );
 }
 

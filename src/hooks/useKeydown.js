@@ -4,6 +4,7 @@ import { setCtrl, setShift } from "../store/modifierSlice";
 
 
 const useKeyDown = () => {
+  console.log('useKeyDown hook trigger');
   const dispatch = useDispatch()
 
   useEffect(() => {
