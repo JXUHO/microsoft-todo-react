@@ -72,6 +72,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }
@@ -97,6 +98,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }
@@ -122,6 +124,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }
@@ -147,6 +150,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }
@@ -172,6 +176,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }
@@ -197,6 +202,7 @@ const GroupLists = ({ todoArr, currentLocation }) => {
                       key={todo.id}
                       todo={todo}
                       currentLocation={currentLocation}
+                      isTaskActive={activeTasksId.includes(todo.id)}
                     />
                   );
                 }

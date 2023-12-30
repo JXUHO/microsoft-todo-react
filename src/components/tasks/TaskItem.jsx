@@ -36,11 +36,6 @@ import uuid from "react-uuid";
 const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
   const dispatch = useDispatch();
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  // const isCtrlKeyDown = useSelector((state) => state.modifier.ctrl);
-  // const isShiftKeyDown = useSelector((state) => state.modifier.shift);
-  const isCtrlKeyDown = ""
-  const isShiftKeyDown = ""
-
   const user = useSelector((state) => state.auth.user);
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
@@ -72,13 +67,10 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
     }
   };
 
-
-
-
-  const taskClickHandler = (id) => {
+  const taskClickHandler = (e, id) => {
     dispatch(initializeActiveStep());
 
-    if (!isCtrlKeyDown && !isShiftKeyDown) {
+    if (!e.ctrlKey && !e.shiftKey) {
       dispatch(initializeActiveTasks());
       dispatch(initializeActiveRange());
       dispatch(addActiveTasks(id));
@@ -86,32 +78,27 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
     } else {
       dispatch(closeDetail());
     }
-    if (isCtrlKeyDown) {
+    if (e.ctrlKey) {
       if (isTaskActive) {
-        dispatch(removeActiveTask(todo.id));
+        dispatch(removeActiveTask(id));
       } else {
         dispatch(addActiveTasks(id));
       }
     }
     // && activeTasksId.length !== 0 조건을 activeTasksId를 부모로 분리하고, memo사용하기 위해 제거함
-    // if (isShiftKeyDown && activeTasksId.length !== 0) {
-    if (isShiftKeyDown) {
+    // if (e.shiftKey && activeTasksId.length !== 0) {
+    if (e.shiftKey) {
       dispatch(setActiveRange(id));
       dispatch(initializeActiveTasks());
     }
   };
-
-
-
-
-
 
   const contextMenuHandler = (e) => {
     e.preventDefault();
     if (!isTaskActive) {
       // active가 아닌 task가 클릭되면 -> 초기화, add
       dispatch(initializeActiveTasks());
-      dispatch(initializeActiveStep())
+      dispatch(initializeActiveStep());
       dispatch(addActiveTasks(todo.id));
     }
     dispatch(openContextMenu());
@@ -170,7 +157,7 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
       </span>
 
       <button
-        onClick={() => taskClickHandler(todo.id)}
+        onClick={(e) => taskClickHandler(e, todo.id)}
         className="hover:cursor-pointer px-3 py-2 flex-1 text-left text-ms-text-dark"
         onContextMenu={contextMenuHandler}
       >

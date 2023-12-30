@@ -5,9 +5,7 @@ import sortSliceReducer from "./sortSlice"
 import groupSliceReducer from "./groupSlice"
 import activeSliceReducer from "./activeSlice"
 import searchSliceReducer from "./searchSlice";
-import modifierSliceReducer from "./modifierSlice";
 import authSliceReducer from "./authSlice";
-
 import { firestoreApi } from "../api/firestoreApi";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
@@ -22,7 +20,6 @@ export const store =  configureStore({
     group: groupSliceReducer,
     active: activeSliceReducer,
     search: searchSliceReducer,
-    modifier: modifierSliceReducer,
     auth: authSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>

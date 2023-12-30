@@ -12,7 +12,6 @@ import { closeDetail } from "../store/uiSlice";
 import TaskItemContextMenu from "../components/modals/TaskItemContextMenu";
 import DeleteTaskDialog from "../components/modals/DeleteTaskDialog";
 import useRemindNotification from "../hooks/useRemindNotification";
-import useKeyDown from "../hooks/useKeydown";
 import SidebarOverlay from "../components/ui/SidebarOverlay";
 import HeaderPanels from "../panels/HeaderPanels";
 import useTheme from "../hooks/useTheme";
@@ -31,7 +30,6 @@ const RootPage = () => {
 
   useGetTodos();
   useUpdateMyday();
-  useKeyDown();
   useRemindNotification();
   useTheme();
 

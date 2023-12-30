@@ -33,8 +33,11 @@ const BasicList = ({ todoArr, currentLocation }) => {
 
   console.log("basic list");
 
+
+
   const content = limitTodoArr.map((todo, index) => {
     if (limitTodoArr.length === index + 1) {
+      console.log('case 1');
       return (
         <TaskItem
           ref={lastTaskRef}
@@ -45,6 +48,7 @@ const BasicList = ({ todoArr, currentLocation }) => {
         />
       );
     }
+    console.log('case 2');
     return (
       <TaskItem
         key={todo.id}
