@@ -18,6 +18,13 @@ const Searchbar = () => {
 
   const searchHandler = (event) => {
     dispatch(addQuery(event.target.value));
+
+
+    // if (location.pathname !== "/search") {
+    //   navigate(`/search/${event.target.value}`);
+    // }
+
+
     if (location.pathname !== "/search") {
       navigate("/search");
     }

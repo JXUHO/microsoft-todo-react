@@ -47,6 +47,10 @@ const router = createBrowserRouter([
         path: "inbox",
         element: <InboxPage />
       },
+      // {
+      //   path: "search/:query",
+      //   element: <SearchPage/>
+      // },
       {
         path: "search",
         element: <SearchPage/>
@@ -119,6 +123,7 @@ export default App;
  * (complete) viewport width 작아져서 detailbar 전체화면 설정할 때, taskDetail component useEffect hook에서 호출 너무 자주 발생함. 수정할것. debounce vs throttle
  * (complete) task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기) infinite scrolling
  * (complete) TaskItem render 횟수 최적화하기
+ * (complete) shift/ctrl keydown TaskItem component re-render 수정하기
  * 
  * 
  * 
@@ -128,20 +133,18 @@ export default App;
  * Loading component render 위치 수정하기 - 네트워크 throttle걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
  * 
  * 
- * Loading spinner render시점 수정하기
- * 
- * shift/ctrl keydown TaskItem component re-render 수정하기
- * 
- * 
  * OAuth & 로그인 페이지 기능 추가하기
+ * 
+ * 배포 전 Firestore 보안규칙 업데이트하기(단순 true에서 새로운 규칙으로)
  * 
  * 
  * search params로 검색값 전달해서 구현
+ * 
  * list 정렬 수정하기 (complete탭, importance탭 ...)
  * 
  * uiApiSlice error 수정하기
  * 
- * 
+ * ImportanceList infinite scroll 구현하기
  * 
  * 
  * 

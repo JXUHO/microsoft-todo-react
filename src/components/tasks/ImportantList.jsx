@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
@@ -39,21 +39,62 @@ const ImportantList = ({ currentLocation }) => {
     }
   }, [activeRange]);
 
+
+
+  const [tasksToShow, setTasksToShow] = useState(20);
+
+  const loadMoreTasks = () => {
+    setTasksToShow((prevState) => prevState + 20);
+  };
+
+  const observerRef = useRef();
+
+  const lastTaskRef = useCallback(
+    (node) => {
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
+          console.log("load more");
+          loadMoreTasks();
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [tasksToShow, todoArr.length]
+  );
+
+  const importanceTodoArr = todoArr.filter((task) => !task.complete && task.importance);
+  const limitTodoArr = importanceTodoArr.slice(0, tasksToShow);
+
+  const content = limitTodoArr.map((todo, index) => {
+    if (limitTodoArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+
+
   return (
     <>
       <div className="flex flex-col overflow-y-auto pb-6 px-6">
-        {todoArr.slice().map((todo) => {
-          if (todo.importance && !todo.complete) {
-            return (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation={currentLocation}
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            );
-          }
-        })}
+        {content}
       </div>
     </>
   );
