@@ -1,35 +1,16 @@
 import React, { useCallback, useRef, useState } from "react";
 import TaskItem from "./TaskItem";
 import { useSelector } from "react-redux";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const BasicList = ({ todoArr, currentLocation }) => {
-  const [tasksToShow, setTasksToShow] = useState(20);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
+  
+  const incompleteTodoArr = todoArr.filter(todo => !todo.complete)
 
-  const loadMoreTasks = () => {
-    setTasksToShow((prevState) => prevState + 20);
-  };
+  const { lastTaskRef, limitTodoArr } =
+  useInfiniteScroll(20, incompleteTodoArr);
 
-  const observerRef = useRef();
-
-  const lastTaskRef = useCallback(
-    (node) => {
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
-          console.log("load more");
-          loadMoreTasks();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [tasksToShow, todoArr.length]
-  );
-
-  const incompleteTodoArr = todoArr.filter((task) => !task.complete);
-  const limitTodoArr = incompleteTodoArr.slice(0, tasksToShow);
 
   console.log("basic list");
 

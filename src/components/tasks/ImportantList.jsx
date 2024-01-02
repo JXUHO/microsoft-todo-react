@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const ImportantList = ({ currentLocation }) => {
   const dispatch = useDispatch();
@@ -40,33 +41,10 @@ const ImportantList = ({ currentLocation }) => {
   }, [activeRange]);
 
 
-
-  const [tasksToShow, setTasksToShow] = useState(20);
-
-  const loadMoreTasks = () => {
-    setTasksToShow((prevState) => prevState + 20);
-  };
-
-  const observerRef = useRef();
-
-  const lastTaskRef = useCallback(
-    (node) => {
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
-          console.log("load more");
-          loadMoreTasks();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [tasksToShow, todoArr.length]
-  );
-
   const importanceTodoArr = todoArr.filter((task) => !task.complete && task.importance);
-  const limitTodoArr = importanceTodoArr.slice(0, tasksToShow);
+
+  const { lastTaskRef, limitTodoArr } =
+  useInfiniteScroll(20, importanceTodoArr);
 
   const content = limitTodoArr.map((todo, index) => {
     if (limitTodoArr.length === index + 1) {
@@ -101,11 +79,3 @@ const ImportantList = ({ currentLocation }) => {
 };
 
 export default React.memo(ImportantList);
-
-/**
- * TODO
- * drag-drop을 통해 task끼리 순서 변경 가능함
- *
- *
- *
- */
