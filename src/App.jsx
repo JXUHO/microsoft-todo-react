@@ -124,6 +124,7 @@ export default App;
  * (complete) task list에서 taskItem 서버에서 가져올때 조금씩 가지고오기(리스트 많아지면 성능저하 발생.. 해결하기) infinite scrolling
  * (complete) TaskItem render 횟수 최적화하기
  * (complete) shift/ctrl keydown TaskItem component re-render 수정하기
+ * (complete) ImportanceList infinite scroll 구현하기
  * 
  * 
  * 
@@ -144,10 +145,11 @@ export default App;
  * 
  * uiApiSlice error 수정하기
  * 
- * ImportanceList infinite scroll 구현하기
+ * plannedList infinite scroll 구현하기
+ * GroupList infinite scroll 구현하기
+ * => MydayList에서 Basic render 이후에 complete render되어야 하는 문제 동일하게 적용됨.
  * 
- * 
- * 
+ * planned탭 dueDate순으로 정렬하기
  * 
  * 
  * 

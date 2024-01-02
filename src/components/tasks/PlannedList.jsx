@@ -4,6 +4,8 @@ import TaskItemHeader from "./TaskItemHeader";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";
 import { getCustomFormatDateString } from "../../utils/getDates";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import sortTasks from "../../utils/sortTasks";
 
 const PlannedList = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const PlannedList = () => {
     next5Days: true,
     later: true,
   });
+
   const [sortedArr, setSortedArr] = useState({
     earlier: [],
     today: [],
@@ -25,6 +28,7 @@ const PlannedList = () => {
     next5Days: [],
     later: [],
   });
+
   const [count, setCount] = useState({
     earlier: 0,
     today: 0,
@@ -64,12 +68,40 @@ const PlannedList = () => {
       tempSortedArr[category].push(todo);
       listCount[category]++;
     });
+
+    // tempSortedArr내부의 arr를 dueDate에 따라서 sort. today, tmr는 정렬필요없음.
+    tempSortedArr.earlier = sortTasks(
+      "dueDate",
+      "descending",
+      tempSortedArr.earlier
+    ).reverse();
+    tempSortedArr.today = sortTasks(
+      "dueDate",
+      "descending",
+      tempSortedArr.today
+    );
+    tempSortedArr.tomorrow = sortTasks(
+      "dueDate",
+      "descending",
+      tempSortedArr.tomorrow
+    );
+    tempSortedArr.next5Days = sortTasks(
+      "dueDate",
+      "descending",
+      tempSortedArr.next5Days
+    );
+    tempSortedArr.later = sortTasks(
+      "dueDate",
+      "descending",
+      tempSortedArr.later
+    );
+
     setActiveArr([
-      ...tempSortedArr.earlier.slice().reverse(),
-      ...tempSortedArr.today.slice().reverse(),
-      ...tempSortedArr.tomorrow.slice().reverse(),
-      ...tempSortedArr.next5Days.slice().reverse(),
-      ...tempSortedArr.later.slice().reverse(),
+      ...tempSortedArr.earlier.slice(),
+      ...tempSortedArr.today.slice(),
+      ...tempSortedArr.tomorrow.slice(),
+      ...tempSortedArr.next5Days.slice(),
+      ...tempSortedArr.later.slice(),
     ]);
     setSortedArr(tempSortedArr);
     setCount(listCount);
@@ -92,6 +124,127 @@ const PlannedList = () => {
     }
   }, [activeRange]);
 
+  const { lastTaskRef: earlierLastTaskRef, limitTodoArr: earlierLimitArr } =
+    useInfiniteScroll(20, sortedArr.earlier);
+
+  const earlierContent = earlierLimitArr.map((todo, index) => {
+    if (earlierLimitArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={earlierLastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation="planned"
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation="planned"
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const { lastTaskRef: todayLastTaskRef, limitTodoArr: todayLimitArr } =
+    useInfiniteScroll(20, sortedArr.today);
+
+  const todayContent = todayLimitArr.map((todo, index) => {
+    if (todayLimitArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={todayLastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation="planned"
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation="planned"
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const { lastTaskRef: tomorrowLastTaskRef, limitTodoArr: tomorrowLimitArr } =
+    useInfiniteScroll(20, sortedArr.tomorrow);
+
+  const tomorrowContent = tomorrowLimitArr.map((todo, index) => {
+    if (tomorrowLimitArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={tomorrowLastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation="planned"
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation="planned"
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const { lastTaskRef: next5DaysLastTaskRef, limitTodoArr: next5DaysLimitArr } =
+    useInfiniteScroll(20, sortedArr.next5Days);
+
+  const next5DaysContent = next5DaysLimitArr.map((todo, index) => {
+    if (next5DaysLimitArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={next5DaysLastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation="planned"
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation="planned"
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const { lastTaskRef: laterLastTaskRef, limitTodoArr: laterLimitArr } =
+    useInfiniteScroll(20, sortedArr.later);
+
+  const laterContent = laterLimitArr.map((todo, index) => {
+    if (laterLimitArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={laterLastTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation="planned"
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation="planned"
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+
   let startDate = new Date();
   startDate.setDate(startDate.getDate() + 2);
   startDate = getCustomFormatDateString(startDate, "short");
@@ -109,21 +262,7 @@ const PlannedList = () => {
           count={count.earlier}
         />
       )}
-      {count.earlier !== 0 && isOpen.earlier && (
-        <div>
-          {sortedArr.earlier
-            .slice()
-            .reverse()
-            .map((todo) => (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation="planned"
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            ))}
-        </div>
-      )}
+      {count.earlier !== 0 && isOpen.earlier && <div>{earlierContent}</div>}
 
       {count.today !== 0 && (
         <TaskItemHeader
@@ -133,21 +272,7 @@ const PlannedList = () => {
           count={count.today}
         />
       )}
-      {count.today !== 0 && isOpen.today && (
-        <div>
-          {sortedArr.today
-            .slice()
-            .reverse()
-            .map((todo) => (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation="planned"
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            ))}
-        </div>
-      )}
+      {count.today !== 0 && isOpen.today && <div>{todayContent}</div>}
 
       {count.tomorrow !== 0 && (
         <TaskItemHeader
@@ -157,21 +282,7 @@ const PlannedList = () => {
           count={count.tomorrow}
         />
       )}
-      {count.tomorrow !== 0 && isOpen.tomorrow && (
-        <div>
-          {sortedArr.tomorrow
-            .slice()
-            .reverse()
-            .map((todo) => (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation="planned"
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            ))}
-        </div>
-      )}
+      {count.tomorrow !== 0 && isOpen.tomorrow && <div>{tomorrowContent}</div>}
       {count.next5Days !== 0 && (
         <TaskItemHeader
           title={`${startDate} to ${endDate}`}
@@ -181,19 +292,7 @@ const PlannedList = () => {
         />
       )}
       {count.next5Days !== 0 && isOpen.next5Days && (
-        <div>
-          {sortedArr.next5Days
-            .slice()
-            .reverse()
-            .map((todo) => (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation="planned"
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            ))}
-        </div>
+        <div>{next5DaysContent}</div>
       )}
 
       {count.later !== 0 && (
@@ -204,21 +303,7 @@ const PlannedList = () => {
           count={count.later}
         />
       )}
-      {count.later !== 0 && isOpen.later && (
-        <div>
-          {sortedArr.later
-            .slice()
-            .reverse()
-            .map((todo) => (
-              <TaskItem
-                key={todo.id}
-                todo={todo}
-                currentLocation="planned"
-                isTaskActive={activeTasksId.includes(todo.id)}
-              />
-            ))}
-        </div>
-      )}
+      {count.later !== 0 && isOpen.later && <div>{laterContent}</div>}
     </div>
   );
 };
