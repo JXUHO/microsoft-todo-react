@@ -1,41 +1,20 @@
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import TaskItem from "../TaskItem";
 import TaskItemHeader from "../TaskItemHeader";
 import { useSelector } from "react-redux";
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 
 const SearchedCategories = ({ todoArr }) => {
   const [isOpen, setIsOpen] = useState(true);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
-  const [tasksToShow, setTasksToShow] = useState(20);
 
-  const loadMoreTasks = () => {
-    setTasksToShow((prevState) => prevState + 20);
-  };
-
-  const observerRef = useRef();
-
-  const lastTaskRef = useCallback(
-    (node) => {
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
-          console.log("load more");
-          loadMoreTasks();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [tasksToShow, todoArr.length]
-  );
+  const { lastTaskRef, limitTodoArr } = useInfiniteScroll(20, todoArr);
 
   const openHandler = () => {
     setIsOpen((prevState) => !prevState);
   };
 
   const count = todoArr.length;
-  const limitTodoArr = todoArr.slice(0, tasksToShow);
 
   const content = limitTodoArr.map((todo, index) => {
     if (limitTodoArr.length === index + 1) {
@@ -69,11 +48,7 @@ const SearchedCategories = ({ todoArr }) => {
             openHandler={openHandler}
             count={count}
           />
-          {isOpen && (
-            <div>
-              {content}
-            </div>
-          )}
+          {isOpen && <div>{content}</div>}
         </div>
       )}
     </>

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import sortTasks from "../../utils/sortTasks";
 import TaskItem from "./TaskItem";
 import { addActiveTasks } from "../../store/activeSlice";

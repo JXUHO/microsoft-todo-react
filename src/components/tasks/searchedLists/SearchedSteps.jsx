@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import TaskItemHeader from "../TaskItemHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { openContextMenu, openDetail } from "../../../store/uiSlice";
@@ -10,6 +10,7 @@ import {
   initializeActiveTasks,
 } from "../../../store/activeSlice";
 import { useCompleteStepApiMutation } from "../../../api/todoApiSlice";
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 
 const SearchedSteps = ({ todoArr }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -27,31 +28,8 @@ const SearchedSteps = ({ todoArr }) => {
     return contentA.localeCompare(contentB);
   });
 
-  const [tasksToShow, setTasksToShow] = useState(20);
-
-  const loadMoreTasks = () => {
-    setTasksToShow((prevState) => prevState + 20);
-  };
-
-  const observerRef = useRef();
-
-  const lastTaskRef = useCallback(
-    (node) => {
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && tasksToShow <= todoArr.length) {
-          console.log("load more");
-          loadMoreTasks();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [tasksToShow, todoArr.length]
-  );
-
-  const limitTodoArr = sortedArr.slice(0, tasksToShow);
+  const { lastTaskRef, limitTodoArr } =
+  useInfiniteScroll(20, sortedArr);
   // [{todo:{...}, step:{...}}, {todo:{...}, step:{...}}]
 
   const content = limitTodoArr.map((todo, index) => {

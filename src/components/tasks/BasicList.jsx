@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React from "react";
 import TaskItem from "./TaskItem";
 import { useSelector } from "react-redux";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
