@@ -35,27 +35,23 @@ const Inbox = () => {
 
   useEffect(() => {
     //  todoArr 생성.
-    let allTasks = todos.slice().reverse()
+    let allTasks = todos.slice().reverse();
     if (sortBy) {
       allTasks = sortTasks(sortBy, sortOrder, allTasks);
-    } 
+    }
 
-    let incompleteTemp = []
-    let completeTemp = []
-    allTasks.forEach(todo => {
+    let incompleteTemp = [];
+    let completeTemp = [];
+    allTasks.forEach((todo) => {
       if (!todo.complete) {
-        incompleteTemp.push(todo)
+        incompleteTemp.push(todo);
       } else {
-        completeTemp.push(todo)
+        completeTemp.push(todo);
       }
-    })
-    allTasks = [...incompleteTemp, ...completeTemp]
-    setTodoArr(allTasks)
-
-
-
+    });
+    allTasks = [...incompleteTemp, ...completeTemp];
+    setTodoArr(allTasks);
   }, [todos, sortBy, sortOrder]);
-
 
   useEffect(() => {
     // 정렬된 task를 shift keydown activeRange에 따라 active 설정
@@ -73,8 +69,6 @@ const Inbox = () => {
       }
     }
   }, [activeRange, todoArr, dispatch]);
-
-  
 
   return (
     <>
@@ -118,9 +112,11 @@ const Inbox = () => {
           {groupBy === "category" ? (
             <GroupLists todoArr={todoArr} currentLocation={"tasks"} />
           ) : (
-            <BasicList todoArr={todoArr} currentLocation={"tasks"} />
+            <>
+              <BasicList todoArr={todoArr} currentLocation={"tasks"} />
+              <CompleteList todoArr={todoArr} currentLocation={"tasks"} />
+            </>
           )}
-          <CompleteList todoArr={todoArr} currentLocation={"tasks"} />
         </div>
       </div>
     </>

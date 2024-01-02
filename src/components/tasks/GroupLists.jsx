@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
 import { useSelector } from "react-redux";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const GroupLists = ({ todoArr, currentLocation }) => {
   const activeTasksId = useSelector((state) => state.active.activeTasks);
@@ -23,28 +24,193 @@ const GroupLists = ({ todoArr, currentLocation }) => {
     }));
   };
 
-  let categoryCount = {
-    blue: 0,
-    green: 0,
-    orange: 0,
-    purple: 0,
-    red: 0,
-    yellow: 0,
-    uncategorized: 0,
-  };
-
-  todoArr.forEach((todo) => {
-    if (todo.category.length) {
-      todo.category.forEach((color) => {
-        if (!todo.complete) {
-          categoryCount[color] = categoryCount[color] + 1;
-        }
-      });
-    } else {
-      if (!todo.complete) {
-        categoryCount.uncategorized++;
-      }
+  
+  const blueArr = todoArr.filter(
+    (todo) => todo.category.includes("blue") && !todo.complete
+  );
+  const { lastTaskRef: lastBlueTaskRef, limitTodoArr: limitBlueArr } =
+    useInfiniteScroll(20, blueArr);
+  const blueContent = limitBlueArr.map((todo, index) => {
+    if (limitBlueArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastBlueTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
     }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+
+  const greenArr = todoArr.filter(
+    (todo) => todo.category.includes("green") && !todo.complete
+  );
+  const { lastTaskRef: lastGreenTaskRef, limitTodoArr: limitGreenArr } =
+    useInfiniteScroll(20, greenArr);
+  const greenContent = limitGreenArr.map((todo, index) => {
+    if (limitGreenArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastGreenTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+
+  const orangeArr = todoArr.filter(
+    (todo) => todo.category.includes("orange") && !todo.complete
+  );
+  const { lastTaskRef: lastOrangeTaskRef, limitTodoArr: limitOrangeArr } =
+    useInfiniteScroll(20, orangeArr);
+  const orangeContent = limitOrangeArr.map((todo, index) => {
+    if (limitOrangeArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastOrangeTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+
+  const purpleArr = todoArr.filter(
+    (todo) => todo.category.includes("purple") && !todo.complete
+  );
+  const { lastTaskRef: lastPurpleTaskRef, limitTodoArr: limitPurpleArr } =
+    useInfiniteScroll(20, purpleArr);
+  const purpleContent = limitPurpleArr.map((todo, index) => {
+    if (limitPurpleArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastPurpleTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const redArr = todoArr.filter(
+    (todo) => todo.category.includes("red") && !todo.complete
+  );
+  const { lastTaskRef: lastRedTaskRef, limitTodoArr: limitRedArr } =
+    useInfiniteScroll(20, redArr);
+  const redContent = limitRedArr.map((todo, index) => {
+    if (limitRedArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastRedTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const yellowArr = todoArr.filter(
+    (todo) => todo.category.includes("yellow") && !todo.complete
+  );
+  const { lastTaskRef: lastYellowTaskRef, limitTodoArr: limitYellowArr } =
+    useInfiniteScroll(20, yellowArr);
+  const yellowContent = limitYellowArr.map((todo, index) => {
+    if (limitYellowArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastYellowTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
+  });
+  const uncategorizedArr = todoArr.filter(
+    (todo) => !todo.category.length && !todo.complete
+  );
+  const {
+    lastTaskRef: lastUncategorizedTaskRef,
+    limitTodoArr: limitUncategorizedArr,
+  } = useInfiniteScroll(20, uncategorizedArr);
+  const uncategorizedContent = limitUncategorizedArr.map((todo, index) => {
+    if (limitUncategorizedArr.length === index + 1) {
+      return (
+        <TaskItem
+          ref={lastUncategorizedTaskRef}
+          key={todo.id}
+          todo={todo}
+          currentLocation={currentLocation}
+          isTaskActive={activeTasksId.includes(todo.id)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        key={todo.id}
+        todo={todo}
+        currentLocation={currentLocation}
+        isTaskActive={activeTasksId.includes(todo.id)}
+      />
+    );
   });
 
   const noIncomplete = todoArr.every((todo) => todo.complete === "");
@@ -55,187 +221,83 @@ const GroupLists = ({ todoArr, currentLocation }) => {
         noIncomplete ? { paddingBottom: "1.5rem" } : { paddingBottom: "5px" }
       }
     >
-      {categoryCount.blue !== 0 && (
+      {/* {categoryCount.blue !== 0 && ( */}
+      {blueArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.blue}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.blue}
+            taskCount={blueArr.length}
             categoryName="blue"
           />
-          {categoryOpen.blue && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("blue") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.blue && <div>{blueContent}</div>}
         </div>
       )}
-      {categoryCount.green !== 0 && (
+      {greenArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.green}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.green}
+            taskCount={greenArr.length}
             categoryName="green"
           />
-          {categoryOpen.green && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("green") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.green && <div>{greenContent}</div>}
         </div>
       )}
-      {categoryCount.orange !== 0 && (
+      {orangeArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.orange}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.orange}
+            taskCount={orangeArr.length}
             categoryName="orange"
           />
-          {categoryOpen.orange && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("orange") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.orange && <div>{orangeContent}</div>}
         </div>
       )}
-      {categoryCount.purple !== 0 && (
+      {purpleArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.purple}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.purple}
+            taskCount={purpleArr.length}
             categoryName="purple"
           />
-          {categoryOpen.purple && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("purple") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.purple && <div>{purpleContent}</div>}
         </div>
       )}
-      {categoryCount.red !== 0 && (
+      {redArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.red}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.red}
+            taskCount={redArr.length}
             categoryName="red"
           />
-          {categoryOpen.red && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("red") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.red && <div>{redContent}</div>}
         </div>
       )}
-      {categoryCount.yellow !== 0 && (
+      {yellowArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.yellow}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.yellow}
+            taskCount={yellowArr.length}
             categoryName="yellow"
           />
-          {categoryOpen.yellow && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (todo.category.includes("yellow") && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.yellow && <div>{yellowContent}</div>}
         </div>
       )}
 
-      {categoryCount.uncategorized !== 0 && (
+      {uncategorizedArr.length !== 0 && (
         <div>
           <TaskHeader
             isHeaderOpen={categoryOpen.uncategorized}
             headerOpenHandler={categoryOpenHandler}
-            taskCount={categoryCount.uncategorized}
+            taskCount={uncategorizedArr.length}
             categoryName="uncategorized"
           />
-          {categoryOpen.uncategorized && (
-            <div>
-              {todoArr.slice().map((todo) => {
-                if (!todo.category.length && !todo.complete) {
-                  return (
-                    <TaskItem
-                      key={todo.id}
-                      todo={todo}
-                      currentLocation={currentLocation}
-                      isTaskActive={activeTasksId.includes(todo.id)}
-                    />
-                  );
-                }
-              })}
-            </div>
-          )}
+          {categoryOpen.uncategorized && <div>{uncategorizedContent}</div>}
         </div>
       )}
     </div>

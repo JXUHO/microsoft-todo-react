@@ -53,14 +53,3 @@ const BasicList = ({ todoArr, currentLocation }) => {
 };
 
 export default React.memo(BasicList);
-
-// useEffect(() => {
-//   console.log(incompleteTodoArr.length);
-//   // Check if all tasks are rendered
-//   // if (limitTodoArr.length === incompleteTodoArr.length) {
-//     if(tasksToShow >= todoArr.length) {
-//     console.log("limit", limitTodoArr.length);
-//     console.log("incomplete", incompleteTodoArr.length);
-//     console.log("completed render");
-//   }
-// }, [limitTodoArr, incompleteTodoArr]);
