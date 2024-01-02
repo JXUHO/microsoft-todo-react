@@ -125,6 +125,9 @@ export default App;
  * (complete) TaskItem render 횟수 최적화하기
  * (complete) shift/ctrl keydown TaskItem component re-render 수정하기
  * (complete) ImportanceList infinite scroll 구현하기
+ * (complete) plannedList infinite scroll 구현하기
+ * (complete) GroupList infinite scroll 구현하기
+ * (complete) list 정렬 수정하기 (complete탭, importance탭 ...)
  * 
  * 
  * 
@@ -138,16 +141,11 @@ export default App;
  * 
  * 배포 전 Firestore 보안규칙 업데이트하기(단순 true에서 새로운 규칙으로)
  * 
+ * completeList, PlannedList, GroupList에서 상위리스트가 모두 render된 이후에 하위리스트 render되도록 설정해야 한다
  * 
  * search params로 검색값 전달해서 구현
  * 
- * list 정렬 수정하기 (complete탭, importance탭 ...)
- * 
  * uiApiSlice error 수정하기
- * 
- * plannedList infinite scroll 구현하기
- * GroupList infinite scroll 구현하기
- * => MydayList에서 Basic render 이후에 complete render되어야 하는 문제 동일하게 적용됨.
  * 
  * planned탭 dueDate순으로 정렬하기
  * 

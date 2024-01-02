@@ -89,12 +89,12 @@ const PlannedList = () => {
       "dueDate",
       "descending",
       tempSortedArr.next5Days
-    );
+    ).reverse();
     tempSortedArr.later = sortTasks(
       "dueDate",
       "descending",
       tempSortedArr.later
-    );
+    ).reverse();
 
     setActiveArr([
       ...tempSortedArr.earlier.slice(),
