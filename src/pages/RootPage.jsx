@@ -1,9 +1,9 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import TaskDetail from "../components/details/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import {
   initializeActiveStep,
   initializeActiveTasks,
@@ -25,6 +25,8 @@ const RootPage = () => {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todo.todos);
   const { isLoading: isAuthLoading } = useAuth();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   console.log("rootpage render");
 
@@ -39,8 +41,16 @@ const RootPage = () => {
     dispatch(closeDetail());
   }, [location]);
 
+  useEffect(() => {
+    if (!isAuthLoading && user) {
+      navigate("/");
+    } else if (!isAuthLoading && !user) {
+      navigate("/user/signin");
+    }
+  }, [isAuthLoading, user, navigate]);
 
-  if (!todos || isAuthLoading) {
+  // if (!todos || isAuthLoading) {
+  if (!todos) {
     return <Loading />;
   }
 
@@ -52,7 +62,10 @@ const RootPage = () => {
         <SidebarOverlay />
         <Sidebar />
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
-          <Outlet />
+          <Suspense fallback={<Loading />}>
+            {/* <Suspense fallback={<h1>HELOOOOOOO</h1>}> */}
+            <Outlet />
+          </Suspense>
         </div>
         <TaskDetail />
       </div>

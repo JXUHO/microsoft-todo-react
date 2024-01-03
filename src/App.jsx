@@ -3,21 +3,35 @@ import {
   createBrowserRouter,
   redirect,
 } from "react-router-dom";
-import MydayPage from "./pages/MydayPage";
-import RootPage from "./pages/RootPage";
-import ImportantPage from "./pages/ImportantPage";
-import PlannedPage from "./pages/PlannedPage";
-import CompletedPage from "./pages/CompletedPage";
-import SearchPage from "./pages/SearchPage";
-import InboxPage from "./pages/InboxPage";
+// import RootPage from "./pages/RootPage";
+// import MydayPage from "./pages/MydayPage";
+// import ImportantPage from "./pages/ImportantPage";
+// import PlannedPage from "./pages/PlannedPage";
+// import CompletedPage from "./pages/CompletedPage";
+// import SearchPage from "./pages/SearchPage";
+// import InboxPage from "./pages/InboxPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedLayout from "./components/ProtectedLayout";
+import { Suspense, lazy } from "react";
+import Loading from "./components/Loading";
+
+
+
+const RootPage = lazy(() => import('./pages/RootPage')) 
+const MydayPage = lazy(() => import('./pages/MydayPage')) 
+const ImportantPage = lazy(() => import('./pages/ImportantPage')) 
+const PlannedPage = lazy(() => import('./pages/PlannedPage')) 
+const CompletedPage = lazy(() => import('./pages/CompletedPage')) 
+const InboxPage = lazy(() => import('./pages/InboxPage')) 
+const SearchPage = lazy(() => import('./pages/SearchPage')) 
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootPage/>,
+    element: <Suspense fallback={<Loading/>}><RootPage/></Suspense>,
+    // element: <RootPage/>,
     children: [
       {
         index: true,
@@ -47,10 +61,6 @@ const router = createBrowserRouter([
         path: "inbox",
         element: <InboxPage />
       },
-      // {
-      //   path: "search/:query",
-      //   element: <SearchPage/>
-      // },
       {
         path: "search",
         element: <SearchPage/>
@@ -128,26 +138,26 @@ export default App;
  * (complete) plannedList infinite scroll 구현하기
  * (complete) GroupList infinite scroll 구현하기
  * (complete) list 정렬 수정하기 (complete탭, importance탭 ...)
+ * (complete) planned탭 dueDate순으로 정렬하기
  * 
  * 
  * 
  * 
  * 
  * <할것>
- * Loading component render 위치 수정하기 - 네트워크 throttle걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
+ * Loading component render 위치 수정하기 - 네트워크 속도제한걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
  * 
  * 
  * OAuth & 로그인 페이지 기능 추가하기
  * 
  * 배포 전 Firestore 보안규칙 업데이트하기(단순 true에서 새로운 규칙으로)
  * 
- * completeList, PlannedList, GroupList에서 상위리스트가 모두 render된 이후에 하위리스트 render되도록 설정해야 한다
+ * completeList, PlannedList, GroupList에서 상위리스트가 모두 render된 이후에 하위리스트 render되도록 설정
  * 
  * search params로 검색값 전달해서 구현
  * 
  * uiApiSlice error 수정하기
  * 
- * planned탭 dueDate순으로 정렬하기
  * 
  * 
  * 

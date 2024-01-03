@@ -5,18 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const Loading = () => {
-  const user = useSelector((state) => state.auth.user);
-  const navigate = useNavigate()
-  const { isLoading: isAuthLoading } = useAuth()
+  // const user = useSelector((state) => state.auth.user);
+  // const navigate = useNavigate()
+  // const { isLoading: isAuthLoading } = useAuth()
 
 
-  useEffect(() => {
-    if (!isAuthLoading && user) {
-      navigate("/")
-    } else if (!isAuthLoading && !user) {
-      navigate("/user/signin")
-    }
-  }, [isAuthLoading, user, navigate])
+  // useEffect(() => {
+  //   if (!isAuthLoading && user) {
+  //     navigate("/")
+  //   } else if (!isAuthLoading && !user) {
+  //     navigate("/user/signin")
+  //   }
+  // }, [isAuthLoading, user, navigate])
 
 
   return (
