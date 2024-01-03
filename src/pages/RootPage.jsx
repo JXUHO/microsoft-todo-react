@@ -49,7 +49,6 @@ const RootPage = () => {
     }
   }, [isAuthLoading, user, navigate]);
 
-  // if (!todos || isAuthLoading) {
   if (!todos) {
     return <Loading />;
   }
@@ -63,7 +62,6 @@ const RootPage = () => {
         <Sidebar />
         <div className="flex flex-1 flex-col bg-ms-background overflow-hidden">
           <Suspense fallback={<Loading />}>
-            {/* <Suspense fallback={<h1>HELOOOOOOO</h1>}> */}
             <Outlet />
           </Suspense>
         </div>

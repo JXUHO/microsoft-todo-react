@@ -25,8 +25,7 @@ const useInfiniteScroll = (initialTasksToShow = 20, todoArr) => {
     [tasksToShow, todoArr.length]
   );
 
-  // const incompleteTodoArr = todoArr.filter((task) => !task.complete);
-  // const incompleteTodoArr = todoArr.filter((task) => (complete ? task.complete : !task.complete));
+
   const limitTodoArr = todoArr.slice(0, tasksToShow);
 
   return {
