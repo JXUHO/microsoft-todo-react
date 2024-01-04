@@ -3,13 +3,6 @@ import {
   createBrowserRouter,
   redirect,
 } from "react-router-dom";
-// import RootPage from "./pages/RootPage";
-// import MydayPage from "./pages/MydayPage";
-// import ImportantPage from "./pages/ImportantPage";
-// import PlannedPage from "./pages/PlannedPage";
-// import CompletedPage from "./pages/CompletedPage";
-// import SearchPage from "./pages/SearchPage";
-// import InboxPage from "./pages/InboxPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProtectedLayout from "./components/ProtectedLayout";

@@ -24,6 +24,7 @@ import {
   useSetMydayTodoApiMutation,
 } from "../../api/todoApiSlice";
 import uuid from "react-uuid";
+import { isValidElement } from "react";
 
 const TaskItemContextMenu = () => {
   const location = useLocation();
@@ -41,7 +42,6 @@ const TaskItemContextMenu = () => {
   const [completeStepApi] = useCompleteStepApiMutation();
   const [removeStepApi] = useRemoveStepApiMutation();
 
-  
   let addMyday = false;
   let removeMyday = false;
   let addImportance = false;
@@ -49,10 +49,9 @@ const TaskItemContextMenu = () => {
   let addComplete = false;
   let removeComplete = false;
   let removeDuedate = false;
-  
+
   let addStepComplete = false;
   let removeStepComplete = false;
-
 
   todos.forEach((todo) => {
     if (activeTasksId.includes(todo.id)) {
@@ -182,6 +181,26 @@ const TaskItemContextMenu = () => {
     });
   };
 
+  // console.log(
+  //   "TEST: ",
+  //   isValidElement(
+  //     <>
+  //       <MenuItem onClick={() => clickHandler("removeComplete")}>
+  //         <div className="mx-1">
+  //           <BsCircle size="16px" />
+  //         </div>
+  //         <div className="px-1 mx-1">Mark as not completed</div>
+  //       </MenuItem>
+  //       <MenuItem onClick={() => clickHandler("dueTomorrow")}>
+  //         <div className="mx-1">
+  //           <BsCalendarPlus size="16px" />
+  //         </div>
+  //         <div className="px-1 mx-1">Due tomorrow</div>
+  //       </MenuItem>
+  //     </>
+  //   )
+  // );
+
   return (
     <Menu>
       {addMyday && (
@@ -255,21 +274,21 @@ const TaskItemContextMenu = () => {
       <MenuSeparator />
 
       {!activeStepId && (
-        <>
-          <MenuItem onClick={() => clickHandler("dueToday")}>
-            <div className="mx-1">
-              <BsCalendarDate size="16px" />
-            </div>
-            <div className="px-1 mx-1">Due today</div>
-          </MenuItem>
-
-          <MenuItem onClick={() => clickHandler("dueTomorrow")}>
-            <div className="mx-1">
-              <BsCalendarPlus size="16px" />
-            </div>
-            <div className="px-1 mx-1">Due tomorrow</div>
-          </MenuItem>
-        </>
+        <MenuItem onClick={() => clickHandler("dueToday")}>
+          <div className="mx-1">
+            <BsCalendarDate size="16px" />
+          </div>
+          <div className="px-1 mx-1">Due today</div>
+        </MenuItem>
+      )}
+      
+      {!activeStepId && (
+        <MenuItem onClick={() => clickHandler("dueTomorrow")}>
+          <div className="mx-1">
+            <BsCalendarPlus size="16px" />
+          </div>
+          <div className="px-1 mx-1">Due tomorrow</div>
+        </MenuItem>
       )}
 
       {removeDuedate && (
@@ -290,17 +309,15 @@ const TaskItemContextMenu = () => {
         </MenuItem>
       )}
 
-      {!activeStepId && (
-        <>
-          <MenuSeparator />
+      {!activeStepId && <MenuSeparator />}
 
-          <MenuItem onClick={() => clickHandler("deleteTask")}>
-            <div className="mx-1 text-ms-warning">
-              <BsTrash3 size="16px" />
-            </div>
-            <div className="px-1 mx-1 text-ms-warning">Delete task</div>
-          </MenuItem>
-        </>
+      {!activeStepId && (
+        <MenuItem onClick={() => clickHandler("deleteTask")}>
+          <div className="mx-1 text-ms-warning">
+            <BsTrash3 size="16px" />
+          </div>
+          <div className="px-1 mx-1 text-ms-warning">Delete task</div>
+        </MenuItem>
       )}
     </Menu>
   );
