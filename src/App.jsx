@@ -31,7 +31,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Suspense fallback={<Loading/>}><RootPage/></Suspense>,
-    // element: <RootPage/>,
     children: [
       {
         index: true,
@@ -139,14 +138,13 @@ export default App;
  * (complete) GroupList infinite scroll 구현하기
  * (complete) list 정렬 수정하기 (complete탭, importance탭 ...)
  * (complete) planned탭 dueDate순으로 정렬하기
+ * (complete) Loading component render 위치 수정하기 - 네트워크 속도제한걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴 - index.html에 loader 넣을지 결정하기
  * 
  * 
  * 
  * 
  * 
  * <할것>
- * Loading component render 위치 수정하기 - 네트워크 속도제한걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴
- * 
  * 
  * OAuth & 로그인 페이지 기능 추가하기
  * 

@@ -11,7 +11,7 @@ const DueCalendar = ({ onCalendarSaveClick, dueDateValue }) => {
 
   return (
     <div
-      className="animate-slideFadeDown5"
+      className="ReactDatePickerWrapper animate-slideFadeDown5"
       style={{
         boxShadow:
           "rgba(0, 0, 0, 0.133) 0px 6.4px 14.4px 0px, rgba(0, 0, 0, 0.11) 0px 1.2px 3.6px 0px",
