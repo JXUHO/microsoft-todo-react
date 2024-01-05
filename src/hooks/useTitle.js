@@ -18,9 +18,24 @@ const useTitle = () => {
       let text =
         location.pathname.replaceAll("/", "").charAt(0).toUpperCase() +
         location.pathname.replaceAll("/", "").slice(1);
-      if (text === "Today" || text === "Myday") {
-        text = "My Day";
+
+      switch (text) {
+        case "Today":
+          text = "My Day";
+          break;
+        case "Myday":
+          text = "My Day";
+          break;
+        case "Usersignin":
+          text = "Sign in";
+          break;
+        case "Usersignup":
+          text = "Sign up";
+          break;
+        default:
+          break;
       }
+
       document.title = `${text} - To Do`;
     }
   }, [location, activeTasks, searchQuery]);

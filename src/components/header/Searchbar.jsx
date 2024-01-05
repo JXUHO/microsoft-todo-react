@@ -26,8 +26,6 @@ const Searchbar = () => {
     }
 
     window.history.replaceState(null, "", `/search/${event.target.value}`);
-    
-    document.title = `Searching for "${event.target.value}" - To Do`
   };
 
   const clickHandler = () => {
@@ -68,7 +66,7 @@ const Searchbar = () => {
     if (location.pathname.includes("search")) {
       dispatch(setSearchbarActive(true));
     }
-    
+
     if (location.pathname.includes("search") && params !== searchQuery) {
       dispatch(addQuery(params ?? ""));
     }

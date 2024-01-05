@@ -35,10 +35,7 @@ const RootPage = () => {
   useUpdateMyday();
   useRemindNotification();
   useTheme();
-
-
   useTitle()
-
 
   useEffect(() => {
     dispatch(initializeActiveTasks());
