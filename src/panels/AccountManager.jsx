@@ -77,7 +77,7 @@ const AccountManager = () => {
               </div>
               <div className="col-start-1 col-end-4 min-h-[132px self-center] flex">
                 <div className="w-20 h-20 m-5  overflow-hidden">
-                  <img src="public\profile_image.svg" alt="profile image" />
+                  <img src="/public\profile_image.svg" alt="profile image" />
                 </div>
                 <div className="flex-grow pr-3 mt-4">
                   <div className="font-semibold text-lg">{user.email}</div>

@@ -12,7 +12,7 @@ const BasicList = ({ todoArr, currentLocation }) => {
   useInfiniteScroll(20, incompleteTodoArr);
 
 
-  console.log("basic list");
+  // console.log("basic list");
 
 
 

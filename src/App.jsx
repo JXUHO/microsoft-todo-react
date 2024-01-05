@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        loader: () => redirect("/today")
+        loader: () => redirect("today")
       },
       {
         path: "today",
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         element: <InboxPage />
       },
       {
-        path: "search",
+        path: "search/:query?",
         element: <SearchPage/>
       },
     ],
@@ -149,6 +149,7 @@ export default App;
  * 
  * uiApiSlice error 수정하기
  * 
+ * todoApiSlice:67, uiApiSlice:34 content download 종료되지 않는 문제 해결.
  * 
  * 
  * 

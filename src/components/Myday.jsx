@@ -22,7 +22,7 @@ const Myday = () => {
   const dispatch = useDispatch();
 
 
-  console.log('myday');
+  // console.log('myday');
 
 
   const openSidebarHandler = () => {

@@ -71,6 +71,11 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
           querySnapshot?.forEach((doc) => {
             todosArr.push(doc.data());
           });
+          
+          
+          console.log(todosArr);
+
+
           return { data: todosArr };
         } catch (error) {
           console.error(error.message);

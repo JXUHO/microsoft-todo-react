@@ -28,7 +28,7 @@ const RootPage = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
-  console.log("rootpage render");
+  // console.log("rootpage render");
 
   useGetTodos();
   useUpdateMyday();
@@ -42,9 +42,12 @@ const RootPage = () => {
   }, [location]);
 
   useEffect(() => {
-    if (!isAuthLoading && user) {
-      navigate("/");
-    } else if (!isAuthLoading && !user) {
+    // if (!isAuthLoading && user) {
+    //   // console.log("GO TO ROOT ROUTE");
+    //   // navigate("/");
+    // } else 
+    if (!isAuthLoading && !user) {
+      console.log("GO TO SIGNIN PAGE");
       navigate("/user/signin");
     }
   }, [isAuthLoading, user, navigate]);

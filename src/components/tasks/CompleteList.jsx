@@ -11,7 +11,7 @@ const CompleteList = ({ todoArr, currentLocation }) => {
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
   const activeTasksId = useSelector((state) => state.active.activeTasks);
 
-  console.log("complete list");
+  // console.log("complete list");
 
 
   const toggleCompleteHandler = () => {

@@ -15,9 +15,8 @@ const MydayList = ({ currentLocation }) => {
   const activeRange = useSelector((state) => state.active.activeRange);
   const todos = useSelector((state) => state.todo.todos);
 
-  // useGetTodos();
 
-  console.log("mydaylist");
+  // console.log("mydaylist");
 
   useEffect(() => {
     // importance Boolean에서 Date Object string으로 변경함
