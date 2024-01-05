@@ -72,10 +72,6 @@ export const todoApiSlice = firestoreApi.injectEndpoints({
             todosArr.push(doc.data());
           });
           
-          
-          console.log(todosArr);
-
-
           return { data: todosArr };
         } catch (error) {
           console.error(error.message);

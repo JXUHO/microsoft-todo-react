@@ -19,6 +19,7 @@ import useGetTodos from "../hooks/useGetTodos";
 import useAuth from "../hooks/useAuth";
 import useUpdateMyday from "../hooks/useUpdateMyday";
 import Loading from "../components/Loading";
+import useTitle from "../hooks/useTitle";
 
 const RootPage = () => {
   const location = useLocation();
@@ -35,6 +36,10 @@ const RootPage = () => {
   useRemindNotification();
   useTheme();
 
+
+  useTitle()
+
+
   useEffect(() => {
     dispatch(initializeActiveTasks());
     dispatch(initializeActiveStep());
@@ -42,10 +47,6 @@ const RootPage = () => {
   }, [location]);
 
   useEffect(() => {
-    // if (!isAuthLoading && user) {
-    //   // console.log("GO TO ROOT ROUTE");
-    //   // navigate("/");
-    // } else 
     if (!isAuthLoading && !user) {
       console.log("GO TO SIGNIN PAGE");
       navigate("/user/signin");

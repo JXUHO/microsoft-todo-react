@@ -10,7 +10,6 @@ import { Suspense, lazy } from "react";
 import Loading from "./components/Loading";
 
 
-
 const RootPage = lazy(() => import('./pages/RootPage')) 
 const MydayPage = lazy(() => import('./pages/MydayPage')) 
 const ImportantPage = lazy(() => import('./pages/ImportantPage')) 
@@ -132,6 +131,7 @@ export default App;
  * (complete) list 정렬 수정하기 (complete탭, importance탭 ...)
  * (complete) planned탭 dueDate순으로 정렬하기
  * (complete) Loading component render 위치 수정하기 - 네트워크 속도제한걸면 처음에는 spinner없다가 마지막에만 잠깐 나옴 - index.html에 loader 넣을지 결정하기
+ * (complete) search params로 검색값 전달해서 구현
  * 
  * 
  * 
@@ -144,8 +144,6 @@ export default App;
  * 배포 전 Firestore 보안규칙 업데이트하기(단순 true에서 새로운 규칙으로)
  * 
  * completeList, PlannedList, GroupList에서 상위리스트가 모두 render된 이후에 하위리스트 render되도록 설정
- * 
- * search params로 검색값 전달해서 구현
  * 
  * uiApiSlice error 수정하기
  * 
