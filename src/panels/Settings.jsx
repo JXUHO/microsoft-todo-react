@@ -1,12 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
 import Panel from "../components/ui/Panel";
 import { BsXLg } from "react-icons/bs";
-import { setHeaderButton, setTheme } from "../store/uiSlice";
+import { setHeaderButton } from "../store/uiSlice";
+import { useGetUiApiQuery, useSetThemeApiMutation } from "../api/uiApiSlice";
 
 const Settings = () => {
   const dispatch = useDispatch();
   const isSettingsActive = useSelector((state) => state.ui.settingsActive);
-  const currentTheme = useSelector((state) => state.ui.theme);
+  const user = useSelector((state) => state.auth.user);
+
+  const [setThemeApi] = useSetThemeApiMutation();
+
+  const {
+    data: uiData,
+    isLoading: isUiLoading,
+    isSuccess: isUiSuccess,
+    isError: isUiError,
+    error: uiError,
+  } = useGetUiApiQuery(user?.uid);
 
   return (
     <>
@@ -31,16 +42,22 @@ const Settings = () => {
             </div>
             <div className="flex justify-between px-4">
               <h2 className="py-5 text-base font-semibold">Dark Mode</h2>
-              {currentTheme === "light" ? (
+              {uiData?.theme === "dark" ? (
                 <div className="flex items-center opacity-70 pt-2">
-                  <button className="w-11 h-5 border border-black rounded-xl flex justify-start items-center" onClick={() => dispatch(setTheme("dark"))}>
-                    <div className="w-3 h-3 rounded-full bg-black border border-black ml-1"></div>
+                  <button
+                    className="w-11 h-5 border border-ms-blue rounded-xl flex justify-end items-center bg-ms-blue"
+                    onClick={() => setThemeApi({ user, value: "light" })}
+                  >
+                    <div className="w-3 h-3 rounded-full bg-ms-header border border-ms-header mr-1"></div>
                   </button>
                 </div>
               ) : (
                 <div className="flex items-center opacity-70 pt-2">
-                  <button className="w-11 h-5 border border-ms-blue rounded-xl flex justify-end items-center bg-ms-blue" onClick={() => dispatch(setTheme("light"))}>
-                    <div className="w-3 h-3 rounded-full bg-ms-header border border-ms-header mr-1"></div>
+                  <button
+                    className="w-11 h-5 border border-black rounded-xl flex justify-start items-center"
+                    onClick={() => setThemeApi({ user, value: "dark" })}
+                  >
+                    <div className="w-3 h-3 rounded-full bg-black border border-black ml-1"></div>
                   </button>
                 </div>
               )}

@@ -35,7 +35,7 @@ const RootPage = () => {
   useUpdateMyday();
   useRemindNotification();
   useTheme();
-  useTitle()
+  useTitle();
 
   useEffect(() => {
     dispatch(initializeActiveTasks());
@@ -50,7 +50,7 @@ const RootPage = () => {
     }
   }, [isAuthLoading, user, navigate]);
 
-  if (!todos) {
+  if (!todos || isAuthLoading) {
     return <Loading />;
   }
 
