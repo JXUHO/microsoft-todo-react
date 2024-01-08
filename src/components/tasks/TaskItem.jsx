@@ -40,7 +40,7 @@ const TaskItem = forwardRef(({ todo, currentLocation, isTaskActive }, ref) => {
   const [setCompleteTodoApi] = useSetCompleteTodoApiMutation();
   const [setImportanceTodoApi] = useSetImportanceTodoApiMutation();
 
-  console.log("taskItem");
+  // console.log("taskItem");
 
   const completeHandler = () => {
     if (todo.complete) {

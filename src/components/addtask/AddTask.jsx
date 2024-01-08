@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../../store/todoSlice";
+import { useSelector } from "react-redux";
 import uuid from "react-uuid";
 import DuePopover from "./DuePopover";
 import RemindPopover from "./RemindPopover";
@@ -30,11 +29,11 @@ const initialTask = {
 };
 
 const AddTask = ({ currentLocation }) => {
-  const dispatch = useDispatch();
   const [taskInput, setTaskInput] = useState(initialTask);
   const dueRef = useRef();
   const remindRef = useRef();
   const repeatRef = useRef();
+  const inputRef = useRef()
   const user = useSelector((state) => state.auth.user);
 
   const [addTodoApi] = useAddTodoApiMutation();
@@ -52,6 +51,10 @@ const AddTask = ({ currentLocation }) => {
     default:
       break;
   }
+
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
 
   const taskInputHandler = (event) => {
     // TODO: task만 다루고, 나머지는 등록할때 추가하기
@@ -155,6 +158,7 @@ const AddTask = ({ currentLocation }) => {
           onChange={taskInputHandler}
           value={taskInput.task}
           onKeyDown={handleEnterKeyPress}
+          ref={inputRef}
         />
       </div>
 
